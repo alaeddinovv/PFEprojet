@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:meta/meta.dart';
 import 'dart:convert' as convert;
 
 import 'package:pfeprojet/Api/httplaravel.dart';
@@ -42,7 +41,8 @@ class AuthCubit extends Cubit<AuthState> {
         print('dfdf');
         // var jsonResponse =
         //     convert.jsonDecode(value.body) as Map<String, dynamic>;
-        // errorRegisterModel = ErrorRegisterAndLoginModel.fromJson(jsonResponse);
+        print(value.body);
+
         emit(RegisterStateBad());
       }
     }).catchError((e) {

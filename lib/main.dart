@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:pfeprojet/Api/dioHelper.dart';
 import 'package:pfeprojet/screen/Auth/register.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  DioHelper.init();
   runApp(const MyApp());
 }
 
