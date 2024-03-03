@@ -1,10 +1,4 @@
 class UserModel {
-  UserModel({
-    required this.status,
-    required this.success,
-    required this.token,
-    required this.data,
-  });
   bool? status;
   String? success;
   String? token;
@@ -61,7 +55,6 @@ class Data {
   List<dynamic>? creneausFinale;
   String? createdAt;
   String? updatedAt;
-  int? _V;
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['_id'];
@@ -73,13 +66,12 @@ class Data {
     poste = json['poste'];
     wilaya = json['wilaya'];
     photo = json['photo'];
-    equipes = List.castFrom<dynamic, dynamic>(json['equipes']);
-    annonces = List.castFrom<dynamic, dynamic>(json['annonces']);
-    creneausReserve = List.castFrom<dynamic, dynamic>(json['creneaus_reserve']);
-    creneausFinale = List.castFrom<dynamic, dynamic>(json['creneaus_finale']);
+    equipes = json['equipes'];
+    annonces = json['annonces'];
+    creneausReserve = json['creneaus_reserve'];
+    creneausFinale = json['creneaus_finale'];
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
-    _V = json['__v'];
   }
 
   Map<String, dynamic> toJson() {
@@ -99,7 +91,6 @@ class Data {
     _data['creneaus_finale'] = creneausFinale;
     _data['createdAt'] = createdAt;
     _data['updatedAt'] = updatedAt;
-    _data['__v'] = _V;
     return _data;
   }
 }

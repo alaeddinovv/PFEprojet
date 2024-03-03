@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pfeprojet/Api/constApi.dart';
 import 'package:pfeprojet/helper/cachhelper.dart';
 import 'package:pfeprojet/screen/Auth/cubit/auth_cubit.dart';
 import 'package:pfeprojet/screen/Auth/Login.dart';
@@ -244,8 +243,8 @@ class RegisterJour extends StatelessWidget {
                                     "telephone": telephoneController.text,
                                     'wilaya': wilayaController.text
                                   };
-                                  AuthCubit.get(context).registerUser(
-                                      data: sendinfologin, path: REGISTERJOUER);
+                                  AuthCubit.get(context)
+                                      .registerUser(data: sendinfologin);
                                 }
                               });
                         },

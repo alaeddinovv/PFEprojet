@@ -127,9 +127,9 @@ class Login extends StatelessWidget {
                                   "email": emailController.text,
                                   'mot_de_passe': passController.text
                                 };
-                                AuthCubit.get(context).loginJoueur(
+                                AuthCubit.get(context).login(
                                   data: sendinfologin,
-                                  path: Loginadmin,
+                                  path: PATH,
                                 );
                               }
                             });
@@ -195,10 +195,12 @@ class _ToggleButtonState extends State<ToggleButton> {
                   _selections[index] = true;
                   _selections[index + 1] = false;
                   PATH = Loginjoueur;
+                  print(PATH);
                 } else if (index == 1) {
                   _selections[index] = true;
                   _selections[index - 1] = false;
                   PATH = Loginadmin;
+                  print(PATH);
                 }
               });
             },

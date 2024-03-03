@@ -12,7 +12,7 @@ final class PasswordHiddenState extends AuthState {}
 final class RegisterLodinState extends AuthState {}
 
 final class RegisterStateGood extends AuthState {
-  final UserModel model;
+  final dynamic model;
 
   RegisterStateGood({required this.model});
 }
@@ -30,7 +30,7 @@ final class RegisterStateBad extends AuthState {}
 final class LoginLoadingState extends AuthState {}
 
 final class LoginStateGood extends AuthState {
-  final UserModel model;
+  final dynamic model;
 
   LoginStateGood({required this.model});
 }

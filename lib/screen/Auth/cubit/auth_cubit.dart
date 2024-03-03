@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pfeprojet/Api/constApi.dart';
 import 'dart:convert' as convert;
 
 import 'package:pfeprojet/Api/httplaravel.dart';
+import 'package:pfeprojet/Model/admin_medel.dart';
 import 'package:pfeprojet/Model/error_model.dart';
 import 'package:pfeprojet/Model/user_model.dart';
 
@@ -28,11 +30,10 @@ class AuthCubit extends Cubit<AuthState> {
   UserModel? registerModel;
   ErrorModel? errorRegisterModel;
 
-  void registerUser(
-      {required Map<String, dynamic> data, required String path}) {
+  void registerUser({required Map<String, dynamic> data}) {
     emit(RegisterLodinState());
 
-    Httplar.httpPost(path: path, data: data).then((value) {
+    Httplar.httpPost(path: REGISTERJOUER, data: data).then((value) {
       if (value.statusCode == 200) {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
@@ -50,18 +51,23 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-  UserModel? loginModel;
+  UserModel? joueurModel;
+  AdminModel? adminModel;
+
   ErrorModel? errorloginModel;
-
-  void loginJoueur({required Map<String, dynamic> data, required String path}) {
+  void login({required Map<String, dynamic> data, required String path}) {
     emit(LoginLoadingState());
-
     Httplar.httpPost(path: path, data: data).then((value) {
       if (value.statusCode == 200) {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
-        registerModel = UserModel.fromJson(jsonResponse);
-        emit(LoginStateGood(model: registerModel!));
+        if (path == Loginadmin) {
+          adminModel = AdminModel.fromJson(jsonResponse);
+          emit(LoginStateGood(model: adminModel!));
+        } else if (path == Loginjoueur) {
+          joueurModel = UserModel.fromJson(jsonResponse);
+          emit(LoginStateGood(model: joueurModel!));
+        }
       } else if (value.statusCode == 400 ||
           value.statusCode == 401 ||
           value.statusCode == 404) {

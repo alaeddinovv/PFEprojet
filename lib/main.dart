@@ -5,14 +5,14 @@ import 'package:pfeprojet/component/const.dart';
 import 'package:pfeprojet/helper/cachhelper.dart';
 import 'package:pfeprojet/helper/observer.dart';
 import 'package:pfeprojet/screen/AdminScreens/home/home.dart';
-import 'package:pfeprojet/screen/Auth/register_joueur.dart';
+import 'package:pfeprojet/screen/Auth/Login.dart';
 import 'package:pfeprojet/screen/joueurScreens/home/home.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = MyBlocObserver();
   await CachHelper.init();
-  Widget startWidget = RegisterJour();
+  Widget startWidget = Login();
   // CachHelper.removdata(key: "TOKEN");
   // TOKEN = await CachHelper.getData(key: 'TOKEN') ?? '';
 
