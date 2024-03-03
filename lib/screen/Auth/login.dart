@@ -96,7 +96,8 @@ class Login extends StatelessWidget {
                       ),
                       TextButton(
                           onPressed: () {
-                            changepage(context, Register());
+                            navigatAndReturn(
+                                context: context, page: Register());
                           },
                           child: const Text("Register now"))
                     ],

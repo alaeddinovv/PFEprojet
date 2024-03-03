@@ -10,9 +10,9 @@ final class PasswordHiddenState extends AuthState {}
 final class RegisterLodinState extends AuthState {}
 
 final class RegisterStateGood extends AuthState {
-  // final dynamic model;
+  final UserModel model;
 
-  // RegisterStateGood({required this.model});
+  RegisterStateGood({required this.model});
 }
 
 final class RegisterStateBad extends AuthState {

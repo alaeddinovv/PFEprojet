@@ -5,10 +5,10 @@ class UserModel {
     required this.token,
     required this.data,
   });
-  late final bool status;
-  late final String success;
-  late final String token;
-  late final Data data;
+  bool? status;
+  String? success;
+  String? token;
+  Data? data;
 
   UserModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
@@ -22,7 +22,7 @@ class UserModel {
     _data['status'] = status;
     _data['success'] = success;
     _data['token'] = token;
-    _data['data'] = data.toJson();
+    _data['data'] = data?.toJson();
     return _data;
   }
 }
@@ -34,7 +34,6 @@ class Data {
     required this.prenom,
     required this.email,
     required this.telephone,
-    required this.motDePasse,
     required this.age,
     required this.poste,
     required this.wilaya,
@@ -45,23 +44,24 @@ class Data {
     required this.creneausFinale,
     required this.createdAt,
     required this.updatedAt,
+    // required this._V,
   });
-  late final String id;
-  late final String nom;
-  late final String prenom;
-  late final String email;
-  late final int telephone;
-  late final String motDePasse;
-  late final int age;
-  late final String poste;
-  late final String wilaya;
-  late final String photo;
-  late final List<dynamic> equipes;
-  late final List<dynamic> annonces;
-  late final List<dynamic> creneausReserve;
-  late final List<dynamic> creneausFinale;
-  late final String createdAt;
-  late final String updatedAt;
+  String? id;
+  String? nom;
+  String? prenom;
+  String? email;
+  int? telephone;
+  int? age;
+  String? poste;
+  String? wilaya;
+  String? photo;
+  List<dynamic>? equipes;
+  List<dynamic>? annonces;
+  List<dynamic>? creneausReserve;
+  List<dynamic>? creneausFinale;
+  String? createdAt;
+  String? updatedAt;
+  int? _V;
 
   Data.fromJson(Map<String, dynamic> json) {
     id = json['_id'];
@@ -69,7 +69,6 @@ class Data {
     prenom = json['prenom'];
     email = json['email'];
     telephone = json['telephone'];
-    motDePasse = json['mot_de_passe'];
     age = json['age'];
     poste = json['poste'];
     wilaya = json['wilaya'];
@@ -80,6 +79,7 @@ class Data {
     creneausFinale = List.castFrom<dynamic, dynamic>(json['creneaus_finale']);
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
+    _V = json['__v'];
   }
 
   Map<String, dynamic> toJson() {
@@ -89,7 +89,6 @@ class Data {
     _data['prenom'] = prenom;
     _data['email'] = email;
     _data['telephone'] = telephone;
-    _data['mot_de_passe'] = motDePasse;
     _data['age'] = age;
     _data['poste'] = poste;
     _data['wilaya'] = wilaya;
@@ -100,6 +99,7 @@ class Data {
     _data['creneaus_finale'] = creneausFinale;
     _data['createdAt'] = createdAt;
     _data['updatedAt'] = updatedAt;
+    _data['__v'] = _V;
     return _data;
   }
 }

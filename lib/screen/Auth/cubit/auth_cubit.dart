@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
@@ -27,25 +25,19 @@ class AuthCubit extends Cubit<AuthState> {
     emit(PasswordHiddenState());
   }
 
-  // UserModel? registerModel;
+  UserModel? registerModel;
   // ErrorRegisterAndLoginModel? errorRegisterModel;
   void registerUser(
       {required Map<String, dynamic> data, required String path}) {
     emit(RegisterLodinState());
 
     Httplar.httpPost(path: path, data: data).then((value) {
-      print('dfdf');
-      print(value.body);
-
       if (value.statusCode == 200) {
-        // var jsonResponse =
-        //     convert.jsonDecode(value.body) as Map<String, dynamic>;
-        // registerModel = UserModel.fromJson(jsonResponse);
-        print('dfdf');
-
-        print(value.body);
-
-        emit(RegisterStateGood());
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        registerModel = UserModel.fromJson(jsonResponse);
+        print(registerModel!.data!.age);
+        emit(RegisterStateGood(model: registerModel!));
       } else if (value.statusCode == 422) {
         print('dfdf');
         // var jsonResponse =
