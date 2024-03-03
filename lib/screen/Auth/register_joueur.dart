@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pfeprojet/Api/constApi.dart';
-import 'package:pfeprojet/home.dart';
+import 'package:pfeprojet/helper/cachhelper.dart';
 import 'package:pfeprojet/screen/Auth/cubit/auth_cubit.dart';
-import 'package:pfeprojet/screen/Auth/login.dart';
+import 'package:pfeprojet/screen/Auth/Login.dart';
+import 'package:pfeprojet/screen/joueurScreens/home/home.dart';
 
-import '../../component/components.dart';
+import '../../../component/components.dart';
 
-class Register extends StatelessWidget {
-  Register({Key? key}) : super(key: key);
+class RegisterJour extends StatelessWidget {
+  RegisterJour({Key? key}) : super(key: key);
 
   final nomController = TextEditingController();
   final prenomController = TextEditingController();
@@ -211,10 +212,12 @@ class Register extends StatelessWidget {
                         listener: (BuildContext context, AuthState state) {
                           if (state is RegisterStateGood) {
                             navigatAndFinish(
-                                context: context, page: const Home());
+                                context: context, page: const HomeJoueur());
                             showToast(
                                 msg: 'Hi ${state.model.data!.nom!}',
                                 state: ToastStates.success);
+                            CachHelper.putcache(
+                                key: "TOKEN", value: state.model.token);
                           } else if (state is ErrorState) {
                             showToast(
                                 msg: ' ${state.errorModel.message}',

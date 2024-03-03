@@ -49,4 +49,30 @@ class AuthCubit extends Cubit<AuthState> {
       emit(RegisterStateBad());
     });
   }
+
+  UserModel? loginModel;
+  ErrorModel? errorloginModel;
+
+  void loginJoueur({required Map<String, dynamic> data, required String path}) {
+    emit(LoginLoadingState());
+
+    Httplar.httpPost(path: path, data: data).then((value) {
+      if (value.statusCode == 200) {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        registerModel = UserModel.fromJson(jsonResponse);
+        emit(LoginStateGood(model: registerModel!));
+      } else if (value.statusCode == 400 ||
+          value.statusCode == 401 ||
+          value.statusCode == 404) {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        errorRegisterModel = ErrorModel.fromJson(jsonResponse);
+        emit(ErrorState(errorModel: errorRegisterModel!));
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(LoginStateBad());
+    });
+  }
 }
