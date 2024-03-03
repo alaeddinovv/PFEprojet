@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'dart:convert' as convert;
 
 import 'package:pfeprojet/Api/httplaravel.dart';
+import 'package:pfeprojet/Model/error_model.dart';
 import 'package:pfeprojet/Model/user_model.dart';
 
 part 'auth_state.dart';
@@ -25,7 +26,8 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
   UserModel? registerModel;
-  // ErrorRegisterAndLoginModel? errorRegisterModel;
+  ErrorModel? errorRegisterModel;
+
   void registerUser(
       {required Map<String, dynamic> data, required String path}) {
     emit(RegisterLodinState());
@@ -35,15 +37,12 @@ class AuthCubit extends Cubit<AuthState> {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
         registerModel = UserModel.fromJson(jsonResponse);
-        print(registerModel!.data!.age);
         emit(RegisterStateGood(model: registerModel!));
-      } else if (value.statusCode == 422) {
-        print('dfdf');
-        // var jsonResponse =
-        //     convert.jsonDecode(value.body) as Map<String, dynamic>;
-        print(value.body);
-
-        emit(RegisterStateBad());
+      } else if (value.statusCode == 400) {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        errorRegisterModel = ErrorModel.fromJson(jsonResponse);
+        emit(ErrorState(errorModel: errorRegisterModel!));
       }
     }).catchError((e) {
       print(e.toString());

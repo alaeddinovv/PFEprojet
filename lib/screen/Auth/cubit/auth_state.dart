@@ -15,6 +15,12 @@ final class RegisterStateGood extends AuthState {
   RegisterStateGood({required this.model});
 }
 
+final class ErrorState extends AuthState {
+  final ErrorModel errorModel;
+
+  ErrorState({required this.errorModel});
+}
+
 final class RegisterStateBad extends AuthState {
   // final dynamic model;
 
