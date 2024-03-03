@@ -215,6 +215,10 @@ class Register extends StatelessWidget {
                             showToast(
                                 msg: 'Hi ${state.model.data!.nom!}',
                                 state: ToastStates.success);
+                          } else if (state is ErrorState) {
+                            showToast(
+                                msg: ' ${state.errorModel.message}',
+                                state: ToastStates.error);
                           } else if (state is RegisterStateBad) {
                             showToast(msg: "Error", state: ToastStates.error);
                           }
