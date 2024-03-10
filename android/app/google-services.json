@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "894656592896",
+    "project_id": "creno-ad53a",
+    "storage_bucket": "creno-ad53a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:894656592896:android:dafc2d71ec0e73edddace5",
+        "android_client_info": {
+          "package_name": "com.example.pfeprojet"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDr8_v4D0DsFiZOd8dQz5da6fPNly2X7JY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

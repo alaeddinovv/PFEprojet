@@ -2,19 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:pfeprojet/component/const.dart';
+import 'package:pfeprojet/firebase_options.dart';
 import 'package:pfeprojet/helper/cachhelper.dart';
 import 'package:pfeprojet/helper/observer.dart';
 import 'package:pfeprojet/screen/AdminScreens/home/home.dart';
 import 'package:pfeprojet/screen/Auth/Login.dart';
+import 'package:pfeprojet/screen/Auth/cubit/auth_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/home/home.dart';
+import 'package:pfeprojet/screen/joueurScreens/profile/cubit/profile_cubit.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
   Bloc.observer = MyBlocObserver();
+  WidgetsFlutterBinding.ensureInitialized();
   await CachHelper.init();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   Widget startWidget = Login();
   // CachHelper.removdata(key: "TOKEN");
-  // TOKEN = await CachHelper.getData(key: 'TOKEN') ?? '';
+  TOKEN = await CachHelper.getData(key: 'TOKEN') ?? '';
 
   if (TOKEN != '') {
     DECODEDTOKEN = JwtDecoder.decode(TOKEN);
@@ -36,9 +43,19 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: startwidget,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: ((context) => AuthCubit()),
+        ),
+        BlocProvider(
+          create: ((context) => ProfileCubit()..getMyInfo()),
+        ),
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: startwidget,
+      ),
     );
   }
 }
