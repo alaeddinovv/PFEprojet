@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pfeprojet/Api/constApi.dart';
 import 'package:pfeprojet/component/components.dart';
-import 'package:pfeprojet/home.dart';
+import 'package:pfeprojet/component/const.dart';
+import 'package:pfeprojet/helper/cachhelper.dart';
+import 'package:pfeprojet/screen/AdminScreens/home/home.dart';
 import 'package:pfeprojet/screen/Auth/cubit/auth_cubit.dart';
 import 'package:pfeprojet/screen/Auth/register_joueur.dart';
+import 'package:pfeprojet/screen/joueurScreens/home/home.dart';
 
 class Login extends StatelessWidget {
   Login({Key? key}) : super(key: key);
@@ -15,151 +18,155 @@ class Login extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => AuthCubit(),
-      child: Scaffold(
-        body: Center(
-          child: SingleChildScrollView(
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Form(
-                key: formKey,
-                child: Column(
-                  children: [
-                    const Text(
-                      "Login",
-                      style:
-                          TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(
-                      height: 26,
-                    ),
-                    Container(
-                      width: double.infinity,
-                      alignment: Alignment.center,
-                      child: ToggleButton(),
-                    ),
-                    const SizedBox(
-                      height: 26,
-                    ),
-                    defaultForm(
-                        context: context,
-                        controller: emailController,
-                        type: TextInputType.emailAddress,
-                        lable: const Text(
-                          "Email Address",
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        valid: (String value) {
-                          if (value.isEmpty) {
-                            return 'Email Must Not Be Empty';
-                          }
-                        },
-                        onFieldSubmitted: () {},
-                        prefixIcon: const Icon(
-                          Icons.email,
-                          color: Colors.grey,
-                        ),
-                        textInputAction: TextInputAction.next),
-                    const SizedBox(
-                      height: 18,
-                    ),
-                    BlocBuilder<AuthCubit, AuthState>(
-                      builder: (context, state) {
-                        return defaultForm(
-                            context: context,
-                            textInputAction: TextInputAction.done,
-                            controller: passController,
-                            type: TextInputType.visiblePassword,
-                            onFieldSubmitted: () {},
-                            obscureText: AuthCubit.get(context).ishidden,
-                            valid: (value) {
-                              if (value.isEmpty) {
-                                return 'mot_de_passe Must Be Not Empty';
-                              }
-                            },
-                            lable: const Text(
-                              'mot_de_passe',
-                              style: TextStyle(color: Colors.grey),
-                            ),
-                            prefixIcon: const Icon(
-                              Icons.password,
-                              color: Colors.grey,
-                            ),
-                            sufixIcon: IconButton(
-                              onPressed: () {
-                                AuthCubit.get(context).showpass();
-                              },
-                              icon: AuthCubit.get(context).iconhidden,
-                              color: Colors.grey,
-                            ));
-                      },
-                    ),
-                    const SizedBox(
-                      height: 18,
-                    ),
-                    BlocConsumer<AuthCubit, AuthState>(
-                      listener: (BuildContext context, AuthState state) {
-                        if (state is LoginStateGood) {
-                          navigatAndFinish(
-                              context: context, page: const Home());
-                          showToast(
-                              msg: 'Hi ${state.model.data!.nom!}',
-                              state: ToastStates.success);
-                        } else if (state is ErrorState) {
-                          showToast(
-                              msg: ' ${state.errorModel.message}',
-                              state: ToastStates.error);
-                        } else if (state is LoginStateBad) {
-                          showToast(msg: "Error", state: ToastStates.error);
+    return Scaffold(
+      body: Center(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Form(
+              key: formKey,
+              child: Column(
+                children: [
+                  const Text(
+                    "Login",
+                    style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    height: 26,
+                  ),
+                  Container(
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    child: ToggleButton(),
+                  ),
+                  const SizedBox(
+                    height: 26,
+                  ),
+                  defaultForm(
+                      context: context,
+                      controller: emailController,
+                      type: TextInputType.emailAddress,
+                      lable: const Text(
+                        "Email Address",
+                        style: TextStyle(color: Colors.grey),
+                      ),
+                      valid: (String value) {
+                        if (value.isEmpty) {
+                          return 'Email Must Not Be Empty';
                         }
                       },
-                      builder: (context, state) {
-                        if (state is LoginLoadingState) {
-                          return const CircularProgressIndicator();
-                        }
-                        return buttonSubmit(
-                            text: 'Register',
-                            context: context,
-                            onPressed: () {
-                              if (formKey.currentState!.validate()) {
-                                Map<String, dynamic> sendinfologin = {
-                                  "email": emailController.text,
-                                  'mot_de_passe': passController.text
-                                };
-                                AuthCubit.get(context).login(
-                                  data: sendinfologin,
-                                  path: PATH,
-                                );
-                              }
-                            });
-                      },
-                    ),
-                    const SizedBox(
-                      height: 18,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          "You dont't have an account",
-                          style: TextStyle(
-                            fontSize: 15,
+                      onFieldSubmitted: () {},
+                      prefixIcon: const Icon(
+                        Icons.email,
+                        color: Colors.grey,
+                      ),
+                      textInputAction: TextInputAction.next),
+                  const SizedBox(
+                    height: 18,
+                  ),
+                  BlocBuilder<AuthCubit, AuthState>(
+                    builder: (context, state) {
+                      return defaultForm(
+                          context: context,
+                          textInputAction: TextInputAction.done,
+                          controller: passController,
+                          type: TextInputType.visiblePassword,
+                          onFieldSubmitted: () {},
+                          obscureText: AuthCubit.get(context).ishidden,
+                          valid: (value) {
+                            if (value.isEmpty) {
+                              return 'mot_de_passe Must Be Not Empty';
+                            }
+                          },
+                          lable: const Text(
+                            'mot_de_passe',
+                            style: TextStyle(color: Colors.grey),
                           ),
-                        ),
-                        const SizedBox(
-                          width: 8,
-                        ),
-                        TextButton(
+                          prefixIcon: const Icon(
+                            Icons.password,
+                            color: Colors.grey,
+                          ),
+                          sufixIcon: IconButton(
                             onPressed: () {
-                              navigatAndReturn(
-                                  context: context, page: RegisterJour());
+                              AuthCubit.get(context).showpass();
                             },
-                            child: const Text("Register now?"))
-                      ],
-                    )
-                  ],
-                ),
+                            icon: AuthCubit.get(context).iconhidden,
+                            color: Colors.grey,
+                          ));
+                    },
+                  ),
+                  const SizedBox(
+                    height: 18,
+                  ),
+                  BlocConsumer<AuthCubit, AuthState>(
+                    listener: (BuildContext context, AuthState state) {
+                      if (state is LoginStateGood) {
+                        if (PATH == Loginadmin) {
+                          navigatAndFinish(
+                              context: context, page: const HomeAdmin());
+                        } else if (PATH == Loginjoueur) {
+                          navigatAndFinish(
+                              context: context, page: const HomeJoueur());
+                        }
+                        showToast(
+                            msg: 'Hi ${state.model.data!.nom!}',
+                            state: ToastStates.success);
+                        TOKEN = state.model.token!;
+                        print(TOKEN);
+                        CachHelper.putcache(key: "TOKEN", value: TOKEN);
+                      } else if (state is ErrorState) {
+                        showToast(
+                            msg: ' ${state.errorModel.message}',
+                            state: ToastStates.error);
+                      } else if (state is LoginStateBad) {
+                        showToast(msg: "Error", state: ToastStates.error);
+                      }
+                    },
+                    builder: (context, state) {
+                      if (state is LoginLoadingState) {
+                        return const CircularProgressIndicator();
+                      }
+                      return buttonSubmit(
+                          text: 'Login',
+                          context: context,
+                          onPressed: () {
+                            if (formKey.currentState!.validate()) {
+                              Map<String, dynamic> sendinfologin = {
+                                "email": emailController.text,
+                                'mot_de_passe': passController.text
+                              };
+                              AuthCubit.get(context).login(
+                                data: sendinfologin,
+                                path: PATH,
+                              );
+                            }
+                          });
+                    },
+                  ),
+                  const SizedBox(
+                    height: 18,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text(
+                        "You dont't have an account",
+                        style: TextStyle(
+                          fontSize: 15,
+                        ),
+                      ),
+                      const SizedBox(
+                        width: 8,
+                      ),
+                      TextButton(
+                          onPressed: () {
+                            navigatAndReturn(
+                                context: context, page: RegisterJour());
+                          },
+                          child: const Text("Register now?"))
+                    ],
+                  )
+                ],
               ),
             ),
           ),

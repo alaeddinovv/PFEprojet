@@ -2,13 +2,13 @@ class UserModel {
   bool? status;
   String? success;
   String? token;
-  Data? data;
+  DataJoueurModel? data;
 
   UserModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     success = json['success'];
     token = json['token'];
-    data = Data.fromJson(json['data']);
+    data = DataJoueurModel.fromJson(json['data']);
   }
 
   Map<String, dynamic> toJson() {
@@ -21,25 +21,26 @@ class UserModel {
   }
 }
 
-class Data {
-  Data({
-    required this.id,
-    required this.nom,
-    required this.prenom,
-    required this.email,
-    required this.telephone,
-    required this.age,
-    required this.poste,
-    required this.wilaya,
-    required this.photo,
-    required this.equipes,
-    required this.annonces,
-    required this.creneausReserve,
-    required this.creneausFinale,
-    required this.createdAt,
-    required this.updatedAt,
+class DataJoueurModel {
+  DataJoueurModel({
+    this.id,
+    this.nom,
+    this.prenom,
+    this.email,
+    this.telephone,
+    this.age,
+    this.poste,
+    this.wilaya,
+    this.photo,
+    this.equipes,
+    this.annonces,
+    this.creneausReserve,
+    this.creneausFinale,
+    this.createdAt,
+    this.updatedAt,
     // required this._V,
   });
+
   String? id;
   String? nom;
   String? prenom;
@@ -56,7 +57,7 @@ class Data {
   String? createdAt;
   String? updatedAt;
 
-  Data.fromJson(Map<String, dynamic> json) {
+  DataJoueurModel.fromJson(Map<String, dynamic> json) {
     id = json['_id'];
     nom = json['nom'];
     prenom = json['prenom'];
