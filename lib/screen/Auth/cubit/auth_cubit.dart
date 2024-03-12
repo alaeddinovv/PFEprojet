@@ -27,8 +27,8 @@ class AuthCubit extends Cubit<AuthState> {
     emit(PasswordHiddenState());
   }
 
-  UserModel? registerModel;
-  ErrorModel? errorRegisterModel;
+  // UserModel? registerModel;
+  // ErrorModel? errorRegisterModel;
 
   void registerUser({required Map<String, dynamic> data}) {
     emit(RegisterLodinState());
@@ -37,13 +37,11 @@ class AuthCubit extends Cubit<AuthState> {
       if (value.statusCode == 200) {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
-        registerModel = UserModel.fromJson(jsonResponse);
-        emit(RegisterStateGood(model: registerModel!));
+        emit(RegisterStateGood(model: UserModel.fromJson(jsonResponse)));
       } else if (value.statusCode == 400) {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
-        errorRegisterModel = ErrorModel.fromJson(jsonResponse);
-        emit(ErrorState(errorModel: errorRegisterModel!));
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
       }
     }).catchError((e) {
       print(e.toString());
@@ -51,8 +49,8 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-  UserModel? joueurModel;
-  AdminModel? adminModel;
+  // UserModel? joueurModel;
+  // AdminModel? adminModel;
 
   ErrorModel? errorloginModel;
   void login({required Map<String, dynamic> data, required String path}) {
@@ -62,19 +60,16 @@ class AuthCubit extends Cubit<AuthState> {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
         if (path == Loginadmin) {
-          adminModel = AdminModel.fromJson(jsonResponse);
-          emit(LoginStateGood(model: adminModel!));
+          emit(LoginStateGood(model: AdminModel.fromJson(jsonResponse)));
         } else if (path == Loginjoueur) {
-          joueurModel = UserModel.fromJson(jsonResponse);
-          emit(LoginStateGood(model: joueurModel!));
+          emit(LoginStateGood(model: UserModel.fromJson(jsonResponse)));
         }
       } else if (value.statusCode == 400 ||
           value.statusCode == 401 ||
           value.statusCode == 404) {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
-        errorRegisterModel = ErrorModel.fromJson(jsonResponse);
-        emit(ErrorState(errorModel: errorRegisterModel!));
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
       }
     }).catchError((e) {
       print(e.toString());
