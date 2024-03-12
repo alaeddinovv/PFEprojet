@@ -101,7 +101,9 @@ class ProfileAdmin extends StatelessWidget {
                     ListTile(
                       leading: const Icon(Icons.phone),
                       title: const Text('Phone'),
-                      subtitle: Text(adminModel.telephone!.toString()),
+                      subtitle: Text(
+                        adminModel.telephone!.toString(),
+                      ),
                       onTap: () {},
                     ),
                     const SizedBox(
