@@ -9,6 +9,8 @@ import 'package:pfeprojet/screen/Auth/cubit/auth_cubit.dart';
 import 'package:pfeprojet/screen/Auth/register_joueur.dart';
 import 'package:pfeprojet/screen/joueurScreens/home/home.dart';
 
+import '../AdminScreens/home/cubit/home_admin_cubit.dart';
+
 class Login extends StatelessWidget {
   Login({Key? key}) : super(key: key);
 
@@ -99,9 +101,11 @@ class Login extends StatelessWidget {
                     height: 18,
                   ),
                   BlocConsumer<AuthCubit, AuthState>(
-                    listener: (BuildContext context, AuthState state) {
+                    listener: (BuildContext context, AuthState state) async {
                       if (state is LoginStateGood) {
                         if (PATH == Loginadmin) {
+                          HomeAdminCubit.get(context)
+                              .setAdminModel(state.model.data!);
                           navigatAndFinish(
                               context: context, page: const HomeAdmin());
                         } else if (PATH == Loginjoueur) {

@@ -2,7 +2,7 @@ class AdminModel {
   bool? status;
   String? success;
   String? token;
-  UserDataDetails? data;
+  DataAdminModel? data;
 
   AdminModel({
     this.status,
@@ -16,17 +16,17 @@ class AdminModel {
       status: json['status'],
       success: json['success'],
       token: json['token'],
-      data:
-          json['data'] != null ? UserDataDetails.fromJson(json['data']) : null,
+      data: json['data'] != null ? DataAdminModel.fromJson(json['data']) : null,
     );
   }
 }
 
-class UserDataDetails {
+class DataAdminModel {
   String? id;
   String? nom;
   String? prenom;
   String? email;
+  String? photo;
   int? telephone;
   String? wilaya;
   List<dynamic>? annonces;
@@ -36,11 +36,12 @@ class UserDataDetails {
   String? updatedAt;
   int? v;
 
-  UserDataDetails({
+  DataAdminModel({
     this.id,
     this.nom,
     this.prenom,
     this.email,
+    this.photo,
     this.telephone,
     this.wilaya,
     this.annonces,
@@ -51,12 +52,13 @@ class UserDataDetails {
     this.v,
   });
 
-  factory UserDataDetails.fromJson(Map<String, dynamic> json) {
-    return UserDataDetails(
+  factory DataAdminModel.fromJson(Map<String, dynamic> json) {
+    return DataAdminModel(
       id: json['_id'],
       nom: json['nom'],
       prenom: json['prenom'],
       email: json['email'],
+      photo: json['photo'],
       telephone: json['telephone'],
       wilaya: json['wilaya'],
       annonces: json['annonces'],

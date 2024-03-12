@@ -1,36 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pfeprojet/Model/admin_medel.dart';
 import 'package:pfeprojet/component/components.dart';
-import 'package:pfeprojet/screen/joueurScreens/profile/cubit/profile_cubit.dart';
-import 'package:pfeprojet/screen/joueurScreens/profile/profile.dart';
+import 'package:pfeprojet/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
+import 'package:pfeprojet/screen/AdminScreens/profile/cubit/profile_admin_cubit.dart';
+import 'package:pfeprojet/screen/AdminScreens/profile/profile.dart';
 
-class UpdateJoueurForm extends StatefulWidget {
-  final emailController = TextEditingController();
-
-  UpdateJoueurForm({super.key});
+class UpdateAdminForm extends StatefulWidget {
+  const UpdateAdminForm({super.key});
 
   @override
-  State<UpdateJoueurForm> createState() => _UpdateJoueurFormState();
+  State<UpdateAdminForm> createState() => _UpdateAdminFormState();
 }
 
-class _UpdateJoueurFormState extends State<UpdateJoueurForm> {
+class _UpdateAdminFormState extends State<UpdateAdminForm> {
   final TextEditingController _nomController = TextEditingController();
   final TextEditingController _prenomController = TextEditingController();
-  final TextEditingController _ageController = TextEditingController();
   final TextEditingController _wilayaController = TextEditingController();
   final TextEditingController _telephoneController = TextEditingController();
   final formkey = GlobalKey<FormState>();
+  late final DataAdminModel homeAdminCubit;
   @override
   void initState() {
     // TODO: implement setState
-    _nomController.text = ProfileCubit.get(context).joueurDataModel!.nom!;
-    _prenomController.text = ProfileCubit.get(context).joueurDataModel!.prenom!;
-    _ageController.text =
-        ProfileCubit.get(context).joueurDataModel!.age!.toString();
-    _wilayaController.text = ProfileCubit.get(context).joueurDataModel!.wilaya!;
-    _telephoneController.text =
-        ProfileCubit.get(context).joueurDataModel!.telephone!.toString();
+    homeAdminCubit = HomeAdminCubit.get(context).adminModel!;
+    _nomController.text = homeAdminCubit.nom!;
+    _prenomController.text = homeAdminCubit.prenom!;
+    _wilayaController.text = homeAdminCubit.wilaya!;
+    _telephoneController.text = homeAdminCubit.telephone!.toString();
+
     super.initState();
   }
 
@@ -39,7 +38,6 @@ class _UpdateJoueurFormState extends State<UpdateJoueurForm> {
     // TODO: implement dispose
     _nomController.dispose();
     _prenomController.dispose();
-    _ageController.dispose();
     _wilayaController.dispose();
     _telephoneController.dispose();
     super.dispose();
@@ -47,11 +45,16 @@ class _UpdateJoueurFormState extends State<UpdateJoueurForm> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ProfileCubit, ProfileState>(
+    return BlocConsumer<ProfileAdminCubit, ProfileAdminState>(
       listener: (context, state) {
-        if (state is UpdateJoueurStateGood) {
+        if (state is UpdateAdminStateGood) {
           showToast(msg: "Succes", state: ToastStates.success);
-          navigatAndFinish(context: context, page: const ProfileJoueur());
+          HomeAdminCubit.get(context).setAdminModel(state.dataAdminModel);
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const ProfileAdmin()),
+            (route) => false,
+          );
         }
       },
       builder: (context, state) {
@@ -59,7 +62,7 @@ class _UpdateJoueurFormState extends State<UpdateJoueurForm> {
           canPop: false,
           onPopInvoked: (didPop) async {
             if (!didPop) {
-              if (state is! UpdateJoueurLoadingState) {
+              if (state is! UpdateAdminLoadingState) {
                 Navigator.pop(context);
               }
             }
@@ -74,25 +77,20 @@ class _UpdateJoueurFormState extends State<UpdateJoueurForm> {
                 key: formkey,
                 child: SingleChildScrollView(
                   child: Column(children: [
-                    if (state is UpdateJoueurLoadingState)
+                    if (state is UpdateAdminLoadingState)
                       const LinearProgressIndicator(),
                     Stack(
                       alignment: AlignmentDirectional.bottomEnd,
                       children: [
                         CircleAvatar(
                           backgroundColor: Colors.transparent,
-                          backgroundImage: ProfileCubit.get(context)
+                          backgroundImage: ProfileAdminCubit.get(context)
                                       .imageCompress !=
                                   null
                               ? FileImage(
-                                  ProfileCubit.get(context).imageCompress!)
-                              : ProfileCubit.get(context)
-                                          .joueurDataModel!
-                                          .photo !=
-                                      ""
-                                  ? NetworkImage(ProfileCubit.get(context)
-                                      .joueurDataModel!
-                                      .photo!)
+                                  ProfileAdminCubit.get(context).imageCompress!)
+                              : homeAdminCubit.photo != null
+                                  ? NetworkImage(homeAdminCubit.photo!)
                                   : const AssetImage('assets/images/user.png')
                                       as ImageProvider<Object>,
                           radius: 60,
@@ -148,20 +146,6 @@ class _UpdateJoueurFormState extends State<UpdateJoueurForm> {
                       height: 20,
                     ),
                     defaultForm2(
-                        controller: _ageController,
-                        textInputAction: TextInputAction.next,
-                        label: 'Age',
-                        prefixIcon: const Icon(Icons.countertops),
-                        type: TextInputType.text,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Age Must Be Not Empty";
-                          }
-                        }),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    defaultForm2(
                         controller: _wilayaController,
                         textInputAction: TextInputAction.next,
                         label: 'Wilaya',
@@ -199,13 +183,12 @@ class _UpdateJoueurFormState extends State<UpdateJoueurForm> {
                               // if (state is LodinUpdateResponsableState) {
                               //   return null;
                               // }
-                              ProfileCubit.get(context).updateJoueur(
-                                nom: _nomController.text,
-                                prenom: _prenomController.text,
-                                telephone: _telephoneController.text,
-                                age: _ageController.text,
-                                wilaya: _wilayaController.text,
-                              );
+                              ProfileAdminCubit.get(context).updateAdmin(
+                                  nom: _nomController.text,
+                                  prenom: _prenomController.text,
+                                  telephone: _telephoneController.text,
+                                  wilaya: _wilayaController.text,
+                                  deleteOldImage: homeAdminCubit.photo);
                             }
                           }),
                     ),
@@ -237,7 +220,7 @@ class SelectPhotoAlert extends StatelessWidget {
               //   return null;
               // }
               Navigator.pop(context);
-              await ProfileCubit.get(context)
+              await ProfileAdminCubit.get(context)
                   .imagePickerProfile(ImageSource.camera);
             },
             child: const Text("Camera")),
@@ -248,7 +231,7 @@ class SelectPhotoAlert extends StatelessWidget {
               //   return null;
               // }
               Navigator.pop(context);
-              await ProfileCubit.get(context)
+              await ProfileAdminCubit.get(context)
                   .imagePickerProfile(ImageSource.gallery);
             },
             child: const Text("Gallery"))

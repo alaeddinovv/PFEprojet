@@ -5,7 +5,9 @@ import 'package:pfeprojet/component/const.dart';
 import 'package:pfeprojet/firebase_options.dart';
 import 'package:pfeprojet/helper/cachhelper.dart';
 import 'package:pfeprojet/helper/observer.dart';
+import 'package:pfeprojet/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
 import 'package:pfeprojet/screen/AdminScreens/home/home.dart';
+import 'package:pfeprojet/screen/AdminScreens/profile/cubit/profile_admin_cubit.dart';
 import 'package:pfeprojet/screen/Auth/Login.dart';
 import 'package:pfeprojet/screen/Auth/cubit/auth_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/home/home.dart';
@@ -47,6 +49,12 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: ((context) => AuthCubit()),
+        ),
+        BlocProvider(
+          create: ((context) => HomeAdminCubit()..getMyInfo()),
+        ),
+        BlocProvider(
+          create: ((context) => ProfileAdminCubit()),
         ),
         BlocProvider(
           create: ((context) => ProfileCubit()..getMyInfo()),
