@@ -1,18 +1,36 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:pfeprojet/Api/constApi.dart';
 import 'package:pfeprojet/Api/httplaravel.dart';
 import 'package:pfeprojet/Model/admin_medel.dart';
 import 'package:pfeprojet/Model/error_model.dart';
+import 'package:pfeprojet/screen/AdminScreens/annonce/annonce.dart';
+import 'package:pfeprojet/screen/AdminScreens/reservation/reservation.dart';
 import 'dart:convert' as convert;
+
+import 'package:pfeprojet/screen/AdminScreens/terrains/terrains.dart';
+import 'package:pfeprojet/screen/AdminScreens/tournoi/tournoi.dart';
 
 part 'home_admin_state.dart';
 
 class HomeAdminCubit extends Cubit<HomeAdminState> {
   HomeAdminCubit() : super(HomeAdminInitial());
   static HomeAdminCubit get(context) => BlocProvider.of(context);
+  final List<Widget> body = [
+    const Terrains(),
+    const Reservation(),
+    const Annonce(),
+    const Tournoi()
+  ];
+
+  int selectedIndex = 0;
+  void changeIndexNavBar(int index) {
+    selectedIndex = index;
+    emit(ChangeIndexNavBarState(index: selectedIndex));
+  }
+
   DataAdminModel? adminModel;
-  // ErrorModel? errorGetMyInfoModel;
 
   setAdminModel(DataAdminModel adminModel) {
     this.adminModel = adminModel;

@@ -1,0 +1,17 @@
+
+Problems
+1/ Navigator.pop(context)  not refresh kima nrj3 l screen 
+kima fl Admin : 
+kima ndir UpdateProfile nrmlmo f :
+  if (state is UpdateAdminStateGood) {
+          showToast(msg: "Succes", state: ToastStates.success);
+          HomeAdminCubit.get(context).setAdminModel(state.dataAdminModel);
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const ProfileAdmin()),
+            (route) => false,
+          );
+        }
+
+    nkhdem bl Pop mch pushAndRemoveUntil   
+    

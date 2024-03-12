@@ -9,45 +9,60 @@ class HomeAdmin extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('HomeAdmin'),
-        actions: [
-          BlocBuilder<HomeAdminCubit, HomeAdminState>(
-            builder: (context, state) {
-              if (state is GetMyInformationLoading) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              return InkWell(
-                onTap: () {
-                  navigatAndReturn(
-                      context: context, page: const ProfileAdmin());
-                },
-                child: CircleAvatar(
-                  radius: 20,
-                  backgroundImage:
-                      HomeAdminCubit.get(context).adminModel!.photo != null
-                          ? NetworkImage(
-                              HomeAdminCubit.get(context).adminModel!.photo!)
-                          : const AssetImage('assets/images/user.png')
-                              as ImageProvider<Object>,
-                ),
-              );
-            },
+    return BlocBuilder<HomeAdminCubit, HomeAdminState>(
+      builder: (context, state) {
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('HomeAdmin'),
+            actions: [
+              state is GetMyInformationLoading
+                  ? const Center(child: CircularProgressIndicator())
+                  : InkWell(
+                      onTap: () {
+                        navigatAndReturn(
+                            context: context, page: const ProfileAdmin());
+                      },
+                      child: CircleAvatar(
+                        radius: 20,
+                        backgroundImage: HomeAdminCubit.get(context)
+                                    .adminModel!
+                                    .photo !=
+                                null
+                            ? NetworkImage(
+                                HomeAdminCubit.get(context).adminModel!.photo!)
+                            : const AssetImage('assets/images/user.png')
+                                as ImageProvider<Object>,
+                      ),
+                    )
+            ],
           ),
-
-          // TextButton(
-          //     onPressed: () {
-          //       CachHelper.removdata(key: "TOKEN");
-          //       navigatAndFinish(context: context, page: Login());
-          //     },
-          //     child: const Text(
-          //       "disconnect",
-          //       style: TextStyle(color: Colors.red),
-          //     ))
-        ],
-      ),
-      body: const Text("hi"),
+          body: HomeAdminCubit.get(context)
+              .body[HomeAdminCubit.get(context).selectedIndex],
+          bottomNavigationBar: NavigationBarTheme(
+              data: NavigationBarThemeData(
+                indicatorColor: Colors.blue[100],
+                labelTextStyle: MaterialStateProperty.all(
+                  const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+                ),
+              ),
+              child: NavigationBar(
+                height: 70,
+                selectedIndex: HomeAdminCubit.get(context).selectedIndex,
+                onDestinationSelected: (index) =>
+                    {HomeAdminCubit.get(context).changeIndexNavBar(index)},
+                destinations: const [
+                  NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
+                  NavigationDestination(
+                      icon: Icon(Icons.more_time_rounded),
+                      label: 'Reservation'),
+                  NavigationDestination(
+                      icon: Icon(Icons.add), label: 'Annonce'),
+                  NavigationDestination(
+                      icon: Icon(Icons.groups_2), label: 'tournoi')
+                ],
+              )),
+        );
+      },
     );
   }
 }

@@ -5,6 +5,7 @@ import 'package:pfeprojet/Model/admin_medel.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
 import 'package:pfeprojet/screen/AdminScreens/profile/cubit/profile_admin_cubit.dart';
+import 'package:pfeprojet/screen/AdminScreens/profile/profile.dart';
 
 class UpdateAdminForm extends StatefulWidget {
   const UpdateAdminForm({super.key});
@@ -49,7 +50,11 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
         if (state is UpdateAdminStateGood) {
           showToast(msg: "Succes", state: ToastStates.success);
           HomeAdminCubit.get(context).setAdminModel(state.dataAdminModel);
-          Navigator.pop(context);
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => const ProfileAdmin()),
+            (route) => false,
+          );
         }
       },
       builder: (context, state) {

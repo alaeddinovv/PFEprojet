@@ -5,6 +5,12 @@ sealed class HomeAdminState {}
 
 final class HomeAdminInitial extends HomeAdminState {}
 
+final class ChangeIndexNavBarState extends HomeAdminState {
+  final int index;
+
+  ChangeIndexNavBarState({required this.index});
+}
+
 final class UpdateAdminModelVariable extends HomeAdminState {}
 
 final class GetMyInformationLoading extends HomeAdminState {}
