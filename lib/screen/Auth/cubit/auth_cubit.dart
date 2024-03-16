@@ -18,10 +18,10 @@ class AuthCubit extends Cubit<AuthState> {
   bool ishidden = true;
   void showpass() {
     if (ishidden) {
-      iconhidden = const Icon(Icons.visibility_off);
+      iconhidden = const Icon(Icons.visibility_off_outlined);
       ishidden = !ishidden;
     } else {
-      iconhidden = const Icon(Icons.visibility);
+      iconhidden = const Icon(Icons.visibility_outlined);
       ishidden = !ishidden;
     }
     emit(PasswordHiddenState());

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
@@ -38,31 +39,32 @@ class HomeAdmin extends StatelessWidget {
           ),
           body: HomeAdminCubit.get(context)
               .body[HomeAdminCubit.get(context).selectedIndex],
-          bottomNavigationBar: NavigationBarTheme(
-              data: NavigationBarThemeData(
-                indicatorColor: Colors.blue[100],
-                labelTextStyle: MaterialStateProperty.all(
-                  const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
-                ),
-              ),
-              child: NavigationBar(
-                height: 70,
-                selectedIndex: HomeAdminCubit.get(context).selectedIndex,
-                onDestinationSelected: (index) =>
-                    {HomeAdminCubit.get(context).changeIndexNavBar(index)},
-                destinations: const [
-                  NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
-                  NavigationDestination(
-                      icon: Icon(Icons.more_time_rounded),
-                      label: 'Reservation'),
-                  NavigationDestination(
-                      icon: Icon(Icons.add), label: 'Annonce'),
-                  NavigationDestination(
-                      icon: Icon(Icons.groups_2), label: 'tournoi')
-                ],
-              )),
+          bottomNavigationBar: navigationBar(context),
         );
       },
     );
+  }
+
+  NavigationBarTheme navigationBar(BuildContext context) {
+    return NavigationBarTheme(
+        data: NavigationBarThemeData(
+          indicatorColor: Colors.blue[100],
+          labelTextStyle: MaterialStateProperty.all(
+            const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
+          ),
+        ),
+        child: NavigationBar(
+          height: 70,
+          selectedIndex: HomeAdminCubit.get(context).selectedIndex,
+          onDestinationSelected: (index) =>
+              {HomeAdminCubit.get(context).changeIndexNavBar(index)},
+          destinations: const [
+            NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
+            NavigationDestination(
+                icon: Icon(Icons.more_time_rounded), label: 'Reservation'),
+            NavigationDestination(icon: Icon(Icons.add), label: 'Annonce'),
+            NavigationDestination(icon: Icon(Icons.groups_2), label: 'tournoi'),
+          ],
+        ));
   }
 }

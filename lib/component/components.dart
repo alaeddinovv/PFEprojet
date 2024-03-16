@@ -43,6 +43,46 @@ Widget defaultForm(
       keyboardType: type,
       obscureText: obscureText,
     );
+TextFormField defaultForm3(
+    {controller,
+    int maxline = 1,
+    Widget? suffix,
+    required context,
+    String? sufixText,
+    required TextInputType type,
+    required Function valid,
+    Text? lable,
+    String? labelText,
+    Icon? prefixIcon,
+    IconButton? sufixIcon,
+    TextInputAction? textInputAction,
+    bool obscureText = false,
+    String? valeurinitial,
+    Function? onFieldSubmitted}) {
+  return TextFormField(
+    initialValue: valeurinitial,
+    textInputAction: textInputAction,
+    onFieldSubmitted: (k) {
+      onFieldSubmitted!();
+    },
+    validator: (String? value) {
+      return valid(value);
+    },
+    decoration: InputDecoration(
+        border: const OutlineInputBorder(),
+        label: lable,
+        prefixIcon: prefixIcon,
+        suffixIcon: sufixIcon,
+        suffix: suffix,
+        suffixText: sufixText,
+        labelText: labelText),
+    controller: controller,
+    maxLines: maxline,
+    keyboardType: type,
+    obscureText: obscureText,
+  );
+}
+
 Widget defaultForm2(
         {required TextEditingController controller,
         bool obscureText = false,
@@ -83,6 +123,7 @@ Widget defaultForm2(
         return null;
       },
     );
+
 void navigatAndReturn({required context, required page}) =>
     Navigator.push(context, MaterialPageRoute(builder: (context) => page));
 

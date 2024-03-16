@@ -27,7 +27,7 @@ class HomeAdminCubit extends Cubit<HomeAdminState> {
   int selectedIndex = 0;
   void changeIndexNavBar(int index) {
     selectedIndex = index;
-    emit(ChangeIndexNavBarState(index: selectedIndex));
+    emit(ChangeIndexNavBarState());
   }
 
   DataAdminModel? adminModel;

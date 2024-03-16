@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:pfeprojet/component/const.dart';
+import 'package:pfeprojet/design_login.dart';
+import 'package:pfeprojet/design_register.dart';
 import 'package:pfeprojet/firebase_options.dart';
 import 'package:pfeprojet/helper/cachhelper.dart';
 import 'package:pfeprojet/helper/observer.dart';
@@ -62,7 +64,7 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: startwidget,
+        home: LoginDesign(),
       ),
     );
   }
