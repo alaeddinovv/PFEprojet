@@ -7,6 +7,8 @@ final class AuthInitial extends AuthState {}
 
 final class PasswordHiddenState extends AuthState {}
 
+final class CheckBoxState extends AuthState {}
+
 // register------------------------------------------
 
 final class RegisterLodinState extends AuthState {}
