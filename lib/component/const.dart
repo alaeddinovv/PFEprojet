@@ -1,5 +1,6 @@
 var TOKEN = '';
 Map<String, dynamic> DECODEDTOKEN = {};
+
 String formatWeekdayDate(DateTime dateTime) {
   // These arrays represent the weekdays and months in French.
   const weekdays = ['Lun', 'Mar', 'Mer', 'Jeu', 'Ven', 'Sam', 'Dim'];

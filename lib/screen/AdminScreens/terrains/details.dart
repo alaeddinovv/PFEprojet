@@ -87,66 +87,247 @@ class TerrainDetailsScreen extends StatelessWidget {
             ),
             BlocBuilder<TerrainCubit, TerrainState>(
               builder: (context, state) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: terrainCubit.dates
-                          .map((date) => DateCard(
-                                date: date,
-                                isSelected: terrainCubit.dateSelected == date,
-                                onTap: () => terrainCubit.setSelectedDate(date),
-                              ))
-                          .toList(),
-                    ),
-                  ),
+                return ToggleButtons(
+                  onPressed: (int index) {
+                    terrainCubit.toggleView(index);
+                  },
+                  isSelected: [
+                    !terrainCubit.showStadiumDetails,
+                    terrainCubit.showStadiumDetails,
+                  ],
+                  constraints: BoxConstraints(
+                      minWidth: MediaQuery.of(context).size.width / 2 - 10,
+                      minHeight: 40),
+                  children: const [
+                    Text('Reservation'), // For stadium details view
+                    Text('Description'), // For stadium details view
+                  ],
                 );
               },
             ),
             BlocBuilder<TerrainCubit, TerrainState>(
               builder: (context, state) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 18),
-                  child: GridView.builder(
-                    shrinkWrap:
-                        true, // Use it to convert GridView to scroll within Column
-                    physics:
-                        const NeverScrollableScrollPhysics(), // to disable GridView's scrolling
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 5,
-                      childAspectRatio: 1.3,
-                      crossAxisSpacing: 3,
-                      mainAxisSpacing: 3,
-                    ),
-                    itemCount: terrainCubit.timeSlots.length,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          // Handle the tap event, you can use the Cubit to manage state
-                          print(
-                              'Selected time slot: ${terrainCubit.timeSlots[index]}');
-                        },
-                        child: Container(
-                          height: 20,
-                          decoration: BoxDecoration(
-                            color: Colors.tealAccent[100],
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          alignment: Alignment.center,
-                          child: Text(
-                            terrainCubit.timeSlots[index],
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
+                if (terrainCubit.showStadiumDetails) {
+                  return Column(
+                    children: [
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                const Icon(Icons.location_on),
+                                const SizedBox(
+                                  width: 8,
+                                ),
+                                RichText(
+                                  text: TextSpan(
+                                    // Default style for all spans
+                                    style: DefaultTextStyle.of(context).style,
+                                    children: const <TextSpan>[
+                                      TextSpan(
+                                        text: 'Address: ',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: 'Stade Municipal, Rue 1, Ville 1',
+                                        style: TextStyle(
+                                            fontStyle: FontStyle.italic),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
                             ),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            Row(
+                              children: [
+                                const Icon(Icons.phone),
+                                const SizedBox(
+                                  width: 8,
+                                ),
+                                RichText(
+                                  text: TextSpan(
+                                    // Default style for all spans
+                                    style: DefaultTextStyle.of(context).style,
+                                    children: const <TextSpan>[
+                                      TextSpan(
+                                        text: 'Telephone: ',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      TextSpan(
+                                        text: '123-456-7890',
+                                        style: TextStyle(
+                                            fontStyle: FontStyle.italic),
+                                      ),
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            const Row(
+                              children: [
+                                Icon(Icons.email),
+                                SizedBox(
+                                  width: 8,
+                                ),
+                                Text(
+                                    "E-mail : Terrain1@gmail.com"), // Add the email here if available
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            Row(
+                              children: [
+                                const Icon(Icons.groups_2_rounded),
+                                const SizedBox(
+                                  width: 8,
+                                ),
+                                RichText(
+                                    text: TextSpan(
+                                  style: DefaultTextStyle.of(context).style,
+                                  children: const [
+                                    TextSpan(
+                                        text: 'Nombre de joueurs: ',
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold)),
+                                    TextSpan(
+                                        text: '10-12 joueurs',
+                                        style: TextStyle(
+                                            fontStyle: FontStyle.italic)),
+                                  ],
+                                ))
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            Row(
+                              children: [
+                                const Icon(Icons.sports_soccer_rounded),
+                                const SizedBox(
+                                  width: 8,
+                                ),
+                                RichText(
+                                  text: TextSpan(
+                                    style: DefaultTextStyle.of(context).style,
+                                    children: const [
+                                      TextSpan(
+                                          text: 'État du terrain: ',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.bold)),
+                                      TextSpan(
+                                          text: 'Bon',
+                                          style: TextStyle(
+                                              fontStyle: FontStyle.italic)),
+                                    ],
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            const Text("More:",
+                                style: TextStyle(fontWeight: FontWeight.bold)),
+                            const SizedBox(
+                              height: 8,
+                            ),
+                            const Text(
+                              'Le terrain est équipé de projecteurs pour les matchs de nuit et de vestiaires pour les joueurs et d\'un parking pour les voitures des joueurs et des spectateurs.',
+                              textAlign: TextAlign.center,
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  );
+                } else {
+                  return Column(
+                    children: [
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            children: terrainCubit.dates
+                                .map((date) => DateCard(
+                                      date: date,
+                                      isSelected:
+                                          terrainCubit.dateSelected == date,
+                                      onTap: () =>
+                                          terrainCubit.setSelectedDate(date),
+                                    ))
+                                .toList(),
                           ),
                         ),
-                      );
-                    },
-                  ),
-                );
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 18),
+                        child: GridView.builder(
+                          shrinkWrap:
+                              true, // Use it to convert GridView to scroll within Column
+                          physics:
+                              const NeverScrollableScrollPhysics(), // to disable GridView's scrolling
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 5,
+                            childAspectRatio: 1.3,
+                            crossAxisSpacing: 4,
+                            mainAxisSpacing: 8,
+                          ),
+                          itemCount: terrainCubit.timeSlots.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                // Handle the tap event, you can use the Cubit to manage state
+                                print(
+                                    'Selected time slot: ${terrainCubit.timeSlots[index]}');
+                              },
+                              child: Container(
+                                height: 20,
+                                decoration: BoxDecoration(
+                                  color: terrainCubit.timeSlots[index]
+                                          ['isReserved']
+                                      ? Colors.grey[300]
+                                      : Colors.tealAccent[100],
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  terrainCubit.timeSlots[index]['time'],
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      )
+                    ],
+                  );
+                }
               },
             ),
           ],
