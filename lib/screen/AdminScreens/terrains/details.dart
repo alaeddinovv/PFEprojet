@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:pfeprojet/component/const.dart';
@@ -259,28 +260,63 @@ class TerrainDetailsScreen extends StatelessWidget {
                   return Column(
                     children: [
                       const SizedBox(
-                        height: 16,
+                        height: 32,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: SingleChildScrollView(
+                      SizedBox(
+                        height: 80,
+                        child: ListView.builder(
+                          // Important if using inside SingleChildScrollView
                           scrollDirection: Axis.horizontal,
-                          child: Row(
-                            children: terrainCubit.dates
-                                .map((date) => DateCard(
-                                      date: date,
-                                      isSelected:
-                                          terrainCubit.dateSelected == date,
-                                      onTap: () =>
-                                          terrainCubit.setSelectedDate(date),
-                                    ))
-                                .toList(),
-                          ),
+                          itemCount: 8, // 7 dates + 1 for the DatePicker
+                          itemBuilder: (context, index) {
+                            if (index < 7) {
+                              // DateTime date =
+                              //     DateTime.now().add(Duration(days: index));
+                              return DateCard(
+                                date: terrainCubit.dates[index],
+                                isSelected: terrainCubit.dateSelected ==
+                                    terrainCubit.dates[
+                                        index], // Your logic for isSelected
+                                onTap: () {
+                                  terrainCubit.setSelectedDate(
+                                      terrainCubit.dates[index]);
+
+                                  // Your logic for what happens when a date is tapped
+                                },
+                              );
+                            } else {
+                              // Last item as a button to open DatePicker
+                              return GestureDetector(
+                                onTap: () => _selectDate(context),
+                                child: Container(
+                                  width: 60,
+                                  height: 60,
+                                  margin:
+                                      const EdgeInsets.symmetric(horizontal: 4),
+                                  alignment: Alignment.center,
+                                  child: const Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      ImageIcon(
+                                        AssetImage(
+                                            'assets/images/calendar.png'),
+                                        // color: Colors.blue,
+                                        size: 40,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            }
+                          },
                         ),
                       ),
-                      const SizedBox(
-                        height: 16,
-                      ),
+                      // const SizedBox(
+                      //   height: 16,
+                      // ),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 18),
                         child: GridView.builder(
@@ -292,7 +328,7 @@ class TerrainDetailsScreen extends StatelessWidget {
                               const SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 5,
                             childAspectRatio: 1.3,
-                            crossAxisSpacing: 4,
+                            crossAxisSpacing: 2,
                             mainAxisSpacing: 8,
                           ),
                           itemCount: terrainCubit.timeSlots.length,
@@ -334,6 +370,19 @@ class TerrainDetailsScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2101),
+    );
+    if (picked != null) {
+      // Handle the picked date, e.g., by using a Cubit/Provider to manage state
+      print(picked); // Replace with your actual logic
+    }
   }
 }
 

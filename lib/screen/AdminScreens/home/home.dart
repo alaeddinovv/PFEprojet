@@ -36,7 +36,7 @@ class HomeAdmin extends StatelessWidget {
                       ),
                     ),
               const SizedBox(
-                width: 5,
+                width: 16,
               )
             ],
           ),
