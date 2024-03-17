@@ -46,6 +46,7 @@ dependencies:
   jwt_decoder: ^2.0.1
   firebase_core: ^2.24.2
   firebase_storage: ^11.6.0
+  carousel_slider: ^4.2.1
 
 dev_dependencies:
   flutter_test:

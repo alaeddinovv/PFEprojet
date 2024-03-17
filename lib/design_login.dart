@@ -69,15 +69,6 @@ class LoginDesign extends StatelessWidget {
                     ),
                     BlocBuilder<AuthCubit, AuthState>(
                       builder: (context, state) {
-                        //  TextFormField(
-                        //   decoration: const InputDecoration(
-                        //       border: OutlineInputBorder(),
-                        //       prefixIcon: Icon(
-                        //         Icons.password_outlined,
-                        //       ),
-                        //       labelText: "Password",
-                        //       suffixIcon: Icon(Icons.visibility_off_outlined)),
-                        // );
                         return defaultForm3(
                             context: context,
                             textInputAction: TextInputAction.done,
