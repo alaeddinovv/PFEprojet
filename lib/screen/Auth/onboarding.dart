@@ -4,7 +4,6 @@ import 'package:pfeprojet/design_login.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../helper/cachhelper.dart';
-import 'Login.dart';
 
 class OnbordingModel {
   final String img;
@@ -14,9 +13,6 @@ class OnbordingModel {
   OnbordingModel(this.img, this.title, this.body);
 }
 
-
-
-
 class Onbording extends StatefulWidget {
   const Onbording({Key? key}) : super(key: key);
 
@@ -25,14 +21,17 @@ class Onbording extends StatefulWidget {
 }
 
 class _OnbordingState extends State<Onbording> {
-  Icon nextIcon = const Icon(Icons.arrow_forward_ios ,color: Colors.white,);
+  Icon nextIcon = const Icon(
+    Icons.arrow_forward_ios,
+    color: Colors.white,
+  );
   void gotologin() {
     CachHelper.putcache(key: 'onbording', value: true).then((value) {
       if (value) {
         Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (context) => Login()),
-                (route) => false);
+            MaterialPageRoute(builder: (context) => LoginDesign()),
+            (route) => false);
       }
     });
   }
@@ -50,7 +49,7 @@ class _OnbordingState extends State<Onbording> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+        backgroundColor: Colors.white,
         appBar: AppBar(
           elevation: 0,
           actions: [
@@ -60,7 +59,10 @@ class _OnbordingState extends State<Onbording> {
                 },
                 child: const Text(
                   'SKIP',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.blueAccent),
+                  style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.blueAccent),
                 ))
           ],
         ),
@@ -75,13 +77,14 @@ class _OnbordingState extends State<Onbording> {
                       islast = true;
 
                       setState(() {
-                        nextIcon = const Icon(Icons.done , color: Colors.white);
+                        nextIcon = const Icon(Icons.done, color: Colors.white);
                       });
                     } else {
                       islast = false;
 
                       setState(() {
-                        nextIcon = const Icon(Icons.arrow_forward_ios , color: Colors.white);
+                        nextIcon = const Icon(Icons.arrow_forward_ios,
+                            color: Colors.white);
                       });
                     }
                   },
@@ -129,24 +132,26 @@ class _OnbordingState extends State<Onbording> {
   }
 
   Widget itemView(OnbordingModel k) => Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Expanded(
-          child: Image(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+              child: Image(
             image: AssetImage('${k.img}'),
           )),
-      const SizedBox(height: 20),
-      Text(
-        '${k.title}',
-        style: const TextStyle(fontSize: 26, fontWeight: FontWeight.bold , color: Colors.blueAccent),
-      ),
-      const SizedBox(height: 20),
-      Text(
-        '${k.body}',
-        style: const TextStyle(fontSize: 18 , color: Colors.blueAccent),
-      ),
-      const SizedBox(height: 40),
-    ],
-  );
+          const SizedBox(height: 20),
+          Text(
+            '${k.title}',
+            style: const TextStyle(
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+                color: Colors.blueAccent),
+          ),
+          const SizedBox(height: 20),
+          Text(
+            '${k.body}',
+            style: const TextStyle(fontSize: 18, color: Colors.blueAccent),
+          ),
+          const SizedBox(height: 40),
+        ],
+      );
 }
-
