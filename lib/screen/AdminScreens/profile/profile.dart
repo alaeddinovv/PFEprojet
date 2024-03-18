@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pfeprojet/Model/admin_medel.dart';
 import 'package:pfeprojet/component/components.dart';
-import 'package:pfeprojet/design_login.dart';
 import 'package:pfeprojet/helper/cachhelper.dart';
 import 'package:pfeprojet/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
 import 'package:pfeprojet/screen/AdminScreens/home/home.dart';
 import 'package:pfeprojet/screen/AdminScreens/profile/cubit/profile_admin_cubit.dart';
 import 'package:pfeprojet/screen/AdminScreens/profile/update_form.dart';
+import 'package:pfeprojet/screen/Auth/login.dart';
 
 class ProfileAdmin extends StatelessWidget {
   const ProfileAdmin({super.key});
@@ -28,7 +28,7 @@ class ProfileAdmin extends StatelessWidget {
           actions: [
             TextButton(
                 onPressed: () {
-                  navigatAndFinish(context: context, page: LoginDesign());
+                  navigatAndFinish(context: context, page: Login());
                   CachHelper.removdata(key: "TOKEN");
                   showToast(msg: "Disconnect", state: ToastStates.error);
                 },

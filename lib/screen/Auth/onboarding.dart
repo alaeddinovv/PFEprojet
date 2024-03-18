@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:pfeprojet/design_login.dart';
+import 'package:pfeprojet/screen/Auth/login.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../helper/cachhelper.dart';
@@ -28,10 +28,8 @@ class _OnbordingState extends State<Onbording> {
   void gotologin() {
     CachHelper.putcache(key: 'onbording', value: true).then((value) {
       if (value) {
-        Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => LoginDesign()),
-            (route) => false);
+        Navigator.pushAndRemoveUntil(context,
+            MaterialPageRoute(builder: (context) => Login()), (route) => false);
       }
     });
   }
