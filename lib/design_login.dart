@@ -69,15 +69,6 @@ class LoginDesign extends StatelessWidget {
                     ),
                     BlocBuilder<AuthCubit, AuthState>(
                       builder: (context, state) {
-                        //  TextFormField(
-                        //   decoration: const InputDecoration(
-                        //       border: OutlineInputBorder(),
-                        //       prefixIcon: Icon(
-                        //         Icons.password_outlined,
-                        //       ),
-                        //       labelText: "Password",
-                        //       suffixIcon: Icon(Icons.visibility_off_outlined)),
-                        // );
                         return defaultForm3(
                             context: context,
                             textInputAction: TextInputAction.done,
@@ -110,11 +101,34 @@ class LoginDesign extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                          children: [
-                            Checkbox(value: true, onChanged: (value) {}),
-                            const Text("Responsable")
-                          ],
+                        BlocBuilder<AuthCubit, AuthState>(
+                          builder: (context, state) {
+                            return Row(
+                              children: [
+                                Checkbox(
+                                    value: AuthCubit.get(context).checkBox,
+                                    onChanged: (value) {
+                                      AuthCubit.get(context).changeCheckBox();
+                                      PATH = value == true
+                                          ? Loginadmin
+                                          : Loginjoueur;
+                                    }),
+                                TextButton(
+                                    child: const Text(
+                                      'Responsable',
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                    onPressed: () {
+                                      AuthCubit.get(context).changeCheckBox();
+                                      if (PATH == Loginadmin) {
+                                        PATH = Loginjoueur;
+                                      } else {
+                                        PATH = Loginadmin;
+                                      }
+                                    })
+                              ],
+                            );
+                          },
                         ),
                         TextButton(
                             onPressed: () {},
@@ -203,7 +217,7 @@ class LoginDesign extends StatelessWidget {
                         ),
                         onPressed: () {
                           navigatAndReturn(
-                              context: context, page: const RegisterDesign());
+                              context: context, page: RegisterDesign());
                         },
                         child: const Text(
                           "Create Account",

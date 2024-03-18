@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pfeprojet/component/components.dart';
+import 'package:pfeprojet/design_login.dart';
 import 'package:pfeprojet/helper/cachhelper.dart';
-import 'package:pfeprojet/screen/Auth/login.dart';
 import 'package:pfeprojet/screen/joueurScreens/profile/cubit/profile_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/profile/update_form.dart';
 
@@ -17,7 +17,7 @@ class ProfileJoueur extends StatelessWidget {
           actions: [
             TextButton(
                 onPressed: () {
-                  navigatAndFinish(context: context, page: Login());
+                  navigatAndFinish(context: context, page: LoginDesign());
                   CachHelper.removdata(key: "TOKEN");
                   showToast(msg: "Disconnect", state: ToastStates.error);
                 },

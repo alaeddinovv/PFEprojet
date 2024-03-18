@@ -34,7 +34,10 @@ class HomeAdmin extends StatelessWidget {
                             : const AssetImage('assets/images/user.png')
                                 as ImageProvider<Object>,
                       ),
-                    )
+                    ),
+              const SizedBox(
+                width: 16,
+              )
             ],
           ),
           body: HomeAdminCubit.get(context)

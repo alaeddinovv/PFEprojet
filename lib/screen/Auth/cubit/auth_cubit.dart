@@ -16,6 +16,12 @@ class AuthCubit extends Cubit<AuthState> {
 
   Icon iconhidden = const Icon(Icons.visibility_outlined);
   bool ishidden = true;
+  bool checkBox = false;
+  void changeCheckBox() {
+    checkBox = !checkBox;
+    emit(CheckBoxState());
+  }
+
   void showpass() {
     if (ishidden) {
       iconhidden = const Icon(Icons.visibility_off_outlined);
