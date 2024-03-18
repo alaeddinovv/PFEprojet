@@ -17,25 +17,26 @@ class LoginDesign extends StatelessWidget {
   final formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
+    var screenSize = MediaQuery.of(context).size;
+    var screenHeight = screenSize.height;
+    var screenWidth = screenSize.width;
+    double verticalPadding = screenHeight * 0.02;
+    double horizontalPadding = screenWidth * 0.05;
     return Scaffold(
       body: SingleChildScrollView(
-        padding:
-            const EdgeInsets.only(bottom: 24, left: 24, right: 24, top: 56),
+        padding: EdgeInsets.symmetric(
+            vertical: verticalPadding, horizontal: horizontalPadding),
         child: Column(
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(
-                  height: 150,
-                ),
+                SizedBox(height: screenHeight * 0.2),
                 Text(
                   'Welcome back,',
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
-                const SizedBox(
-                  height: 8,
-                ),
+                SizedBox(height: screenHeight * 0.01),
                 Text(
                   "Discover Limitess Choices and Unmatched Convenience.",
                   style: Theme.of(context).textTheme.bodyMedium,
@@ -45,7 +46,7 @@ class LoginDesign extends StatelessWidget {
             Form(
               key: formKey,
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 32),
+                padding: EdgeInsets.symmetric(vertical: screenHeight * 0.04),
                 child: Column(
                   children: [
                     defaultForm3(
@@ -64,9 +65,7 @@ class LoginDesign extends StatelessWidget {
                       labelText: "E-Mail",
                       textInputAction: TextInputAction.next,
                     ),
-                    const SizedBox(
-                      height: 16,
-                    ),
+                    SizedBox(height: screenHeight * 0.015),
                     BlocBuilder<AuthCubit, AuthState>(
                       builder: (context, state) {
                         return defaultForm3(
@@ -95,9 +94,7 @@ class LoginDesign extends StatelessWidget {
                             ));
                       },
                     ),
-                    const SizedBox(
-                      height: 8,
-                    ),
+                    SizedBox(height: screenHeight * 0.01),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -131,13 +128,14 @@ class LoginDesign extends StatelessWidget {
                           },
                         ),
                         TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              // print("w :${size.width}");
+                              // print(size.height);
+                            },
                             child: const Text("Forget Password?"))
                       ],
                     ),
-                    const SizedBox(
-                      height: 32,
-                    ),
+                    SizedBox(height: screenHeight * 0.03),
                     BlocConsumer<AuthCubit, AuthState>(
                       listener: (BuildContext context, AuthState state) async {
                         if (state is LoginStateGood) {
@@ -200,9 +198,7 @@ class LoginDesign extends StatelessWidget {
                         );
                       },
                     ),
-                    const SizedBox(
-                      height: 16,
-                    ),
+                    SizedBox(height: screenHeight * 0.015),
                     SizedBox(
                       width: double.infinity,
                       child: OutlinedButton(
@@ -255,9 +251,7 @@ class LoginDesign extends StatelessWidget {
                 )
               ],
             ),
-            const SizedBox(
-              height: 16,
-            ),
+            SizedBox(height: screenHeight * 0.015),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -275,9 +269,7 @@ class LoginDesign extends StatelessWidget {
                     onPressed: () {},
                   ),
                 ),
-                const SizedBox(
-                  width: 16,
-                ),
+                SizedBox(width: screenWidth * 0.015),
                 Container(
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey),
@@ -297,17 +289,6 @@ class LoginDesign extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-
-  TextFormField formField2() {
-    return TextFormField(
-      decoration: const InputDecoration(
-          border: OutlineInputBorder(),
-          prefixIcon: Icon(
-            Icons.keyboard_arrow_right_outlined,
-          ),
-          labelText: "E-Mail"),
     );
   }
 }

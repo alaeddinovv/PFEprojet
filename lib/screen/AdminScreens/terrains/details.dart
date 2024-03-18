@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:pfeprojet/component/const.dart';
@@ -13,6 +12,8 @@ class TerrainDetailsScreen extends StatelessWidget {
     final terrainCubit = TerrainCubit.get(context);
 
     final CarouselController _controller = CarouselController();
+    var screenHeight = MediaQuery.of(context).size.height;
+    // var screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
       appBar: AppBar(
@@ -29,6 +30,7 @@ class TerrainDetailsScreen extends StatelessWidget {
                     CarouselSlider(
                       carouselController: _controller,
                       options: CarouselOptions(
+                        height: screenHeight * 0.2,
                         initialPage: terrainCubit.indexSlide,
                         viewportFraction: 1,
                         // autoPlay: true,
@@ -41,7 +43,7 @@ class TerrainDetailsScreen extends StatelessWidget {
                         return Builder(
                           builder: (BuildContext context) {
                             return Container(
-                              width: MediaQuery.of(context).size.width,
+                              width: double.infinity,
                               margin:
                                   const EdgeInsets.symmetric(horizontal: 5.0),
                               decoration: const BoxDecoration(
@@ -49,7 +51,7 @@ class TerrainDetailsScreen extends StatelessWidget {
                               ),
                               child: Image.asset(
                                 imagePath,
-                                fit: BoxFit.cover,
+                                fit: BoxFit.fill,
                               ),
                             );
                           },
@@ -83,8 +85,8 @@ class TerrainDetailsScreen extends StatelessWidget {
                 );
               },
             ),
-            const SizedBox(
-              height: 16,
+            SizedBox(
+              height: screenHeight * 0.015,
             ),
             BlocBuilder<TerrainCubit, TerrainState>(
               builder: (context, state) {
@@ -100,8 +102,8 @@ class TerrainDetailsScreen extends StatelessWidget {
                       minWidth: MediaQuery.of(context).size.width / 2 - 10,
                       minHeight: 40),
                   children: const [
-                    Text('Reservation'), // For stadium details view
-                    Text('Description'), // For stadium details view
+                    Text('Reservation'),
+                    Text('Description'),
                   ],
                 );
               },
@@ -111,8 +113,8 @@ class TerrainDetailsScreen extends StatelessWidget {
                 if (terrainCubit.showStadiumDetails) {
                   return Column(
                     children: [
-                      const SizedBox(
-                        height: 16,
+                      SizedBox(
+                        height: screenHeight * 0.015,
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -259,11 +261,11 @@ class TerrainDetailsScreen extends StatelessWidget {
                 } else {
                   return Column(
                     children: [
-                      const SizedBox(
-                        height: 32,
+                      SizedBox(
+                        height: screenHeight * 0.035,
                       ),
                       SizedBox(
-                        height: 80,
+                        height: screenHeight * 0.08,
                         child: ListView.builder(
                           // Important if using inside SingleChildScrollView
                           scrollDirection: Axis.horizontal,
