@@ -1,4 +1,5 @@
 var TOKEN = '';
+var ONBOARDING = '';
 Map<String, dynamic> DECODEDTOKEN = {};
 
 String formatWeekdayDate(DateTime dateTime) {

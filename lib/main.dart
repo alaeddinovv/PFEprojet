@@ -28,26 +28,32 @@ void main() async {
   // CachHelper.removdata(key: "TOKEN");
   bool onbordingmain = await CachHelper.getData(key: 'onbording') ?? false;
   TOKEN = await CachHelper.getData(key: 'TOKEN') ?? '';
+
   if (TOKEN != '') {
     DECODEDTOKEN = JwtDecoder.decode(TOKEN);
     if (DECODEDTOKEN['role'] == 'joueur') {
+
       startWidget = const HomeJoueur();
-    } else if (DECODEDTOKEN['role'] == 'admin') {
+     } else if (DECODEDTOKEN['role'] == 'admin') {
       startWidget = const HomeAdmin();
+
     }
   }
 
   runApp(MyApp(
     startwidget: startWidget,
     onbordingmain: onbordingmain,
+
   ));
 }
 
 class MyApp extends StatelessWidget {
   final Widget startwidget;
   final bool onbordingmain;
+
   const MyApp(
       {super.key, required this.startwidget, required this.onbordingmain});
+
 
   // This widget is the root of your application.
   @override
@@ -69,7 +75,9 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
+
         home: const Onbording(),
+
         // home: onbordingmain ? startwidget : const Onbording(),
       ),
     );
