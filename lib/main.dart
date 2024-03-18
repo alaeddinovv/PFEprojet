@@ -12,6 +12,7 @@ import 'package:pfeprojet/screen/AdminScreens/home/home.dart';
 import 'package:pfeprojet/screen/AdminScreens/profile/cubit/profile_admin_cubit.dart';
 import 'package:pfeprojet/screen/Auth/Login.dart';
 import 'package:pfeprojet/screen/Auth/cubit/auth_cubit.dart';
+import 'package:pfeprojet/screen/Auth/onboarding.dart';
 import 'package:pfeprojet/screen/joueurScreens/home/home.dart';
 import 'package:pfeprojet/screen/joueurScreens/profile/cubit/profile_cubit.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -25,24 +26,27 @@ void main() async {
   );
   Widget startWidget = Login();
   // CachHelper.removdata(key: "TOKEN");
+  bool onbordingmain = await CachHelper.getData(key: 'onbording') ?? false;
   TOKEN = await CachHelper.getData(key: 'TOKEN') ?? '';
-
-  if (TOKEN != '') {
-    DECODEDTOKEN = JwtDecoder.decode(TOKEN);
-    if (DECODEDTOKEN['role'] == 'joueur') {
+   if (TOKEN != '') {
+     DECODEDTOKEN = JwtDecoder.decode(TOKEN);
+     if (DECODEDTOKEN['role'] == 'joueur') {
       startWidget = const HomeJoueur();
-    } else if (DECODEDTOKEN['role'] == 'admin') {
+     } else if (DECODEDTOKEN['role'] == 'admin') {
       startWidget = const HomeAdmin();
-    }
-  }
+     }
+   }
+
   runApp(MyApp(
     startwidget: startWidget,
+    onbordingmain : onbordingmain,
   ));
 }
 
 class MyApp extends StatelessWidget {
   final Widget startwidget;
-  const MyApp({super.key, required this.startwidget});
+  final bool onbordingmain;
+  const MyApp({super.key, required this.startwidget, required this.onbordingmain});
 
   // This widget is the root of your application.
   @override
@@ -64,7 +68,8 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: LoginDesign(),
+        home:  const Onbording(),
+        // home: onbordingmain ? startwidget : const Onbording(),
       ),
     );
   }
