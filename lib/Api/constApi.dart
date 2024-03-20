@@ -8,4 +8,5 @@ const UPDATEJOUEUR = '/api/joueur';
 const UPDATEADMIN = '/api/admin';
 
 const Loginadmin = '/api/loginadmin';
+const getJouerById = '/api/joueur/';
 String PATH = Loginjoueur;

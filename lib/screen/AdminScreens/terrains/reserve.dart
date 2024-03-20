@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/cubit/terrain_cubit.dart';
 
@@ -28,23 +30,61 @@ class Reserve extends StatelessWidget {
               const SizedBox(
                 height: 8,
               ),
+
               defaultForm3(
-                sufixIcon:
-                    TextButton(onPressed: () {}, child: const Text('Check')),
+                sufixIcon: BlocConsumer<TerrainCubit, TerrainState>(
+                  listener: (context, state) {
+                    if (state is CheckUserByIdStateGood) {
+                      showToast(
+                          msg:
+                              "${state.dataJoueurModel.nom!} ${state.dataJoueurModel.prenom!}",
+                          state: ToastStates.success,
+                          gravity: ToastGravity.CENTER);
+                    } else if (state is CheckUserByIdStateBad ||
+                        state is ErrorState) {
+                      showToast(
+                          msg: "User not found",
+                          state: ToastStates.error,
+                          gravity: ToastGravity.CENTER);
+                    }
+                  },
+                  builder: (context, state) {
+                    if (state is LoadinCheckUserByIdState) {
+                      return const CircularProgressIndicator();
+                    }
+                    return TextButton(
+                        onPressed: () {
+                          TerrainCubit.get(context)
+                              .checkUserById(id: userIdController.text);
+                        },
+                        child: const Text('Check'));
+                  },
+                ),
                 prefixIcon: const Icon(Icons.person_outline),
                 context: context,
-                type: TextInputType.number,
+                type: TextInputType.text,
                 valid: () {},
                 labelText: 'User Id',
                 controller: userIdController,
               ),
-              const Visibility(
-                  visible: false,
-                  child: Row(
-                    children: [
-                      Text('houssemeddine'),
-                    ],
-                  )),
+
+              // BlocBuilder<TerrainCubit, TerrainState>(
+              //   builder: (context, state) {
+              //     if (state is CheckUserByIdStateGood) {
+              //       return Row(
+              //         children: [
+              //           Text(
+              //               '${state.dataJoueurModel.nom} ${state.dataJoueurModel.prenom}'),
+              //         ],
+              //       );
+              //     } else if (state is CheckUserByIdStateBad ||
+              //         state is ErrorState) {
+              //       return const Text('User not found');
+              //     }
+              //     return const SizedBox();
+              //   },
+              // ),
+
               const SizedBox(
                 height: 16,
               ),

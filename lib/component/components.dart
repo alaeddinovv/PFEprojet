@@ -234,11 +234,14 @@ Widget defaultSubmit2({
       ),
     );
 
-void showToast({required String msg, required ToastStates state}) =>
+void showToast(
+        {required String msg,
+        required ToastStates state,
+        ToastGravity gravity = ToastGravity.BOTTOM}) =>
     Fluttertoast.showToast(
         msg: msg,
         toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
+        gravity: gravity,
         timeInSecForIosWeb: 1,
         backgroundColor: choseToastColor(state),
         textColor: Colors.white,

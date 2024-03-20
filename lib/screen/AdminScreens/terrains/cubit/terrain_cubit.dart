@@ -1,7 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:pfeprojet/Api/constApi.dart';
+import 'package:pfeprojet/Api/httplaravel.dart';
+import 'package:pfeprojet/Model/error_model.dart';
+import 'package:pfeprojet/Model/user_model.dart';
 import 'package:pfeprojet/component/const.dart';
+import 'dart:convert' as convert;
 
 part 'terrain_state.dart';
 
@@ -61,4 +66,29 @@ class TerrainCubit extends Cubit<TerrainState> {
     'assets/images/terrain2.jpg',
     'assets/images/terrain.png',
   ];
+
+  void checkUserById({required String id}) {
+    emit(LoadinCheckUserByIdState());
+    Httplar.httpget(
+      path: getJouerById + id,
+    ).then((value) {
+      print(getJouerById + id);
+      if (value.statusCode == 200) {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        print(jsonResponse);
+        // emit(TerrainViewToggled());
+
+        emit(CheckUserByIdStateGood(
+            dataJoueurModel: DataJoueurModel.fromJson(jsonResponse)));
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(CheckUserByIdStateBad());
+    });
+  }
 }
