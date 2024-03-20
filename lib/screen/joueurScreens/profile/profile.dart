@@ -43,7 +43,7 @@ class ProfileJoueur extends StatelessWidget {
                     backgroundImage: ProfileCubit.get(context)
                                 .joueurDataModel!
                                 .photo !=
-                            ""
+                            null
                         ? NetworkImage(
                             ProfileCubit.get(context).joueurDataModel!.photo!)
                         : const AssetImage('assets/images/user.png')

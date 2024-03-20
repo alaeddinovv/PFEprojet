@@ -194,18 +194,8 @@ class RegisterJoueur extends StatelessWidget {
                           if (state is RegisterLodinState) {
                             return const CircularProgressIndicator();
                           }
-                          return SizedBox(
-                            width: double.infinity,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  shape: const RoundedRectangleBorder(
-                                      borderRadius:
-                                          BorderRadius.all(Radius.circular(5))),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 50, vertical: 15),
-                                  // textStyle: const TextStyle(fontSize: 19),
-                                  backgroundColor: Colors.blueAccent),
-                              onPressed: () {
+                          return defaultSubmit(
+                              valid: () {
                                 if (formKey.currentState!.validate()) {
                                   Map<String, dynamic> sendinfologin = {
                                     'nom': nomController.text,
@@ -220,13 +210,7 @@ class RegisterJoueur extends StatelessWidget {
                                       .registerUser(data: sendinfologin);
                                 }
                               },
-                              child: const Text(
-                                "Create Account",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 16),
-                              ),
-                            ),
-                          );
+                              text: "Create Account");
                         },
                       ),
                       SizedBox(height: screenHeight * 0.02),

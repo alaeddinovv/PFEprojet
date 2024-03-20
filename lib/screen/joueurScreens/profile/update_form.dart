@@ -89,7 +89,7 @@ class _UpdateJoueurFormState extends State<UpdateJoueurForm> {
                               : ProfileCubit.get(context)
                                           .joueurDataModel!
                                           .photo !=
-                                      ""
+                                      null
                                   ? NetworkImage(ProfileCubit.get(context)
                                       .joueurDataModel!
                                       .photo!)

@@ -166,18 +166,8 @@ class Login extends StatelessWidget {
                         if (state is LoginLoadingState) {
                           return const CircularProgressIndicator();
                         }
-                        return SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                shape: const RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(5))),
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 50, vertical: 15),
-                                // textStyle: const TextStyle(fontSize: 19),
-                                backgroundColor: Colors.blueAccent),
-                            onPressed: () {
+                        return defaultSubmit(
+                            valid: () {
                               if (formKey.currentState!.validate()) {
                                 Map<String, dynamic> sendinfologin = {
                                   "email": emailController.text,
@@ -189,13 +179,7 @@ class Login extends StatelessWidget {
                                 );
                               }
                             },
-                            child: const Text(
-                              "Sign In",
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 16),
-                            ),
-                          ),
-                        );
+                            text: 'Sign In');
                       },
                     ),
                     SizedBox(height: screenHeight * 0.015),
