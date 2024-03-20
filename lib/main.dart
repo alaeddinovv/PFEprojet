@@ -74,9 +74,9 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         home:
-            // Onbording(),
+             Onbording(),
 
-            onbordingmain ? startwidget : const Onbording(),
+            // onbordingmain ? startwidget : const Onbording(),
       ),
     );
   }

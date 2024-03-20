@@ -39,12 +39,12 @@ class _OnbordingState extends State<Onbording> {
   bool islast = false;
   var onbordingController = PageController();
   List<OnbordingModel> models = [
-    OnbordingModel('assets/images/final2.png', 'Acheter ou louer ',
-        'Acheter ou louez votre maison attendue depuis chez vous'),
-    OnbordingModel('assets/images/reservation.png', 'Trouver la ',
-        'Trouver votre maison depuis carte géographique'),
-    OnbordingModel('assets/images/rencontre.png', 'Inscrivez-vous',
-        'Connectez-vous pour voir nos offres exceptionnelles'),
+    OnbordingModel('assets/images/neww1.png', 'Explorez les Terrains ',
+        'Découvrez et explorez les terrains de football disponibles à travers l\'Algérie, de l\'est à l\'ouest.'),
+    OnbordingModel('assets/images/neww2.png', ' Réservez Votre Terrain ',
+        'Réservez rapidement et facilement le terrain parfait pour votre prochain match.'),
+    OnbordingModel('assets/images/neww3.png', 'Trouvez des Partenaires',
+        'Connectez-vous avec d\'autres joueurs pour former des équipes et jouer au football ensemble.'),
   ];
   @override
   Widget build(BuildContext context) {
@@ -105,7 +105,7 @@ class _OnbordingState extends State<Onbording> {
                       effect: const ExpandingDotsEffect(
                           dotWidth: 20,
                           dotHeight: 15,
-                          dotColor: Colors.black26,
+                          dotColor: Color(0xFFCCCCCC),
                           activeDotColor: Colors.blueAccent),
                       onDotClicked: (index) {}),
                   const Spacer(),
