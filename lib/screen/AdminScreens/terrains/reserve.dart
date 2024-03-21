@@ -1,6 +1,8 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/cubit/terrain_cubit.dart';
 
@@ -35,11 +37,12 @@ class Reserve extends StatelessWidget {
                 sufixIcon: BlocConsumer<TerrainCubit, TerrainState>(
                   listener: (context, state) {
                     if (state is CheckUserByIdStateGood) {
-                      showToast(
-                          msg:
-                              "${state.dataJoueurModel.nom!} ${state.dataJoueurModel.prenom!}",
-                          state: ToastStates.success,
-                          gravity: ToastGravity.CENTER);
+                      showDialog(
+                        context: context,
+                        builder: (context) => DialogInfoJourur(
+                          state: state,
+                        ),
+                      );
                     } else if (state is CheckUserByIdStateBad ||
                         state is ErrorState) {
                       showToast(
@@ -207,6 +210,59 @@ class Reserve extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class DialogInfoJourur extends StatelessWidget {
+  final CheckUserByIdStateGood state;
+  const DialogInfoJourur({
+    Key? key,
+    required this.state,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: RichText(
+        text: TextSpan(
+          style: const TextStyle(
+            color: Colors.black, // Set your desired text color here
+            fontSize: 16.0, // Set your desired font size here
+          ),
+          children: [
+            const TextSpan(
+              text: 'Nom: ',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            TextSpan(
+              text: '${state.dataJoueurModel.nom!}\n',
+            ),
+            const TextSpan(
+              text: 'Prenom: ',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            TextSpan(
+              text: '${state.dataJoueurModel.prenom!}\n',
+            ),
+            const TextSpan(
+              text: 'Age: ',
+              style: TextStyle(fontWeight: FontWeight.bold),
+            ),
+            TextSpan(
+              text: '${state.dataJoueurModel.age}',
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+              FocusScope.of(context).unfocus();
+            },
+            child: const Text('Done'))
+      ],
     );
   }
 }
