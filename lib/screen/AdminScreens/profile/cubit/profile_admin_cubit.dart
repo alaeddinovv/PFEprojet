@@ -17,14 +17,14 @@ class ProfileAdminCubit extends Cubit<ProfileAdminState> {
   // final DataAdminModel homeAdminCubit;
 
   ProfileAdminCubit() : super(ProfileAdminInitial());
+
   static ProfileAdminCubit get(context) => BlocProvider.of(context);
 
-  Future<void> updateAdmin(
-      {required String nom,
-      required String prenom,
-      required String telephone,
-      required String wilaya,
-      String? deleteOldImage}) async {
+  Future<void> updateAdmin({required String nom,
+    required String prenom,
+    required String telephone,
+    required String wilaya,
+    String? deleteOldImage}) async {
     emit(UpdateAdminLoadingState());
 
     if (imageCompress != null) {
@@ -40,13 +40,13 @@ class ProfileAdminCubit extends Cubit<ProfileAdminState> {
     await Httplar.httpPut(path: UPDATEADMIN, data: _model).then((value) {
       if (value.statusCode == 200) {
         var jsonResponse =
-            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        convert.jsonDecode(value.body) as Map<String, dynamic>;
         emit(UpdateAdminStateGood(
             dataAdminModel: DataAdminModel.fromJson(jsonResponse)));
       } else {
         // print(value.body);
         var jsonResponse =
-            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        convert.jsonDecode(value.body) as Map<String, dynamic>;
         emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
       }
     }).catchError((e) {
@@ -57,6 +57,7 @@ class ProfileAdminCubit extends Cubit<ProfileAdminState> {
 
   // !--------imagepicker with Compress
   File? imageCompress;
+
   Future<void> imagePickerProfile(ImageSource source) async {
     final ImagePicker _pickerProfile = ImagePicker();
     await _pickerProfile.pickImage(source: source).then((value) async {
@@ -75,11 +76,15 @@ class ProfileAdminCubit extends Cubit<ProfileAdminState> {
   }
 
   String? linkProfileImg;
+
   Future<void> updateProfileImg({required String? deleteOldImage}) async {
     await deleteOldImageFirebase(deleteOldImage: deleteOldImage);
     await firebase_storage.FirebaseStorage.instance
         .ref()
-        .child('users/${Uri.file(imageCompress!.path).pathSegments.last}')
+        .child('users/${Uri
+        .file(imageCompress!.path)
+        .pathSegments
+        .last}')
         .putFile(imageCompress!)
         .then((p0) async {
       await p0.ref.getDownloadURL().then((value) {
@@ -105,4 +110,59 @@ class ProfileAdminCubit extends Cubit<ProfileAdminState> {
       });
     }
   }
+
+
+//--------------------------modifier mot de passe-----------------------------------------
+
+
+  // void checknewpassword({required new1,required new2}) {
+  //  if(new1!=new2) {
+  //    emit(NewPasswordWrong());
+  //
+  //  }else {
+  //    emit(NewPasswordCorrect());
+  //  }
+  // }
+
+
+
+
+
+
+
+  Future<void> updateMdpAdmin({required String old,
+    required String new1,
+    required String new2
+
+
+  }) async {
+    emit(UpdateMdpAdminLoadingState());
+    if (new1 != new2) {
+      emit(NewPasswordWrong());
+    } else {
+      Map<String, dynamic> _model = {
+        "oldPassword": old,
+        "newPassword": new1,
+
+      };
+      await Httplar.httpPut(path: UPDATEMDPADMIN, data: _model).then((value) {
+        if (value.statusCode == 200) {
+          var jsonResponse =
+          convert.jsonDecode(value.body) as Map<String, dynamic>;
+          emit(UpdateMdpAdminStateGood());
+        } else {
+          // print(value.body);
+          var jsonResponse =
+          convert.jsonDecode(value.body) as Map<String, dynamic>;
+          emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
+        }
+      }).catchError((e) {
+        print(e.toString());
+        emit(UpdateMdpAdminStateBad());
+      });
+    }
+  }
+
+
+
 }

@@ -8,6 +8,7 @@ import 'package:pfeprojet/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
 import 'package:pfeprojet/screen/AdminScreens/home/home.dart';
 import 'package:pfeprojet/screen/AdminScreens/profile/cubit/profile_admin_cubit.dart';
 import 'package:pfeprojet/screen/AdminScreens/profile/update_form.dart';
+import 'package:pfeprojet/screen/AdminScreens/profile/update_mdp.dart';
 
 class ProfileAdmin extends StatelessWidget {
   const ProfileAdmin({super.key});
@@ -109,13 +110,72 @@ class ProfileAdmin extends StatelessWidget {
                     const SizedBox(
                       height: 30,
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        navigatAndReturn(
-                            context: context, page: const UpdateAdminForm());
-                      },
-                      child: const Text('Edit Profile'),
+                    Padding(
+                      padding:EdgeInsets.all(16.0),
+                      child: Row(
+                      
+                        children: [
+                          Expanded(
+                            child: Container(
+                              height: 55,
+                              color: Colors.blueAccent,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    shape: const RoundedRectangleBorder(
+                                        borderRadius:
+                                        BorderRadius.all(Radius.circular(5))),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 15),
+                                    // textStyle: const TextStyle(fontSize: 19),
+                                    backgroundColor: Colors.blueAccent),
+                                onPressed: () {
+                                  navigatAndReturn(
+                                    context: context,
+                                    page: const UpdateAdminForm(),
+                                  );
+                      
+                                },
+                                child: const Text(
+                                  "Modifier profile",
+                                  style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
+                                ),
+                              ),
+                            ),
+                          ),
+                          SizedBox(width: 10),
+                          Expanded(
+                            child: Container(
+                              height: 55,
+                              color: Colors.blueAccent,
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    shape: const RoundedRectangleBorder(
+                                        borderRadius:
+                                        BorderRadius.all(Radius.circular(5))),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20, vertical: 15),
+                                    // textStyle: const TextStyle(fontSize: 19),
+                                    backgroundColor: Colors.blueAccent),
+                                onPressed: () {
+                                  navigatAndReturn(
+                                    context: context,
+                                    page: const UpdateMdpForm(),
+                                  );
+
+                                },
+                                child: const Text(
+                                  "Modifier mdp",
+                                  style:
+                                  TextStyle(color: Colors.white, fontSize: 16),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
+
                   ],
                 ),
               ),

@@ -6,6 +6,7 @@ import 'package:pfeprojet/design_login.dart';
 import 'package:pfeprojet/firebase_options.dart';
 import 'package:pfeprojet/helper/cachhelper.dart';
 import 'package:pfeprojet/helper/observer.dart';
+import 'package:pfeprojet/screen/AdminScreens/annonce/cubit/annonce_cubit.dart';
 import 'package:pfeprojet/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
 import 'package:pfeprojet/screen/AdminScreens/home/home.dart';
 import 'package:pfeprojet/screen/AdminScreens/profile/cubit/profile_admin_cubit.dart';
@@ -62,6 +63,9 @@ class MyApp extends StatelessWidget {
           create: ((context) => TerrainCubit()),
         ),
         BlocProvider(
+          create: ((context) => AnnonceCubit()),
+        ),
+        BlocProvider(
           create: ((context) => HomeAdminCubit()..getMyInfo()),
         ),
         BlocProvider(
@@ -74,9 +78,9 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         home:
-             Onbording(),
+             // Onbording(),
 
-            // onbordingmain ? startwidget : const Onbording(),
+             onbordingmain ? startwidget : const Onbording(),
       ),
     );
   }
