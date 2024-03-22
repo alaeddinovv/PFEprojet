@@ -32,9 +32,6 @@ final class UploadProfileAdminImgAndGetUrlStateBad extends ProfileAdminState {}
 
 final class UpdateMdpAdminLoadingState extends ProfileAdminState {}
 final class NewPasswordWrong extends ProfileAdminState {}
-// final class NewPasswordCorrect extends ProfileAdminState {}
-
-
 final class UpdateMdpAdminStateGood extends ProfileAdminState {}
 final class UpdateMdpAdminStateBad extends ProfileAdminState {}
 

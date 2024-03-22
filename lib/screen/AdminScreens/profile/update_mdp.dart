@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:pfeprojet/component/components.dart';
-import 'package:pfeprojet/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
 import 'package:pfeprojet/screen/AdminScreens/profile/cubit/profile_admin_cubit.dart';
 import 'package:pfeprojet/screen/AdminScreens/profile/profile.dart';
-
 class UpdateMdpForm extends StatefulWidget {
   const UpdateMdpForm({super.key});
-
   @override
   State<UpdateMdpForm> createState() => _UpdateMdpFormState();
 }
@@ -17,39 +13,26 @@ class _UpdateMdpFormState extends State<UpdateMdpForm> {
   final TextEditingController _oldController = TextEditingController();
   final TextEditingController _new1Controller = TextEditingController();
   final TextEditingController _new2Controller = TextEditingController();
-  // final TextEditingController _telephoneController = TextEditingController();
+
   final formkey = GlobalKey<FormState>();
 
   // late final DataAdminModel homeAdminCubit;
   @override
   void initState() {
     // TODO: implement setState
-    // homeAdminCubit = HomeAdminCubit.get(context).adminModel!;
-    // _nomController.text = homeAdminCubit.nom!;
-    // _prenomController.text = homeAdminCubit.prenom!;
-    // _wilayaController.text = homeAdminCubit.wilaya!;
-    // _telephoneController.text = homeAdminCubit.telephone!.toString();
-
     super.initState();
   }
-
   @override
   void dispose() {
     // TODO: implement dispose
-    // _nomController.dispose();
-    // _prenomController.dispose();
-    // _wilayaController.dispose();
-    // _telephoneController.dispose();
     super.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<ProfileAdminCubit, ProfileAdminState>(
       listener: (context, state) {
         if (state is UpdateMdpAdminStateGood) {
           showToast(msg: "mot de passe modifier avec succes", state: ToastStates.success);
-          // HomeAdminCubit.get(context).setAdminModel(state.dataAdminModel);
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => const ProfileAdmin()),
@@ -134,25 +117,12 @@ class _UpdateMdpFormState extends State<UpdateMdpForm> {
                         text: 'Update',
                         background: Colors.blueAccent,
                         onPressed: () {
-                          // ProfileAdminCubit.get(context).checknewpassword(
-                          //   new1 : _new1Controller.text,
-                          //   new2 : _new2Controller.text,
-                          // );
-
                           if (formkey.currentState!.validate()  ) {
-
-
-
                               ProfileAdminCubit.get(context).updateMdpAdmin(
                                 old: _oldController.text,
                                 new1: _new1Controller.text,
                                 new2 : _new2Controller.text,
-
                               );
-
-
-
-
                           }
                         }),
                   ),
@@ -166,39 +136,4 @@ class _UpdateMdpFormState extends State<UpdateMdpForm> {
   }
 }
 
-// class SelectPhotoAlert extends StatelessWidget {
-//   const SelectPhotoAlert({
-//     super.key,
-//   });
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return AlertDialog(
-//       title: const Text("Choose the source :"),
-//       actions: [
-//         TextButton(
-//             onPressed: () async {
-//               // if (state
-//               //     is LodinUpdateResponsableState) {
-//               //   return null;
-//               // }
-//               Navigator.pop(context);
-//               await ProfileAdminCubit.get(context)
-//                   .imagePickerProfile(ImageSource.camera);
-//             },
-//             child: const Text("Camera")),
-//         TextButton(
-//             onPressed: () async {
-//               // if (state
-//               //     is LodinUpdateResponsableState) {
-//               //   return null;
-//               // }
-//               Navigator.pop(context);
-//               await ProfileAdminCubit.get(context)
-//                   .imagePickerProfile(ImageSource.gallery);
-//             },
-//             child: const Text("Gallery"))
-//       ],
-//     );
-//   }
-// }
+
