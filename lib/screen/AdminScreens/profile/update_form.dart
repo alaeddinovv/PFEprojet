@@ -177,7 +177,7 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: defaultSubmit2(
                           text: 'Update',
-                          background: Colors.grey,
+                          background: Colors.blueAccent,
                           onPressed: () {
                             if (formkey.currentState!.validate()) {
                               // if (state is LodinUpdateResponsableState) {
