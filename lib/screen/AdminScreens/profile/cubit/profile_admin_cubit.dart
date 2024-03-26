@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
@@ -147,11 +148,10 @@ class ProfileAdminCubit extends Cubit<ProfileAdminState> {
       };
       await Httplar.httpPut(path: UPDATEMDPADMIN, data: _model).then((value) {
         if (value.statusCode == 200) {
-          var jsonResponse =
-          convert.jsonDecode(value.body) as Map<String, dynamic>;
+
           emit(UpdateMdpAdminStateGood());
         } else {
-          // print(value.body);
+
           var jsonResponse =
           convert.jsonDecode(value.body) as Map<String, dynamic>;
           emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
@@ -162,6 +162,70 @@ class ProfileAdminCubit extends Cubit<ProfileAdminState> {
       });
     }
   }
+
+
+
+
+  Icon iconhidden = const Icon(Icons.visibility_outlined);
+  bool ishidden = true;
+  bool checkBox = false;
+  void changeCheckBox() {
+    checkBox = !checkBox;
+    emit(CheckBoxState());
+  }
+
+  void showpass() {
+    if (ishidden) {
+      iconhidden = const Icon(Icons.visibility_off_outlined);
+      ishidden = !ishidden;
+    } else {
+      iconhidden = const Icon(Icons.visibility_outlined);
+      ishidden = !ishidden;
+    }
+    emit(PasswordHiddenState());
+  }
+
+
+  Icon iconhidden1 = const Icon(Icons.visibility_outlined);
+  bool ishidden1 = true;
+  bool checkBox1 = false;
+  void changeCheckBox1() {
+    checkBox1 = !checkBox1;
+    emit(CheckBoxState1());
+  }
+
+  void showpass1() {
+    if (ishidden1) {
+      iconhidden1 = const Icon(Icons.visibility_off_outlined);
+      ishidden1 = !ishidden1;
+    } else {
+      iconhidden1 = const Icon(Icons.visibility_outlined);
+      ishidden1 = !ishidden1;
+    }
+    emit(PasswordHiddenState1());
+  }
+
+
+
+  Icon iconhidden2 = const Icon(Icons.visibility_outlined);
+  bool ishidden2 = true;
+  bool checkBox2 = false;
+  void changeCheckBox2() {
+    checkBox2 = !checkBox2;
+    emit(CheckBoxState2());
+  }
+
+  void showpass2() {
+    if (ishidden2) {
+      iconhidden2 = const Icon(Icons.visibility_off_outlined);
+      ishidden2 = !ishidden2;
+    } else {
+      iconhidden2 = const Icon(Icons.visibility_outlined);
+      ishidden2 = !ishidden2;
+    }
+    emit(PasswordHiddenState2());
+  }
+
 
 
 

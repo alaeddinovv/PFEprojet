@@ -66,47 +66,96 @@ class _UpdateMdpFormState extends State<UpdateMdpForm> {
                   const SizedBox(
                     height: 30,
                   ),
-                  defaultForm2(
+                BlocBuilder<ProfileAdminCubit,ProfileAdminState>(
+                  builder: (context, state) {
+                  return defaultForm3(
+                      context: context,
+                      textInputAction: TextInputAction.done,
                       controller: _oldController,
-                      textInputAction: TextInputAction.next,
-                      label: 'old pasword',
-                      prefixIcon: const Icon(Icons.password_outlined),
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "this Must Be Not Empty";
+                      type: TextInputType.visiblePassword,
+                      onFieldSubmitted: () {},
+                      obscureText: ProfileAdminCubit.get(context).ishidden,
+                      valid: (value) {
+                        if (value.isEmpty) {
+                          return 'mot_de_passe Must Be Not Empty';
                         }
-                      }),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  defaultForm2(
-                      controller: _new1Controller,
-                      textInputAction: TextInputAction.next,
-                      label: 'new password',
+                      },
+                      labelText: 'encient mot de passe',
                       prefixIcon: const Icon(
                         Icons.password_outlined,
-
+                        color: Colors.grey,
                       ),
-                      type: TextInputType.text,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "this Must Be Not Empty";
-                        }
-                      }),
+                      sufixIcon: IconButton(
+                        onPressed: () {
+                          ProfileAdminCubit.get(context).showpass();
+                        },
+                        icon: ProfileAdminCubit.get(context).iconhidden,
+                        color: Colors.grey,
+                      ));
+                  },
+                ),
                   const SizedBox(
                     height: 20,
                   ),
-                  defaultForm2(
-                      controller: _new2Controller,
-                      textInputAction: TextInputAction.next,
-                      label: 'new password again',
-                      prefixIcon: const Icon(Icons.password_outlined),
-                      type: TextInputType.text,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return "this Must Be Not Empty";
-                        }
-                      }),
+                  BlocBuilder<ProfileAdminCubit,ProfileAdminState>(
+                  builder: (context, state) {
+                    return defaultForm3(
+                        context: context,
+                        textInputAction: TextInputAction.done,
+                        controller: _new1Controller,
+                        type: TextInputType.visiblePassword,
+                        onFieldSubmitted: () {},
+                        obscureText: ProfileAdminCubit.get(context).ishidden1,
+                        valid: (value) {
+                          if (value.isEmpty) {
+                            return 'mot_de_passe Must Be Not Empty';
+                          }
+                        },
+                        labelText: 'nouveau mot de passe',
+                        prefixIcon: const Icon(
+                          Icons.password_outlined,
+                          color: Colors.grey,
+                        ),
+                        sufixIcon: IconButton(
+                          onPressed: () {
+                            ProfileAdminCubit.get(context).showpass1();
+                          },
+                          icon: ProfileAdminCubit.get(context).iconhidden1,
+                          color: Colors.grey,
+                        ));
+                  },
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  BlocBuilder<ProfileAdminCubit,ProfileAdminState>(
+                  builder: (context, state) {
+                     return defaultForm3(
+                        context: context,
+                        textInputAction: TextInputAction.done,
+                        controller: _new2Controller,
+                        type: TextInputType.visiblePassword,
+                        onFieldSubmitted: () {},
+                        obscureText: ProfileAdminCubit.get(context).ishidden2,
+                        valid: (value) {
+                          if (value.isEmpty) {
+                            return 'mot_de_passe Must Be Not Empty';
+                          }
+                        },
+                        labelText: 'nouveau mot de passe',
+                        prefixIcon: const Icon(
+                          Icons.password_outlined,
+                          color: Colors.grey,
+                        ),
+                        sufixIcon: IconButton(
+                          onPressed: () {
+                            ProfileAdminCubit.get(context).showpass2();
+                          },
+                          icon: ProfileAdminCubit.get(context).iconhidden2,
+                          color: Colors.grey,
+                        ));
+                  },
+                  ),
 
                   const SizedBox(
                     height: 50,

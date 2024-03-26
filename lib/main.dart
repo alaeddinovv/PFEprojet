@@ -63,7 +63,7 @@ class MyApp extends StatelessWidget {
           create: ((context) => TerrainCubit()),
         ),
         BlocProvider(
-          create: ((context) => AnnonceCubit()),
+          create: ((context) => AnnonceCubit()..getAnnonceById()),
         ),
         BlocProvider(
           create: ((context) => HomeAdminCubit()..getMyInfo()),

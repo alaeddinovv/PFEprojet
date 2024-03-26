@@ -1,72 +1,99 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/details.dart';
+import '../../../Model/annonce_model.dart';
+
+import 'addannonce.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'cubit/annonce_cubit.dart';
+
 
 class Annonce extends StatelessWidget {
-  const Annonce({super.key});
+  const Annonce({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding:
-        const EdgeInsetsDirectional.symmetric(horizontal: 20, vertical: 20),
-        child: ListView.separated(
-            physics: const BouncingScrollPhysics(),
-            itemBuilder: (context, int index) => terrainItem(context: context),
-            separatorBuilder: (context, int index) => const SizedBox(
-              height: 16,
+
+    return BlocBuilder<AnnonceCubit, AnnonceState>(
+      builder: (context, state) {
+        if (state is GetMyAnnonceLoading) {
+          return CircularProgressIndicator(); // Loading indicator while fetching data
+        } else if (state is GetMyAnnonceStateGood) {
+          final annonces = state.annonces;
+          return Scaffold(
+            body: Padding(
+              padding: const EdgeInsetsDirectional.symmetric(horizontal: 20, vertical: 20),
+              child: ListView.separated(
+                physics: const BouncingScrollPhysics(),
+                itemBuilder: (context, index) => _buildAnnonceItem(annonces, index),
+                separatorBuilder: (context, int index) => const SizedBox(
+                  height: 16,
+                ),
+                itemCount: annonces.length,
+              ),
             ),
-            itemCount: 4),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Add your onPressed functionality here
-        },
-        child: Icon(Icons.add),
-      ),
-
+            floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                navigatAndReturn(
+                  context: context,
+                  page: const AddAnnonce(),
+                );
+              },
+              child: Icon(Icons.add),
+            ),
+          );
+        } else if (state is GetMyAnnonceStateBad) {
+          return Text('Failed to fetch data'); // Display a message if fetching data failed
+        } else {
+          return Text('Unknown state'); // Display a message for unknown state
+        }
+      },
     );
-
   }
 
-
-  Container terrainItem({required context}) {
+  Widget _buildAnnonceItem(List<AnnonceModel> annonces, int index) {
+    AnnonceModel annonce = annonces[index];
     return Container(
-      padding: EdgeInsets.all(16.0),
+      margin: const EdgeInsets.all(8.0),
       decoration: BoxDecoration(
-        border: Border(
-          top: BorderSide(
-            color: Colors.black,
-            width: 1.0,
-          ),
-        ),
+        border: Border.all(color: Colors.blue, width: 2),
+        borderRadius: BorderRadius.circular(5),
       ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Row(
-            children: [
-              Expanded(
-                child: Text(
-                  'Simple Text',
-                  style: TextStyle(fontSize: 16.0),
-                ),
-              ),
-              Text(
-                'Bold Text',
-                style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-          SizedBox(height: 8.0),
           Container(
-            height: 200, // Adjust as needed
+            color: Colors.blue,
+            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: Text(
+                    annonce.type ?? '', // Display the type
+                    style: TextStyle(color: Colors.white),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+                Expanded(
+                  child: IconButton(
+                    icon: Icon(Icons.delete, color: Colors.white),
+                    onPressed: () {
+                      // Handle your delete action here
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            height: 100,
+            padding: const EdgeInsets.all(8.0),
             child: SingleChildScrollView(
               child: Text(
-                'Rest of the content here...',
-                style: TextStyle(fontSize: 16.0),
+                annonce.description ?? '', // Display the description
+                style: TextStyle(fontSize: 16),
               ),
             ),
           ),
@@ -75,6 +102,3 @@ class Annonce extends StatelessWidget {
     );
   }
 }
-
-
-
