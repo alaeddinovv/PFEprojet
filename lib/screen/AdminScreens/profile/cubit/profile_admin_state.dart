@@ -27,20 +27,18 @@ final class ImagePickerProfileAdminStateBad extends ProfileAdminState {}
 
 final class UploadProfileAdminImgAndGetUrlStateBad extends ProfileAdminState {}
 
-
 //----------------------mdp----------------------
 
 final class UpdateMdpAdminLoadingState extends ProfileAdminState {}
+
 final class NewPasswordWrong extends ProfileAdminState {}
+
 final class UpdateMdpAdminStateGood extends ProfileAdminState {}
+
 final class UpdateMdpAdminStateBad extends ProfileAdminState {}
-final class CheckBoxState extends ProfileAdminState {}
+
 final class PasswordHiddenState extends ProfileAdminState {}
-final class CheckBoxState1 extends ProfileAdminState {}
+
 final class PasswordHiddenState1 extends ProfileAdminState {}
-final class CheckBoxState2 extends ProfileAdminState {}
+
 final class PasswordHiddenState2 extends ProfileAdminState {}
-
-
-
-

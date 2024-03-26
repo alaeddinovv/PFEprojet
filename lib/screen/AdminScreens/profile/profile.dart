@@ -111,9 +111,8 @@ class ProfileAdmin extends StatelessWidget {
                       height: 30,
                     ),
                     Padding(
-                      padding:EdgeInsets.all(16.0),
+                      padding: EdgeInsets.all(16.0),
                       child: Row(
-                      
                         children: [
                           Expanded(
                             child: Container(
@@ -122,8 +121,8 @@ class ProfileAdmin extends StatelessWidget {
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                     shape: const RoundedRectangleBorder(
-                                        borderRadius:
-                                        BorderRadius.all(Radius.circular(5))),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(5))),
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 20, vertical: 15),
                                     // textStyle: const TextStyle(fontSize: 19),
@@ -133,12 +132,11 @@ class ProfileAdmin extends StatelessWidget {
                                     context: context,
                                     page: const UpdateAdminForm(),
                                   );
-                      
                                 },
                                 child: const Text(
                                   "Modifier profile",
-                                  style:
-                                  TextStyle(color: Colors.white, fontSize: 16),
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 16),
                                 ),
                               ),
                             ),
@@ -151,8 +149,8 @@ class ProfileAdmin extends StatelessWidget {
                               child: ElevatedButton(
                                 style: ElevatedButton.styleFrom(
                                     shape: const RoundedRectangleBorder(
-                                        borderRadius:
-                                        BorderRadius.all(Radius.circular(5))),
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(5))),
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 20, vertical: 15),
                                     // textStyle: const TextStyle(fontSize: 19),
@@ -160,14 +158,13 @@ class ProfileAdmin extends StatelessWidget {
                                 onPressed: () {
                                   navigatAndReturn(
                                     context: context,
-                                    page: const UpdateMdpForm(),
+                                    page: UpdateMdpForm(),
                                   );
-
                                 },
                                 child: const Text(
                                   "Modifier mdp",
-                                  style:
-                                  TextStyle(color: Colors.white, fontSize: 16),
+                                  style: TextStyle(
+                                      color: Colors.white, fontSize: 16),
                                 ),
                               ),
                             ),
@@ -175,7 +172,6 @@ class ProfileAdmin extends StatelessWidget {
                         ],
                       ),
                     ),
-
                   ],
                 ),
               ),

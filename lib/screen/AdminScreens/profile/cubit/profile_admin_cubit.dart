@@ -21,11 +21,12 @@ class ProfileAdminCubit extends Cubit<ProfileAdminState> {
 
   static ProfileAdminCubit get(context) => BlocProvider.of(context);
 
-  Future<void> updateAdmin({required String nom,
-    required String prenom,
-    required String telephone,
-    required String wilaya,
-    String? deleteOldImage}) async {
+  Future<void> updateAdmin(
+      {required String nom,
+      required String prenom,
+      required String telephone,
+      required String wilaya,
+      String? deleteOldImage}) async {
     emit(UpdateAdminLoadingState());
 
     if (imageCompress != null) {
@@ -41,13 +42,13 @@ class ProfileAdminCubit extends Cubit<ProfileAdminState> {
     await Httplar.httpPut(path: UPDATEADMIN, data: _model).then((value) {
       if (value.statusCode == 200) {
         var jsonResponse =
-        convert.jsonDecode(value.body) as Map<String, dynamic>;
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
         emit(UpdateAdminStateGood(
             dataAdminModel: DataAdminModel.fromJson(jsonResponse)));
       } else {
         // print(value.body);
         var jsonResponse =
-        convert.jsonDecode(value.body) as Map<String, dynamic>;
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
         emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
       }
     }).catchError((e) {
@@ -82,10 +83,7 @@ class ProfileAdminCubit extends Cubit<ProfileAdminState> {
     await deleteOldImageFirebase(deleteOldImage: deleteOldImage);
     await firebase_storage.FirebaseStorage.instance
         .ref()
-        .child('users/${Uri
-        .file(imageCompress!.path)
-        .pathSegments
-        .last}')
+        .child('users/${Uri.file(imageCompress!.path).pathSegments.last}')
         .putFile(imageCompress!)
         .then((p0) async {
       await p0.ref.getDownloadURL().then((value) {
@@ -112,9 +110,7 @@ class ProfileAdminCubit extends Cubit<ProfileAdminState> {
     }
   }
 
-
 //--------------------------modifier mot de passe-----------------------------------------
-
 
   // void checknewpassword({required new1,required new2}) {
   //  if(new1!=new2) {
@@ -125,54 +121,36 @@ class ProfileAdminCubit extends Cubit<ProfileAdminState> {
   //  }
   // }
 
-
-
-
-
-
-
-  Future<void> updateMdpAdmin({required String old,
-    required String new1,
-    required String new2
-
-
+  Future<void> updateMdpAdmin({
+    required String old,
+    required String newPassword,
   }) async {
     emit(UpdateMdpAdminLoadingState());
-    if (new1 != new2) {
-      emit(NewPasswordWrong());
-    } else {
-      Map<String, dynamic> _model = {
-        "oldPassword": old,
-        "newPassword": new1,
 
-      };
-      await Httplar.httpPut(path: UPDATEMDPADMIN, data: _model).then((value) {
-        if (value.statusCode == 200) {
-
-          emit(UpdateMdpAdminStateGood());
-        } else {
-
-          var jsonResponse =
-          convert.jsonDecode(value.body) as Map<String, dynamic>;
-          emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
-        }
-      }).catchError((e) {
-        print(e.toString());
-        emit(UpdateMdpAdminStateBad());
-      });
-    }
+    Map<String, dynamic> _model = {
+      "oldPassword": old,
+      "newPassword": newPassword,
+    };
+    await Httplar.httpPut(path: UPDATEMDPADMIN, data: _model).then((value) {
+      if (value.statusCode == 200) {
+        emit(UpdateMdpAdminStateGood());
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(UpdateMdpAdminStateBad());
+    });
   }
-
-
-
 
   Icon iconhidden = const Icon(Icons.visibility_outlined);
   bool ishidden = true;
-  bool checkBox = false;
-  void changeCheckBox() {
-    checkBox = !checkBox;
-    emit(CheckBoxState());
-  }
+  Icon iconhidden1 = const Icon(Icons.visibility_outlined);
+  bool ishidden1 = true;
+  Icon iconhidden2 = const Icon(Icons.visibility_outlined);
+  bool ishidden2 = true;
 
   void showpass() {
     if (ishidden) {
@@ -183,15 +161,6 @@ class ProfileAdminCubit extends Cubit<ProfileAdminState> {
       ishidden = !ishidden;
     }
     emit(PasswordHiddenState());
-  }
-
-
-  Icon iconhidden1 = const Icon(Icons.visibility_outlined);
-  bool ishidden1 = true;
-  bool checkBox1 = false;
-  void changeCheckBox1() {
-    checkBox1 = !checkBox1;
-    emit(CheckBoxState1());
   }
 
   void showpass1() {
@@ -205,16 +174,6 @@ class ProfileAdminCubit extends Cubit<ProfileAdminState> {
     emit(PasswordHiddenState1());
   }
 
-
-
-  Icon iconhidden2 = const Icon(Icons.visibility_outlined);
-  bool ishidden2 = true;
-  bool checkBox2 = false;
-  void changeCheckBox2() {
-    checkBox2 = !checkBox2;
-    emit(CheckBoxState2());
-  }
-
   void showpass2() {
     if (ishidden2) {
       iconhidden2 = const Icon(Icons.visibility_off_outlined);
@@ -225,8 +184,4 @@ class ProfileAdminCubit extends Cubit<ProfileAdminState> {
     }
     emit(PasswordHiddenState2());
   }
-
-
-
-
 }
