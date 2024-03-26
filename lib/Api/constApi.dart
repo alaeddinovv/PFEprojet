@@ -6,6 +6,9 @@ const GETMYINFORMATIONJOUEUR = '/api/joueur/myinformation';
 const GETMYINFORMATIONADMIN = '/api/admin/myinformation';
 const UPDATEJOUEUR = '/api/joueur';
 const UPDATEADMIN = '/api/admin';
+const UPDATEMDPADMIN = '/api/admins/password';
+const ADDANNONCE = '/api/annonce';
+const GETMYANNONCE = '/api/annonces/user';
 
 const Loginadmin = '/api/loginadmin';
 const getJouerById = '/api/joueur/';

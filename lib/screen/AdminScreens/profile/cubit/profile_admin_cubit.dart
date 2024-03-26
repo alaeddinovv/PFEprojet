@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
@@ -17,6 +18,7 @@ class ProfileAdminCubit extends Cubit<ProfileAdminState> {
   // final DataAdminModel homeAdminCubit;
 
   ProfileAdminCubit() : super(ProfileAdminInitial());
+
   static ProfileAdminCubit get(context) => BlocProvider.of(context);
 
   Future<void> updateAdmin(
@@ -57,6 +59,7 @@ class ProfileAdminCubit extends Cubit<ProfileAdminState> {
 
   // !--------imagepicker with Compress
   File? imageCompress;
+
   Future<void> imagePickerProfile(ImageSource source) async {
     final ImagePicker _pickerProfile = ImagePicker();
     await _pickerProfile.pickImage(source: source).then((value) async {
@@ -75,6 +78,7 @@ class ProfileAdminCubit extends Cubit<ProfileAdminState> {
   }
 
   String? linkProfileImg;
+
   Future<void> updateProfileImg({required String? deleteOldImage}) async {
     await deleteOldImageFirebase(deleteOldImage: deleteOldImage);
     await firebase_storage.FirebaseStorage.instance
@@ -104,5 +108,50 @@ class ProfileAdminCubit extends Cubit<ProfileAdminState> {
         print('Failed to delete old image: $error');
       });
     }
+  }
+
+//--------------------------modifier mot de passe-----------------------------------------
+
+  // void checknewpassword({required new1,required new2}) {
+  //  if(new1!=new2) {
+  //    emit(NewPasswordWrong());
+  //
+  //  }else {
+  //    emit(NewPasswordCorrect());
+  //  }
+  // }
+
+  Future<void> updateMdpAdmin({
+    required String old,
+    required String newPassword,
+  }) async {
+    emit(UpdateMdpAdminLoadingState());
+
+    Map<String, dynamic> _model = {
+      "oldPassword": old,
+      "newPassword": newPassword,
+    };
+    await Httplar.httpPut(path: UPDATEMDPADMIN, data: _model).then((value) {
+      if (value.statusCode == 200) {
+        emit(UpdateMdpAdminStateGood());
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(UpdateMdpAdminStateBad());
+    });
+  }
+
+  Map<String, bool> isHidden = {
+    "pass": true,
+    "pass1": true,
+    "pass2": true,
+  };
+  void togglePasswordVisibility(String fieldKey) {
+    isHidden[fieldKey] = !isHidden[fieldKey]!;
+    emit(PasswordVisibilityChanged());
   }
 }

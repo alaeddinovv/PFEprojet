@@ -26,3 +26,13 @@ final class ImagePickerProfileAdminStateGood extends ProfileAdminState {}
 final class ImagePickerProfileAdminStateBad extends ProfileAdminState {}
 
 final class UploadProfileAdminImgAndGetUrlStateBad extends ProfileAdminState {}
+
+//----------------------mdp----------------------
+
+final class UpdateMdpAdminLoadingState extends ProfileAdminState {}
+
+final class UpdateMdpAdminStateGood extends ProfileAdminState {}
+
+final class UpdateMdpAdminStateBad extends ProfileAdminState {}
+
+final class PasswordVisibilityChanged extends ProfileAdminState {}
