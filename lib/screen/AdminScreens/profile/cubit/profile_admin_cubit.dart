@@ -145,43 +145,13 @@ class ProfileAdminCubit extends Cubit<ProfileAdminState> {
     });
   }
 
-  Icon iconhidden = const Icon(Icons.visibility_outlined);
-  bool ishidden = true;
-  Icon iconhidden1 = const Icon(Icons.visibility_outlined);
-  bool ishidden1 = true;
-  Icon iconhidden2 = const Icon(Icons.visibility_outlined);
-  bool ishidden2 = true;
-
-  void showpass() {
-    if (ishidden) {
-      iconhidden = const Icon(Icons.visibility_off_outlined);
-      ishidden = !ishidden;
-    } else {
-      iconhidden = const Icon(Icons.visibility_outlined);
-      ishidden = !ishidden;
-    }
-    emit(PasswordHiddenState());
-  }
-
-  void showpass1() {
-    if (ishidden1) {
-      iconhidden1 = const Icon(Icons.visibility_off_outlined);
-      ishidden1 = !ishidden1;
-    } else {
-      iconhidden1 = const Icon(Icons.visibility_outlined);
-      ishidden1 = !ishidden1;
-    }
-    emit(PasswordHiddenState1());
-  }
-
-  void showpass2() {
-    if (ishidden2) {
-      iconhidden2 = const Icon(Icons.visibility_off_outlined);
-      ishidden2 = !ishidden2;
-    } else {
-      iconhidden2 = const Icon(Icons.visibility_outlined);
-      ishidden2 = !ishidden2;
-    }
-    emit(PasswordHiddenState2());
+  Map<String, bool> isHidden = {
+    "pass": true,
+    "pass1": true,
+    "pass2": true,
+  };
+  void togglePasswordVisibility(String fieldKey) {
+    isHidden[fieldKey] = !isHidden[fieldKey]!;
+    emit(PasswordVisibilityChanged());
   }
 }

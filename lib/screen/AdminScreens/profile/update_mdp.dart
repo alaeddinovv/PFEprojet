@@ -5,13 +5,12 @@ import 'package:pfeprojet/screen/AdminScreens/profile/cubit/profile_admin_cubit.
 import 'package:pfeprojet/screen/AdminScreens/profile/profile.dart';
 
 class UpdateMdpForm extends StatelessWidget {
+  UpdateMdpForm({super.key});
   final TextEditingController _oldController = TextEditingController();
   final TextEditingController _new1Controller = TextEditingController();
   final TextEditingController _new2Controller = TextEditingController();
 
   final formkey = GlobalKey<FormState>();
-
-  UpdateMdpForm({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +28,7 @@ class UpdateMdpForm extends StatelessWidget {
         } else if (state is UpdateMdpAdminStateBad) {
           showToast(msg: "server crashed", state: ToastStates.error);
         } else if (state is ErrorState) {
-          String errorMessage = state.errorModel.message ?? "error";
+          String errorMessage = state.errorModel.message!;
           showToast(msg: errorMessage, state: ToastStates.error);
         }
       },
@@ -55,7 +54,8 @@ class UpdateMdpForm extends StatelessWidget {
                     controller: _oldController,
                     type: TextInputType.visiblePassword,
                     onFieldSubmitted: () {},
-                    obscureText: ProfileAdminCubit.get(context).ishidden,
+                    obscureText:
+                        ProfileAdminCubit.get(context).isHidden['pass']!,
                     valid: (value) {
                       if (value.isEmpty) {
                         return 'mot_de_passe Must Be Not Empty';
@@ -68,9 +68,14 @@ class UpdateMdpForm extends StatelessWidget {
                     ),
                     sufixIcon: IconButton(
                       onPressed: () {
-                        ProfileAdminCubit.get(context).showpass();
+                        ProfileAdminCubit.get(context)
+                            .togglePasswordVisibility('pass');
                       },
-                      icon: ProfileAdminCubit.get(context).iconhidden,
+                      icon: Icon(
+                        ProfileAdminCubit.get(context).isHidden['pass']!
+                            ? Icons.visibility_outlined
+                            : Icons.visibility_off_outlined,
+                      ),
                       color: Colors.grey,
                     ),
                   ),
@@ -91,7 +96,8 @@ class UpdateMdpForm extends StatelessWidget {
                         return 'mot de passe pas symetrique';
                       }
                     },
-                    obscureText: ProfileAdminCubit.get(context).ishidden1,
+                    obscureText:
+                        ProfileAdminCubit.get(context).isHidden['pass1']!,
                     labelText: 'nouveau mot de passe',
                     prefixIcon: const Icon(
                       Icons.password_outlined,
@@ -99,9 +105,14 @@ class UpdateMdpForm extends StatelessWidget {
                     ),
                     sufixIcon: IconButton(
                       onPressed: () {
-                        ProfileAdminCubit.get(context).showpass1();
+                        ProfileAdminCubit.get(context)
+                            .togglePasswordVisibility('pass1');
                       },
-                      icon: ProfileAdminCubit.get(context).iconhidden1,
+                      icon: Icon(
+                        ProfileAdminCubit.get(context).isHidden['pass1']!
+                            ? Icons.visibility_outlined
+                            : Icons.visibility_off_outlined,
+                      ),
                       color: Colors.grey,
                     ),
                   ),
@@ -114,7 +125,8 @@ class UpdateMdpForm extends StatelessWidget {
                     controller: _new2Controller,
                     type: TextInputType.visiblePassword,
                     onFieldSubmitted: () {},
-                    obscureText: ProfileAdminCubit.get(context).ishidden2,
+                    obscureText:
+                        ProfileAdminCubit.get(context).isHidden['pass2']!,
                     valid: (value) {
                       if (value.isEmpty) {
                         return 'mot_de_passe Must Be Not Empty';
@@ -130,9 +142,14 @@ class UpdateMdpForm extends StatelessWidget {
                     ),
                     sufixIcon: IconButton(
                       onPressed: () {
-                        ProfileAdminCubit.get(context).showpass2();
+                        ProfileAdminCubit.get(context)
+                            .togglePasswordVisibility('pass2');
                       },
-                      icon: ProfileAdminCubit.get(context).iconhidden2,
+                      icon: Icon(
+                        ProfileAdminCubit.get(context).isHidden['pass2']!
+                            ? Icons.visibility_outlined
+                            : Icons.visibility_off_outlined,
+                      ),
                       color: Colors.grey,
                     ),
                   ),
