@@ -1,13 +1,17 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:pfeprojet/Api/constApi.dart';
+import 'package:pfeprojet/Api/httplaravel.dart';
+import 'package:pfeprojet/Model/error_model.dart';
+import 'package:pfeprojet/Model/user_model.dart';
+import 'package:pfeprojet/component/const.dart';
+import 'dart:convert' as convert;
 
 part 'terrain_state.dart';
 
 class TerrainCubit extends Cubit<TerrainState> {
-  TerrainCubit() : super(TerrainInitial()) {
-    dateSelected = dates.first;
-  }
+  TerrainCubit() : super(TerrainInitial());
 
   static TerrainCubit get(context) => BlocProvider.of<TerrainCubit>(context);
 
@@ -29,9 +33,6 @@ class TerrainCubit extends Cubit<TerrainState> {
     }
   }
 
-  final List<DateTime> dates =
-      List.generate(7, (index) => DateTime.now().add(Duration(days: index)));
-
   final List<Map<String, dynamic>> timeSlots = [
     {"time": "8:00", "isReserved": true},
     {"time": "9:00", "isReserved": false},
@@ -52,7 +53,7 @@ class TerrainCubit extends Cubit<TerrainState> {
     {"time": "24:00", "isReserved": false}
   ];
 
-  DateTime? dateSelected;
+  DateTime dateSelected = dates.first;
 
   void setSelectedDate(DateTime date) {
     dateSelected = date;
@@ -65,4 +66,29 @@ class TerrainCubit extends Cubit<TerrainState> {
     'assets/images/terrain2.jpg',
     'assets/images/terrain.png',
   ];
+
+  void checkUserById({required String id}) {
+    emit(LoadinCheckUserByIdState());
+    Httplar.httpget(
+      path: getJouerById + id,
+    ).then((value) {
+      print(getJouerById + id);
+      if (value.statusCode == 200) {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        print(jsonResponse);
+        // emit(TerrainViewToggled());
+
+        emit(CheckUserByIdStateGood(
+            dataJoueurModel: DataJoueurModel.fromJson(jsonResponse)));
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(CheckUserByIdStateBad());
+    });
+  }
 }

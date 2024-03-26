@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/const.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/cubit/terrain_cubit.dart';
+import 'package:pfeprojet/screen/AdminScreens/terrains/reserve.dart';
 
 class TerrainDetailsScreen extends StatelessWidget {
   const TerrainDetailsScreen({super.key});
@@ -275,21 +277,21 @@ class TerrainDetailsScreen extends StatelessWidget {
                               // DateTime date =
                               //     DateTime.now().add(Duration(days: index));
                               return DateCard(
-                                date: terrainCubit.dates[index],
+                                date: dates[index],
                                 isSelected: terrainCubit.dateSelected ==
-                                    terrainCubit.dates[
-                                        index], // Your logic for isSelected
+                                    dates[index], // Your logic for isSelected
                                 onTap: () {
-                                  terrainCubit.setSelectedDate(
-                                      terrainCubit.dates[index]);
-
+                                  terrainCubit.setSelectedDate(dates[index]);
+                                  print(dates[index]);
                                   // Your logic for what happens when a date is tapped
                                 },
                               );
                             } else {
                               // Last item as a button to open DatePicker
                               return GestureDetector(
-                                onTap: () => _selectDate(context),
+                                onTap: () {
+                                  _selectDate(context);
+                                },
                                 child: Container(
                                   width: 60,
                                   height: 60,
@@ -340,6 +342,11 @@ class TerrainDetailsScreen extends StatelessWidget {
                                 // Handle the tap event, you can use the Cubit to manage state
                                 print(
                                     'Selected time slot: ${terrainCubit.timeSlots[index]}');
+                                navigatAndReturn(
+                                    context: context,
+                                    page: Reserve(
+                                      index: index,
+                                    ));
                               },
                               child: Container(
                                 height: 20,
@@ -384,6 +391,7 @@ class TerrainDetailsScreen extends StatelessWidget {
     if (picked != null) {
       // Handle the picked date, e.g., by using a Cubit/Provider to manage state
       print(picked); // Replace with your actual logic
+      TerrainCubit.get(context).setSelectedDate(picked);
     }
   }
 }

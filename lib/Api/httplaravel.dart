@@ -28,6 +28,7 @@ class Httplar {
     var url = Uri.http(URLHTTP, path, query);
     return await http.get(url, headers: {
       'Accept': 'application/json',
+      "Content-Type": "application/json",
       'Authorization': 'Bearer $TOKEN'
     });
   }

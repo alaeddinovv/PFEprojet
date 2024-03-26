@@ -47,6 +47,7 @@ TextFormField defaultForm3(
     {controller,
     int maxline = 1,
     Widget? suffix,
+    Widget? prifix,
     required context,
     String? sufixText,
     required TextInputType type,
@@ -54,12 +55,16 @@ TextFormField defaultForm3(
     Text? lable,
     String? labelText,
     Icon? prefixIcon,
-    IconButton? sufixIcon,
+    Widget? sufixIcon,
     TextInputAction? textInputAction,
     bool obscureText = false,
+    bool readOnly = false,
+    bool enabled = true,
     String? valeurinitial,
     Function? onFieldSubmitted}) {
   return TextFormField(
+    enabled: enabled,
+    readOnly: readOnly,
     initialValue: valeurinitial,
     textInputAction: textInputAction,
     onFieldSubmitted: (k) {
@@ -73,6 +78,7 @@ TextFormField defaultForm3(
         label: lable,
         prefixIcon: prefixIcon,
         suffixIcon: sufixIcon,
+        prefix: prifix,
         suffix: suffix,
         suffixText: sufixText,
         labelText: labelText),
@@ -123,6 +129,30 @@ Widget defaultForm2(
         return null;
       },
     );
+
+SizedBox defaultSubmit({
+  required Function valid,
+  required String text,
+}) {
+  return SizedBox(
+    width: double.infinity,
+    child: ElevatedButton(
+      style: ElevatedButton.styleFrom(
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(5))),
+          padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+          // textStyle: const TextStyle(fontSize: 19),
+          backgroundColor: Colors.blueAccent),
+      onPressed: () {
+        valid();
+      },
+      child: Text(
+        text,
+        style: const TextStyle(color: Colors.white, fontSize: 16),
+      ),
+    ),
+  );
+}
 
 void navigatAndReturn({required context, required page}) =>
     Navigator.push(context, MaterialPageRoute(builder: (context) => page));
@@ -204,11 +234,14 @@ Widget defaultSubmit2({
       ),
     );
 
-void showToast({required String msg, required ToastStates state}) =>
+void showToast(
+        {required String msg,
+        required ToastStates state,
+        ToastGravity gravity = ToastGravity.BOTTOM}) =>
     Fluttertoast.showToast(
         msg: msg,
         toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
+        gravity: gravity,
         timeInSecForIosWeb: 1,
         backgroundColor: choseToastColor(state),
         textColor: Colors.white,
