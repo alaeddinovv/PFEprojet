@@ -62,4 +62,21 @@ class AnnonceCubit extends Cubit<AnnonceState> {
       emit(GetMyAnnonceStateBad());
     });
   }
+
+  Future<void> deleteAnnonce({required String id}) async {
+    emit(DeleteAnnonceLoadingState());
+
+    await Httplar.httpdelete(path: DELETEANNONCE + id).then((value) {
+      if (value.statusCode == 204) {
+        emit(DeleteAnnonceStateGood());
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(DeleteAnnonceStateBad());
+    });
+  }
 }

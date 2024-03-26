@@ -36,7 +36,7 @@ class Httplar {
   static Future<http.Response> httpdelete(
       {required path,
       Map<String, dynamic>? query,
-      required Map<String, dynamic> data}) async {
+      Map<String, dynamic>? data}) async {
     var url = Uri.http(
       URLHTTP,
       path,

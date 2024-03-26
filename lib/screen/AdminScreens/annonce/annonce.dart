@@ -13,19 +13,20 @@ class Annonce extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AnnonceCubit, AnnonceState>(
-      builder: (context, state) {
-        if (state is GetMyAnnonceLoading) {
-          return const Center(
-              child:
-                  CircularProgressIndicator()); // Loading indicator while fetching data
-        } else if (state is GetMyAnnonceStateGood) {
-          final annonces = state.annonces;
-          return Scaffold(
-            body: Padding(
-              padding: const EdgeInsetsDirectional.symmetric(
-                  horizontal: 20, vertical: 20),
-              child: ListView.separated(
+    return Scaffold(
+      body: Padding(
+        padding:
+            const EdgeInsetsDirectional.symmetric(horizontal: 20, vertical: 20),
+        child: BlocConsumer<AnnonceCubit, AnnonceState>(
+          listener: (context, state) {
+            if (state is DeleteAnnonceStateGood) {
+              AnnonceCubit.get(context).getAnnonceById();
+            }
+          },
+          builder: (context, state) {
+            if (state is GetMyAnnonceStateGood) {
+              final annonces = state.annonces;
+              return ListView.separated(
                 physics: const BouncingScrollPhysics(),
                 itemBuilder: (context, index) =>
                     _buildAnnonceItem(annonces[index], index, context),
@@ -33,26 +34,27 @@ class Annonce extends StatelessWidget {
                   height: 16,
                 ),
                 itemCount: annonces.length,
-              ),
-            ),
-            floatingActionButton: FloatingActionButton(
-              onPressed: () {
-                navigatAndReturn(
-                  context: context,
-                  page: AddAnnonce(),
-                );
-              },
-              child: const Icon(Icons.add),
-            ),
+              );
+            } else if (state is GetMyAnnonceStateBad) {
+              return const Text(
+                  'Failed to fetch data'); // Display a message if fetching data failed
+            } else {
+              return const Center(
+                  child:
+                      CircularProgressIndicator()); // Return an empty container by default
+            }
+          },
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          navigatAndReturn(
+            context: context,
+            page: AddAnnonce(),
           );
-        } else if (state is GetMyAnnonceStateBad) {
-          return const Text(
-              'Failed to fetch data'); // Display a message if fetching data failed
-        } else {
-          return const Text(
-              'Unknown state'); // Display a message for unknown state
-        }
-      },
+        },
+        child: const Icon(Icons.add),
+      ),
     );
   }
 
@@ -73,7 +75,9 @@ class Annonce extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ListTile(
+            titleAlignment: ListTileTitleAlignment.top,
             leading: CircleAvatar(
+              radius: 20,
               backgroundImage: HomeAdminCubit.get(context).adminModel!.photo !=
                       null
                   ? NetworkImage(HomeAdminCubit.get(context).adminModel!.photo!)
@@ -81,7 +85,7 @@ class Annonce extends StatelessWidget {
                       as ImageProvider<Object>,
             ), // More prominent icon
             title: Text(
-              model.type ?? '', // This makes the title
+              model.type ?? '',
               style: const TextStyle(
                 color: Colors.black87,
                 fontWeight: FontWeight.w600,
@@ -92,7 +96,31 @@ class Annonce extends StatelessWidget {
             trailing: IconButton(
               icon: const Icon(Icons.delete, color: Colors.grey),
               onPressed: () {
-                // Placeholder for delete action
+                showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: const Text('Delete Annonce'),
+                        content: const Text(
+                            'Are you sure you want to delete this annonce?'),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              AnnonceCubit.get(context)
+                                  .deleteAnnonce(id: model.id!)
+                                  .then((value) => Navigator.pop(context));
+                            },
+                            child: const Text('Yes'),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: const Text('No'),
+                          ),
+                        ],
+                      );
+                    });
               },
             ),
             contentPadding: const EdgeInsets.symmetric(
