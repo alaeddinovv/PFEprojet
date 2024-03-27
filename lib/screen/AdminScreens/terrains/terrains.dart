@@ -10,30 +10,31 @@ class Terrains extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TerrainCubit terrainCubit = TerrainCubit.get(context);
     return Scaffold(
       body: Padding(
         padding:
             const EdgeInsetsDirectional.symmetric(horizontal: 20, vertical: 20),
         child: BlocBuilder<TerrainCubit, TerrainState>(
           builder: (context, state) {
-            if (state is GetMyTerrainsStateGood) {
-              final terrains = state.terrains;
-              return ListView.separated(
-                  physics: const BouncingScrollPhysics(),
-                  itemBuilder: (context, int index) => terrainItem(
-                      context: context, terrainModel: terrains[index]),
-                  separatorBuilder: (context, int index) => const SizedBox(
-                        height: 16,
-                      ),
-                  itemCount: terrains.length);
-            } else if (state is ErrorTerrainsState) {
+            if (state is ErrorTerrainsState) {
               return Center(
                 child: Text(state.errorModel.message!),
               );
+            } else if (state is GetMyTerrainsLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
             }
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            return ListView.separated(
+                physics: const BouncingScrollPhysics(),
+                itemBuilder: (context, int index) => terrainItem(
+                    context: context,
+                    terrainModel: terrainCubit.terrains[index]),
+                separatorBuilder: (context, int index) => const SizedBox(
+                      height: 16,
+                    ),
+                itemCount: terrainCubit.terrains.length);
           },
         ),
       ),
@@ -46,7 +47,7 @@ class Terrains extends StatelessWidget {
         navigatAndReturn(
             context: context,
             page: TerrainDetailsScreen(
-              terrinDetails: terrainModel,
+              terrainModel: terrainModel,
             ));
       },
       child: Card(

@@ -7,11 +7,7 @@ class TerrainInitial extends TerrainState {}
 
 class GetMyTerrainsLoading extends TerrainState {}
 
-class GetMyTerrainsStateGood extends TerrainState {
-  final List<TerrainModel> terrains;
-
-  GetMyTerrainsStateGood({required this.terrains});
-}
+class GetMyTerrainsStateGood extends TerrainState {}
 
 class GetMyTerrainsStateBad extends TerrainState {}
 

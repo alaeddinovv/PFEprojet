@@ -17,14 +17,15 @@ class TerrainCubit extends Cubit<TerrainState> {
   static TerrainCubit get(context) => BlocProvider.of<TerrainCubit>(context);
 
 // TerrainHomeScreen-----------------------------------------------------------------
+  List<TerrainModel> terrains = [];
   Future<void> getMyTerrains() async {
     emit(GetMyTerrainsLoading());
     await Httplar.httpget(path: GETMYTERRAINS).then((value) {
       if (value.statusCode == 200) {
         var jsonResponse = convert.jsonDecode(value.body) as List;
-        List<TerrainModel> terrains =
+        terrains =
             jsonResponse.map((item) => TerrainModel.fromJson(item)).toList();
-        emit(GetMyTerrainsStateGood(terrains: terrains)); // Pass the list here
+        emit(GetMyTerrainsStateGood()); // Pass the list here
       } else {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
