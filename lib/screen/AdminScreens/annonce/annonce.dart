@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pfeprojet/component/components.dart';
+import 'package:pfeprojet/screen/AdminScreens/annonce/update_annonce.dart';
 import 'package:pfeprojet/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
 import '../../../Model/annonce_model.dart';
 
@@ -20,7 +21,7 @@ class Annonce extends StatelessWidget {
         child: BlocConsumer<AnnonceCubit, AnnonceState>(
           listener: (context, state) {
             if (state is DeleteAnnonceStateGood) {
-              AnnonceCubit.get(context).getAnnonceById();
+              AnnonceCubit.get(context).getMyAnnonce();
             }
           },
           builder: (context, state) {
@@ -93,35 +94,50 @@ class Annonce extends StatelessWidget {
               ),
               overflow: TextOverflow.ellipsis,
             ),
-            trailing: IconButton(
-              icon: const Icon(Icons.delete, color: Colors.grey),
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        title: const Text('Delete Annonce'),
-                        content: const Text(
-                            'Are you sure you want to delete this annonce?'),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              AnnonceCubit.get(context)
-                                  .deleteAnnonce(id: model.id!)
-                                  .then((value) => Navigator.pop(context));
-                            },
-                            child: const Text('Yes'),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            child: const Text('No'),
-                          ),
-                        ],
-                      );
-                    });
-              },
+            trailing: Row(
+              mainAxisSize: MainAxisSize
+                  .min, // Ensures the Row only takes as much width as it needs
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.edit, color: Colors.green),
+                  onPressed: () {
+                    navigatAndReturn(
+                        context: context,
+                        page: EditAnnoncePage(annonceModel: model));
+                    // Your code to handle edit action
+                  },
+                ),
+                IconButton(
+                  icon: const Icon(Icons.delete, color: Colors.grey),
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text('Delete Annonce'),
+                            content: const Text(
+                                'Are you sure you want to delete this annonce?'),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  AnnonceCubit.get(context)
+                                      .deleteAnnonce(id: model.id!)
+                                      .then((value) => Navigator.pop(context));
+                                },
+                                child: const Text('Yes'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: const Text('No'),
+                              ),
+                            ],
+                          );
+                        });
+                  },
+                ),
+              ],
             ),
             contentPadding: const EdgeInsets.symmetric(
                 horizontal: 12.0, vertical: 8.0), // Adjusted padding for layout

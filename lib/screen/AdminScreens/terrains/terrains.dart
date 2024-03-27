@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pfeprojet/Model/terrain_model.dart';
 import 'package:pfeprojet/component/components.dart';
+import 'package:pfeprojet/screen/AdminScreens/terrains/cubit/terrain_cubit.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/details.dart';
 
 class Terrains extends StatelessWidget {
@@ -8,79 +10,102 @@ class Terrains extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    TerrainCubit terrainCubit = TerrainCubit.get(context);
     return Scaffold(
       body: Padding(
         padding:
             const EdgeInsetsDirectional.symmetric(horizontal: 20, vertical: 20),
-        child: ListView.separated(
-            physics: const BouncingScrollPhysics(),
-            itemBuilder: (context, int index) => terrainItem(context: context),
-            separatorBuilder: (context, int index) => const SizedBox(
-                  height: 16,
-                ),
-            itemCount: 4),
+        child: BlocBuilder<TerrainCubit, TerrainState>(
+          builder: (context, state) {
+            if (state is ErrorTerrainsState) {
+              return Center(
+                child: Text(state.errorModel.message!),
+              );
+            } else if (state is GetMyTerrainsLoading) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
+            return ListView.separated(
+                physics: const BouncingScrollPhysics(),
+                itemBuilder: (context, int index) => terrainItem(
+                    context: context,
+                    terrainModel: terrainCubit.terrains[index]),
+                separatorBuilder: (context, int index) => const SizedBox(
+                      height: 16,
+                    ),
+                itemCount: terrainCubit.terrains.length);
+          },
+        ),
       ),
     );
   }
 
-  InkWell terrainItem({required context}) {
+  InkWell terrainItem({required context, required TerrainModel terrainModel}) {
     return InkWell(
       onTap: () {
-        navigatAndReturn(context: context, page: TerrainDetailsScreen());
+        navigatAndReturn(
+            context: context,
+            page: TerrainDetailsScreen(
+              terrainModel: terrainModel,
+            ));
       },
-      child: const Card(
+      child: Card(
         elevation: 5,
         clipBehavior: Clip.hardEdge,
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(5))),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Image(
-              image: AssetImage('assets/images/terrain2.jpg'),
+              image: terrainModel.photos!.isNotEmpty
+                  ? NetworkImage(terrainModel.photos![0])
+                  : const AssetImage('assets/images/terr.jpg')
+                      as ImageProvider<Object>,
               height: 180,
               width: double.infinity,
               fit: BoxFit.fill,
             ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 5),
+              padding: const EdgeInsets.symmetric(horizontal: 5),
               child: SizedBox(
                 height: 90,
                 child: Column(
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     Row(
                       children: [
-                        Icon(Icons.location_on_outlined),
-                        SizedBox(
+                        const Icon(Icons.location_on_outlined),
+                        const SizedBox(
                           width: 5,
                         ),
                         Text(
-                          'Zwaghi constantine 1100',
-                          style: TextStyle(
+                          terrainModel.adresse!,
+                          style: const TextStyle(
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                        Spacer(),
-                        Icon(Icons.groups),
-                        SizedBox(
+                        const Spacer(),
+                        const Icon(Icons.groups),
+                        const SizedBox(
                           width: 5,
                         ),
-                        Text('6 Joueurs')
+                        Text(terrainModel.capacite.toString()),
                       ],
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     Row(
                       children: [
-                        Icon(Icons.price_check),
-                        SizedBox(
+                        const Icon(Icons.price_check),
+                        const SizedBox(
                           width: 5,
                         ),
-                        Text('500 Da/H')
+                        Text('${terrainModel.prix} Da/H')
                       ],
                     ),
                   ],

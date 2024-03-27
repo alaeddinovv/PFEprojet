@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:pfeprojet/Model/terrain_model.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/const.dart';
+import 'package:pfeprojet/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/cubit/terrain_cubit.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/reserve.dart';
 
 class TerrainDetailsScreen extends StatelessWidget {
-  const TerrainDetailsScreen({super.key});
+  final TerrainModel terrainModel;
+  const TerrainDetailsScreen({super.key, required this.terrainModel});
 
   @override
   Widget build(BuildContext context) {
@@ -37,35 +40,55 @@ class TerrainDetailsScreen extends StatelessWidget {
                         viewportFraction: 1,
                         // autoPlay: true,
                         enlargeCenterPage: true,
+
                         onPageChanged: (index, reason) {
                           terrainCubit.setCurrentSlide(index);
                         },
                       ),
-                      items: terrainCubit.assetImagePaths.map((imagePath) {
-                        return Builder(
-                          builder: (BuildContext context) {
-                            return Container(
-                              width: double.infinity,
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 5.0),
-                              decoration: const BoxDecoration(
-                                color: Colors.grey,
+                      items: terrainModel.photos!.isEmpty
+                          ? [
+                              Builder(
+                                builder: (BuildContext context) {
+                                  return Container(
+                                    width: double.infinity,
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 5.0),
+                                    decoration: const BoxDecoration(
+                                      color: Colors.grey,
+                                    ),
+                                    child: const Icon(
+                                      Icons.image_not_supported,
+                                      size: 100,
+                                    ),
+                                  );
+                                },
                               ),
-                              child: Image.asset(
-                                imagePath,
-                                fit: BoxFit.fill,
-                              ),
-                            );
-                          },
-                        );
-                      }).toList(),
+                            ]
+                          : terrainModel.photos!.map((imagePath) {
+                              return Builder(
+                                builder: (BuildContext context) {
+                                  return Container(
+                                    width: double.infinity,
+                                    margin: const EdgeInsets.symmetric(
+                                        horizontal: 5.0),
+                                    decoration: const BoxDecoration(
+                                      color: Colors.grey,
+                                    ),
+                                    child: Image.network(
+                                      imagePath,
+                                      fit: BoxFit.fill,
+                                    ),
+                                  );
+                                },
+                              );
+                            }).toList(),
                     ),
                     Positioned(
                       bottom: 0,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: List.generate(
-                            terrainCubit.assetImagePaths.length, (index) {
+                        children:
+                            List.generate(terrainModel.photos!.length, (index) {
                           return AnimatedContainer(
                             duration: const Duration(milliseconds: 150),
                             width:
@@ -132,16 +155,16 @@ class TerrainDetailsScreen extends StatelessWidget {
                                   text: TextSpan(
                                     // Default style for all spans
                                     style: DefaultTextStyle.of(context).style,
-                                    children: const <TextSpan>[
-                                      TextSpan(
+                                    children: <TextSpan>[
+                                      const TextSpan(
                                         text: 'Address: ',
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                       TextSpan(
-                                        text: 'Stade Municipal, Rue 1, Ville 1',
-                                        style: TextStyle(
+                                        text: terrainModel.adresse!,
+                                        style: const TextStyle(
                                             fontStyle: FontStyle.italic),
                                       ),
                                     ],
@@ -162,34 +185,24 @@ class TerrainDetailsScreen extends StatelessWidget {
                                   text: TextSpan(
                                     // Default style for all spans
                                     style: DefaultTextStyle.of(context).style,
-                                    children: const <TextSpan>[
-                                      TextSpan(
+                                    children: <TextSpan>[
+                                      const TextSpan(
                                         text: 'Telephone: ',
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
                                       TextSpan(
-                                        text: '123-456-7890',
-                                        style: TextStyle(
+                                        text: HomeAdminCubit.get(context)
+                                            .adminModel!
+                                            .telephone!
+                                            .toString(),
+                                        style: const TextStyle(
                                             fontStyle: FontStyle.italic),
                                       ),
                                     ],
                                   ),
                                 )
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 8,
-                            ),
-                            const Row(
-                              children: [
-                                Icon(Icons.email),
-                                SizedBox(
-                                  width: 8,
-                                ),
-                                Text(
-                                    "E-mail : Terrain1@gmail.com"), // Add the email here if available
                               ],
                             ),
                             const SizedBox(
@@ -204,14 +217,15 @@ class TerrainDetailsScreen extends StatelessWidget {
                                 RichText(
                                     text: TextSpan(
                                   style: DefaultTextStyle.of(context).style,
-                                  children: const [
-                                    TextSpan(
+                                  children: [
+                                    const TextSpan(
                                         text: 'Nombre de joueurs: ',
                                         style: TextStyle(
                                             fontWeight: FontWeight.bold)),
                                     TextSpan(
-                                        text: '10-12 joueurs',
-                                        style: TextStyle(
+                                        text:
+                                            "${terrainModel.capacite} joueurs",
+                                        style: const TextStyle(
                                             fontStyle: FontStyle.italic)),
                                   ],
                                 ))
@@ -229,14 +243,14 @@ class TerrainDetailsScreen extends StatelessWidget {
                                 RichText(
                                   text: TextSpan(
                                     style: DefaultTextStyle.of(context).style,
-                                    children: const [
-                                      TextSpan(
+                                    children: [
+                                      const TextSpan(
                                           text: 'État du terrain: ',
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold)),
                                       TextSpan(
-                                          text: 'Bon',
-                                          style: TextStyle(
+                                          text: terrainModel.etat!,
+                                          style: const TextStyle(
                                               fontStyle: FontStyle.italic)),
                                     ],
                                   ),
@@ -251,8 +265,8 @@ class TerrainDetailsScreen extends StatelessWidget {
                             const SizedBox(
                               height: 8,
                             ),
-                            const Text(
-                              'Le terrain est équipé de projecteurs pour les matchs de nuit et de vestiaires pour les joueurs et d\'un parking pour les voitures des joueurs et des spectateurs.',
+                            Text(
+                              terrainModel.description!,
                               textAlign: TextAlign.center,
                             ),
                           ],

@@ -41,9 +41,9 @@ class AnnonceCubit extends Cubit<AnnonceState> {
     });
   }
 
-  //get annonce by id -----------------------------------------------------------------------
+  //get My annonce  -----------------------------------------------------------------------
 
-  Future<void> getAnnonceById() async {
+  Future<void> getMyAnnonce() async {
     emit(GetMyAnnonceLoading());
     await Httplar.httpget(path: GETMYANNONCE).then((value) {
       if (value.statusCode == 200) {
@@ -55,7 +55,7 @@ class AnnonceCubit extends Cubit<AnnonceState> {
       } else {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
-        emit(ErrorAnnonceState(model: ErrorModel.fromJson(jsonResponse)));
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
       }
     }).catchError((e) {
       print(e.toString());
@@ -77,6 +77,31 @@ class AnnonceCubit extends Cubit<AnnonceState> {
     }).catchError((e) {
       print(e.toString());
       emit(DeleteAnnonceStateBad());
+    });
+  }
+
+  Future<void> updateAnnonce({
+    required String id,
+    required String type,
+    required String description,
+  }) async {
+    emit(UpdateAnnonceLoadingState());
+
+    Map<String, dynamic> _model = {
+      "type": type,
+      "description": description,
+    };
+    await Httplar.httpPut(path: UPDATEANNONCE + id, data: _model).then((value) {
+      if (value.statusCode == 200) {
+        emit(UpdateAnnonceStateGood());
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(UpdateAnnonceStateBad());
     });
   }
 }
