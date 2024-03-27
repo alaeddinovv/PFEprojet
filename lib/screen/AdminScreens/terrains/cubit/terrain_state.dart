@@ -5,6 +5,22 @@ abstract class TerrainState {}
 
 class TerrainInitial extends TerrainState {}
 
+class GetMyTerrainsLoading extends TerrainState {}
+
+class GetMyTerrainsStateGood extends TerrainState {
+  final List<TerrainModel> terrains;
+
+  GetMyTerrainsStateGood({required this.terrains});
+}
+
+class GetMyTerrainsStateBad extends TerrainState {}
+
+final class ErrorTerrainsState extends TerrainState {
+  final ErrorModel errorModel;
+
+  ErrorTerrainsState({required this.errorModel});
+}
+
 class TerrainSlideChanged extends TerrainState {}
 
 class TerrainViewToggled extends TerrainState {}

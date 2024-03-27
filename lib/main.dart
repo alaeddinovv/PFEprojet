@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
           create: ((context) => AuthCubit()),
         ),
         BlocProvider(
-          create: ((context) => TerrainCubit()),
+          create: ((context) => TerrainCubit()..getMyTerrains()),
         ),
         BlocProvider(
           create: ((context) => AnnonceCubit()..getAnnonceById()),
@@ -79,10 +79,9 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         home:
 
-             // Onbording(),
+            // Onbording(),
 
-             onbordingmain ? startwidget : const Onbording(),
-
+            onbordingmain ? startwidget : const Onbording(),
       ),
     );
   }

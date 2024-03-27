@@ -4,6 +4,7 @@ import 'package:meta/meta.dart';
 import 'package:pfeprojet/Api/constApi.dart';
 import 'package:pfeprojet/Api/httplaravel.dart';
 import 'package:pfeprojet/Model/error_model.dart';
+import 'package:pfeprojet/Model/terrain_model.dart';
 import 'package:pfeprojet/Model/user_model.dart';
 import 'package:pfeprojet/component/const.dart';
 import 'dart:convert' as convert;
@@ -15,6 +16,27 @@ class TerrainCubit extends Cubit<TerrainState> {
 
   static TerrainCubit get(context) => BlocProvider.of<TerrainCubit>(context);
 
+// TerrainHomeScreen-----------------------------------------------------------------
+  Future<void> getMyTerrains() async {
+    emit(GetMyTerrainsLoading());
+    await Httplar.httpget(path: GETMYTERRAINS).then((value) {
+      if (value.statusCode == 200) {
+        var jsonResponse = convert.jsonDecode(value.body) as List;
+        List<TerrainModel> terrains =
+            jsonResponse.map((item) => TerrainModel.fromJson(item)).toList();
+        emit(GetMyTerrainsStateGood(terrains: terrains)); // Pass the list here
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(ErrorTerrainsState(errorModel: ErrorModel.fromJson(jsonResponse)));
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(GetMyTerrainsStateBad());
+    });
+  }
+
+// -----------------------------------------------------------------------------------
   int indexSlide = 0;
   void setCurrentSlide(int index) {
     indexSlide = index;

@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:pfeprojet/Model/terrain_model.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/const.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/cubit/terrain_cubit.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/reserve.dart';
 
 class TerrainDetailsScreen extends StatelessWidget {
-  const TerrainDetailsScreen({super.key});
+  final TerrainModel terrinDetails;
+  const TerrainDetailsScreen({super.key, required this.terrinDetails});
 
   @override
   Widget build(BuildContext context) {
