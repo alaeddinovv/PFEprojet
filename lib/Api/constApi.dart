@@ -12,6 +12,7 @@ const UPDATEMDPADMIN = '/api/admins/password';
 const ADDANNONCE = '/api/annonce';
 const DELETEANNONCE = '/api/annonce/';
 const GETMYANNONCE = '/api/annonces/user';
+const UPDATEANNONCE = '/api/annonce/';
 
 const Loginadmin = '/api/loginadmin';
 const getJouerById = '/api/joueur/';

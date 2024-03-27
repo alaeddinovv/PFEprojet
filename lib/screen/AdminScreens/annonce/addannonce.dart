@@ -17,7 +17,7 @@ class AddAnnonce extends StatelessWidget {
         if (state is CreerAnnonceStateGood) {
           showToast(
               msg: "annonce publier avec succes", state: ToastStates.success);
-          AnnonceCubit.get(context).getAnnonceById().then((value) {
+          AnnonceCubit.get(context).getMyAnnonce().then((value) {
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (context) => const HomeAdmin()),

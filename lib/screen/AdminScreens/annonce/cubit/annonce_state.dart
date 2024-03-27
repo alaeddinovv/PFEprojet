@@ -23,16 +23,17 @@ final class DeleteAnnonceStateGood extends AnnonceState {}
 
 final class DeleteAnnonceStateBad extends AnnonceState {}
 
+final class UpdateAnnonceLoadingState extends AnnonceState {}
+
+final class UpdateAnnonceStateGood extends AnnonceState {}
+
+final class UpdateAnnonceStateBad extends AnnonceState {}
+
 final class GetMyAnnonceLoading extends AnnonceState {}
-
-final class GetMyAnnonceStateBad extends AnnonceState {}
-
-final class ErrorAnnonceState extends AnnonceState {
-  final ErrorModel model;
-  ErrorAnnonceState({required this.model});
-}
 
 class GetMyAnnonceStateGood extends AnnonceState {
   final List<AnnonceModel> annonces;
   GetMyAnnonceStateGood({required this.annonces});
 }
+
+final class GetMyAnnonceStateBad extends AnnonceState {}
