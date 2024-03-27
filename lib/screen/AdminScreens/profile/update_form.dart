@@ -45,44 +45,41 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<ProfileAdminCubit, ProfileAdminState>(
-      listener: (context, state) {
-        if (state is UpdateAdminStateGood) {
-          showToast(msg: "Succes", state: ToastStates.success);
-          HomeAdminCubit.get(context).setAdminModel(state.dataAdminModel);
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => const ProfileAdmin()),
-            (route) => false,
-          );
+    bool canPop = true;
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (!didPop) {
+          if (canPop == true) {
+            Navigator.pop(context);
+          }
         }
       },
-      builder: (context, state) {
-        return PopScope(
-          canPop: false,
-          onPopInvoked: (didPop) async {
-            if (!didPop) {
-              if (state is! UpdateAdminLoadingState) {
-                Navigator.pop(context);
-              }
-            }
-          },
-          child: Scaffold(
-            appBar: AppBar(
-              title: const Text("Update"),
-            ),
-            body: Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Form(
-                key: formkey,
-                child: SingleChildScrollView(
-                  child: Column(children: [
-                    if (state is UpdateAdminLoadingState)
-                      const LinearProgressIndicator(),
-                    Stack(
-                      alignment: AlignmentDirectional.bottomEnd,
-                      children: [
-                        CircleAvatar(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text("Update"),
+        ),
+        body: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Form(
+            key: formkey,
+            child: SingleChildScrollView(
+              child: Column(children: [
+                // if (state is UpdateAdminLoadingState)
+                BlocBuilder<ProfileAdminCubit, ProfileAdminState>(
+                  builder: (context, state) {
+                    if (state is UpdateAdminLoadingState) {
+                      return const LinearProgressIndicator();
+                    }
+                    return const SizedBox();
+                  },
+                ),
+                Stack(
+                  alignment: AlignmentDirectional.bottomEnd,
+                  children: [
+                    BlocBuilder<ProfileAdminCubit, ProfileAdminState>(
+                      builder: (context, state) {
+                        return CircleAvatar(
                           backgroundColor: Colors.transparent,
                           backgroundImage: ProfileAdminCubit.get(context)
                                       .imageCompress !=
@@ -94,88 +91,111 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
                                   : const AssetImage('assets/images/user.png')
                                       as ImageProvider<Object>,
                           radius: 60,
+                        );
+                      },
+                    ),
+                    IconButton(
+                      splashRadius: double.minPositive,
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) => const SelectPhotoAlert());
+                      },
+                      icon: const CircleAvatar(
+                        child: Icon(
+                          Icons.camera,
+                          color: Colors.white,
+                          size: 25,
                         ),
-                        IconButton(
-                          splashRadius: double.minPositive,
-                          onPressed: () {
-                            showDialog(
-                                context: context,
-                                builder: (context) => const SelectPhotoAlert());
-                          },
-                          icon: const CircleAvatar(
-                            child: Icon(
-                              Icons.camera,
-                              color: Colors.white,
-                              size: 25,
-                            ),
-                          ),
-                        )
-                      ],
+                      ),
+                    )
+                  ],
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                defaultForm2(
+                    controller: _nomController,
+                    textInputAction: TextInputAction.next,
+                    label: 'Nom',
+                    prefixIcon: const Icon(Icons.person),
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Name Must Be Not Empty";
+                      }
+                    }),
+                const SizedBox(
+                  height: 20,
+                ),
+                defaultForm2(
+                    controller: _prenomController,
+                    textInputAction: TextInputAction.next,
+                    label: 'Prenom',
+                    prefixIcon: const Icon(
+                      Icons.person,
+                      color: Colors.transparent,
                     ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    defaultForm2(
-                        controller: _nomController,
-                        textInputAction: TextInputAction.next,
-                        label: 'Nom',
-                        prefixIcon: const Icon(Icons.person),
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Name Must Be Not Empty";
-                          }
-                        }),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    defaultForm2(
-                        controller: _prenomController,
-                        textInputAction: TextInputAction.next,
-                        label: 'Prenom',
-                        prefixIcon: const Icon(
-                          Icons.person,
-                          color: Colors.transparent,
-                        ),
-                        type: TextInputType.text,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Prenom Must Be Not Empty";
-                          }
-                        }),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    defaultForm2(
-                        controller: _wilayaController,
-                        textInputAction: TextInputAction.next,
-                        label: 'Wilaya',
-                        prefixIcon: const Icon(Icons.location_city),
-                        type: TextInputType.text,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Wilaya Must Be Not Empty";
-                          }
-                        }),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    defaultForm2(
-                        controller: _telephoneController,
-                        textInputAction: TextInputAction.next,
-                        label: 'Telephone',
-                        prefixIcon: const Icon(Icons.phone),
-                        type: TextInputType.phone,
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return "Phone Must Be Not Empty";
-                          }
-                        }),
-                    const SizedBox(
-                      height: 50,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: defaultSubmit2(
+                    type: TextInputType.text,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Prenom Must Be Not Empty";
+                      }
+                    }),
+                const SizedBox(
+                  height: 20,
+                ),
+                defaultForm2(
+                    controller: _wilayaController,
+                    textInputAction: TextInputAction.next,
+                    label: 'Wilaya',
+                    prefixIcon: const Icon(Icons.location_city),
+                    type: TextInputType.text,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Wilaya Must Be Not Empty";
+                      }
+                    }),
+                const SizedBox(
+                  height: 20,
+                ),
+                defaultForm2(
+                    controller: _telephoneController,
+                    textInputAction: TextInputAction.next,
+                    label: 'Telephone',
+                    prefixIcon: const Icon(Icons.phone),
+                    type: TextInputType.phone,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return "Phone Must Be Not Empty";
+                      }
+                    }),
+                const SizedBox(
+                  height: 50,
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: BlocConsumer<ProfileAdminCubit, ProfileAdminState>(
+                    listener: (context, state) {
+                      if (state is UpdateAdminLoadingState) {
+                        canPop = false;
+                      } else {
+                        canPop = true;
+                      }
+
+                      if (state is UpdateAdminStateGood) {
+                        showToast(msg: "Succes", state: ToastStates.success);
+                        HomeAdminCubit.get(context)
+                            .setAdminModel(state.dataAdminModel);
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ProfileAdmin()),
+                          (route) => false,
+                        );
+                      }
+                    },
+                    builder: (context, state) {
+                      return defaultSubmit2(
                           text: 'Update',
                           background: Colors.blueAccent,
                           onPressed: () {
@@ -190,15 +210,15 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
                                   wilaya: _wilayaController.text,
                                   deleteOldImage: homeAdminCubit.photo);
                             }
-                          }),
-                    ),
-                  ]),
+                          });
+                    },
+                  ),
                 ),
-              ),
+              ]),
             ),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }
@@ -215,10 +235,6 @@ class SelectPhotoAlert extends StatelessWidget {
       actions: [
         TextButton(
             onPressed: () async {
-              // if (state
-              //     is LodinUpdateResponsableState) {
-              //   return null;
-              // }
               Navigator.pop(context);
               await ProfileAdminCubit.get(context)
                   .imagePickerProfile(ImageSource.camera);
@@ -226,10 +242,6 @@ class SelectPhotoAlert extends StatelessWidget {
             child: const Text("Camera")),
         TextButton(
             onPressed: () async {
-              // if (state
-              //     is LodinUpdateResponsableState) {
-              //   return null;
-              // }
               Navigator.pop(context);
               await ProfileAdminCubit.get(context)
                   .imagePickerProfile(ImageSource.gallery);
