@@ -38,3 +38,38 @@ final class LoginStateGood extends AuthState {
 }
 
 final class LoginStateBad extends AuthState {}
+
+
+// --------------------------------------------
+class PasswordRecoveryInitial extends AuthState {}
+
+class PasswordRecoveryLoading extends AuthState {}
+
+final class PasswordRecoverySuccess extends AuthState {
+  final dynamic model;
+
+  PasswordRecoverySuccess({required this.model});
+}
+
+
+final class PasswordRecoveryFailure extends AuthState {
+  final ErrorModel errorModel;
+
+  PasswordRecoveryFailure({required this.errorModel});
+}
+class PasswordRecoveryBad extends AuthState {}
+
+//----
+class PasswordResetLoading extends AuthState {}
+
+class PasswordResetSuccess extends AuthState {}
+
+final class PasswordResetFailure extends AuthState {
+  final ErrorModel errorModel;
+
+  PasswordResetFailure({required this.errorModel});
+}
+class PasswordResetBad extends AuthState {}
+//-----------
+
+final class PasswordVisibilityChanged extends AuthState {}

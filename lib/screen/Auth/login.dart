@@ -7,6 +7,7 @@ import 'package:pfeprojet/helper/cachhelper.dart';
 import 'package:pfeprojet/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
 import 'package:pfeprojet/screen/AdminScreens/home/home.dart';
 import 'package:pfeprojet/screen/Auth/cubit/auth_cubit.dart';
+import 'package:pfeprojet/screen/Auth/recoverypasswordscreen.dart';
 import 'package:pfeprojet/screen/Auth/register_joueur.dart';
 import 'package:pfeprojet/screen/joueurScreens/home/home.dart';
 
@@ -129,8 +130,10 @@ class Login extends StatelessWidget {
                         ),
                         TextButton(
                             onPressed: () {
-                              // print("w :${size.width}");
-                              // print(size.height);
+                              navigatAndReturn(
+                                context: context,
+                                page: PasswordRecoveryScreen(),
+                              );
                             },
                             child: const Text("Forget Password?"))
                       ],
