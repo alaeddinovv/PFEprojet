@@ -88,7 +88,7 @@ class PasswordRecoveryScreen extends StatelessWidget {
                         Icons.keyboard_arrow_right_sharp,
                         color: Colors.grey,
                       ),
-                      labelText: "TYPE DE L'ANNONCE",
+                      labelText: "E-mail",
                       textInputAction: TextInputAction.next,
                     ),
                   ),
