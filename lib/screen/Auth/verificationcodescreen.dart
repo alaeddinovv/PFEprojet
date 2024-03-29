@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
- // Import your AuthCubit
+// Import your AuthCubit
 // import 'PasswordResetScreen.dart';
 import '../../component/components.dart';
 
@@ -58,6 +58,20 @@ class _VerificationCodeEntryScreenState extends State<VerificationCodeEntryScree
         } else if (state is PasswordRecoveryFailure) {
           showToast(
               msg: "pls ask for code again", state: ToastStates.error);
+        } else if (state is VerifyCodeSuccess) {
+          showToast(
+              msg: "code verifier avec succes", state: ToastStates.success);
+          navigatAndReturn(
+              context: context,
+              page: PasswordResetScreen(email: widget.email ));
+        } else if (state is VerifyCodeFailure) {
+          String errorMessage = state.errorModel.message!;
+          showToast(msg: errorMessage, state: ToastStates.error);
+
+        } else if (state is VerifyCodeBad) {
+          showToast(
+              msg: "probleme demander code une autre fois", state: ToastStates.error);
+
         }
         // Add more states handling as per your logic
       },
@@ -148,15 +162,7 @@ class _VerificationCodeEntryScreenState extends State<VerificationCodeEntryScree
                         String enteredCode = codeControllers
                             .map((controller) => controller.text)
                             .join();
-                        if (enteredCode == AuthCubit.get(context).recoverPasswordModel!.verificationCode) {
-                          navigatAndReturn(
-                            context: context,
-                            page: PasswordResetScreen(email: widget.email),
-                          );
-                        } else {
-                          showToast(
-                              msg: "code non valider", state: ToastStates.success);
-                        }
+                        AuthCubit.get(context).verifycode(email: widget.email, codeVerification: enteredCode);
                       },
                     ),
                   ),
@@ -174,7 +180,7 @@ class _VerificationCodeEntryScreenState extends State<VerificationCodeEntryScree
                     alignment: Alignment.center,
                     child: InkWell(
                       onTap: () {
-                      AuthCubit.get(context).recoverPassword(email: widget.email);
+                        AuthCubit.get(context).recoverPassword(email: widget.email);
                       },
                       child: Text(
                         'Resend code',

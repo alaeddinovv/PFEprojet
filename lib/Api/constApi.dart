@@ -14,10 +14,19 @@ const DELETEANNONCE = '/api/annonce/';
 const GETMYANNONCE = '/api/annonces/user';
 const UPDATEANNONCE = '/api/annonce/';
 const RECOVERPASSWORD = '/api/joueur/recoverpassword';
+const RECOVERPASSWORDADMIN = '/api/admin/recoverpassword';
 const RESETPASSWORD = '/api/joueur/resetpassword';
+const RESETPASSWORDADMIN = '/api/admin/resetpassword';
+const VERIFYJOUEURCODE = '/api/joueurs/verifytoken';
+const VERIFYADMINCODE = '/api/admins/verifytoken';
+
+
 
 
 
 const Loginadmin = '/api/loginadmin';
 const getJouerById = '/api/joueur/';
 String PATH = Loginjoueur;
+String PATH1 = RECOVERPASSWORD;
+String PATH2 = VERIFYJOUEURCODE;
+String PATH3 = RESETPASSWORD;
