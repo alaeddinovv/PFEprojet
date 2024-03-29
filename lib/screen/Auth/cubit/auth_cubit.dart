@@ -99,13 +99,12 @@ class AuthCubit extends Cubit<AuthState> {
 
     };
 
-    Httplar.httpPost(path: RECOVERPASSWORD, data: _model).then((value) {
+    Httplar.httpPost(path: PATH1, data: _model).then((value) {
       if (value.statusCode == 200) {
-        var jsonResponse =
-        convert.jsonDecode(value.body) as Map<String, dynamic>;
-        recoverPasswordModel = RecoverPasswordModel.fromJson(jsonResponse);
-        emit(PasswordRecoverySuccess(
-            model: recoverPasswordModel));
+        // var jsonResponse =
+        // convert.jsonDecode(value.body) as Map<String, dynamic>;
+        // recoverPasswordModel = RecoverPasswordModel.fromJson(jsonResponse);
+        emit(PasswordRecoverySuccess());
       } else {
         var jsonResponse =
         convert.jsonDecode(value.body) as Map<String, dynamic>;
@@ -119,6 +118,40 @@ class AuthCubit extends Cubit<AuthState> {
   }
 
 
+
+  Future<void> verifycode({required String email ,required String codeVerification}) async {
+    emit(PasswordResetLoading());
+    Map<String, dynamic> _model = {
+      "email": email,
+      "codeVerification": codeVerification
+    };
+
+    Httplar.httpPost(path: PATH2, data: _model).then((value) {
+      if (value.statusCode == 200) {
+
+        emit(VerifyCodeSuccess());
+      } else {
+        var jsonResponse =
+        convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(VerifyCodeFailure(
+            errorModel: ErrorModel.fromJson(jsonResponse)));
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(VerifyCodeBad());
+    });
+  }
+
+
+
+
+
+
+
+
+
+
+
   Future<void> resetPassword({required String email ,required String mdp}) async {
     emit(PasswordResetLoading());
     Map<String, dynamic> _model = {
@@ -126,7 +159,7 @@ class AuthCubit extends Cubit<AuthState> {
       "newPassword": mdp
     };
 
-    Httplar.httpPost(path: RESETPASSWORD, data: _model).then((value) {
+    Httplar.httpPost(path: PATH3, data: _model).then((value) {
       if (value.statusCode == 200) {
 
         emit(PasswordResetSuccess());
