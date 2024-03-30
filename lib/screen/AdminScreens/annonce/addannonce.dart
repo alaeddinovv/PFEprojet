@@ -98,7 +98,7 @@ class AddAnnonce extends StatelessWidget {
                               msg: "annonce publier avec succes",
                               state: ToastStates.success);
                           AnnonceCubit.get(context)
-                              .getMyAnnonce()
+                              .getMyAnnonce(cursor: "")
                               .then((value) {
                             Navigator.pushAndRemoveUntil(
                               context,
