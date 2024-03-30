@@ -2,15 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/screen/AdminScreens/annonce/update_annonce.dart';
 import 'package:pfeprojet/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
-import '../../../Model/annonce_model.dart';
+import '../../../Model/annonce_admin_model.dart';
 
 import 'addannonce.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'cubit/annonce_cubit.dart';
 
-class Annonce extends StatelessWidget {
+class Annonce extends StatefulWidget {
   const Annonce({Key? key}) : super(key: key);
+
+  @override
+  State<Annonce> createState() => _AnnonceState();
+}
+
+class _AnnonceState extends State<Annonce> {
+  late ScrollController _controller;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _controller = ScrollController()
+      ..addListener(() {
+        if (_controller.offset >= _controller.position.maxScrollExtent &&
+            !_controller.position.outOfRange &&
+            AnnonceCubit.get(context).cursorId != "") {
+          AnnonceCubit.get(context)
+              .getMyAnnonce(cursor: AnnonceCubit.get(context).cursorId);
+        }
+      });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,29 +42,49 @@ class Annonce extends StatelessWidget {
         child: BlocConsumer<AnnonceCubit, AnnonceState>(
           listener: (context, state) {
             if (state is DeleteAnnonceStateGood) {
+              AnnonceCubit.get(context)
+                  .getMyAnnonce()
+                  .then((value) => Navigator.pop(context));
+            }
+            if (state is DeleteAnnonceStateGood) {
               AnnonceCubit.get(context).getMyAnnonce();
             }
           },
           builder: (context, state) {
-            if (state is GetMyAnnonceStateGood) {
-              final annonces = state.annonces;
-              return ListView.separated(
-                physics: const BouncingScrollPhysics(),
-                itemBuilder: (context, index) =>
-                    _buildAnnonceItem(annonces[index], index, context),
-                separatorBuilder: (context, int index) => const SizedBox(
-                  height: 16,
-                ),
-                itemCount: annonces.length,
-              );
-            } else if (state is GetMyAnnonceStateBad) {
+            if (state is GetMyAnnonceStateBad) {
               return const Text(
                   'Failed to fetch data'); // Display a message if fetching data failed
-            } else {
-              return const Center(
-                  child:
-                      CircularProgressIndicator()); // Return an empty container by default
             }
+            // if (state is GetMyAnnonceLoading) {
+            //   return const Center(
+            //       child:
+            //           CircularProgressIndicator()); // Display a loading indicator
+            // }
+            return Column(
+              children: [
+                Expanded(
+                  child: ListView.separated(
+                    controller: _controller,
+                    physics: const BouncingScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return _buildAnnonceItem(
+                          AnnonceCubit.get(context).annonceData[index],
+                          index,
+                          context);
+                    },
+                    separatorBuilder: (context, int index) => const SizedBox(
+                      height: 16,
+                    ),
+                    itemCount: AnnonceCubit.get(context).annonceData.length,
+                  ),
+                ),
+                if (state is GetMyAnnonceLoading)
+                  const Center(
+                    child: CircularProgressIndicator(),
+                  ),
+              ],
+            );
+            // Return an empty container by default
           },
         ),
       ),
@@ -60,7 +101,7 @@ class Annonce extends StatelessWidget {
   }
 
   Widget _buildAnnonceItem(
-      AnnonceModel model, int index, BuildContext context) {
+      AnnonceAdminData model, int index, BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(
           horizontal: 8.0, vertical: 4.0), // Adjusted for visual balance
@@ -121,8 +162,7 @@ class Annonce extends StatelessWidget {
                               TextButton(
                                 onPressed: () {
                                   AnnonceCubit.get(context)
-                                      .deleteAnnonce(id: model.id!)
-                                      .then((value) => Navigator.pop(context));
+                                      .deleteAnnonce(id: model.id!);
                                 },
                                 child: const Text('Yes'),
                               ),
