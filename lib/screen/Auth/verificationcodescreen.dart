@@ -24,7 +24,7 @@ class _VerificationCodeEntryScreenState extends State<VerificationCodeEntryScree
   List.generate(5, (_) => TextEditingController());
   List<FocusNode> focusNodes = List.generate(5, (_) => FocusNode());
   // bool isResendingCode = false; // Track whether code is being resent
-
+  String enteredCode = '';
   @override
   void initState() {
     super.initState();
@@ -63,7 +63,7 @@ class _VerificationCodeEntryScreenState extends State<VerificationCodeEntryScree
               msg: "code verifier avec succes", state: ToastStates.success);
           navigatAndReturn(
               context: context,
-              page: PasswordResetScreen(email: widget.email ));
+              page: PasswordResetScreen(email: widget.email, codeentered: enteredCode ));
         } else if (state is VerifyCodeFailure) {
           String errorMessage = state.errorModel.message!;
           showToast(msg: errorMessage, state: ToastStates.error);
@@ -159,7 +159,7 @@ class _VerificationCodeEntryScreenState extends State<VerificationCodeEntryScree
                       background:  Color(0xFF199A8E),
                       onPressed: () {
 
-                        String enteredCode = codeControllers
+                         enteredCode = codeControllers
                             .map((controller) => controller.text)
                             .join();
                         AuthCubit.get(context).verifycode(email: widget.email, codeVerification: enteredCode);

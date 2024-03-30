@@ -7,8 +7,9 @@ import 'cubit/auth_cubit.dart';
 
 class PasswordResetScreen extends StatelessWidget {
   final String email;
+  final String codeentered;
 
-  PasswordResetScreen({required this.email});
+  PasswordResetScreen({required this.email , required this.codeentered});
   final TextEditingController _password1Controller = TextEditingController();
   final TextEditingController _password2Controller = TextEditingController();
 
@@ -95,7 +96,7 @@ class PasswordResetScreen extends StatelessWidget {
                           return 'mot de passe pas symetrique';
                         }
                       },
-                      labelText: 'encient mot de passe',
+                      labelText: 'nouveau mot de passe',
                       prefixIcon: const Icon(
                         Icons.password_outlined,
                         color: Colors.grey,
@@ -131,7 +132,7 @@ class PasswordResetScreen extends StatelessWidget {
                           return 'mot de passe pas symetrique';
                         }
                       },
-                      labelText: 'encient mot de passe',
+                      labelText: 'nouveau mot de passe',
                       prefixIcon: const Icon(
                         Icons.password_outlined,
                         color: Colors.grey,
@@ -162,7 +163,7 @@ class PasswordResetScreen extends StatelessWidget {
 
 
                         if (formkey.currentState!.validate()) {
-                          AuthCubit.get(context).resetPassword(email: email, mdp: _password1Controller.text);
+                          AuthCubit.get(context).resetPassword(email: email, mdp: _password1Controller.text , codeVerification:codeentered);
                         }
                       },
                     ),

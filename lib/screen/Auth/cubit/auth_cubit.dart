@@ -152,11 +152,12 @@ class AuthCubit extends Cubit<AuthState> {
 
 
 
-  Future<void> resetPassword({required String email ,required String mdp}) async {
+  Future<void> resetPassword({required String email ,required String mdp ,required String codeVerification}) async {
     emit(PasswordResetLoading());
     Map<String, dynamic> _model = {
       "email": email,
-      "newPassword": mdp
+      "newPassword": mdp,
+      "codeVerification":codeVerification
     };
 
     Httplar.httpPost(path: PATH3, data: _model).then((value) {
