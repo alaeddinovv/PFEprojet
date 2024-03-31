@@ -31,9 +31,6 @@ final class UpdateAnnonceStateBad extends AnnonceState {}
 
 final class GetMyAnnonceLoading extends AnnonceState {}
 
-class GetMyAnnonceStateGood extends AnnonceState {
-  final List<AnnonceModel> annonces;
-  GetMyAnnonceStateGood({required this.annonces});
-}
+class GetMyAnnonceStateGood extends AnnonceState {}
 
 final class GetMyAnnonceStateBad extends AnnonceState {}

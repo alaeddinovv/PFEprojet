@@ -6,7 +6,7 @@ import 'dart:convert' as convert;
 import 'package:pfeprojet/Api/constApi.dart';
 import 'package:pfeprojet/Api/httplaravel.dart';
 
-import '../../../../Model/annonce_model.dart';
+import '../../../../Model/annonce_admin_model.dart';
 import '../../../../Model/error_model.dart';
 
 part 'annonce_state.dart';
@@ -16,8 +16,7 @@ class AnnonceCubit extends Cubit<AnnonceState> {
 
   static AnnonceCubit get(context) => BlocProvider.of<AnnonceCubit>(context);
 
-  AnnonceModel? annonceModel;
-  // ---------------creer annonce
+  // creer annonce -----------------------------------------------------------------------
   Future<void> creerAnnonce(
       {required String type, required String text}) async {
     emit(CreerAnnonceLoadingState());
@@ -43,15 +42,23 @@ class AnnonceCubit extends Cubit<AnnonceState> {
 
   //get My annonce  -----------------------------------------------------------------------
 
-  Future<void> getMyAnnonce() async {
+  List<AnnonceAdminData> annonceData = [];
+  String cursorId = "";
+  Future<void> getMyAnnonce({String cursor = ''}) async {
     emit(GetMyAnnonceLoading());
-    await Httplar.httpget(path: GETMYANNONCE).then((value) {
+    await Httplar.httpget(path: GETMYANNONCEADMIN, query: {'cursor': cursor})
+        .then((value) {
       if (value.statusCode == 200) {
-        var jsonResponse = convert.jsonDecode(value.body) as List;
-
-        List<AnnonceModel> annonces =
-            jsonResponse.map((item) => AnnonceModel.fromJson(item)).toList();
-        emit(GetMyAnnonceStateGood(annonces: annonces)); // Pass the list here
+        if (cursor == "") {
+          annonceData = [];
+          cursorId = "";
+        }
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        AnnonceAdminModel model = AnnonceAdminModel.fromJson(jsonResponse);
+        annonceData.addAll(model.data!);
+        cursorId = model.nextCursor!;
+        emit(GetMyAnnonceStateGood());
       } else {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
@@ -62,6 +69,8 @@ class AnnonceCubit extends Cubit<AnnonceState> {
       emit(GetMyAnnonceStateBad());
     });
   }
+
+  //delete annonce  -----------------------------------------------------------------------
 
   Future<void> deleteAnnonce({required String id}) async {
     emit(DeleteAnnonceLoadingState());
@@ -79,6 +88,8 @@ class AnnonceCubit extends Cubit<AnnonceState> {
       emit(DeleteAnnonceStateBad());
     });
   }
+
+  //update annonce  -----------------------------------------------------------------------
 
   Future<void> updateAnnonce({
     required String id,

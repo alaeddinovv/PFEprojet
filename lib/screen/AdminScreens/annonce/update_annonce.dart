@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pfeprojet/Model/annonce_model.dart';
+import 'package:pfeprojet/Model/annonce_admin_model.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/screen/AdminScreens/annonce/cubit/annonce_cubit.dart';
 
 class EditAnnoncePage extends StatefulWidget {
-  final AnnonceModel annonceModel; // Assuming AnnonceModel is your data model
+  final AnnonceAdminData
+      annonceModel; // Assuming AnnonceModel is your data model
 
   const EditAnnoncePage({Key? key, required this.annonceModel})
       : super(key: key);
@@ -58,7 +59,14 @@ class _EditAnnoncePageState extends State<EditAnnoncePage> {
             child: Column(
               // padding: const EdgeInsets.all(16),
               children: <Widget>[
-                const SizedBox(height: 30),
+                BlocBuilder<AnnonceCubit, AnnonceState>(
+                  builder: (context, state) {
+                    if (state is UpdateAnnonceLoadingState) {
+                      return const LinearProgressIndicator();
+                    }
+                    return const SizedBox(height: 30);
+                  },
+                ),
                 defaultForm3(
                   context: context,
                   controller: _titleController,
@@ -108,7 +116,9 @@ class _EditAnnoncePageState extends State<EditAnnoncePage> {
                     if (state is UpdateAnnonceStateGood) {
                       // Handle success
                       showToast(msg: "Succes", state: ToastStates.success);
-                      AnnonceCubit.get(context).getMyAnnonce().then((value) {
+                      AnnonceCubit.get(context)
+                          .getMyAnnonce(cursor: "")
+                          .then((value) {
                         Navigator.pop(context);
                       });
                     } else if (state is UpdateAnnonceStateBad) {
