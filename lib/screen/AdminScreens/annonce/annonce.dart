@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/screen/AdminScreens/annonce/update_annonce.dart';
-import 'package:pfeprojet/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
 import '../../../Model/annonce_admin_model.dart';
 
 import 'addannonce.dart';
@@ -20,7 +19,6 @@ class _AnnonceState extends State<Annonce> {
   late ScrollController _controller;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _controller = ScrollController()
       ..addListener(() {
@@ -31,6 +29,12 @@ class _AnnonceState extends State<Annonce> {
               .getMyAnnonce(cursor: AnnonceCubit.get(context).cursorId);
         }
       });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
   }
 
   @override
@@ -55,11 +59,7 @@ class _AnnonceState extends State<Annonce> {
               return const Text(
                   'Failed to fetch data'); // Display a message if fetching data failed
             }
-            // if (state is GetMyAnnonceLoading) {
-            //   return const Center(
-            //       child:
-            //           CircularProgressIndicator()); // Display a loading indicator
-            // }
+
             return Column(
               children: [
                 Expanded(
@@ -110,22 +110,12 @@ class _AnnonceState extends State<Annonce> {
         border: Border.all(
             color: Colors.blueAccent,
             width: 2), // Slightly thicker border for emphasis
-        borderRadius:
-            BorderRadius.circular(10), // Softened corners for a modern look
+        borderRadius: BorderRadius.circular(8.0), // Rounded corners
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ListTile(
-            titleAlignment: ListTileTitleAlignment.top,
-            leading: CircleAvatar(
-              radius: 20,
-              backgroundImage: HomeAdminCubit.get(context).adminModel!.photo !=
-                      null
-                  ? NetworkImage(HomeAdminCubit.get(context).adminModel!.photo!)
-                  : const AssetImage('assets/images/user.png')
-                      as ImageProvider<Object>,
-            ), // More prominent icon
             title: Text(
               model.type ?? '',
               style: const TextStyle(
@@ -133,7 +123,6 @@ class _AnnonceState extends State<Annonce> {
                 fontWeight: FontWeight.w600,
                 fontSize: 18, // Larger font size for prominence
               ),
-              overflow: TextOverflow.ellipsis,
             ),
             trailing: Row(
               mainAxisSize: MainAxisSize
@@ -151,36 +140,13 @@ class _AnnonceState extends State<Annonce> {
                 IconButton(
                   icon: const Icon(Icons.delete, color: Colors.grey),
                   onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (context) {
-                          return AlertDialog(
-                            title: const Text('Delete Annonce'),
-                            content: const Text(
-                                'Are you sure you want to delete this annonce?'),
-                            actions: [
-                              TextButton(
-                                onPressed: () {
-                                  AnnonceCubit.get(context)
-                                      .deleteAnnonce(id: model.id!);
-                                },
-                                child: const Text('Yes'),
-                              ),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.pop(context);
-                                },
-                                child: const Text('No'),
-                              ),
-                            ],
-                          );
-                        });
+                    dialogDelete(context, model);
                   },
                 ),
               ],
             ),
-            contentPadding: const EdgeInsets.symmetric(
-                horizontal: 12.0, vertical: 8.0), // Adjusted padding for layout
+            // contentPadding: const EdgeInsets.symmetric(
+            //     horizontal: 12.0, vertical: 8.0), // Adjusted padding for layout
           ),
           Padding(
             padding: const EdgeInsets.symmetric(
@@ -196,5 +162,31 @@ class _AnnonceState extends State<Annonce> {
         ],
       ),
     );
+  }
+
+  Future<dynamic> dialogDelete(BuildContext context, AnnonceAdminData model) {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Delete Annonce'),
+            content:
+                const Text('Are you sure you want to delete this annonce?'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  AnnonceCubit.get(context).deleteAnnonce(id: model.id!);
+                },
+                child: const Text('Yes'),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                child: const Text('No'),
+              ),
+            ],
+          );
+        });
   }
 }

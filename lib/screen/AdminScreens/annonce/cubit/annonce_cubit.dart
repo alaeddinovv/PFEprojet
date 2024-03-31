@@ -16,7 +16,7 @@ class AnnonceCubit extends Cubit<AnnonceState> {
 
   static AnnonceCubit get(context) => BlocProvider.of<AnnonceCubit>(context);
 
-  // ---------------creer annonce
+  // creer annonce -----------------------------------------------------------------------
   Future<void> creerAnnonce(
       {required String type, required String text}) async {
     emit(CreerAnnonceLoadingState());
@@ -41,7 +41,7 @@ class AnnonceCubit extends Cubit<AnnonceState> {
   }
 
   //get My annonce  -----------------------------------------------------------------------
-  // AnnonceResponseModel? annonceResponseModel;
+
   List<AnnonceAdminData> annonceData = [];
   String cursorId = "";
   Future<void> getMyAnnonce({String cursor = ''}) async {
@@ -70,6 +70,8 @@ class AnnonceCubit extends Cubit<AnnonceState> {
     });
   }
 
+  //delete annonce  -----------------------------------------------------------------------
+
   Future<void> deleteAnnonce({required String id}) async {
     emit(DeleteAnnonceLoadingState());
 
@@ -86,6 +88,8 @@ class AnnonceCubit extends Cubit<AnnonceState> {
       emit(DeleteAnnonceStateBad());
     });
   }
+
+  //update annonce  -----------------------------------------------------------------------
 
   Future<void> updateAnnonce({
     required String id,
