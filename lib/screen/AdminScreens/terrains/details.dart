@@ -155,10 +155,9 @@ class TerrainDetailsScreen extends StatelessWidget {
                         navigatAndReturn(
                             context: context,
                             page: Reserve(
-                              date: terrainCubit.selectedDate,
-                              hour: hour,
-                              index: index,
-                            ));
+                                date: terrainCubit.selectedDate,
+                                hour: hour,
+                                index: index));
                       }
                     },
                     child:
