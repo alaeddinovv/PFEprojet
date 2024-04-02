@@ -7,8 +7,11 @@ import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/cubit/terrain_cubit.dart';
 
 class Reserve extends StatelessWidget {
-  Reserve({super.key, required this.index});
+  Reserve(
+      {super.key, required this.index, required this.hour, required this.date});
   final index;
+  final String hour;
+  final DateTime date;
   final userIdController = TextEditingController();
   final dateController = TextEditingController();
   final hourController = TextEditingController();
@@ -95,21 +98,20 @@ class Reserve extends StatelessWidget {
               const SizedBox(
                 height: 8,
               ),
-              // SizedBox(
-              //   width: 250,
-              //   child: defaultForm3(
-              //     enabled: false,
-              //     prefixIcon: const Icon(Icons.calendar_today_outlined),
-              //     context: context,
-              //     readOnly: true,
-              //     type: TextInputType.datetime,
-              //     valid: () {},
-              //     labelText:
-              //         "${TerrainCubit.get(context).dateSelected.toLocal()}"
-              //             .split(' ')[0],
-              //     controller: dateController,
-              //   ),
-              // ),
+              SizedBox(
+                width: 250,
+                child: defaultForm3(
+                  enabled: false,
+                  prefixIcon: const Icon(Icons.calendar_today_outlined),
+                  context: context,
+                  readOnly: true,
+                  type: TextInputType.datetime,
+                  valid: () {},
+                  labelText:
+                      '${date.toLocal().day}/${date.toLocal().month}/${date.toLocal().year}',
+                  controller: dateController,
+                ),
+              ),
 
               const SizedBox(
                 height: 16,
@@ -120,16 +122,16 @@ class Reserve extends StatelessWidget {
               ),
               SizedBox(
                 width: 250,
-                // child: defaultForm3(
-                //   enabled: false,
-                //   prefixIcon: const Icon(Icons.timer_outlined),
-                //   context: context,
-                //   readOnly: true,
-                //   type: TextInputType.number,
-                //   valid: () {},
-                //   labelText: TerrainCubit.get(context).timeSlots[index]['time'],
-                //   controller: hourController,
-                // ),
+                child: defaultForm3(
+                  enabled: false,
+                  prefixIcon: const Icon(Icons.timer_outlined),
+                  context: context,
+                  readOnly: true,
+                  type: TextInputType.number,
+                  valid: () {},
+                  labelText: hour,
+                  controller: hourController,
+                ),
               ),
               const SizedBox(
                 height: 16,

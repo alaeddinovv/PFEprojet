@@ -92,35 +92,18 @@ class TerrainCubit extends Cubit<TerrainState> {
 
   List<String> generateTimeSlots(
       String sTemps, String eTemps, List<dynamic> nonReservable) {
-    DateTime startTime =
-        DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(sTemps);
-    DateTime endTime = DateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'").parse(eTemps);
+    DateTime startTime = DateFormat("HH:mm")
+        .parse(sTemps); // time format from server is HH:mm string
+    DateTime endTime = DateFormat("HH")
+        .parse(eTemps); // time format from server is HH:mm string
     List<String> timeSlots = [];
 
     while (startTime.isBefore(endTime)) {
-      String slot = DateFormat('HH').format(startTime);
-      if (!nonReservable.contains(slot)) {
-        timeSlots.add(slot);
-      }
-      startTime = startTime.add(Duration(hours: 1));
+      String slot = DateFormat('HH:mm').format(startTime);
+      timeSlots.add(slot);
+      startTime = startTime.add(const Duration(hours: 1, minutes: 0));
     }
 
     return timeSlots;
   }
-
-  // bool isTimeSlotReservable(DateTime timeSlot) {
-  //   // Format the day of the week from timeSlot to match the "day" field in nonReservableTimeBlocks
-  //   String dayOfWeek =
-  //       DateFormat('EEEE').format(timeSlot); // "Sunday", "Monday", etc.
-  //   var nonReservableBlock = terrains[0].nonReservableTimeBlocks!.firstWhere(
-  //         (block) => block.day == dayOfWeek,
-  //         orElse: () => NonReservableTimeBlocks(day: '', hours: [], id: ''),
-  //       );
-  //   if (nonReservableBlock != null) {
-  //     int hour = timeSlot.hour;
-  //     // Check if the "hours" array contains this hour
-  //     return !nonReservableBlock.hours!.contains(hour.toString());
-  //   }
-  //   return true; // If no non-reservable block for this day, it's reservable
-  // }
 }
