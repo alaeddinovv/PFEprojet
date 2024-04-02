@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pfeprojet/component/components.dart';
-import 'package:pfeprojet/screen/AdminScreens/home/home.dart';
 import 'package:pfeprojet/screen/Auth/verificationcodescreen.dart';
 
 import 'cubit/auth_cubit.dart';
-import 'login.dart';
 
 class PasswordRecoveryScreen extends StatelessWidget {
   PasswordRecoveryScreen({super.key});
@@ -35,12 +33,12 @@ class PasswordRecoveryScreen extends StatelessWidget {
           body: SingleChildScrollView(
             child: Container(
               height: 759,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   colors: [Colors.white, Color(0xFFB0EFE9)],
                 ),
               ),
-              padding: EdgeInsets.only(top: 90.0, right: 10, left: 10),
+              padding: const EdgeInsets.only(top: 90.0, right: 10, left: 10),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -50,7 +48,7 @@ class PasswordRecoveryScreen extends StatelessWidget {
                     height: 165,
                     alignment: Alignment.center,
                   ),
-                  Text(
+                  const Text(
                     'Forgot password?',
                     style: TextStyle(
                         fontFamily: 'Poppins',
@@ -58,8 +56,8 @@ class PasswordRecoveryScreen extends StatelessWidget {
                         color: Colors.black,
                         fontWeight: FontWeight.bold),
                   ),
-                  SizedBox(height: 20),
-                  Text(
+                  const SizedBox(height: 20),
+                  const Text(
                     'Don’t worry happens to the best of us.\nType your email to reset your password.',
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -68,7 +66,7 @@ class PasswordRecoveryScreen extends StatelessWidget {
                       color: Colors.black,
                     ),
                   ),
-                  SizedBox(height: 40),
+                  const SizedBox(height: 40),
                   Form(
                     key: formkey,
                     child: defaultForm3(
@@ -88,12 +86,12 @@ class PasswordRecoveryScreen extends StatelessWidget {
                       textInputAction: TextInputAction.next,
                     ),
                   ),
-                  SizedBox(height: 40),
+                  const SizedBox(height: 40),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: defaultSubmit2(
                       text: 'send',
-                      background: Color(0xFF199A8E),
+                      background: const Color(0xFF199A8E),
                       onPressed: () {
                         if (formkey.currentState!.validate()) {
                           AuthCubit.get(context).recoverPassword(
@@ -103,11 +101,11 @@ class PasswordRecoveryScreen extends StatelessWidget {
                       },
                     ),
                   ),
-                  SizedBox(height: 30),
+                  const SizedBox(height: 30),
                   if (state is PasswordRecoveryLoading)
                     const LinearProgressIndicator(),
-                  SizedBox(height: 8),
-                  Text(
+                  const SizedBox(height: 8),
+                  const Text(
                     'Remember your password?',
                     textAlign: TextAlign.start,
                     style: TextStyle(
@@ -116,14 +114,14 @@ class PasswordRecoveryScreen extends StatelessWidget {
                       color: Colors.black,
                     ),
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Align(
                     alignment: Alignment.center,
                     child: InkWell(
                       onTap: () {
                         Navigator.pop(context);
                       },
-                      child: Text(
+                      child: const Text(
                         'Log in',
                         textAlign: TextAlign.start,
                         style: TextStyle(
