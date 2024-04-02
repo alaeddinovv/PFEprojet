@@ -95,21 +95,22 @@ class Reserve extends StatelessWidget {
               const SizedBox(
                 height: 8,
               ),
-              SizedBox(
-                width: 250,
-                child: defaultForm3(
-                  enabled: false,
-                  prefixIcon: const Icon(Icons.calendar_today_outlined),
-                  context: context,
-                  readOnly: true,
-                  type: TextInputType.datetime,
-                  valid: () {},
-                  labelText:
-                      "${TerrainCubit.get(context).dateSelected.toLocal()}"
-                          .split(' ')[0],
-                  controller: dateController,
-                ),
-              ),
+              // SizedBox(
+              //   width: 250,
+              //   child: defaultForm3(
+              //     enabled: false,
+              //     prefixIcon: const Icon(Icons.calendar_today_outlined),
+              //     context: context,
+              //     readOnly: true,
+              //     type: TextInputType.datetime,
+              //     valid: () {},
+              //     labelText:
+              //         "${TerrainCubit.get(context).dateSelected.toLocal()}"
+              //             .split(' ')[0],
+              //     controller: dateController,
+              //   ),
+              // ),
+
               const SizedBox(
                 height: 16,
               ),
@@ -119,16 +120,16 @@ class Reserve extends StatelessWidget {
               ),
               SizedBox(
                 width: 250,
-                child: defaultForm3(
-                  enabled: false,
-                  prefixIcon: const Icon(Icons.timer_outlined),
-                  context: context,
-                  readOnly: true,
-                  type: TextInputType.number,
-                  valid: () {},
-                  labelText: TerrainCubit.get(context).timeSlots[index]['time'],
-                  controller: hourController,
-                ),
+                // child: defaultForm3(
+                //   enabled: false,
+                //   prefixIcon: const Icon(Icons.timer_outlined),
+                //   context: context,
+                //   readOnly: true,
+                //   type: TextInputType.number,
+                //   valid: () {},
+                //   labelText: TerrainCubit.get(context).timeSlots[index]['time'],
+                //   controller: hourController,
+                // ),
               ),
               const SizedBox(
                 height: 16,
