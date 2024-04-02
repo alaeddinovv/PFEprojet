@@ -7,8 +7,11 @@ import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/cubit/terrain_cubit.dart';
 
 class Reserve extends StatelessWidget {
-  Reserve({super.key, required this.index});
+  Reserve(
+      {super.key, required this.index, required this.hour, required this.date});
   final index;
+  final String hour;
+  final DateTime date;
   final userIdController = TextEditingController();
   final dateController = TextEditingController();
   final hourController = TextEditingController();
@@ -105,11 +108,11 @@ class Reserve extends StatelessWidget {
                   type: TextInputType.datetime,
                   valid: () {},
                   labelText:
-                      "${TerrainCubit.get(context).dateSelected.toLocal()}"
-                          .split(' ')[0],
+                      '${date.toLocal().day}/${date.toLocal().month}/${date.toLocal().year}',
                   controller: dateController,
                 ),
               ),
+
               const SizedBox(
                 height: 16,
               ),
@@ -126,7 +129,7 @@ class Reserve extends StatelessWidget {
                   readOnly: true,
                   type: TextInputType.number,
                   valid: () {},
-                  labelText: TerrainCubit.get(context).timeSlots[index]['time'],
+                  labelText: hour,
                   controller: hourController,
                 ),
               ),

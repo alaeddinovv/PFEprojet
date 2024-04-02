@@ -1,12 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 import 'package:pfeprojet/Api/constApi.dart';
 import 'package:pfeprojet/Api/httplaravel.dart';
 import 'package:pfeprojet/Model/error_model.dart';
 import 'package:pfeprojet/Model/terrain_model.dart';
 import 'package:pfeprojet/Model/user_model.dart';
-import 'package:pfeprojet/component/const.dart';
 import 'dart:convert' as convert;
 
 part 'terrain_state.dart';
@@ -56,40 +56,6 @@ class TerrainCubit extends Cubit<TerrainState> {
     }
   }
 
-  final List<Map<String, dynamic>> timeSlots = [
-    {"time": "8:00", "isReserved": true},
-    {"time": "9:00", "isReserved": false},
-    {"time": "10:00", "isReserved": true},
-    {"time": "11:00", "isReserved": false},
-    {"time": "12:00", "isReserved": false},
-    {"time": "13:00", "isReserved": true},
-    {"time": "14:00", "isReserved": false},
-    {"time": "15:00", "isReserved": false},
-    {"time": "16:00", "isReserved": false},
-    {"time": "17:00", "isReserved": false},
-    {"time": "18:00", "isReserved": false},
-    {"time": "19:00", "isReserved": false},
-    {"time": "20:00", "isReserved": false},
-    {"time": "21:00", "isReserved": false},
-    {"time": "22:00", "isReserved": false},
-    {"time": "23:00", "isReserved": false},
-    {"time": "24:00", "isReserved": false}
-  ];
-
-  DateTime dateSelected = dates.first;
-
-  void setSelectedDate(DateTime date) {
-    dateSelected = date;
-    emit(TerrainDateChanged());
-  }
-
-  final List<String> assetImagePaths = [
-    'assets/images/terrain2.jpg',
-    'assets/images/terrain.png',
-    'assets/images/terrain2.jpg',
-    'assets/images/terrain.png',
-  ];
-
   void checkUserById({required String id}) {
     emit(LoadinCheckUserByIdState());
     Httplar.httpget(
@@ -113,5 +79,31 @@ class TerrainCubit extends Cubit<TerrainState> {
       print(e.toString());
       emit(CheckUserByIdStateBad());
     });
+  }
+
+// Add to your TerrainCubit class
+
+  DateTime selectedDate = DateTime.now();
+
+  void selectDate(DateTime date) {
+    selectedDate = date;
+    emit(TerrainDateChanged());
+  }
+
+  List<String> generateTimeSlots(
+      String sTemps, String eTemps, List<dynamic> nonReservable) {
+    DateTime startTime = DateFormat("HH:mm")
+        .parse(sTemps); // time format from server is HH:mm string
+    DateTime endTime = DateFormat("HH")
+        .parse(eTemps); // time format from server is HH:mm string
+    List<String> timeSlots = [];
+
+    while (startTime.isBefore(endTime)) {
+      String slot = DateFormat('HH:mm').format(startTime);
+      timeSlots.add(slot);
+      startTime = startTime.add(const Duration(hours: 1, minutes: 0));
+    }
+
+    return timeSlots;
   }
 }
