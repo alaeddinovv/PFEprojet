@@ -19,9 +19,10 @@ class VerificationCodeEntryScreen extends StatefulWidget {
       _VerificationCodeEntryScreenState();
 }
 
-class _VerificationCodeEntryScreenState extends State<VerificationCodeEntryScreen> {
+class _VerificationCodeEntryScreenState
+    extends State<VerificationCodeEntryScreen> {
   List<TextEditingController> codeControllers =
-  List.generate(5, (_) => TextEditingController());
+      List.generate(5, (_) => TextEditingController());
   List<FocusNode> focusNodes = List.generate(5, (_) => FocusNode());
   // bool isResendingCode = false; // Track whether code is being resent
   String enteredCode = '';
@@ -30,7 +31,8 @@ class _VerificationCodeEntryScreenState extends State<VerificationCodeEntryScree
     super.initState();
     for (int i = 0; i < codeControllers.length; i++) {
       codeControllers[i].addListener(() {
-        if (codeControllers[i].text.length == 1 && i < codeControllers.length - 1) {
+        if (codeControllers[i].text.length == 1 &&
+            i < codeControllers.length - 1) {
           FocusScope.of(context).requestFocus(focusNodes[i + 1]);
         }
       });
@@ -53,25 +55,24 @@ class _VerificationCodeEntryScreenState extends State<VerificationCodeEntryScree
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is PasswordRecoverySuccess) {
-          showToast(
-              msg: "code resended", state: ToastStates.success);
+          // showToast(
+          //     msg: "code resended", state: ToastStates.success);
         } else if (state is PasswordRecoveryFailure) {
-          showToast(
-              msg: "pls ask for code again", state: ToastStates.error);
+          showToast(msg: "pls ask for code again", state: ToastStates.error);
         } else if (state is VerifyCodeSuccess) {
           showToast(
               msg: "code verifier avec succes", state: ToastStates.success);
-          navigatAndReturn(
+          navigatAndFinish(
               context: context,
-              page: PasswordResetScreen(email: widget.email, codeentered: enteredCode ));
+              page: PasswordResetScreen(
+                  email: widget.email, codeentered: enteredCode));
         } else if (state is VerifyCodeFailure) {
           String errorMessage = state.errorModel.message!;
           showToast(msg: errorMessage, state: ToastStates.error);
-
         } else if (state is VerifyCodeBad) {
           showToast(
-              msg: "probleme demander code une autre fois", state: ToastStates.error);
-
+              msg: "probleme demander code une autre fois",
+              state: ToastStates.error);
         }
         // Add more states handling as per your logic
       },
@@ -80,18 +81,18 @@ class _VerificationCodeEntryScreenState extends State<VerificationCodeEntryScree
           body: SingleChildScrollView(
             child: Container(
               height: MediaQuery.of(context).size.height,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   colors: [Colors.white, Color(0xFFB0EFE9)],
                 ),
               ),
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(height: 100),
-                  Text(
+                  const SizedBox(height: 100),
+                  const Text(
                     'Verification',
                     style: TextStyle(
                       fontFamily: 'Poppins',
@@ -100,26 +101,26 @@ class _VerificationCodeEntryScreenState extends State<VerificationCodeEntryScree
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 40),
+                  const SizedBox(height: 40),
                   Image.asset(
                     'assets/images/mail.png',
                     width: 200,
                     height: 100,
                     alignment: Alignment.center,
                   ),
-                  SizedBox(height: 45),
+                  const SizedBox(height: 45),
                   Text(
                     'A verification code has been sent to ${widget.email}. Please enter the code below:',
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontFamily: 'Poppins',
                       fontSize: 16,
                       color: Colors.black,
                     ),
                   ),
-                  SizedBox(height: 50),
+                  const SizedBox(height: 50),
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    padding: const EdgeInsets.symmetric(horizontal: 10),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: List.generate(5, (index) {
@@ -139,10 +140,13 @@ class _VerificationCodeEntryScreenState extends State<VerificationCodeEntryScree
                               counterText: '',
                             ),
                             onChanged: (value) {
-                              if (value.length == 1 && index < codeControllers.length - 1) {
-                                FocusScope.of(context).requestFocus(focusNodes[index + 1]);
+                              if (value.length == 1 &&
+                                  index < codeControllers.length - 1) {
+                                FocusScope.of(context)
+                                    .requestFocus(focusNodes[index + 1]);
                               } else if (value.isEmpty && index > 0) {
-                                FocusScope.of(context).requestFocus(focusNodes[index - 1]);
+                                FocusScope.of(context)
+                                    .requestFocus(focusNodes[index - 1]);
                               }
                             },
                             maxLength: 1,
@@ -151,23 +155,23 @@ class _VerificationCodeEntryScreenState extends State<VerificationCodeEntryScree
                       }),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: defaultSubmit2(
                       text: 'send',
-                      background:  Color(0xFF199A8E),
+                      background: const Color(0xFF199A8E),
                       onPressed: () {
-
-                         enteredCode = codeControllers
+                        enteredCode = codeControllers
                             .map((controller) => controller.text)
                             .join();
-                        AuthCubit.get(context).verifycode(email: widget.email, codeVerification: enteredCode);
+                        AuthCubit.get(context).verifycode(
+                            email: widget.email, codeVerification: enteredCode);
                       },
                     ),
                   ),
-                  SizedBox(height: 20),
-                  Text(
+                  const SizedBox(height: 20),
+                  const Text(
                     'Did you fail to receive any code?',
                     style: TextStyle(
                       fontFamily: 'Poppins',
@@ -175,14 +179,15 @@ class _VerificationCodeEntryScreenState extends State<VerificationCodeEntryScree
                       fontWeight: FontWeight.bold,
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Align(
                     alignment: Alignment.center,
                     child: InkWell(
                       onTap: () {
-                        AuthCubit.get(context).recoverPassword(email: widget.email);
+                        AuthCubit.get(context)
+                            .recoverPassword(email: widget.email);
                       },
-                      child: Text(
+                      child: const Text(
                         'Resend code',
                         textAlign: TextAlign.start,
                         style: TextStyle(
@@ -196,7 +201,6 @@ class _VerificationCodeEntryScreenState extends State<VerificationCodeEntryScree
                   ),
                   if (state is PasswordRecoveryLoading)
                     const LinearProgressIndicator(),
-
                 ],
               ),
             ),

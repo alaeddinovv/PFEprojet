@@ -9,7 +9,8 @@ class PasswordResetScreen extends StatelessWidget {
   final String email;
   final String codeentered;
 
-  PasswordResetScreen({required this.email , required this.codeentered});
+  PasswordResetScreen(
+      {super.key, required this.email, required this.codeentered});
   final TextEditingController _password1Controller = TextEditingController();
   final TextEditingController _password2Controller = TextEditingController();
 
@@ -23,11 +24,10 @@ class PasswordResetScreen extends StatelessWidget {
           showToast(
               msg: "password updated succecfuly", state: ToastStates.success);
 
-          navigatAndReturn(
+          navigatAndFinish(
             context: context,
             page: Login(),
           );
-
         } else if (state is PasswordResetFailure) {
           showToast(msg: "email doesnt exist", state: ToastStates.error);
         } else if (state is ErrorState) {
@@ -80,76 +80,74 @@ class PasswordResetScreen extends StatelessWidget {
                     key: formkey,
                     child: Column(
                       children: [
-                      defaultForm3(
-                      context: context,
-                      textInputAction: TextInputAction.done,
-                      controller: _password1Controller,
-                      type: TextInputType.visiblePassword,
-                      onFieldSubmitted: () {},
-                      obscureText:
-                      AuthCubit.get(context).isHidden['pass']!,
-                      valid: (value) {
-                        if (value.isEmpty) {
-                          return 'mot_de_passe Must Be Not Empty';
-                        }
-                        if (value != _password2Controller.text) {
-                          return 'mot de passe pas symetrique';
-                        }
-                      },
-                      labelText: 'nouveau mot de passe',
-                      prefixIcon: const Icon(
-                        Icons.password_outlined,
-                        color: Colors.grey,
-                      ),
-                      sufixIcon: IconButton(
-                        onPressed: () {
-                          AuthCubit.get(context)
-                              .togglePasswordVisibility('pass');
-                        },
-                        icon: Icon(
-                          AuthCubit.get(context).isHidden['pass']!
-                              ? Icons.visibility_outlined
-                              : Icons.visibility_off_outlined,
+                        defaultForm3(
+                          context: context,
+                          textInputAction: TextInputAction.done,
+                          controller: _password1Controller,
+                          type: TextInputType.visiblePassword,
+                          onFieldSubmitted: () {},
+                          obscureText: AuthCubit.get(context).isHidden['pass']!,
+                          valid: (value) {
+                            if (value.isEmpty) {
+                              return 'mot_de_passe Must Be Not Empty';
+                            }
+                            if (value != _password2Controller.text) {
+                              return 'mot de passe pas symetrique';
+                            }
+                          },
+                          labelText: 'nouveau mot de passe',
+                          prefixIcon: const Icon(
+                            Icons.password_outlined,
+                            color: Colors.grey,
+                          ),
+                          sufixIcon: IconButton(
+                            onPressed: () {
+                              AuthCubit.get(context)
+                                  .togglePasswordVisibility('pass');
+                            },
+                            icon: Icon(
+                              AuthCubit.get(context).isHidden['pass']!
+                                  ? Icons.visibility_outlined
+                                  : Icons.visibility_off_outlined,
+                            ),
+                            color: Colors.grey,
+                          ),
                         ),
-                        color: Colors.grey,
-                      ),
-                    ),
-
                         SizedBox(height: 20),
-                    defaultForm3(
-                      context: context,
-                      textInputAction: TextInputAction.done,
-                      controller: _password2Controller,
-                      type: TextInputType.visiblePassword,
-                      onFieldSubmitted: () {},
-                      obscureText:
-                      AuthCubit.get(context).isHidden['pass1']!,
-                      valid: (value) {
-                        if (value.isEmpty) {
-                          return 'mot_de_passe Must Be Not Empty';
-                        }
-                        if (value != _password1Controller.text) {
-                          return 'mot de passe pas symetrique';
-                        }
-                      },
-                      labelText: 'nouveau mot de passe',
-                      prefixIcon: const Icon(
-                        Icons.password_outlined,
-                        color: Colors.grey,
-                      ),
-                      sufixIcon: IconButton(
-                        onPressed: () {
-                          AuthCubit.get(context)
-                              .togglePasswordVisibility('pass1');
-                        },
-                        icon: Icon(
-                          AuthCubit.get(context).isHidden['pass1']!
-                              ? Icons.visibility_outlined
-                              : Icons.visibility_off_outlined,
-                        ),
-                        color: Colors.grey,
-                      ),
-                    )
+                        defaultForm3(
+                          context: context,
+                          textInputAction: TextInputAction.done,
+                          controller: _password2Controller,
+                          type: TextInputType.visiblePassword,
+                          onFieldSubmitted: () {},
+                          obscureText:
+                              AuthCubit.get(context).isHidden['pass1']!,
+                          valid: (value) {
+                            if (value.isEmpty) {
+                              return 'mot_de_passe Must Be Not Empty';
+                            }
+                            if (value != _password1Controller.text) {
+                              return 'mot de passe pas symetrique';
+                            }
+                          },
+                          labelText: 'nouveau mot de passe',
+                          prefixIcon: const Icon(
+                            Icons.password_outlined,
+                            color: Colors.grey,
+                          ),
+                          sufixIcon: IconButton(
+                            onPressed: () {
+                              AuthCubit.get(context)
+                                  .togglePasswordVisibility('pass1');
+                            },
+                            icon: Icon(
+                              AuthCubit.get(context).isHidden['pass1']!
+                                  ? Icons.visibility_outlined
+                                  : Icons.visibility_off_outlined,
+                            ),
+                            color: Colors.grey,
+                          ),
+                        )
                       ],
                     ),
                   ),
@@ -158,12 +156,13 @@ class PasswordResetScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: defaultSubmit2(
                       text: 'reset password',
-                      background:  Color(0xFF199A8E),
+                      background: Color(0xFF199A8E),
                       onPressed: () {
-
-
                         if (formkey.currentState!.validate()) {
-                          AuthCubit.get(context).resetPassword(email: email, mdp: _password1Controller.text , codeVerification:codeentered);
+                          AuthCubit.get(context).resetPassword(
+                              email: email,
+                              mdp: _password1Controller.text,
+                              codeVerification: codeentered);
                         }
                       },
                     ),

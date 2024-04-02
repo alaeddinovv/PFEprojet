@@ -7,8 +7,6 @@ import 'package:pfeprojet/screen/Auth/verificationcodescreen.dart';
 import 'cubit/auth_cubit.dart';
 import 'login.dart';
 
-
-
 class PasswordRecoveryScreen extends StatelessWidget {
   PasswordRecoveryScreen({super.key});
   final TextEditingController _emailController = TextEditingController();
@@ -19,14 +17,12 @@ class PasswordRecoveryScreen extends StatelessWidget {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is PasswordRecoverySuccess) {
-          showToast(
-              msg: "email exist", state: ToastStates.success);
+          showToast(msg: "email exist", state: ToastStates.success);
 
           navigatAndReturn(
             context: context,
             page: VerificationCodeEntryScreen(email: _emailController.text),
           );
-
         } else if (state is PasswordRecoveryFailure) {
           showToast(msg: "email doesnt exist", state: ToastStates.error);
         } else if (state is ErrorState) {
@@ -97,12 +93,11 @@ class PasswordRecoveryScreen extends StatelessWidget {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     child: defaultSubmit2(
                       text: 'send',
-                      background:  Color(0xFF199A8E),
+                      background: Color(0xFF199A8E),
                       onPressed: () {
                         if (formkey.currentState!.validate()) {
                           AuthCubit.get(context).recoverPassword(
                             email: _emailController.text,
-
                           );
                         }
                       },
@@ -111,7 +106,6 @@ class PasswordRecoveryScreen extends StatelessWidget {
                   SizedBox(height: 30),
                   if (state is PasswordRecoveryLoading)
                     const LinearProgressIndicator(),
-
                   SizedBox(height: 8),
                   Text(
                     'Remember your password?',
@@ -127,10 +121,7 @@ class PasswordRecoveryScreen extends StatelessWidget {
                     alignment: Alignment.center,
                     child: InkWell(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => Login()),
-                        );
+                        Navigator.pop(context);
                       },
                       child: Text(
                         'Log in',
