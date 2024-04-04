@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:pfeprojet/Model/terrain_model.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/cubit/terrain_cubit.dart';
+import 'package:pfeprojet/screen/AdminScreens/terrains/location.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/reserve.dart';
 
 class TerrainDetailsScreen extends StatelessWidget {
@@ -172,137 +174,151 @@ class TerrainDetailsScreen extends StatelessWidget {
     );
   }
 
-  Column descriptionInfo(double screenHeight, BuildContext context) {
-    return Column(
-      children: [
-        SizedBox(
-          height: screenHeight * 0.015,
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
+  Padding descriptionInfo(double screenHeight, BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Column(
+        mainAxisSize: MainAxisSize.max,
+        children: [
+          SizedBox(
+            height: screenHeight * 0.02,
+          ),
+          Row(
             children: [
-              Row(
-                children: [
-                  const Icon(Icons.location_on),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  RichText(
-                    text: TextSpan(
-                      // Default style for all spans
-                      style: DefaultTextStyle.of(context).style,
-                      children: <TextSpan>[
-                        const TextSpan(
-                          text: 'Address: ',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        TextSpan(
-                          text: terrainModel.adresse!,
-                          style: const TextStyle(fontStyle: FontStyle.italic),
-                        ),
-                      ],
+              const Icon(Icons.location_on),
+              const SizedBox(
+                width: 8,
+              ),
+              RichText(
+                text: TextSpan(
+                  // Default style for all spans
+                  style: DefaultTextStyle.of(context).style,
+                  children: <TextSpan>[
+                    const TextSpan(
+                      text: 'Address: ',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  )
-                ],
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              Row(
-                children: [
-                  const Icon(Icons.phone),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  RichText(
-                    text: TextSpan(
-                      style: DefaultTextStyle.of(context).style,
-                      children: <TextSpan>[
-                        const TextSpan(
-                          text: 'Telephone: ',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        TextSpan(
-                          text: HomeAdminCubit.get(context)
-                              .adminModel!
-                              .telephone!
-                              .toString(),
-                          style: const TextStyle(fontStyle: FontStyle.italic),
-                        ),
-                      ],
+                    TextSpan(
+                      text: terrainModel.adresse!,
+                      style: const TextStyle(fontStyle: FontStyle.italic),
                     ),
-                  )
-                ],
-              ),
+                  ],
+                ),
+              )
+            ],
+          ),
+          const SizedBox(
+            height: 8,
+          ),
+          Row(
+            children: [
+              const Icon(Icons.phone),
               const SizedBox(
-                height: 8,
+                width: 8,
               ),
-              Row(
-                children: [
-                  const Icon(Icons.groups_2_rounded),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  RichText(
-                      text: TextSpan(
-                    style: DefaultTextStyle.of(context).style,
-                    children: [
-                      const TextSpan(
-                          text: 'Nombre de joueurs: ',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
-                      TextSpan(
-                          text: "${terrainModel.capacite} joueurs",
-                          style: const TextStyle(fontStyle: FontStyle.italic)),
-                    ],
-                  ))
-                ],
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              Row(
-                children: [
-                  const Icon(Icons.sports_soccer_rounded),
-                  const SizedBox(
-                    width: 8,
-                  ),
-                  RichText(
-                    text: TextSpan(
-                      style: DefaultTextStyle.of(context).style,
-                      children: [
-                        const TextSpan(
-                            text: 'État du terrain: ',
-                            style: TextStyle(fontWeight: FontWeight.bold)),
-                        TextSpan(
-                            text: terrainModel.etat!,
-                            style:
-                                const TextStyle(fontStyle: FontStyle.italic)),
-                      ],
+              RichText(
+                text: TextSpan(
+                  style: DefaultTextStyle.of(context).style,
+                  children: <TextSpan>[
+                    const TextSpan(
+                      text: 'Telephone: ',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
+                    TextSpan(
+                      text: HomeAdminCubit.get(context)
+                          .adminModel!
+                          .telephone!
+                          .toString(),
+                      style: const TextStyle(fontStyle: FontStyle.italic),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+          const SizedBox(
+            height: 8,
+          ),
+          Row(
+            children: [
+              const Icon(Icons.groups_2_rounded),
+              const SizedBox(
+                width: 8,
+              ),
+              RichText(
+                  text: TextSpan(
+                style: DefaultTextStyle.of(context).style,
+                children: [
+                  const TextSpan(
+                      text: 'Nombre de joueurs: ',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  TextSpan(
+                      text: "${terrainModel.capacite} joueurs",
+                      style: const TextStyle(fontStyle: FontStyle.italic)),
                 ],
-              ),
+              ))
+            ],
+          ),
+          const SizedBox(
+            height: 8,
+          ),
+          Row(
+            children: [
+              const Icon(Icons.sports_soccer_rounded),
               const SizedBox(
-                height: 8,
+                width: 8,
               ),
-              const Text("More:",
-                  style: TextStyle(fontWeight: FontWeight.bold)),
-              const SizedBox(
-                height: 8,
-              ),
-              Text(
-                terrainModel.description!,
-                textAlign: TextAlign.center,
+              RichText(
+                text: TextSpan(
+                  style: DefaultTextStyle.of(context).style,
+                  children: [
+                    const TextSpan(
+                        text: 'État du terrain: ',
+                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    TextSpan(
+                        text: terrainModel.etat!,
+                        style: const TextStyle(fontStyle: FontStyle.italic)),
+                  ],
+                ),
               ),
             ],
           ),
-        ),
-      ],
+          const SizedBox(
+            height: 8,
+          ),
+          const Text("More:", style: TextStyle(fontWeight: FontWeight.bold)),
+          const SizedBox(
+            height: 8,
+          ),
+          Text(
+            terrainModel.description!,
+            textAlign: TextAlign.center,
+          ),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: IconButton(
+              iconSize: 30,
+              onPressed: () {
+                navigatAndReturn(
+                    context: context,
+                    page: LocationTErrain(
+                      terrainId: terrainModel.id!,
+                      location: LatLng(terrainModel.coordonnee!.latitude!,
+                          terrainModel.coordonnee!.longitude!),
+                    ));
+              },
+              icon: const Icon(
+                Icons.location_on_outlined,
+                color: Colors.blue,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
