@@ -21,7 +21,25 @@ class TerrainSlideChanged extends TerrainState {}
 
 class TerrainViewToggled extends TerrainState {}
 
-class TerrainDateChanged extends TerrainState {}
+class TerrainDateChangedState extends TerrainState {}
+
+class AddNonReservableTimeBlockState extends TerrainState {}
+
+class DublicatedAddNonReservableTimeBlockState extends TerrainState {}
+
+class SelectedDayChangedState extends TerrainState {
+  final String? selctedDay;
+
+  SelectedDayChangedState({required this.selctedDay});
+}
+
+class RemoveNonReservableTimeBlockState extends TerrainState {}
+
+class EditingNonReservableTimeBlock extends TerrainState {
+  final int? index;
+
+  EditingNonReservableTimeBlock({required this.index});
+}
 
 class LoadinCheckUserByIdState extends TerrainState {}
 

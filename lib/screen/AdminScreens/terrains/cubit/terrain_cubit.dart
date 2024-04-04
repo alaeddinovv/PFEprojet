@@ -5,6 +5,7 @@ import 'package:meta/meta.dart';
 import 'package:pfeprojet/Api/constApi.dart';
 import 'package:pfeprojet/Api/httplaravel.dart';
 import 'package:pfeprojet/Model/error_model.dart';
+import 'package:pfeprojet/Model/non_reservable_time_block.dart';
 import 'package:pfeprojet/Model/terrain_model.dart';
 import 'package:pfeprojet/Model/user_model.dart';
 import 'dart:convert' as convert;
@@ -87,7 +88,7 @@ class TerrainCubit extends Cubit<TerrainState> {
 
   void selectDate(DateTime date) {
     selectedDate = date;
-    emit(TerrainDateChanged());
+    emit(TerrainDateChangedState());
   }
 
   List<String> generateTimeSlots(
@@ -105,5 +106,45 @@ class TerrainCubit extends Cubit<TerrainState> {
     }
 
     return timeSlots;
+  }
+
+// ------------------------------Create_terrain.dart
+  List<NonReservableTimeBlock> nonReservableTimeBlocks = [];
+  bool canAddTimeBlock(NonReservableTimeBlock newBlock) {
+    for (var block in nonReservableTimeBlocks) {
+      if (block.day == newBlock.day) {
+        // Check if the times overlap
+
+        return false; // Found overlapping time
+      }
+    }
+
+    return true; // No overlap found
+  }
+
+  void editeOneOfNonReservableTimeBlock(int? index) {
+    emit(EditingNonReservableTimeBlock(index: index));
+  }
+
+  void addNonReservableTimeBlock(NonReservableTimeBlock block) {
+    if (canAddTimeBlock(block)) {
+      nonReservableTimeBlocks.add(block);
+      emit(AddNonReservableTimeBlockState());
+    } else {
+      emit(DublicatedAddNonReservableTimeBlockState());
+    }
+  }
+
+  void removeNonReservableTimeBlock(int index) {
+    nonReservableTimeBlocks.removeAt(index);
+    emit(RemoveNonReservableTimeBlockState());
+  }
+
+  void selectedDayChanged(String day) {
+    emit(SelectedDayChangedState(selctedDay: day));
+  }
+
+  void clearNonReservableTimeBlocks() {
+    nonReservableTimeBlocks.clear();
   }
 }

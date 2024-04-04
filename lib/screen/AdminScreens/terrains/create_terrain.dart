@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pfeprojet/Model/non_reservable_time_block.dart';
 import 'package:pfeprojet/component/components.dart';
+import 'package:pfeprojet/screen/AdminScreens/terrains/cubit/terrain_cubit.dart';
 
 class AddTerrainPage extends StatefulWidget {
   const AddTerrainPage({Key? key}) : super(key: key);
@@ -10,8 +13,6 @@ class AddTerrainPage extends StatefulWidget {
 
 class _AddTerrainPageState extends State<AddTerrainPage> {
   final _formKey = GlobalKey<FormState>();
-  final List<NonReservableTimeBlock> nonReservableTimeBlocks = [];
-
   final TextEditingController _adresseController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _latitudeController = TextEditingController();
@@ -24,6 +25,14 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
   final TextEditingController _etatController = TextEditingController();
   final TextEditingController _sTempsController = TextEditingController();
   final TextEditingController _eTempsController = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    TerrainCubit.get(context).clearNonReservableTimeBlocks();
+
+    super.initState();
+  }
 
   @override
   void dispose() {
@@ -42,61 +51,12 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
     super.dispose();
   }
 
-  Future<void> _selectTime(
-      BuildContext context, TextEditingController controller) async {
-    final TimeOfDay? pickedTime = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-    );
-    if (pickedTime != null) {
-      setState(() {
-        controller.text = pickedTime.format(context);
-      });
-    }
-  }
-
-  void _addTimeBlock() async {
-    final result = await showDialog<NonReservableTimeBlock>(
-      context: context,
-      builder: (context) => const AddTimeBlockDialog(),
-    );
-    if (result != null) {
-      setState(() {
-        nonReservableTimeBlocks.add(result);
-      });
-    }
-  }
-
-  void _showDeleteConfirmation(int index) async {
-    final result = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Confirm Deletion'),
-        content: const Text('Are you sure you want to delete this time block?'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Delete'),
-            style: TextButton.styleFrom(foregroundColor: Colors.red),
-          ),
-        ],
-      ),
-    );
-    if (result ?? false) {
-      setState(() {
-        nonReservableTimeBlocks.removeAt(index);
-      });
-    }
-  }
-
-  int? _editingBlockIndex;
+  // int? _editingBlockIndex;
 
   @override
   Widget build(BuildContext context) {
+    TerrainCubit cubit = TerrainCubit.get(context);
+
     return Scaffold(
       appBar: AppBar(title: const Text('Add Terrain')),
       body: SingleChildScrollView(
@@ -160,79 +120,105 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                     context: context,
                     valid: () {}),
                 const SizedBox(height: 10),
-                _buildTimeRow(context),
+                _buildTimeRow(context, _sTempsController, _eTempsController),
                 const SizedBox(height: 10),
-                ...nonReservableTimeBlocks.asMap().entries.map((entry) {
-                  int idx = entry.key;
-                  NonReservableTimeBlock block = entry.value;
-
-                  if (_editingBlockIndex == idx) {
-                    // Return widgets for editing, e.g., TextFields for day and hours
+                BlocBuilder<TerrainCubit, TerrainState>(
+                  builder: (context, state) {
                     return Column(
                       children: [
-                        TextField(
-                          controller: TextEditingController(text: block.day),
-                          // Update day on change or after editing is done
-                          onChanged: (newDay) {
-                            block.day = newDay;
-                          },
-                        ),
-                        TextField(
-                          controller: TextEditingController(
-                              text: block.hours.join(', ')),
-                          // Update hours on change
-                          onChanged: (newHours) {
-                            block.hours = newHours
-                                .split(',')
-                                .map((e) => e.trim())
-                                .toList();
-                          },
-                        ),
-                        Row(
-                          children: [
-                            IconButton(
-                              icon: Icon(Icons.save, color: Colors.green),
-                              onPressed: () => setState(() {
-                                // Save changes and exit edit mode
-                                _editingBlockIndex = null;
-                              }),
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.cancel, color: Colors.red),
-                              onPressed: () => setState(() {
-                                // Exit edit mode without saving
-                                _editingBlockIndex = null;
-                              }),
-                            ),
-                          ],
-                        )
+                        ...TerrainCubit.get(context)
+                            .nonReservableTimeBlocks
+                            .asMap()
+                            .entries
+                            .map((entry) {
+                          int idx = entry.key;
+                          NonReservableTimeBlock block = entry.value;
+                          // Return widgets for editing, e.g., TextFields for day and hours
+                          if (state is EditingNonReservableTimeBlock &&
+                              state.index == idx) {
+                            return Column(
+                              children: [
+                                TextField(
+                                  controller:
+                                      TextEditingController(text: block.day),
+                                  // Update day on change or after editing is done
+                                  onChanged: (newDay) {
+                                    block.day = newDay;
+                                  },
+                                ),
+                                TextField(
+                                  controller: TextEditingController(
+                                      text: block.hours.join(', ')),
+                                  // Update hours on change
+                                  onChanged: (newHours) {
+                                    block.hours = newHours
+                                        .split(',')
+                                        .map((e) => e.trim())
+                                        .toList();
+                                  },
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    IconButton(
+                                      icon: const Icon(Icons.save,
+                                          color: Colors.green),
+                                      onPressed: () => TerrainCubit.get(context)
+                                          .editeOneOfNonReservableTimeBlock(
+                                              null),
+                                    ),
+                                    IconButton(
+                                      icon: const Icon(Icons.cancel,
+                                          color: Colors.red),
+                                      onPressed: () => TerrainCubit.get(context)
+                                          .editeOneOfNonReservableTimeBlock(
+                                              null),
+                                    ),
+                                  ],
+                                )
+                              ],
+                            );
+                          } else {
+                            return ListTile(
+                              title: Text(
+                                  "${block.day}: ${block.hours.join(', ')}"), //day and hours
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(Icons.edit,
+                                        color: Colors.blue),
+                                    onPressed: () => TerrainCubit.get(context)
+                                        .editeOneOfNonReservableTimeBlock(idx),
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(Icons.delete,
+                                        color: Colors.red),
+                                    onPressed: () => _showDeleteConfirmation(
+                                        idx, context, cubit),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
+                        }).toList(),
                       ],
                     );
-                  } else {
-                    // Return the read-only view with edit and delete icons
-                    return ListTile(
-                      title: Text("${block.day}: ${block.hours.join(', ')}"),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            icon: Icon(Icons.edit, color: Colors.blue),
-                            onPressed: () => setState(() {
-                              _editingBlockIndex = idx;
-                            }),
-                          ),
-                          IconButton(
-                            icon: Icon(Icons.delete, color: Colors.red),
-                            onPressed: () => _showDeleteConfirmation(idx),
-                          ),
-                        ],
-                      ),
-                    );
-                  }
-                }).toList(),
-                ElevatedButton(
-                    onPressed: _addTimeBlock,
-                    child: const Text('Add Time Block')),
+                  },
+                ),
+                BlocListener<TerrainCubit, TerrainState>(
+                  listener: (context, state) {
+                    if (state is DublicatedAddNonReservableTimeBlockState) {
+                      showToast(
+                          msg: "dublicated Day ", state: ToastStates.warning);
+                    }
+                  },
+                  child: ElevatedButton(
+                      onPressed: () {
+                        _addTimeBlock(context, cubit);
+                      },
+                      child: const Text('Add Time Block')),
+                ),
                 const SizedBox(height: 20),
                 defaultSubmit2(
                   onPressed: () {
@@ -249,37 +235,85 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
       ),
     );
   }
+}
 
-  Widget _buildTimeRow(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Expanded(
-          child:
-              _buildTimePickerField(context, _sTempsController, 'Start Time'),
+Widget _buildTimeRow(
+    BuildContext context,
+    TextEditingController sTempsController,
+    TextEditingController eTempsController) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: <Widget>[
+      Expanded(
+        child: _buildTimePickerField(context, sTempsController, 'Start Time'),
+      ),
+      const SizedBox(width: 10), // Adds space between the time pickers
+      Expanded(
+        child: _buildTimePickerField(context, eTempsController, 'End Time'),
+      ),
+    ],
+  );
+}
+
+Widget _buildTimePickerField(
+    BuildContext context, TextEditingController controller, String labelText) {
+  return TextFormField(
+    controller: controller,
+    decoration: InputDecoration(
+      labelText: labelText,
+      suffixIcon: const Icon(Icons.access_time),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0)),
+    ),
+    readOnly: true,
+    onTap: () => _selectTime(context, controller),
+    validator: (value) =>
+        value == null || value.isEmpty ? 'Please enter $labelText' : null,
+  );
+}
+
+Future<void> _selectTime(
+    BuildContext context, TextEditingController controller) async {
+  final TimeOfDay? pickedTime = await showTimePicker(
+    context: context,
+    initialTime: TimeOfDay.now(),
+  );
+  if (pickedTime != null) {
+    controller.text = pickedTime.format(context);
+  }
+}
+
+void _addTimeBlock(BuildContext context, TerrainCubit cubit) async {
+  final result = await showDialog<NonReservableTimeBlock>(
+    context: context,
+    builder: (context) => const AddTimeBlockDialog(),
+  );
+  if (result != null) {
+    cubit.addNonReservableTimeBlock(result);
+  }
+}
+
+void _showDeleteConfirmation(
+    int index, BuildContext context, TerrainCubit cubit) async {
+  final result = await showDialog<bool>(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: const Text('Confirm Deletion'),
+      content: const Text('Are you sure you want to delete this time block?'),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(false),
+          child: const Text('Cancel'),
         ),
-        const SizedBox(width: 10), // Adds space between the time pickers
-        Expanded(
-          child: _buildTimePickerField(context, _eTempsController, 'End Time'),
+        TextButton(
+          onPressed: () => Navigator.of(context).pop(true),
+          child: const Text('Delete'),
+          style: TextButton.styleFrom(foregroundColor: Colors.red),
         ),
       ],
-    );
-  }
-
-  Widget _buildTimePickerField(BuildContext context,
-      TextEditingController controller, String labelText) {
-    return TextFormField(
-      controller: controller,
-      decoration: InputDecoration(
-        labelText: labelText,
-        suffixIcon: const Icon(Icons.access_time),
-        border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0)),
-      ),
-      readOnly: true,
-      onTap: () => _selectTime(context, controller),
-      validator: (value) =>
-          value == null || value.isEmpty ? 'Please enter $labelText' : null,
-    );
+    ),
+  );
+  if (result ?? false) {
+    cubit.removeNonReservableTimeBlock(index);
   }
 }
 
@@ -318,8 +352,7 @@ class _AddTimeBlockDialogState extends State<AddTimeBlockDialog> {
                 .toList(),
           ),
           TextField(
-            decoration: const InputDecoration(
-                hintText: 'Hours (comma-separated, e.g., 09,16)'),
+            decoration: const InputDecoration(hintText: 'Hours (e.g., 09,16)'),
             onChanged: (value) =>
                 hours = value.split(',').map((e) => e.trim()).toList(),
           ),
@@ -341,11 +374,4 @@ class _AddTimeBlockDialogState extends State<AddTimeBlockDialog> {
       ],
     );
   }
-}
-
-class NonReservableTimeBlock {
-  String day;
-  List<String> hours;
-
-  NonReservableTimeBlock({required this.day, required this.hours});
 }
