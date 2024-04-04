@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pfeprojet/Model/terrain_model.dart';
 import 'package:pfeprojet/component/components.dart';
+import 'package:pfeprojet/screen/AdminScreens/terrains/create_terrain.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/cubit/terrain_cubit.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/details.dart';
 
@@ -12,6 +13,12 @@ class Terrains extends StatelessWidget {
   Widget build(BuildContext context) {
     TerrainCubit terrainCubit = TerrainCubit.get(context);
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          navigatAndReturn(context: context, page: AddTerrainPage());
+        },
+        child: const Icon(Icons.add),
+      ),
       body: Padding(
         padding:
             const EdgeInsetsDirectional.symmetric(horizontal: 20, vertical: 20),

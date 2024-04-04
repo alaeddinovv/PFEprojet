@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -386,9 +387,12 @@ class TerrainDetailsScreen extends StatelessWidget {
                         decoration: const BoxDecoration(
                           color: Colors.grey,
                         ),
-                        child: Image.network(
-                          imagePath,
+                        child: CachedNetworkImage(
+                          imageUrl: imagePath,
                           fit: BoxFit.fill,
+                          placeholder: (context, url) => Container(),
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
                         ),
                       );
                     },

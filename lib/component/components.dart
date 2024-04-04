@@ -50,7 +50,7 @@ TextFormField defaultForm3(
     Widget? prifix,
     required context,
     String? sufixText,
-    required TextInputType type,
+    TextInputType type = TextInputType.text,
     required Function valid,
     Text? lable,
     String? labelText,
