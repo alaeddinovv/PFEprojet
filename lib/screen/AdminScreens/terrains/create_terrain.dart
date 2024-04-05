@@ -30,7 +30,6 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     TerrainCubit.get(context).clearNonReservableTimeBlocks();
 
     super.initState();
@@ -151,7 +150,6 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                     Expanded(
                       child: defaultForm3(
                         controller: _latitudeController,
-                        labelText: 'Latitude',
                         context: context,
                         valid: () {},
                         readOnly:
@@ -162,7 +160,6 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                     Expanded(
                       child: defaultForm3(
                         controller: _longitudeController,
-                        labelText: 'Longitude',
                         context: context,
                         valid: () {},
                         readOnly:

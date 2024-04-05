@@ -19,7 +19,6 @@ class MapPickerPage extends StatefulWidget {
 class _MapPickerPageState extends State<MapPickerPage> {
   GoogleMapController? _controller;
   LatLng? _temporaryPickedLocation;
-  final Location _location = Location();
 
   @override
   void initState() {
@@ -32,9 +31,9 @@ class _MapPickerPageState extends State<MapPickerPage> {
     }
   }
 
-  void _onMapCreated(GoogleMapController controller) {
+  Future<void> _onMapCreated(GoogleMapController controller) async {
     _controller = controller;
-    _moveCameraToInitialLocation();
+    await _moveCameraToInitialLocation();
   }
 
   Future<void> _moveCameraToInitialLocation() async {
@@ -42,12 +41,35 @@ class _MapPickerPageState extends State<MapPickerPage> {
       _controller!.moveCamera(
           CameraUpdate.newLatLngZoom(_temporaryPickedLocation!, 15));
     } else {
-      _moveToCurrentUserLocation();
+      await _moveToCurrentUserLocation();
     }
   }
 
   Future<void> _moveToCurrentUserLocation() async {
-    final locationData = await _location.getLocation();
+    final Location location = Location();
+
+    // Check if location service is enabled and permissions are granted
+    bool serviceEnabled = await location.serviceEnabled();
+    PermissionStatus permissionGranted = await location.hasPermission();
+
+    // If the service is not enabled, request it
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        return; // If still not enabled, return
+      }
+    }
+
+    // If permission is not granted, request it
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      if (permissionGranted != PermissionStatus.granted) {
+        return; // If permission not granted, return
+      }
+    }
+
+    // If all is good, fetch the current location and move the camera
+    final locationData = await location.getLocation();
     _controller?.animateCamera(
       CameraUpdate.newLatLngZoom(
         LatLng(locationData.latitude!, locationData.longitude!),
@@ -69,56 +91,60 @@ class _MapPickerPageState extends State<MapPickerPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Select Location')),
-      body: GoogleMap(
-        onMapCreated: _onMapCreated,
-        initialCameraPosition: CameraPosition(
-          target: _temporaryPickedLocation ?? const LatLng(0, 0),
-          zoom: 15,
-        ),
-        onTap: (location) {
-          setState(() => _temporaryPickedLocation = location);
-        },
-        markers: _temporaryPickedLocation != null
-            ? {
-                Marker(
-                    markerId: const MarkerId('pickedLocation'),
-                    position: _temporaryPickedLocation!)
-              }
-            : {},
-      ),
-      floatingActionButton: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
+      body: Stack(
         children: [
-          FloatingActionButton(
-            heroTag: 'deleteMarkerBtn',
-            onPressed: _deleteMarker,
-            mini: true,
-            child: const Icon(Icons.delete),
-          ),
-          const SizedBox(height: 8),
-          FloatingActionButton(
-            heroTag: 'myLocationBtn',
-            onPressed: _moveToCurrentUserLocation,
-            mini: true,
-            child: const Icon(Icons.my_location),
-          ),
-          const SizedBox(height: 8),
-          FloatingActionButton(
-            heroTag: 'confirmBtn',
-            onPressed: () {
-              // Only update the text fields and return the picked location if it's not null
-              if (_temporaryPickedLocation != null) {
-                widget.latitudeController.text =
-                    _temporaryPickedLocation!.latitude.toString();
-                widget.longitudeController.text =
-                    _temporaryPickedLocation!.longitude.toString();
-                Navigator.of(context).pop(); // Return the picked location
-              } else {
-                // If no location was picked, just pop back without updating the controllers or passing data
-                Navigator.of(context).pop();
-              }
+          GoogleMap(
+            onMapCreated: _onMapCreated,
+            initialCameraPosition: CameraPosition(
+              target: _temporaryPickedLocation ?? const LatLng(0, 0),
+              zoom: 15,
+            ),
+            onTap: (location) {
+              setState(() => _temporaryPickedLocation = location);
             },
-            child: const Icon(Icons.check),
+            markers: _temporaryPickedLocation != null
+                ? {
+                    Marker(
+                        markerId: const MarkerId('pickedLocation'),
+                        position: _temporaryPickedLocation!)
+                  }
+                : {},
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              FloatingActionButton(
+                heroTag: 'deleteMarkerBtn',
+                onPressed: _deleteMarker,
+                mini: true,
+                child: const Icon(Icons.delete),
+              ),
+              const SizedBox(height: 8),
+              FloatingActionButton(
+                heroTag: 'myLocationBtn',
+                onPressed: _moveToCurrentUserLocation,
+                mini: true,
+                child: const Icon(Icons.my_location),
+              ),
+              const SizedBox(height: 8),
+              FloatingActionButton(
+                heroTag: 'confirmBtn',
+                onPressed: () {
+                  // Only update the text fields and return the picked location if it's not null
+                  if (_temporaryPickedLocation != null) {
+                    widget.latitudeController.text =
+                        _temporaryPickedLocation!.latitude.toString();
+                    widget.longitudeController.text =
+                        _temporaryPickedLocation!.longitude.toString();
+                    Navigator.of(context).pop(); // Return the picked location
+                  } else {
+                    // If no location was picked, just pop back without updating the controllers or passing data
+                    Navigator.of(context).pop();
+                  }
+                },
+                child: const Icon(Icons.check),
+              ),
+            ],
           ),
         ],
       ),
