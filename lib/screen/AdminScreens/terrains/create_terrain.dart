@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pfeprojet/Model/non_reservable_time_block.dart';
 import 'package:pfeprojet/component/components.dart';
+import 'package:pfeprojet/screen/AdminScreens/terrains/create_location_terrain.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/cubit/terrain_cubit.dart';
 
 class AddTerrainPage extends StatefulWidget {
@@ -17,6 +18,7 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _latitudeController = TextEditingController();
   final TextEditingController _longitudeController = TextEditingController();
+
   final TextEditingController _largeurController = TextEditingController();
   final TextEditingController _longueurController = TextEditingController();
   final TextEditingController _superficieController = TextEditingController();
@@ -51,7 +53,17 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
     super.dispose();
   }
 
-  // int? _editingBlockIndex;
+  _navigateAndDisplaySelection(BuildContext context) async {
+    await Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (context) => MapPickerPage(
+          latitudeController: _latitudeController,
+          longitudeController: _longitudeController,
+        ),
+      ),
+    );
+  }
+  // The latitude and longitude text fields are updated only if the user presses the check icon
 
   @override
   Widget build(BuildContext context) {
@@ -66,6 +78,8 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
             key: _formKey,
             child: Column(
               children: <Widget>[
+                _buildTimeRow(context, _sTempsController, _eTempsController),
+                const SizedBox(height: 10),
                 defaultForm3(
                     controller: _adresseController,
                     labelText: 'Adresse',
@@ -120,7 +134,42 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                     context: context,
                     valid: () {}),
                 const SizedBox(height: 10),
-                _buildTimeRow(context, _sTempsController, _eTempsController),
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    Expanded(
+                      child: IconButton(
+                          onPressed: () =>
+                              _navigateAndDisplaySelection(context),
+                          icon: Icon(
+                            size: 36,
+                            Icons.gps_fixed,
+                            color: Theme.of(context).primaryColor,
+                          )),
+                    ),
+                    Expanded(
+                      child: defaultForm3(
+                        controller: _latitudeController,
+                        labelText: 'Latitude',
+                        context: context,
+                        valid: () {},
+                        readOnly:
+                            true, // Make this read-only if the value is set from the map
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: defaultForm3(
+                        controller: _longitudeController,
+                        labelText: 'Longitude',
+                        context: context,
+                        valid: () {},
+                        readOnly:
+                            true, // Make this read-only if the value is set from the map
+                      ),
+                    ),
+                  ],
+                ),
                 const SizedBox(height: 10),
                 BlocBuilder<TerrainCubit, TerrainState>(
                   builder: (context, state) {
