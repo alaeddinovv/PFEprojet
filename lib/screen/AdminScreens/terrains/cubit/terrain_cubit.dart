@@ -5,6 +5,7 @@ import 'package:meta/meta.dart';
 import 'package:pfeprojet/Api/constApi.dart';
 import 'package:pfeprojet/Api/httplaravel.dart';
 import 'package:pfeprojet/Model/error_model.dart';
+import 'package:pfeprojet/Model/non_reservable_time_block.dart';
 import 'package:pfeprojet/Model/terrain_model.dart';
 import 'package:pfeprojet/Model/user_model.dart';
 import 'dart:convert' as convert;
@@ -16,7 +17,7 @@ class TerrainCubit extends Cubit<TerrainState> {
 
   static TerrainCubit get(context) => BlocProvider.of<TerrainCubit>(context);
 
-// TerrainHomeScreen-----------------------------------------------------------------
+//?---------------------------------------- TerrainHomeScreen-----------------------------------------------------------------
   List<TerrainModel> terrains = [];
   Future<void> getMyTerrains() async {
     emit(GetMyTerrainsLoading());
@@ -37,7 +38,7 @@ class TerrainCubit extends Cubit<TerrainState> {
     });
   }
 
-// -----------------------------------------------------------------------------------
+//? -----------------------------------------Details.dart------------------------------------------
   int indexSlide = 0;
   void setCurrentSlide(int index) {
     indexSlide = index;
@@ -56,6 +57,29 @@ class TerrainCubit extends Cubit<TerrainState> {
     }
   }
 
+  void selectDate(DateTime date) {
+    selectedDate = date;
+    emit(TerrainDateChangedState());
+  }
+
+  List<String> generateTimeSlots(
+      String sTemps, String eTemps, List<dynamic> nonReservable) {
+    DateTime startTime = DateFormat("HH:mm")
+        .parse(sTemps); // time format from server is HH:mm string
+    DateTime endTime = DateFormat("HH")
+        .parse(eTemps); // time format from server is HH:mm string
+    List<String> timeSlots = [];
+
+    while (startTime.isBefore(endTime)) {
+      String slot = DateFormat('HH:mm').format(startTime);
+      timeSlots.add(slot);
+      startTime = startTime.add(const Duration(hours: 1, minutes: 0));
+    }
+
+    return timeSlots;
+  }
+
+// ?-----------------------------------------Reserve.dart------------------------------------------
   void checkUserById({required String id}) {
     emit(LoadinCheckUserByIdState());
     Httplar.httpget(
@@ -81,29 +105,45 @@ class TerrainCubit extends Cubit<TerrainState> {
     });
   }
 
-// Add to your TerrainCubit class
-
   DateTime selectedDate = DateTime.now();
 
-  void selectDate(DateTime date) {
-    selectedDate = date;
-    emit(TerrainDateChanged());
-  }
+//? ------------------------------Create_terrain.dart-------------------------------------------------
+  List<NonReservableTimeBlock> nonReservableTimeBlocks = [];
+  bool canAddTimeBlock(NonReservableTimeBlock newBlock) {
+    for (var block in nonReservableTimeBlocks) {
+      if (block.day == newBlock.day) {
+        // Check if the times overlap
 
-  List<String> generateTimeSlots(
-      String sTemps, String eTemps, List<dynamic> nonReservable) {
-    DateTime startTime = DateFormat("HH:mm")
-        .parse(sTemps); // time format from server is HH:mm string
-    DateTime endTime = DateFormat("HH")
-        .parse(eTemps); // time format from server is HH:mm string
-    List<String> timeSlots = [];
-
-    while (startTime.isBefore(endTime)) {
-      String slot = DateFormat('HH:mm').format(startTime);
-      timeSlots.add(slot);
-      startTime = startTime.add(const Duration(hours: 1, minutes: 0));
+        return false; // Found overlapping time
+      }
     }
 
-    return timeSlots;
+    return true; // No overlap found
+  }
+
+  void editeOneOfNonReservableTimeBlock(int? index) {
+    emit(EditingNonReservableTimeBlock(index: index));
+  }
+
+  void addNonReservableTimeBlock(NonReservableTimeBlock block) {
+    if (canAddTimeBlock(block)) {
+      nonReservableTimeBlocks.add(block);
+      emit(AddNonReservableTimeBlockState());
+    } else {
+      emit(DublicatedAddNonReservableTimeBlockState());
+    }
+  }
+
+  void removeNonReservableTimeBlock(int index) {
+    nonReservableTimeBlocks.removeAt(index);
+    emit(RemoveNonReservableTimeBlockState());
+  }
+
+  void selectedDayChanged(String day) {
+    emit(SelectedDayChangedState(selctedDay: day));
+  }
+
+  void clearNonReservableTimeBlocks() {
+    nonReservableTimeBlocks.clear();
   }
 }
