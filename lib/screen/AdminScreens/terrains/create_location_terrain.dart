@@ -27,9 +27,8 @@ class _MapPickerPageState extends State<MapPickerPage> {
     if (widget.latitudeController.text.isNotEmpty &&
         widget.longitudeController.text.isNotEmpty) {
       _temporaryPickedLocation = LatLng(
-        double.tryParse(widget.latitudeController.text) ?? 0,
-        double.tryParse(widget.longitudeController.text) ?? 0,
-      );
+          double.tryParse(widget.latitudeController.text)!,
+          double.tryParse(widget.longitudeController.text)!);
     }
   }
 

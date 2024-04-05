@@ -139,6 +139,7 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                   children: [
                     Expanded(
                       child: IconButton(
+                          highlightColor: Colors.transparent,
                           onPressed: () =>
                               _navigateAndDisplaySelection(context),
                           icon: Icon(
