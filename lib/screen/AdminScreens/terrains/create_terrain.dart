@@ -14,6 +14,8 @@ class AddTerrainPage extends StatefulWidget {
 
 class _AddTerrainPageState extends State<AddTerrainPage> {
   final _formKey = GlobalKey<FormState>();
+  late final TerrainCubit terrainCubit;
+
   final TextEditingController _adresseController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _latitudeController = TextEditingController();
@@ -30,7 +32,7 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
 
   @override
   void initState() {
-    TerrainCubit.get(context).clearNonReservableTimeBlocks();
+    terrainCubit = TerrainCubit.get(context);
 
     super.initState();
   }
@@ -49,6 +51,7 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
     _etatController.dispose();
     _sTempsController.dispose();
     _eTempsController.dispose();
+    terrainCubit.clearNonReservableTimeBlocks();
     super.dispose();
   }
 
@@ -173,8 +176,7 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                   builder: (context, state) {
                     return Column(
                       children: [
-                        ...TerrainCubit.get(context)
-                            .nonReservableTimeBlocks
+                        ...terrainCubit.nonReservableTimeBlocks
                             .asMap()
                             .entries
                             .map((entry) {
@@ -210,14 +212,14 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                                     IconButton(
                                       icon: const Icon(Icons.save,
                                           color: Colors.green),
-                                      onPressed: () => TerrainCubit.get(context)
+                                      onPressed: () => terrainCubit
                                           .editeOneOfNonReservableTimeBlock(
                                               null),
                                     ),
                                     IconButton(
                                       icon: const Icon(Icons.cancel,
                                           color: Colors.red),
-                                      onPressed: () => TerrainCubit.get(context)
+                                      onPressed: () => terrainCubit
                                           .editeOneOfNonReservableTimeBlock(
                                               null),
                                     ),
@@ -235,7 +237,7 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                                   IconButton(
                                     icon: const Icon(Icons.edit,
                                         color: Colors.blue),
-                                    onPressed: () => TerrainCubit.get(context)
+                                    onPressed: () => terrainCubit
                                         .editeOneOfNonReservableTimeBlock(idx),
                                   ),
                                   IconButton(

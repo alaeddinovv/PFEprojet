@@ -132,8 +132,8 @@ class TerrainDetailsScreen extends StatelessWidget {
 
               // Assuming operational hours are part of your terrainModel, adjust this to match your actual data structure
               List<String> timeSlots = terrainCubit.generateTimeSlots(
-                  terrainModel.sTemps!,
-                  terrainModel.eTemps!,
+                  terrainModel.heureDebutTemps!,
+                  terrainModel.heureFinTemps!,
                   nonReservableHours);
 
               return GridView.builder(

@@ -59,6 +59,12 @@ class _AnnonceState extends State<Annonce> {
               return const Text(
                   'Failed to fetch data'); // Display a message if fetching data failed
             }
+            if (state is GetMyAnnonceLoading &&
+                AnnonceCubit.get(context).cursorId == '') {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
 
             return Column(
               children: [
@@ -78,7 +84,8 @@ class _AnnonceState extends State<Annonce> {
                     itemCount: AnnonceCubit.get(context).annonceData.length,
                   ),
                 ),
-                if (state is GetMyAnnonceLoading)
+                if (state is GetMyAnnonceLoading &&
+                    AnnonceCubit.get(context).cursorId != '')
                   const Center(
                     child: CircularProgressIndicator(),
                   ),
