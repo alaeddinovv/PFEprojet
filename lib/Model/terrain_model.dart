@@ -4,8 +4,9 @@ class TerrainModel {
     required this.longeur,
     required this.superficie,
     required this.adresse,
-    required this.sTemps,
-    required this.eTemps,
+    required this.heureDebutTemps,
+    required this.heureFinTemps,
+    required this.dureeCreneau,
     required this.prix,
     required this.description,
     required this.capacite,
@@ -24,8 +25,9 @@ class TerrainModel {
   int? longeur;
   int? superficie;
   String? adresse;
-  String? sTemps;
-  String? eTemps;
+  String? heureDebutTemps;
+  String? heureFinTemps;
+  String? dureeCreneau;
   int? prix;
   String? description;
   int? capacite;
@@ -45,8 +47,9 @@ class TerrainModel {
     longeur = json['longeur'];
     superficie = json['superficie'];
     adresse = json['adresse'];
-    sTemps = json['s_temps'];
-    eTemps = json['e_temps'];
+    heureDebutTemps = json['heure_debut_temps'];
+    heureFinTemps = json['heure_fin_temps'];
+    dureeCreneau = json['duree_creneau'];
     prix = json['prix'];
     description = json['description'];
     capacite = json['capacite'];
@@ -70,8 +73,9 @@ class TerrainModel {
     _data['longeur'] = longeur;
     _data['superficie'] = superficie;
     _data['adresse'] = adresse;
-    _data['s_temps'] = sTemps;
-    _data['e_temps'] = eTemps;
+    _data['heure_debut_temps'] = heureDebutTemps;
+    _data['heure_fin_temps'] = heureFinTemps;
+    _data['duree_creneau'] = dureeCreneau;
     _data['prix'] = prix;
     _data['description'] = description;
     _data['capacite'] = capacite;
