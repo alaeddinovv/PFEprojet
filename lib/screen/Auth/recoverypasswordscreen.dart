@@ -9,20 +9,24 @@ class PasswordRecoveryScreen extends StatelessWidget {
   PasswordRecoveryScreen({super.key});
   final TextEditingController _emailController = TextEditingController();
 
-  final formkey = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
+    // Use MediaQuery to get screen size and set padding and spacing dynamically
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is PasswordRecoverySuccess) {
           showToast(msg: "email exist", state: ToastStates.success);
-
           navigatAndReturn(
             context: context,
             page: VerificationCodeEntryScreen(email: _emailController.text),
           );
         } else if (state is PasswordRecoveryFailure) {
-          showToast(msg: "email doesnt exist", state: ToastStates.error);
+          showToast(msg: "email doesn't exist", state: ToastStates.error);
         } else if (state is ErrorState) {
           String errorMessage = state.errorModel.message!;
           showToast(msg: errorMessage, state: ToastStates.error);
@@ -32,20 +36,22 @@ class PasswordRecoveryScreen extends StatelessWidget {
         return Scaffold(
           body: SingleChildScrollView(
             child: Container(
-              height: 759,
+              // Adjust the container height dynamically based on the screen size
+              height: screenHeight,
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   colors: [Colors.white, Color(0xFFB0EFE9)],
                 ),
               ),
-              padding: const EdgeInsets.only(top: 90.0, right: 10, left: 10),
+              padding: EdgeInsets.only(top: screenHeight * 0.1, right: 10, left: 10),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Image.asset(
                     'assets/images/eemail.png',
-                    width: 220,
-                    height: 165,
+                    // Adjust image size dynamically based on the screen width
+                    width: screenWidth * 0.5,
+                    height: screenHeight * 0.23,
                     alignment: Alignment.center,
                   ),
                   const Text(
@@ -56,7 +62,7 @@ class PasswordRecoveryScreen extends StatelessWidget {
                         color: Colors.black,
                         fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: screenHeight * 0.02), // Dynamic spacing
                   const Text(
                     'Don’t worry happens to the best of us.\nType your email to reset your password.',
                     textAlign: TextAlign.center,
@@ -66,9 +72,9 @@ class PasswordRecoveryScreen extends StatelessWidget {
                       color: Colors.black,
                     ),
                   ),
-                  const SizedBox(height: 40),
+                  SizedBox(height: screenHeight * 0.05), // Dynamic spacing
                   Form(
-                    key: formkey,
+                    key: formKey,
                     child: defaultForm3(
                       context: context,
                       controller: _emailController,
@@ -77,6 +83,7 @@ class PasswordRecoveryScreen extends StatelessWidget {
                         if (value.isEmpty) {
                           return 'Type Must Not Be Empty';
                         }
+                        return null; // Ensure validation passes correctly
                       },
                       prefixIcon: const Icon(
                         Icons.keyboard_arrow_right_sharp,
@@ -86,14 +93,14 @@ class PasswordRecoveryScreen extends StatelessWidget {
                       textInputAction: TextInputAction.next,
                     ),
                   ),
-                  const SizedBox(height: 40),
+                  SizedBox(height: screenHeight * 0.05), // Dynamic spacing
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05), // Dynamic padding
                     child: defaultSubmit2(
                       text: 'send',
                       background: const Color(0xFF199A8E),
                       onPressed: () {
-                        if (formkey.currentState!.validate()) {
+                        if (formKey.currentState!.validate()) {
                           AuthCubit.get(context).recoverPassword(
                             email: _emailController.text,
                           );
@@ -101,10 +108,9 @@ class PasswordRecoveryScreen extends StatelessWidget {
                       },
                     ),
                   ),
-                  const SizedBox(height: 30),
-                  if (state is PasswordRecoveryLoading)
-                    const LinearProgressIndicator(),
-                  const SizedBox(height: 8),
+                  SizedBox(height: screenHeight * 0.03), // Dynamic spacing
+                  if (state is PasswordRecoveryLoading) const LinearProgressIndicator(),
+                  SizedBox(height: screenHeight * 0.01), // Dynamic spacing
                   const Text(
                     'Remember your password?',
                     textAlign: TextAlign.start,
@@ -114,7 +120,7 @@ class PasswordRecoveryScreen extends StatelessWidget {
                       color: Colors.black,
                     ),
                   ),
-                  const SizedBox(height: 8),
+                  SizedBox(height: screenHeight * 0.01), // Dynamic spacing
                   Align(
                     alignment: Alignment.center,
                     child: InkWell(

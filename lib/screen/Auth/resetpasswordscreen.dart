@@ -3,33 +3,29 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pfeprojet/screen/Auth/login.dart';
 import '../../component/components.dart';
 import 'cubit/auth_cubit.dart';
-// import 'cubit/password_reset_cubit.dart'; // Make sure to import your PasswordResetCubit
 
 class PasswordResetScreen extends StatelessWidget {
   final String email;
   final String codeentered;
 
-  PasswordResetScreen(
-      {super.key, required this.email, required this.codeentered});
+  PasswordResetScreen({super.key, required this.email, required this.codeentered});
   final TextEditingController _password1Controller = TextEditingController();
   final TextEditingController _password2Controller = TextEditingController();
 
-  final formkey = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
 
   @override
   Widget build(BuildContext context) {
+    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is PasswordResetSuccess) {
-          showToast(
-              msg: "password updated succecfuly", state: ToastStates.success);
-
-          navigatAndFinish(
-            context: context,
-            page: Login(),
-          );
+          showToast(msg: "Password updated successfully", state: ToastStates.success);
+          navigatAndFinish(context: context, page: Login());
         } else if (state is PasswordResetFailure) {
-          showToast(msg: "email doesnt exist", state: ToastStates.error);
+          showToast(msg: "Email doesn't exist", state: ToastStates.error);
         } else if (state is ErrorState) {
           String errorMessage = state.errorModel.message!;
           showToast(msg: errorMessage, state: ToastStates.error);
@@ -39,18 +35,18 @@ class PasswordResetScreen extends StatelessWidget {
         return Scaffold(
           body: SingleChildScrollView(
             child: Container(
-              height: MediaQuery.of(context).size.height,
+              height: screenHeight,
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [Colors.white, Color(0xFFB0EFE9)],
                 ),
               ),
-              padding: EdgeInsets.symmetric(horizontal: 20),
+              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(height: 100),
+                  SizedBox(height: screenHeight * 0.14),
                   Text(
                     'Password Reset',
                     style: TextStyle(
@@ -62,107 +58,99 @@ class PasswordResetScreen extends StatelessWidget {
                   ),
                   Image.asset(
                     'assets/images/lock.jpg',
-                    width: 250,
-                    height: 200,
+                    width: screenWidth * 0.66,
+                    height: screenHeight * 0.25,
                     alignment: Alignment.center,
                   ),
-                  Text(
-                    textAlign: TextAlign.center,
-                    'Now you can enter your new password ',
-                    style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 16,
-                      color: Colors.black,
+                  Padding(
+                    padding: EdgeInsets.symmetric(vertical: screenHeight * 0.04),
+                    child: Text(
+                      'Now you can enter your new password',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontSize: 16,
+                        color: Colors.black,
+                      ),
                     ),
                   ),
-                  SizedBox(height: 30),
                   Form(
-                    key: formkey,
+                    key: formKey,
                     child: Column(
                       children: [
                         defaultForm3(
                           context: context,
-                          textInputAction: TextInputAction.done,
                           controller: _password1Controller,
                           type: TextInputType.visiblePassword,
-                          onFieldSubmitted: () {},
                           obscureText: AuthCubit.get(context).isHidden['pass']!,
                           valid: (value) {
                             if (value.isEmpty) {
-                              return 'mot_de_passe Must Be Not Empty';
+                              return 'Password must not be empty';
                             }
                             if (value != _password2Controller.text) {
-                              return 'mot de passe pas symetrique';
+                              return 'Passwords do not match';
                             }
+                            return null; // Ensure validation logic is correct
                           },
-                          labelText: 'nouveau mot de passe',
-                          prefixIcon: const Icon(
-                            Icons.password_outlined,
-                            color: Colors.grey,
-                          ),
+                          labelText: 'New password',
+                          prefixIcon: const Icon(Icons.lock_outline, color: Colors.grey),
                           sufixIcon: IconButton(
                             onPressed: () {
-                              AuthCubit.get(context)
-                                  .togglePasswordVisibility('pass');
+                              AuthCubit.get(context).togglePasswordVisibility('pass');
                             },
                             icon: Icon(
                               AuthCubit.get(context).isHidden['pass']!
                                   ? Icons.visibility_outlined
                                   : Icons.visibility_off_outlined,
+                              color: Colors.grey,
                             ),
-                            color: Colors.grey,
                           ),
                         ),
-                        SizedBox(height: 20),
+                        SizedBox(height: screenHeight * 0.02),
                         defaultForm3(
                           context: context,
-                          textInputAction: TextInputAction.done,
                           controller: _password2Controller,
                           type: TextInputType.visiblePassword,
-                          onFieldSubmitted: () {},
-                          obscureText:
-                              AuthCubit.get(context).isHidden['pass1']!,
+                          obscureText: AuthCubit.get(context).isHidden['pass1']!,
                           valid: (value) {
                             if (value.isEmpty) {
-                              return 'mot_de_passe Must Be Not Empty';
+                              return 'Password must not be empty';
                             }
                             if (value != _password1Controller.text) {
-                              return 'mot de passe pas symetrique';
+                              return 'Passwords do not match';
                             }
+                            return null; // Ensure validation logic is correct
                           },
-                          labelText: 'nouveau mot de passe',
-                          prefixIcon: const Icon(
-                            Icons.password_outlined,
-                            color: Colors.grey,
-                          ),
+                          labelText: 'Confirm new password',
+                          prefixIcon: const Icon(Icons.lock_outline, color: Colors.grey),
                           sufixIcon: IconButton(
                             onPressed: () {
-                              AuthCubit.get(context)
-                                  .togglePasswordVisibility('pass1');
+                              AuthCubit.get(context).togglePasswordVisibility('pass1');
                             },
                             icon: Icon(
                               AuthCubit.get(context).isHidden['pass1']!
                                   ? Icons.visibility_outlined
                                   : Icons.visibility_off_outlined,
+                              color: Colors.grey,
                             ),
-                            color: Colors.grey,
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
-                  SizedBox(height: 30),
+                  SizedBox(height: screenHeight * 0.04),
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
                     child: defaultSubmit2(
-                      text: 'reset password',
+                      text: 'Reset Password',
                       background: Color(0xFF199A8E),
                       onPressed: () {
-                        if (formkey.currentState!.validate()) {
+                        if (formKey.currentState!.validate()) {
                           AuthCubit.get(context).resetPassword(
-                              email: email,
-                              mdp: _password1Controller.text,
-                              codeVerification: codeentered);
+                            email: email,
+                            mdp: _password1Controller.text,
+                            codeVerification: codeentered,
+                          );
                         }
                       },
                     ),
