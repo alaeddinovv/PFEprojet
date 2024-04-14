@@ -14,7 +14,7 @@ class AddTerrainPage extends StatefulWidget {
 }
 
 class _AddTerrainPageState extends State<AddTerrainPage> {
-  final _formKey = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
   late final TerrainCubit terrainCubit;
 
   final TextEditingController _adresseController = TextEditingController();
@@ -78,64 +78,99 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Form(
-            key: _formKey,
+            key: formKey,
             child: Column(
               children: <Widget>[
                 _buildTimeRow(context, _sTempsController, _eTempsController),
                 const SizedBox(height: 10),
                 defaultForm3(
-                    controller: _adresseController,
-                    labelText: 'Adresse',
-                    context: context,
-                    valid: () {}),
+                  controller: _adresseController,
+                  labelText: 'Adresse',
+                  context: context,
+                  valid: (String value) {
+                    if (value.isEmpty) {
+                      return 'Adresse Must Not Be Empty';
+                    }
+                  },
+                ),
                 const SizedBox(height: 10),
                 defaultForm3(
-                    controller: _descriptionController,
-                    labelText: 'Description',
-                    maxline: 3,
-                    context: context,
-                    valid: () {}),
+                  controller: _descriptionController,
+                  labelText: 'Description',
+                  maxline: 3,
+                  context: context,
+                  valid: (String value) {
+                    if (value.isEmpty) {
+                      return 'Description Must Not Be Empty';
+                    }
+                  },
+                ),
                 const SizedBox(height: 10),
                 defaultForm3(
                     controller: _largeurController,
                     labelText: 'Largeur',
                     context: context,
-                    valid: () {},
+                    valid: (String value) {
+                      if (value.isEmpty) {
+                        return 'Type Must Not Be Empty';
+                      }
+                    },
                     type: TextInputType.number),
                 const SizedBox(height: 10),
                 defaultForm3(
                     controller: _longueurController,
                     labelText: 'Longueur',
                     context: context,
-                    valid: () {},
+                    valid: (String value) {
+                      if (value.isEmpty) {
+                        return 'Type Must Not Be Empty';
+                      }
+                    },
                     type: TextInputType.number),
                 const SizedBox(height: 10),
                 defaultForm3(
                     controller: _superficieController,
                     labelText: 'Superficie',
                     context: context,
-                    valid: () {},
+                    valid: (String value) {
+                      if (value.isEmpty) {
+                        return 'Type Must Not Be Empty';
+                      }
+                    },
                     type: TextInputType.number),
                 const SizedBox(height: 10),
                 defaultForm3(
                     controller: _prixController,
                     labelText: 'Prix',
                     context: context,
-                    valid: () {},
+                    valid: (String value) {
+                      if (value.isEmpty) {
+                        return 'Type Must Not Be Empty';
+                      }
+                    },
                     type: TextInputType.number),
                 const SizedBox(height: 10),
                 defaultForm3(
                     controller: _capaciteController,
                     labelText: 'Capacité',
                     context: context,
-                    valid: () {},
+                    valid: (String value) {
+                      if (value.isEmpty) {
+                        return 'Type Must Not Be Empty';
+                      }
+                    },
                     type: TextInputType.number),
                 const SizedBox(height: 10),
                 defaultForm3(
-                    controller: _etatController,
-                    labelText: 'État',
-                    context: context,
-                    valid: () {}),
+                  controller: _etatController,
+                  labelText: 'État',
+                  context: context,
+                  valid: (String value) {
+                    if (value.isEmpty) {
+                      return 'Type Must Not Be Empty';
+                    }
+                  },
+                ),
                 const SizedBox(height: 10),
                 const SizedBox(height: 10),
                 Row(
@@ -155,7 +190,11 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                       child: defaultForm3(
                         controller: _latitudeController,
                         context: context,
-                        valid: () {},
+                        valid: (String value) {
+                          if (value.isEmpty) {
+                            return 'Type Must Not Be Empty';
+                          }
+                        },
                         readOnly:
                             true, // Make this read-only if the value is set from the map
                       ),
@@ -165,7 +204,11 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                       child: defaultForm3(
                         controller: _longitudeController,
                         context: context,
-                        valid: () {},
+                        valid: (String value) {
+                          if (value.isEmpty) {
+                            return 'Type Must Not Be Empty';
+                          }
+                        },
                         readOnly:
                             true, // Make this read-only if the value is set from the map
                       ),
@@ -351,11 +394,31 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                 const SizedBox(height: 20),
                 defaultSubmit2(
                   onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      // Handle form submission
+                    if (formKey.currentState!.validate()) {
+                      Map<String, dynamic>? model = {
+                        "adresse": _adresseController.text,
+                        "description": _descriptionController.text,
+                        "coordonnee": {
+                          "latitude": _latitudeController.text,
+                          "longitude": _longitudeController.text,
+                        },
+                        "largeur": _largeurController.text,
+                        "longeur": _longueurController.text,
+                        "superficie": _superficieController.text,
+                        "prix": _prixController.text,
+                        "capacite": _capaciteController.text,
+                        "etat": _etatController.text,
+                        "heure_debut_temps": _sTempsController.text,
+                        "heure_fin_temps": _eTempsController.text,
+                        // "photos": cubit.images,
+                      };
+
+                      print('ffff');
+                      TerrainCubit.get(context).creerTarrain(model: model);
                     }
                   },
                   text: 'Create Terrain',
+                  background: Colors.blueAccent,
                 ),
               ],
             ),

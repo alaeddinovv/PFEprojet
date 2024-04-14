@@ -4,6 +4,7 @@
 const URLHTTP = '172.27.44.68:3000'; //IP Houssem Maktba
 // const URLHTTP = '10.0.2.2:3000';
 
+const ADDTERRAIN = '/api/terrain';
 const GETMYTERRAINS = '/api/myterrains';
 const Loginjoueur = '/api/loginjoueur';
 const REGISTERJOUER = '/api/joueur';

@@ -175,4 +175,22 @@ class TerrainCubit extends Cubit<TerrainState> {
     images.removeAt(index);
     emit(RemoveImageState());
   }
+
+  Future<void> creerTarrain({Map<String, dynamic>? model}) async {
+    emit(CreerTerrainLoadingState());
+
+    await Httplar.httpPost(path: ADDTERRAIN, data: model!).then((value) {
+      if (value.statusCode == 201) {
+        emit(CreerTerrainStateGood());
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
+        print(jsonResponse.toString());
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(CreerTerrainStateBad());
+    });
+  }
 }
