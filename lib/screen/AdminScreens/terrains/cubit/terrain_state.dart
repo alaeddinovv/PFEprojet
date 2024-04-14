@@ -65,6 +65,8 @@ class SelectedDayChangedState extends TerrainState {
   SelectedDayChangedState({required this.selctedDay});
 }
 
+class UploadTerrainImageAndAddUrlStateBad extends TerrainState {}
+
 final class ErrorState extends TerrainState {
   final ErrorModel errorModel;
 
