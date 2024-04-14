@@ -8,7 +8,7 @@ import 'package:pfeprojet/Model/terrain_model.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/cubit/terrain_cubit.dart';
-import 'package:pfeprojet/screen/AdminScreens/terrains/terrain_location.dart';
+import 'package:pfeprojet/screen/AdminScreens/terrains/location/terrain_location.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/reserve.dart';
 
 class TerrainDetailsScreen extends StatelessWidget {

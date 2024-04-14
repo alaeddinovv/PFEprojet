@@ -1,5 +1,9 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 import 'package:pfeprojet/Api/constApi.dart';
@@ -9,6 +13,8 @@ import 'package:pfeprojet/Model/non_reservable_time_block.dart';
 import 'package:pfeprojet/Model/terrain_model.dart';
 import 'package:pfeprojet/Model/user_model.dart';
 import 'dart:convert' as convert;
+
+import 'package:pfeprojet/component/components.dart';
 
 part 'terrain_state.dart';
 
@@ -145,5 +151,28 @@ class TerrainCubit extends Cubit<TerrainState> {
 
   void clearNonReservableTimeBlocks() {
     nonReservableTimeBlocks.clear();
+  }
+
+  final ImagePicker _picker = ImagePicker();
+  List<File> images = [];
+  Future<void> pickImages() async {
+    final List<XFile> pickedFiles = await _picker.pickMultiImage();
+    List<File> selectedImages =
+        pickedFiles.map((file) => File(file.path)).toList();
+    for (var image in selectedImages) {
+      if (images.length < 3) {
+        images.add(image);
+      } else {
+        showToast(
+            msg: "You can only add up to 3 images.", state: ToastStates.error);
+        break;
+      }
+    }
+    emit(PickImageState());
+  }
+
+  void removeImage(int index) {
+    images.removeAt(index);
+    emit(RemoveImageState());
   }
 }

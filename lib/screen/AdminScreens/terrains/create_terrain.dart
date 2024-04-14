@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pfeprojet/Model/non_reservable_time_block.dart';
 import 'package:pfeprojet/component/components.dart';
-import 'package:pfeprojet/screen/AdminScreens/terrains/create_location_terrain.dart';
+import 'package:pfeprojet/screen/AdminScreens/terrains/location/add_location_terrain.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/cubit/terrain_cubit.dart';
 
 class AddTerrainPage extends StatefulWidget {
@@ -267,6 +268,85 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                         _addTimeBlock(context, cubit);
                       },
                       child: const Text('Add Time Block')),
+                ),
+                const SizedBox(height: 20),
+                Row(
+                  children: [
+                    IconButton(
+                      highlightColor: Colors.transparent,
+                      iconSize: 30,
+                      onPressed: cubit.pickImages,
+                      icon: Icon(
+                        Icons.add_a_photo,
+                        color: Colors.grey[700],
+                      ),
+                    ),
+                    Text(
+                      'Add Images',
+                      style: TextStyle(
+                        color: Colors.grey[700],
+                        fontSize: 18,
+                      ),
+                    )
+                  ],
+                ),
+                const SizedBox(height: 20),
+                BlocBuilder<TerrainCubit, TerrainState>(
+                  builder: (context, state) {
+                    return GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      itemCount: cubit.images.length,
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 4,
+                        mainAxisSpacing: 4,
+                      ),
+                      itemBuilder: (context, index) {
+                        return ClipRRect(
+                          borderRadius:
+                              BorderRadius.circular(12), // Rounded corners
+                          child: Stack(
+                            alignment: Alignment.topRight,
+                            children: [
+                              Container(
+                                decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.2),
+                                      spreadRadius: 1,
+                                      blurRadius: 5,
+                                      offset: const Offset(0, 3),
+                                    ),
+                                  ],
+                                ),
+                                child: Image.file(
+                                  cubit.images[index],
+                                  fit: BoxFit.cover,
+                                  width: double.infinity,
+                                  height: double.infinity,
+                                ),
+                              ),
+                              Container(
+                                margin: const EdgeInsets.all(4),
+                                decoration: const BoxDecoration(
+                                  color: Colors.white,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: IconButton(
+                                  highlightColor: Colors.transparent,
+                                  icon: const Icon(Icons.close,
+                                      color: Colors.red),
+                                  onPressed: () => cubit.removeImage(index),
+                                ),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                    );
+                  },
                 ),
                 const SizedBox(height: 20),
                 defaultSubmit2(

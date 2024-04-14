@@ -49,6 +49,10 @@ class AddNonReservableTimeBlockState extends TerrainState {}
 
 class DublicatedAddNonReservableTimeBlockState extends TerrainState {}
 
+class PickImageState extends TerrainState {}
+
+class RemoveImageState extends TerrainState {}
+
 class SelectedDayChangedState extends TerrainState {
   final String? selctedDay;
 
