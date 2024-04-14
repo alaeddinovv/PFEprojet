@@ -153,9 +153,8 @@ class TerrainCubit extends Cubit<TerrainState> {
 
   void clearNonReservableTimeBlocks() {
     nonReservableTimeBlocks.clear();
+    images.clear();
   }
-
-  List<File>? imageCompressList = [];
 
   final ImagePicker _picker = ImagePicker();
   List<File> images = [];

@@ -405,44 +405,67 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                   },
                 ),
                 const SizedBox(height: 20),
-                defaultSubmit2(
-                  onPressed: () {
-                    if (formKey.currentState!.validate()) {
-                      List<Map<String, dynamic>>
-                          nonReservableTimeBlockstoJsonArray() {
-                        return cubit.nonReservableTimeBlocks
-                            .map((block) => block.toJson())
-                            .toList();
-                      }
-
-                      Map<String, dynamic>? model = {
-                        "adresse": _adresseController.text,
-                        "description": _descriptionController.text,
-                        "coordonnee": {
-                          "latitude": _latitudeController.text,
-                          "longitude": _longitudeController.text,
-                        },
-                        "largeur": _largeurController.text,
-                        "longeur": _longueurController.text,
-                        "superficie": _superficieController.text,
-                        "prix": _prixController.text,
-                        "capacite": _capaciteController.text,
-                        "etat": _etatController.text,
-                        "heure_debut_temps": _sTempsController.text,
-                        "heure_fin_temps": _eTempsController.text,
-                        "nonReservableTimeBlocks":
-                            nonReservableTimeBlockstoJsonArray(),
-                        // "photos": cubit.images,
-                      };
-
-                      print('ffff');
-                      TerrainCubit.get(context).creerTarrain(
-                        model: model,
-                      );
+                BlocConsumer<TerrainCubit, TerrainState>(
+                  listener: (context, state) {
+                    if (state is CreerTerrainStateGood) {
+                      showToast(
+                          msg: 'Terrain Created Successfully',
+                          state: ToastStates.success);
+                      cubit.getMyTerrains().then((value) {
+                        Navigator.of(context).pop();
+                      });
+                    } else if (state is ErrorState) {
+                      showToast(
+                          msg: state.errorModel.message!,
+                          state: ToastStates.error);
                     }
                   },
-                  text: 'Create Terrain',
-                  background: Colors.blueAccent,
+                  builder: (context, state) {
+                    return Column(
+                      children: [
+                        if (state is CreerTerrainLoadingState)
+                          const LinearProgressIndicator(),
+                        defaultSubmit2(
+                          onPressed: () {
+                            if (formKey.currentState!.validate()) {
+                              List<Map<String, dynamic>>
+                                  nonReservableTimeBlockstoJsonArray() {
+                                return cubit.nonReservableTimeBlocks
+                                    .map((block) => block.toJson())
+                                    .toList();
+                              }
+
+                              Map<String, dynamic>? model = {
+                                "adresse": _adresseController.text,
+                                "description": _descriptionController.text,
+                                "coordonnee": {
+                                  "latitude": _latitudeController.text,
+                                  "longitude": _longitudeController.text,
+                                },
+                                "largeur": _largeurController.text,
+                                "longeur": _longueurController.text,
+                                "superficie": _superficieController.text,
+                                "prix": _prixController.text,
+                                "capacite": _capaciteController.text,
+                                "etat": _etatController.text,
+                                "heure_debut_temps": _sTempsController.text,
+                                "heure_fin_temps": _eTempsController.text,
+                                "nonReservableTimeBlocks":
+                                    nonReservableTimeBlockstoJsonArray(),
+                                // "photos": cubit.images,
+                              };
+
+                              TerrainCubit.get(context).creerTarrain(
+                                model: model,
+                              );
+                            }
+                          },
+                          text: 'Create Terrain',
+                          background: Colors.blueAccent,
+                        ),
+                      ],
+                    );
+                  },
                 ),
               ],
             ),
