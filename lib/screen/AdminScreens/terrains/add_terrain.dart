@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:pfeprojet/Model/non_reservable_time_block.dart';
 import 'package:pfeprojet/component/components.dart';
+import 'package:pfeprojet/component/const.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/location/add_location_terrain.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/cubit/terrain_cubit.dart';
 
@@ -73,6 +75,17 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
     TerrainCubit cubit = TerrainCubit.get(context);
 
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          List<Map<String, dynamic>> nonReservableTimeBlockstoJsonArray() {
+            return cubit.nonReservableTimeBlocks
+                .map((block) => block.toJson())
+                .toList();
+          }
+
+          print(nonReservableTimeBlockstoJsonArray());
+        },
+      ),
       appBar: AppBar(title: const Text('Add Terrain')),
       body: SingleChildScrollView(
         child: Padding(
@@ -395,6 +408,13 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                 defaultSubmit2(
                   onPressed: () {
                     if (formKey.currentState!.validate()) {
+                      List<Map<String, dynamic>>
+                          nonReservableTimeBlockstoJsonArray() {
+                        return cubit.nonReservableTimeBlocks
+                            .map((block) => block.toJson())
+                            .toList();
+                      }
+
                       Map<String, dynamic>? model = {
                         "adresse": _adresseController.text,
                         "description": _descriptionController.text,
@@ -410,6 +430,8 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                         "etat": _etatController.text,
                         "heure_debut_temps": _sTempsController.text,
                         "heure_fin_temps": _eTempsController.text,
+                        "nonReservableTimeBlocks":
+                            nonReservableTimeBlockstoJsonArray(),
                         // "photos": cubit.images,
                       };
 
@@ -468,12 +490,29 @@ Widget _buildTimePickerField(
 Future<void> _selectTime(
     BuildContext context, TextEditingController controller) async {
   final TimeOfDay? pickedTime = await showTimePicker(
-    context: context,
-    initialTime: TimeOfDay.now(),
-  );
+      context: context,
+      initialTime: TimeOfDay.now(),
+      builder: (BuildContext context, Widget? child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+          child: child!,
+        );
+      });
+
   if (pickedTime != null) {
-    controller.text = pickedTime.format(context);
+    // Format the TimeOfDay to a 24-hour format string
+    String formattedTime = _formatTimeOfDay(pickedTime);
+    controller.text = formattedTime;
   }
+}
+
+// Helper function to format TimeOfDay to a "HH:mm" string
+String _formatTimeOfDay(TimeOfDay timeOfDay) {
+  final now = DateTime.now();
+  final dt =
+      DateTime(now.year, now.month, now.day, timeOfDay.hour, timeOfDay.minute);
+  final format = DateFormat("HH:mm"); // Using 24-hour format
+  return format.format(dt);
 }
 
 void _addTimeBlock(BuildContext context, TerrainCubit cubit) async {
@@ -481,8 +520,12 @@ void _addTimeBlock(BuildContext context, TerrainCubit cubit) async {
     context: context,
     builder: (context) => const AddTimeBlockDialog(),
   );
-  if (result != null) {
+  if (result != null && result.hours.isNotEmpty) {
     cubit.addNonReservableTimeBlock(result);
+  } else {
+    // Optionally handle the case where no valid time block was added
+    print("No valid time block added");
+    // showToast(msg: 'No valid time block added', state: ToastStates.warning);
   }
 }
 
@@ -512,7 +555,7 @@ void _showDeleteConfirmation(
 }
 
 class AddTimeBlockDialog extends StatefulWidget {
-  const AddTimeBlockDialog({super.key});
+  const AddTimeBlockDialog({Key? key}) : super(key: key);
 
   @override
   _AddTimeBlockDialogState createState() => _AddTimeBlockDialogState();
@@ -546,9 +589,16 @@ class _AddTimeBlockDialogState extends State<AddTimeBlockDialog> {
                 .toList(),
           ),
           TextField(
-            decoration: const InputDecoration(hintText: 'Hours (e.g., 09,16)'),
-            onChanged: (value) =>
-                hours = value.split(',').map((e) => e.trim()).toList(),
+            onSubmitted: (value) {},
+            decoration:
+                const InputDecoration(hintText: 'Hours (e.g., 8, 9:30, 8.30)'),
+            onChanged: (value) {
+              hours = value
+                  .split(',')
+                  .map((e) => normalizeTimeInput(e.trim()))
+                  .where((hour) => hour != "Invalid Time")
+                  .toList();
+            },
           ),
         ],
       ),
@@ -557,14 +607,13 @@ class _AddTimeBlockDialogState extends State<AddTimeBlockDialog> {
             onPressed: () => Navigator.of(context).pop(),
             child: const Text('Cancel')),
         TextButton(
-          onPressed: () {
-            if (selectedDay != null && hours.isNotEmpty) {
-              Navigator.of(context)
-                  .pop(NonReservableTimeBlock(day: selectedDay!, hours: hours));
-            }
-          },
-          child: const Text('Add'),
-        ),
+            onPressed: () {
+              if (selectedDay != null && hours.isNotEmpty) {
+                Navigator.of(context).pop(
+                    NonReservableTimeBlock(day: selectedDay!, hours: hours));
+              }
+            },
+            child: const Text('Add')),
       ],
     );
   }
