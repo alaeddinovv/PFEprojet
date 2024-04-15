@@ -1,32 +1,38 @@
 part of 'profile_cubit.dart';
 
 @immutable
-sealed class ProfileState {}
+sealed class ProfileJoueurState {}
 
-final class ProfileInitial extends ProfileState {}
+final class ProfileJoueurInitial extends ProfileJoueurState {}
 
-final class GetMyInformationLoading extends ProfileState {}
+final class UpdateJoueurLoadingState extends ProfileJoueurState {}
 
-final class GetMyInformationStateGood extends ProfileState {
-  final DataJoueurModel model;
-  GetMyInformationStateGood({required this.model});
+final class UpdateJoueurStateGood extends ProfileJoueurState {
+  final DataJoueurModel dataJoueurModel;
+
+  UpdateJoueurStateGood({required this.dataJoueurModel});
 }
 
-final class ErrorState extends ProfileState {
-  final ErrorModel model;
-  ErrorState({required this.model});
+final class ErrorState extends ProfileJoueurState {
+  final ErrorModel errorModel;
+
+  ErrorState({required this.errorModel});
 }
 
-final class GetMyInformationStateBad extends ProfileState {}
+final class UpdateJoueurStateBad extends ProfileJoueurState {}
 
-final class ImagePickerProfileJoueurStateGood extends ProfileState {}
+final class ImagePickerProfileJoueurStateGood extends ProfileJoueurState {}
 
-final class ImagePickerProfileJoueurStateBad extends ProfileState {}
+final class ImagePickerProfileJoueurStateBad extends ProfileJoueurState {}
 
-final class UploadProfileJoueurImgAndGetUrlStateBad extends ProfileState {}
+final class UploadProfileJoueurImgAndGetUrlStateBad extends ProfileJoueurState {}
 
-final class UpdateJoueurLoadingState extends ProfileState {}
+//----------------------mdp----------------------
 
-final class UpdateJoueurStateGood extends ProfileState {}
+final class UpdateMdpJoueurLoadingState extends ProfileJoueurState {}
 
-final class UpdateJoueurStateBad extends ProfileState {}
+final class UpdateMdpJoueurStateGood extends ProfileJoueurState {}
+
+final class UpdateMdpJoueurStateBad extends ProfileJoueurState {}
+
+final class PasswordVisibilityChanged extends ProfileJoueurState {}

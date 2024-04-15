@@ -13,6 +13,7 @@ import 'package:pfeprojet/screen/AdminScreens/terrains/cubit/terrain_cubit.dart'
 import 'package:pfeprojet/screen/Auth/cubit/auth_cubit.dart';
 import 'package:pfeprojet/screen/Auth/login.dart';
 import 'package:pfeprojet/screen/Auth/onboarding.dart';
+import 'package:pfeprojet/screen/joueurScreens/home/cubit/home_joueur_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/home/home.dart';
 import 'package:pfeprojet/screen/joueurScreens/profile/cubit/profile_cubit.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -26,6 +27,8 @@ void main() async {
   );
   Widget startWidget = Login();
   // CachHelper.removdata(key: "onbording");
+  // CachHelper.removdata(key: "TOKEN");
+
   bool onbordingmain = await CachHelper.getData(key: 'onbording') ?? false;
   TOKEN = await CachHelper.getData(key: 'TOKEN') ?? '';
 
@@ -69,10 +72,13 @@ class MyApp extends StatelessWidget {
           create: ((context) => HomeAdminCubit()..getMyInfo()),
         ),
         BlocProvider(
+          create: ((context) => HomeJoueurCubit()..getMyInfo()),
+        ),
+        BlocProvider(
           create: ((context) => ProfileAdminCubit()),
         ),
         BlocProvider(
-          create: ((context) => ProfileCubit()..getMyInfo()),
+          create: ((context) => ProfileJoueurCubit()),
         ),
       ],
       child: MaterialApp(

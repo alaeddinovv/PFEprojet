@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pfeprojet/component/components.dart';
+import 'package:pfeprojet/component/const.dart';
 import 'package:pfeprojet/helper/cachhelper.dart';
 import 'package:pfeprojet/screen/Auth/cubit/auth_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/home/home.dart';
@@ -16,6 +17,13 @@ class RegisterJoueur extends StatelessWidget {
   final ageController = TextEditingController();
   final wilayaController = TextEditingController();
   final formKey = GlobalKey<FormState>();
+  String? selectedWilaya;
+  final List<String> wilayas = [
+    'Algiers',
+    'Oran',
+    'Constantine',
+    // Add more options as needed
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -156,32 +164,39 @@ class RegisterJoueur extends StatelessWidget {
                           ),
                           textInputAction: TextInputAction.next),
                       SizedBox(height: sizedBoxSpacing),
-                      defaultForm3(
-                        context: context,
-                        controller: wilayaController,
-                        type: TextInputType.text,
-                        labelText: "Wilaya",
-                        valid: (String value) {
-                          if (value.isEmpty) {
-                            return 'Wilaya Must Not Be Empty';
-                          }
-                        },
-                        onFieldSubmitted: () {},
-                        prefixIcon: const Icon(
-                          Icons.location_city_outlined,
-                        ),
-                      ),
+            DropdownButtonFormField<String>(
+              decoration: InputDecoration(
+                labelText: 'Wilaya',
+                prefixIcon: Icon(Icons.map),
+                border: OutlineInputBorder(),
+              ),
+              value: selectedWilaya,
+              onChanged: (String? newValue) {
+                selectedWilaya = newValue!;
+              },
+              validator: (value) => value == null ? 'Please select a wilaya' : null,
+              items: wilayas.map<DropdownMenuItem<String>>((String value) {
+                return DropdownMenuItem<String>(
+                  value: value,
+                  child: Text(value),
+                );
+              }).toList(),
+            ),
                       SizedBox(height: screenHeight * 0.03),
                       BlocConsumer<AuthCubit, AuthState>(
                         listener: (BuildContext context, AuthState state) {
                           if (state is RegisterStateGood) {
-                            navigatAndFinish(
-                                context: context, page: const HomeJoueur());
+                            CachHelper.putcache(
+                                key: "TOKEN", value: state.model.token).then((value) {
+                                  TOKEN=state.model.token;
+                              navigatAndFinish(
+                                  context: context, page: const HomeJoueur());
+                            });
+
                             showToast(
                                 msg: 'Hi ${state.model.data!.nom!}',
                                 state: ToastStates.success);
-                            CachHelper.putcache(
-                                key: "TOKEN", value: state.model.token);
+
                           } else if (state is ErrorState) {
                             showToast(
                                 msg: ' ${state.errorModel.message}',
@@ -204,7 +219,8 @@ class RegisterJoueur extends StatelessWidget {
                                     "age": ageController.text,
                                     'mot_de_passe': motDePasseController.text,
                                     "telephone": telephoneController.text,
-                                    'wilaya': wilayaController.text
+                                    // 'wilaya': wilayaController.text
+                                    'wilaya': selectedWilaya
                                   };
                                   AuthCubit.get(context)
                                       .registerUser(data: sendinfologin);
