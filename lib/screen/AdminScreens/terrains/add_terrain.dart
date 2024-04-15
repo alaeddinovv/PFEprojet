@@ -28,6 +28,7 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
   final TextEditingController _longueurController = TextEditingController();
   final TextEditingController _superficieController = TextEditingController();
   final TextEditingController _prixController = TextEditingController();
+  final TextEditingController _dureeController = TextEditingController();
   final TextEditingController _capaciteController = TextEditingController();
   final TextEditingController _etatController = TextEditingController();
   final TextEditingController _sTempsController = TextEditingController();
@@ -50,6 +51,7 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
     _longueurController.dispose();
     _superficieController.dispose();
     _prixController.dispose();
+    _dureeController.dispose();
     _capaciteController.dispose();
     _etatController.dispose();
     _sTempsController.dispose();
@@ -96,6 +98,22 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
               children: <Widget>[
                 _buildTimeRow(context, _sTempsController, _eTempsController),
                 const SizedBox(height: 10),
+                defaultForm3(
+                  // ! hta nrigl duree yrje3 form HH:MM
+                  enabled: false,
+                  controller: _dureeController,
+                  labelText: 'Duree',
+                  type: TextInputType.number,
+                  context: context,
+                  valid: (String value) {
+                    if (value.isEmpty) {
+                      return 'Duree Must Not Be Empty';
+                    }
+                  },
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
                 defaultForm3(
                   controller: _adresseController,
                   labelText: 'Adresse',
