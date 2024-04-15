@@ -56,7 +56,7 @@ TextFormField defaultForm3(
     String? labelText,
     Icon? prefixIcon,
     Widget? sufixIcon,
-    TextInputAction? textInputAction,
+    TextInputAction? textInputAction = TextInputAction.next,
     bool obscureText = false,
     bool readOnly = false,
     bool enabled = true,

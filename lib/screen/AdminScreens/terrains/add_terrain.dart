@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:pfeprojet/Model/non_reservable_time_block.dart';
 import 'package:pfeprojet/component/components.dart';
+import 'package:pfeprojet/component/const.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/location/add_location_terrain.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/cubit/terrain_cubit.dart';
 
@@ -14,7 +16,7 @@ class AddTerrainPage extends StatefulWidget {
 }
 
 class _AddTerrainPageState extends State<AddTerrainPage> {
-  final _formKey = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
   late final TerrainCubit terrainCubit;
 
   final TextEditingController _adresseController = TextEditingController();
@@ -26,6 +28,7 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
   final TextEditingController _longueurController = TextEditingController();
   final TextEditingController _superficieController = TextEditingController();
   final TextEditingController _prixController = TextEditingController();
+  final TextEditingController _dureeController = TextEditingController();
   final TextEditingController _capaciteController = TextEditingController();
   final TextEditingController _etatController = TextEditingController();
   final TextEditingController _sTempsController = TextEditingController();
@@ -48,6 +51,7 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
     _longueurController.dispose();
     _superficieController.dispose();
     _prixController.dispose();
+    _dureeController.dispose();
     _capaciteController.dispose();
     _etatController.dispose();
     _sTempsController.dispose();
@@ -73,69 +77,131 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
     TerrainCubit cubit = TerrainCubit.get(context);
 
     return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          List<Map<String, dynamic>> nonReservableTimeBlockstoJsonArray() {
+            return cubit.nonReservableTimeBlocks
+                .map((block) => block.toJson())
+                .toList();
+          }
+
+          print(nonReservableTimeBlockstoJsonArray());
+        },
+      ),
       appBar: AppBar(title: const Text('Add Terrain')),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Form(
-            key: _formKey,
+            key: formKey,
             child: Column(
               children: <Widget>[
                 _buildTimeRow(context, _sTempsController, _eTempsController),
                 const SizedBox(height: 10),
                 defaultForm3(
-                    controller: _adresseController,
-                    labelText: 'Adresse',
-                    context: context,
-                    valid: () {}),
+                  // ! hta nrigl duree yrje3 form HH:MM
+                  enabled: false,
+                  controller: _dureeController,
+                  labelText: 'Duree',
+                  type: TextInputType.number,
+                  context: context,
+                  valid: (String value) {
+                    if (value.isEmpty) {
+                      return 'Duree Must Not Be Empty';
+                    }
+                  },
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                defaultForm3(
+                  controller: _adresseController,
+                  labelText: 'Adresse',
+                  context: context,
+                  valid: (String value) {
+                    if (value.isEmpty) {
+                      return 'Adresse Must Not Be Empty';
+                    }
+                  },
+                ),
                 const SizedBox(height: 10),
                 defaultForm3(
-                    controller: _descriptionController,
-                    labelText: 'Description',
-                    maxline: 3,
-                    context: context,
-                    valid: () {}),
+                  controller: _descriptionController,
+                  labelText: 'Description',
+                  maxline: 3,
+                  context: context,
+                  valid: (String value) {
+                    if (value.isEmpty) {
+                      return 'Description Must Not Be Empty';
+                    }
+                  },
+                ),
                 const SizedBox(height: 10),
                 defaultForm3(
                     controller: _largeurController,
                     labelText: 'Largeur',
                     context: context,
-                    valid: () {},
+                    valid: (String value) {
+                      if (value.isEmpty) {
+                        return 'Type Must Not Be Empty';
+                      }
+                    },
                     type: TextInputType.number),
                 const SizedBox(height: 10),
                 defaultForm3(
                     controller: _longueurController,
                     labelText: 'Longueur',
                     context: context,
-                    valid: () {},
+                    valid: (String value) {
+                      if (value.isEmpty) {
+                        return 'Type Must Not Be Empty';
+                      }
+                    },
                     type: TextInputType.number),
                 const SizedBox(height: 10),
                 defaultForm3(
                     controller: _superficieController,
                     labelText: 'Superficie',
                     context: context,
-                    valid: () {},
+                    valid: (String value) {
+                      if (value.isEmpty) {
+                        return 'Type Must Not Be Empty';
+                      }
+                    },
                     type: TextInputType.number),
                 const SizedBox(height: 10),
                 defaultForm3(
                     controller: _prixController,
                     labelText: 'Prix',
                     context: context,
-                    valid: () {},
+                    valid: (String value) {
+                      if (value.isEmpty) {
+                        return 'Type Must Not Be Empty';
+                      }
+                    },
                     type: TextInputType.number),
                 const SizedBox(height: 10),
                 defaultForm3(
                     controller: _capaciteController,
                     labelText: 'Capacité',
                     context: context,
-                    valid: () {},
+                    valid: (String value) {
+                      if (value.isEmpty) {
+                        return 'Type Must Not Be Empty';
+                      }
+                    },
                     type: TextInputType.number),
                 const SizedBox(height: 10),
                 defaultForm3(
-                    controller: _etatController,
-                    labelText: 'État',
-                    context: context,
-                    valid: () {}),
+                  controller: _etatController,
+                  labelText: 'État',
+                  context: context,
+                  valid: (String value) {
+                    if (value.isEmpty) {
+                      return 'Type Must Not Be Empty';
+                    }
+                  },
+                ),
                 const SizedBox(height: 10),
                 const SizedBox(height: 10),
                 Row(
@@ -155,7 +221,11 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                       child: defaultForm3(
                         controller: _latitudeController,
                         context: context,
-                        valid: () {},
+                        valid: (String value) {
+                          if (value.isEmpty) {
+                            return 'Type Must Not Be Empty';
+                          }
+                        },
                         readOnly:
                             true, // Make this read-only if the value is set from the map
                       ),
@@ -165,7 +235,11 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                       child: defaultForm3(
                         controller: _longitudeController,
                         context: context,
-                        valid: () {},
+                        valid: (String value) {
+                          if (value.isEmpty) {
+                            return 'Type Must Not Be Empty';
+                          }
+                        },
                         readOnly:
                             true, // Make this read-only if the value is set from the map
                       ),
@@ -349,13 +423,67 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                   },
                 ),
                 const SizedBox(height: 20),
-                defaultSubmit2(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      // Handle form submission
+                BlocConsumer<TerrainCubit, TerrainState>(
+                  listener: (context, state) {
+                    if (state is CreerTerrainStateGood) {
+                      showToast(
+                          msg: 'Terrain Created Successfully',
+                          state: ToastStates.success);
+                      cubit.getMyTerrains().then((value) {
+                        Navigator.of(context).pop();
+                      });
+                    } else if (state is ErrorState) {
+                      showToast(
+                          msg: state.errorModel.message!,
+                          state: ToastStates.error);
                     }
                   },
-                  text: 'Create Terrain',
+                  builder: (context, state) {
+                    return Column(
+                      children: [
+                        if (state is CreerTerrainLoadingState)
+                          const LinearProgressIndicator(),
+                        defaultSubmit2(
+                          onPressed: () {
+                            if (formKey.currentState!.validate()) {
+                              List<Map<String, dynamic>>
+                                  nonReservableTimeBlockstoJsonArray() {
+                                return cubit.nonReservableTimeBlocks
+                                    .map((block) => block.toJson())
+                                    .toList();
+                              }
+
+                              Map<String, dynamic>? model = {
+                                "adresse": _adresseController.text,
+                                "description": _descriptionController.text,
+                                "coordonnee": {
+                                  "latitude": _latitudeController.text,
+                                  "longitude": _longitudeController.text,
+                                },
+                                "largeur": _largeurController.text,
+                                "longeur": _longueurController.text,
+                                "superficie": _superficieController.text,
+                                "prix": _prixController.text,
+                                "capacite": _capaciteController.text,
+                                "etat": _etatController.text,
+                                "heure_debut_temps": _sTempsController.text,
+                                "heure_fin_temps": _eTempsController.text,
+                                "nonReservableTimeBlocks":
+                                    nonReservableTimeBlockstoJsonArray(),
+                                // "photos": cubit.images,
+                              };
+
+                              TerrainCubit.get(context).creerTarrain(
+                                model: model,
+                              );
+                            }
+                          },
+                          text: 'Create Terrain',
+                          background: Colors.blueAccent,
+                        ),
+                      ],
+                    );
+                  },
                 ),
               ],
             ),
@@ -403,12 +531,29 @@ Widget _buildTimePickerField(
 Future<void> _selectTime(
     BuildContext context, TextEditingController controller) async {
   final TimeOfDay? pickedTime = await showTimePicker(
-    context: context,
-    initialTime: TimeOfDay.now(),
-  );
+      context: context,
+      initialTime: TimeOfDay.now(),
+      builder: (BuildContext context, Widget? child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+          child: child!,
+        );
+      });
+
   if (pickedTime != null) {
-    controller.text = pickedTime.format(context);
+    // Format the TimeOfDay to a 24-hour format string
+    String formattedTime = _formatTimeOfDay(pickedTime);
+    controller.text = formattedTime;
   }
+}
+
+// Helper function to format TimeOfDay to a "HH:mm" string
+String _formatTimeOfDay(TimeOfDay timeOfDay) {
+  final now = DateTime.now();
+  final dt =
+      DateTime(now.year, now.month, now.day, timeOfDay.hour, timeOfDay.minute);
+  final format = DateFormat("HH:mm"); // Using 24-hour format
+  return format.format(dt);
 }
 
 void _addTimeBlock(BuildContext context, TerrainCubit cubit) async {
@@ -416,8 +561,12 @@ void _addTimeBlock(BuildContext context, TerrainCubit cubit) async {
     context: context,
     builder: (context) => const AddTimeBlockDialog(),
   );
-  if (result != null) {
+  if (result != null && result.hours.isNotEmpty) {
     cubit.addNonReservableTimeBlock(result);
+  } else {
+    // Optionally handle the case where no valid time block was added
+    print("No valid time block added");
+    // showToast(msg: 'No valid time block added', state: ToastStates.warning);
   }
 }
 
@@ -447,7 +596,7 @@ void _showDeleteConfirmation(
 }
 
 class AddTimeBlockDialog extends StatefulWidget {
-  const AddTimeBlockDialog({super.key});
+  const AddTimeBlockDialog({Key? key}) : super(key: key);
 
   @override
   _AddTimeBlockDialogState createState() => _AddTimeBlockDialogState();
@@ -481,9 +630,16 @@ class _AddTimeBlockDialogState extends State<AddTimeBlockDialog> {
                 .toList(),
           ),
           TextField(
-            decoration: const InputDecoration(hintText: 'Hours (e.g., 09,16)'),
-            onChanged: (value) =>
-                hours = value.split(',').map((e) => e.trim()).toList(),
+            onSubmitted: (value) {},
+            decoration:
+                const InputDecoration(hintText: 'Hours (e.g., 8, 9:30, 8.30)'),
+            onChanged: (value) {
+              hours = value
+                  .split(',')
+                  .map((e) => normalizeTimeInput(e.trim()))
+                  .where((hour) => hour != "Invalid Time")
+                  .toList();
+            },
           ),
         ],
       ),
@@ -492,14 +648,13 @@ class _AddTimeBlockDialogState extends State<AddTimeBlockDialog> {
             onPressed: () => Navigator.of(context).pop(),
             child: const Text('Cancel')),
         TextButton(
-          onPressed: () {
-            if (selectedDay != null && hours.isNotEmpty) {
-              Navigator.of(context)
-                  .pop(NonReservableTimeBlock(day: selectedDay!, hours: hours));
-            }
-          },
-          child: const Text('Add'),
-        ),
+            onPressed: () {
+              if (selectedDay != null && hours.isNotEmpty) {
+                Navigator.of(context).pop(
+                    NonReservableTimeBlock(day: selectedDay!, hours: hours));
+              }
+            },
+            child: const Text('Add')),
       ],
     );
   }

@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
@@ -13,6 +14,7 @@ import 'package:pfeprojet/Model/non_reservable_time_block.dart';
 import 'package:pfeprojet/Model/terrain_model.dart';
 import 'package:pfeprojet/Model/user_model.dart';
 import 'dart:convert' as convert;
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 import 'package:pfeprojet/component/components.dart';
 
@@ -151,6 +153,7 @@ class TerrainCubit extends Cubit<TerrainState> {
 
   void clearNonReservableTimeBlocks() {
     nonReservableTimeBlocks.clear();
+    images.clear();
   }
 
   final ImagePicker _picker = ImagePicker();
@@ -161,7 +164,14 @@ class TerrainCubit extends Cubit<TerrainState> {
         pickedFiles.map((file) => File(file.path)).toList();
     for (var image in selectedImages) {
       if (images.length < 3) {
-        images.add(image);
+        await FlutterImageCompress.compressAndGetFile(
+          image.absolute.path,
+          '${image.path}.jpg',
+          quality: 10,
+        ).then((value) {
+          images.add(File(value!.path));
+        });
+        // images.add(image);
       } else {
         showToast(
             msg: "You can only add up to 3 images.", state: ToastStates.error);
@@ -174,5 +184,52 @@ class TerrainCubit extends Cubit<TerrainState> {
   void removeImage(int index) {
     images.removeAt(index);
     emit(RemoveImageState());
+  }
+
+  List<String> linkProfileImg = [];
+
+  Future<void> updateProfileImg() async {
+    for (var image in images) {
+      await firebase_storage.FirebaseStorage.instance
+          .ref()
+          .child('terrains/${Uri.file(image.path).pathSegments.last}')
+          .putFile(image)
+          .then((p0) async {
+        await p0.ref.getDownloadURL().then((value) {
+          linkProfileImg.add(value);
+          print(linkProfileImg);
+          // emit(UploadProfileImgAndGetUrlStateGood());  //! bah matro7ch  LodingUpdateUserStateGood() t3 Widget LinearProgressIndicator
+        }).catchError((e) {
+          print(e.toString());
+          emit(UploadTerrainImageAndAddUrlStateBad());
+        });
+      });
+    }
+  }
+
+  Future<void> creerTarrain({
+    Map<String, dynamic>? model,
+  }) async {
+    emit(CreerTerrainLoadingState());
+    if (images.isNotEmpty) {
+      await updateProfileImg();
+    }
+    if (linkProfileImg.isNotEmpty) {
+      model!.addAll({"photos": linkProfileImg});
+    }
+
+    await Httplar.httpPost(path: ADDTERRAIN, data: model!).then((value) {
+      if (value.statusCode == 201) {
+        emit(CreerTerrainStateGood());
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
+        print(jsonResponse.toString());
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(CreerTerrainStateBad());
+    });
   }
 }

@@ -39,6 +39,12 @@ class CheckUserByIdStateBad extends TerrainState {}
 //? ------------------------------Create_terrain.dart-------------------------------------------------
 class RemoveNonReservableTimeBlockState extends TerrainState {}
 
+class CreerTerrainLoadingState extends TerrainState {}
+
+class CreerTerrainStateGood extends TerrainState {}
+
+class CreerTerrainStateBad extends TerrainState {}
+
 class EditingNonReservableTimeBlock extends TerrainState {
   final int? index;
 
@@ -58,6 +64,8 @@ class SelectedDayChangedState extends TerrainState {
 
   SelectedDayChangedState({required this.selctedDay});
 }
+
+class UploadTerrainImageAndAddUrlStateBad extends TerrainState {}
 
 final class ErrorState extends TerrainState {
   final ErrorModel errorModel;
