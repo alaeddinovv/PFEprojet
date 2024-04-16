@@ -160,7 +160,7 @@ class TerrainDetailsScreen extends StatelessWidget {
                             page: Reserve(
                                 date: terrainCubit.selectedDate,
                                 hour: hour,
-                                index: index));
+                                id_terrain: terrainModel.id!));
                       }
                     },
                     child:

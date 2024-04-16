@@ -43,33 +43,38 @@ Widget defaultForm(
       keyboardType: type,
       obscureText: obscureText,
     );
-TextFormField defaultForm3(
-    {controller,
-    int maxline = 1,
-    Widget? suffix,
-    Widget? prifix,
-    required context,
-    String? sufixText,
-    TextInputType type = TextInputType.text,
-    required Function valid,
-    Text? lable,
-    String? labelText,
-    Icon? prefixIcon,
-    Widget? sufixIcon,
-    TextInputAction? textInputAction = TextInputAction.next,
-    bool obscureText = false,
-    bool readOnly = false,
-    bool enabled = true,
-    String? valeurinitial,
-    Function? onFieldSubmitted}) {
+TextFormField defaultForm3({
+  controller,
+  int maxline = 1,
+  Widget? suffix,
+  Widget? prifix,
+  required context,
+  String? sufixText,
+  TextInputType type = TextInputType.text,
+  required Function valid,
+  Text? lable,
+  String? labelText,
+  Icon? prefixIcon,
+  Widget? sufixIcon,
+  TextInputAction? textInputAction = TextInputAction.next,
+  bool obscureText = false,
+  bool readOnly = false,
+  bool enabled = true,
+  String? valeurinitial,
+  Function()? onTap,
+
+  // Function? onFieldSubmitted
+}) {
   return TextFormField(
+    onTap: onTap,
     enabled: enabled,
     readOnly: readOnly,
     initialValue: valeurinitial,
     textInputAction: textInputAction,
-    onFieldSubmitted: (k) {
-      onFieldSubmitted!();
-    },
+    // onFieldSubmitted: (k) {
+    // onFieldSubmitted!();
+    // },
+
     validator: (String? value) {
       return valid(value);
     },

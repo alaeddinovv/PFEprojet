@@ -36,6 +36,12 @@ class CheckUserByIdStateGood extends TerrainState {
 
 class CheckUserByIdStateBad extends TerrainState {}
 
+class AddReservationLoadingState extends TerrainState {}
+
+class AddReservationStateGood extends TerrainState {}
+
+class AddReservationStateBad extends TerrainState {}
+
 //? ------------------------------Create_terrain.dart-------------------------------------------------
 class RemoveNonReservableTimeBlockState extends TerrainState {}
 

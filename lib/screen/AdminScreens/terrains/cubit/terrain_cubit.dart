@@ -113,6 +113,28 @@ class TerrainCubit extends Cubit<TerrainState> {
     });
   }
 
+  Future<void> addReservation({
+    Map<String, dynamic>? model,
+    String? id_terrain,
+  }) async {
+    emit(AddReservationLoadingState());
+    await Httplar.httpPost(
+            path: RESERVERTERRAINWITHADMIN + id_terrain!, data: model!)
+        .then((value) {
+      if (value.statusCode == 201) {
+        emit(AddReservationStateGood());
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
+        print(jsonResponse.toString());
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(AddReservationStateBad());
+    });
+  }
+
   DateTime selectedDate = DateTime.now();
 
 //? ------------------------------Create_terrain.dart-------------------------------------------------
