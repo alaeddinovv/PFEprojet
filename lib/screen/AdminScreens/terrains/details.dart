@@ -10,6 +10,7 @@ import 'package:pfeprojet/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/cubit/terrain_cubit.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/location/terrain_location.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/reserve.dart';
+import 'package:pfeprojet/screen/AdminScreens/terrains/update_terrain.dart';
 
 class TerrainDetailsScreen extends StatelessWidget {
   final TerrainModel terrainModel;
@@ -160,7 +161,7 @@ class TerrainDetailsScreen extends StatelessWidget {
                             page: Reserve(
                                 date: terrainCubit.selectedDate,
                                 hour: hour,
-                                id_terrain: terrainModel.id!));
+                                idTerrain: terrainModel.id!));
                       }
                     },
                     child:
@@ -318,6 +319,13 @@ class TerrainDetailsScreen extends StatelessWidget {
               ),
             ),
           ),
+          defaultSubmit2(
+              text: "UPDATE TERRAIN",
+              onPressed: () {
+                navigatAndReturn(
+                    context: context,
+                    page: EditTerrainPage(terrainModel: terrainModel));
+              })
         ],
       ),
     );

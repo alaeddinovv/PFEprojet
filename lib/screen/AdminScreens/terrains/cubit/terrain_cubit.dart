@@ -115,11 +115,11 @@ class TerrainCubit extends Cubit<TerrainState> {
 
   Future<void> addReservation({
     Map<String, dynamic>? model,
-    String? id_terrain,
+    String? idTerrain,
   }) async {
     emit(AddReservationLoadingState());
     await Httplar.httpPost(
-            path: RESERVERTERRAINWITHADMIN + id_terrain!, data: model!)
+            path: RESERVERTERRAINWITHADMIN + idTerrain!, data: model!)
         .then((value) {
       if (value.statusCode == 201) {
         emit(AddReservationStateGood());
@@ -252,6 +252,31 @@ class TerrainCubit extends Cubit<TerrainState> {
     }).catchError((e) {
       print(e.toString());
       emit(CreerTerrainStateBad());
+    });
+  }
+
+  Future<void> updateTerrain({
+    required String id,
+    required String type,
+    required String description,
+  }) async {
+    emit(UpdateTerrainLoadingState());
+
+    Map<String, dynamic> _model = {
+      "type": type,
+      "description": description,
+    };
+    await Httplar.httpPut(path: UPDATEANNONCE + id, data: _model).then((value) {
+      if (value.statusCode == 200) {
+        emit(UpdateTerrainStateGood());
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(UpdateTerrainStateBad());
     });
   }
 }

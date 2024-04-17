@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
 import 'package:pfeprojet/Model/non_reservable_time_block.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/const.dart';
@@ -96,20 +94,16 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
             key: formKey,
             child: Column(
               children: <Widget>[
-                _buildTimeRow(context, _sTempsController, _eTempsController),
+                buildTimeRow(context, _sTempsController, _eTempsController),
                 const SizedBox(height: 10),
                 defaultForm3(
                   // ! hta nrigl duree yrje3 form HH:MM
-                  enabled: false,
+                  // enabled: false,
                   controller: _dureeController,
                   labelText: 'Duree',
                   type: TextInputType.number,
                   context: context,
-                  valid: (String value) {
-                    if (value.isEmpty) {
-                      return 'Duree Must Not Be Empty';
-                    }
-                  },
+                  valid: (String value) {},
                 ),
                 const SizedBox(
                   height: 10,
@@ -470,6 +464,7 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                                 "heure_fin_temps": _eTempsController.text,
                                 "nonReservableTimeBlocks":
                                     nonReservableTimeBlockstoJsonArray(),
+                                "duree_creneau": _dureeController.text,
                                 // "photos": cubit.images,
                               };
 
@@ -492,68 +487,6 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
       ),
     );
   }
-}
-
-Widget _buildTimeRow(
-    BuildContext context,
-    TextEditingController sTempsController,
-    TextEditingController eTempsController) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: <Widget>[
-      Expanded(
-        child: _buildTimePickerField(context, sTempsController, 'Start Time'),
-      ),
-      const SizedBox(width: 10), // Adds space between the time pickers
-      Expanded(
-        child: _buildTimePickerField(context, eTempsController, 'End Time'),
-      ),
-    ],
-  );
-}
-
-Widget _buildTimePickerField(
-    BuildContext context, TextEditingController controller, String labelText) {
-  return TextFormField(
-    controller: controller,
-    decoration: InputDecoration(
-      labelText: labelText,
-      suffixIcon: const Icon(Icons.access_time),
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0)),
-    ),
-    readOnly: true,
-    onTap: () => _selectTime(context, controller),
-    validator: (value) =>
-        value == null || value.isEmpty ? 'Please enter $labelText' : null,
-  );
-}
-
-Future<void> _selectTime(
-    BuildContext context, TextEditingController controller) async {
-  final TimeOfDay? pickedTime = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-      builder: (BuildContext context, Widget? child) {
-        return MediaQuery(
-          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-          child: child!,
-        );
-      });
-
-  if (pickedTime != null) {
-    // Format the TimeOfDay to a 24-hour format string
-    String formattedTime = _formatTimeOfDay(pickedTime);
-    controller.text = formattedTime;
-  }
-}
-
-// Helper function to format TimeOfDay to a "HH:mm" string
-String _formatTimeOfDay(TimeOfDay timeOfDay) {
-  final now = DateTime.now();
-  final dt =
-      DateTime(now.year, now.month, now.day, timeOfDay.hour, timeOfDay.minute);
-  final format = DateFormat("HH:mm"); // Using 24-hour format
-  return format.format(dt);
 }
 
 void _addTimeBlock(BuildContext context, TerrainCubit cubit) async {

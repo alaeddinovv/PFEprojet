@@ -8,10 +8,10 @@ import 'package:pfeprojet/screen/AdminScreens/terrains/cubit/terrain_cubit.dart'
 class Reserve extends StatelessWidget {
   Reserve(
       {super.key,
-      required this.id_terrain,
+      required this.idTerrain,
       required this.hour,
       required this.date});
-  final String id_terrain;
+  final String idTerrain;
   final String hour;
   final DateTime date;
   final formKey = GlobalKey<FormState>();
@@ -135,11 +135,7 @@ class Reserve extends StatelessWidget {
                   prefixIcon: const Icon(Icons.timer_outlined),
                   context: context,
                   type: TextInputType.number,
-                  valid: (String value) {
-                    if (value.isEmpty) {
-                      return 'User Must Not Be Empty';
-                    }
-                  },
+                  valid: (String value) {},
                   labelText: 'Duree',
                   controller: dureeController,
                 ),
@@ -239,7 +235,7 @@ class Reserve extends StatelessWidget {
                             "payement": isOuiChecked ? "Oui" : "Non",
                           };
                           TerrainCubit.get(context).addReservation(
-                              id_terrain: id_terrain, model: _model);
+                              idTerrain: idTerrain, model: _model);
                         }
                       },
                       text: 'Reserve',
