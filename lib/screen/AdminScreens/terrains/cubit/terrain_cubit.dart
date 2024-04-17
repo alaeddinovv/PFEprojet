@@ -10,7 +10,6 @@ import 'package:meta/meta.dart';
 import 'package:pfeprojet/Api/constApi.dart';
 import 'package:pfeprojet/Api/httplaravel.dart';
 import 'package:pfeprojet/Model/error_model.dart';
-import 'package:pfeprojet/Model/non_reservable_time_block.dart';
 import 'package:pfeprojet/Model/terrain_model.dart';
 import 'package:pfeprojet/Model/user_model.dart';
 import 'dart:convert' as convert;
@@ -138,8 +137,8 @@ class TerrainCubit extends Cubit<TerrainState> {
   DateTime selectedDate = DateTime.now();
 
 //? ------------------------------Create_terrain.dart-------------------------------------------------
-  List<NonReservableTimeBlock> nonReservableTimeBlocks = [];
-  bool canAddTimeBlock(NonReservableTimeBlock newBlock) {
+  List<NonReservableTimeBlocks> nonReservableTimeBlocks = [];
+  bool canAddTimeBlock(NonReservableTimeBlocks newBlock) {
     for (var block in nonReservableTimeBlocks) {
       if (block.day == newBlock.day) {
         // Check if the times overlap
@@ -155,7 +154,7 @@ class TerrainCubit extends Cubit<TerrainState> {
     emit(EditingNonReservableTimeBlock(index: index));
   }
 
-  void addNonReservableTimeBlock(NonReservableTimeBlock block) {
+  void addNonReservableTimeBlock(NonReservableTimeBlocks block) {
     if (canAddTimeBlock(block)) {
       nonReservableTimeBlocks.add(block);
       emit(AddNonReservableTimeBlockState());
@@ -256,22 +255,18 @@ class TerrainCubit extends Cubit<TerrainState> {
   }
 
   Future<void> updateTerrain({
+    required Map<String, dynamic> model,
     required String id,
-    required String type,
-    required String description,
   }) async {
     emit(UpdateTerrainLoadingState());
 
-    Map<String, dynamic> _model = {
-      "type": type,
-      "description": description,
-    };
-    await Httplar.httpPut(path: UPDATEANNONCE + id, data: _model).then((value) {
+    await Httplar.httpPut(path: UPDATETERRAIN + id, data: model).then((value) {
       if (value.statusCode == 200) {
         emit(UpdateTerrainStateGood());
       } else {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
+        print(jsonResponse.toString());
         emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
       }
     }).catchError((e) {

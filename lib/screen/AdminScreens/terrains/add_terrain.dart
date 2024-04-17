@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pfeprojet/Model/non_reservable_time_block.dart';
+import 'package:pfeprojet/Model/terrain_model.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/const.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/location/add_location_terrain.dart';
@@ -250,7 +250,7 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                             .entries
                             .map((entry) {
                           int idx = entry.key;
-                          NonReservableTimeBlock block = entry.value;
+                          NonReservableTimeBlocks block = entry.value;
                           // Return widgets for editing, e.g., TextFields for day and hours
                           if (state is EditingNonReservableTimeBlock &&
                               state.index == idx) {
@@ -266,7 +266,7 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                                 ),
                                 TextField(
                                   controller: TextEditingController(
-                                      text: block.hours.join(', ')),
+                                      text: block.hours!.join(', ')),
                                   // Update hours on change
                                   onChanged: (newHours) {
                                     block.hours = newHours
@@ -299,7 +299,7 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                           } else {
                             return ListTile(
                               title: Text(
-                                  "${block.day}: ${block.hours.join(', ')}"), //day and hours
+                                  "${block.day}: ${block.hours!.join(', ')}"), //day and hours
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
@@ -490,11 +490,11 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
 }
 
 void _addTimeBlock(BuildContext context, TerrainCubit cubit) async {
-  final result = await showDialog<NonReservableTimeBlock>(
+  final result = await showDialog<NonReservableTimeBlocks>(
     context: context,
     builder: (context) => const AddTimeBlockDialog(),
   );
-  if (result != null && result.hours.isNotEmpty) {
+  if (result != null && result.hours!.isNotEmpty) {
     cubit.addNonReservableTimeBlock(result);
   } else {
     // Optionally handle the case where no valid time block was added
@@ -584,7 +584,7 @@ class _AddTimeBlockDialogState extends State<AddTimeBlockDialog> {
             onPressed: () {
               if (selectedDay != null && hours.isNotEmpty) {
                 Navigator.of(context).pop(
-                    NonReservableTimeBlock(day: selectedDay!, hours: hours));
+                    NonReservableTimeBlocks(day: selectedDay!, hours: hours));
               }
             },
             child: const Text('Add')),

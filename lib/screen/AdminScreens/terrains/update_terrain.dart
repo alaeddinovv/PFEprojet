@@ -1,6 +1,10 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pfeprojet/Model/terrain_model.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/const.dart';
@@ -19,6 +23,8 @@ class EditTerrainPage extends StatefulWidget {
 }
 
 class _EditTerrainPageState extends State<EditTerrainPage> {
+  final ImagePicker _picker = ImagePicker();
+  List<dynamic> displayImages = [];
   final _formKey = GlobalKey<FormState>();
   late final TerrainCubit cubit;
 
@@ -41,6 +47,7 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
   void initState() {
     super.initState();
     cubit = TerrainCubit.get(context);
+    displayImages.addAll(widget.terrainModel.photos!);
 
     _adresseController.text = widget.terrainModel.adresse!;
     _descriptionController.text = widget.terrainModel.description!;
@@ -269,7 +276,140 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
                         ],
                       );
                     },
-                  )
+                  ),
+                  const SizedBox(height: 10),
+                  defaultSubmit2(
+                      text: 'Add Time Block',
+                      onPressed: () {
+                        _addTimeBlock(context, widget.terrainModel);
+                      },
+                      width: 200,
+                      background: Colors.grey),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      IconButton(
+                        highlightColor: Colors.transparent,
+                        iconSize: 30,
+                        onPressed: _pickImage,
+                        icon: Icon(
+                          Icons.add_a_photo,
+                          color: Colors.grey[700],
+                        ),
+                      ),
+                      Text(
+                        'Add Images',
+                        style: TextStyle(
+                          color: Colors.grey[700],
+                          fontSize: 18,
+                        ),
+                      )
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 3,
+                      crossAxisSpacing: 4,
+                      mainAxisSpacing: 4,
+                    ),
+                    itemCount: displayImages.length,
+                    itemBuilder: (BuildContext context, int index) {
+                      var image = displayImages[index];
+                      Widget imageWidget;
+
+                      if (image is String) {
+                        imageWidget = Image.network(
+                          image,
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
+                        );
+                      } else if (image is File) {
+                        imageWidget = Image.file(
+                          image,
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
+                        );
+                      } else {
+                        imageWidget = const Placeholder();
+                      }
+                      return ClipRRect(
+                        borderRadius:
+                            BorderRadius.circular(12), // Rounded corners
+                        child: Stack(
+                          alignment: Alignment.topRight,
+                          children: [
+                            Container(
+                                decoration: BoxDecoration(
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black.withOpacity(0.2),
+                                      spreadRadius: 1,
+                                      blurRadius: 5,
+                                      offset: const Offset(0, 3),
+                                    ),
+                                  ],
+                                ),
+                                child: imageWidget),
+                            Container(
+                              margin: const EdgeInsets.all(4),
+                              decoration: const BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.circle,
+                              ),
+                              child: IconButton(
+                                highlightColor: Colors.transparent,
+                                icon:
+                                    const Icon(Icons.close, color: Colors.red),
+                                onPressed: () => _removeImage(index),
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  defaultSubmit2(
+                    text: 'Update Terrain',
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        Map<String, dynamic> _model = {
+                          "adresse": _adresseController.text,
+                          "description": _descriptionController.text,
+                          "coordonnee": {
+                            "latitude": _latitudeController.text,
+                            "longitude": _longitudeController.text,
+                          },
+                          "largeur": _largeurController.text,
+                          "longeur": _longueurController.text,
+                          "superficie": _superficieController.text,
+                          "prix": _prixController.text,
+                          "capacite": _capaciteController.text,
+                          "etat": _etatController.text,
+                          "heure_debut_temps": _sTempsController.text,
+                          "heure_fin_temps": _eTempsController.text,
+                          "nonReservableTimeBlocks":
+                              widget.terrainModel.nonReservableTimeBlocks!,
+                          "duree_creneau": _dureeController.text,
+                          //'photos': displayImages
+                        };
+                        cubit.updateTerrain(
+                            id: widget.terrainModel.id!, model: _model);
+                      }
+                    },
+                  ),
                 ],
               ),
             ),
@@ -277,6 +417,46 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
         ),
       ),
     );
+  }
+
+  void _removeImage(int index) {
+    setState(() {
+      displayImages.removeAt(index);
+    });
+  }
+
+  Future<void> _pickImage() async {
+    final List<XFile> pickedFiles = await _picker.pickMultiImage();
+    if (pickedFiles.isNotEmpty) {
+      int availableSlots = 3 - displayImages.length;
+      List<File> selectedImages =
+          pickedFiles.map((file) => File(file.path)).toList();
+
+      if (selectedImages.length > availableSlots) {
+        selectedImages = selectedImages.take(availableSlots).toList();
+        showToast(
+            msg: "You can only add up to 3 images.",
+            state: ToastStates.warning);
+      }
+
+      setState(() {
+        displayImages.addAll(selectedImages);
+      });
+    }
+  }
+
+  void _addTimeBlock(BuildContext context, TerrainModel terrainModel) async {
+    final result = await showDialog<NonReservableTimeBlocks>(
+      context: context,
+      builder: (context) => const AddTimeBlockDialog(),
+    );
+    if (result != null && result.hours!.isNotEmpty) {
+      setState(() {
+        terrainModel.nonReservableTimeBlocks!.add(result);
+      });
+    } else {
+      print("No valid time block added");
+    }
   }
 
   List<Widget> _buildTimeBlocksList(TerrainState state) {
@@ -369,5 +549,70 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
         );
       }
     });
+  }
+}
+
+class AddTimeBlockDialog extends StatefulWidget {
+  const AddTimeBlockDialog({Key? key}) : super(key: key);
+
+  @override
+  _AddTimeBlockDialogState createState() => _AddTimeBlockDialogState();
+}
+
+class _AddTimeBlockDialogState extends State<AddTimeBlockDialog> {
+  String? selectedDay;
+  List<String> hours = [];
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text('Add Non-Reservable Time Block'),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          DropdownButton<String>(
+            hint: const Text('Select Day'),
+            value: selectedDay,
+            onChanged: (value) => setState(() => selectedDay = value),
+            items: [
+              'Monday',
+              'Tuesday',
+              'Wednesday',
+              'Thursday',
+              'Friday',
+              'Saturday',
+              'Sunday'
+            ]
+                .map((day) => DropdownMenuItem(value: day, child: Text(day)))
+                .toList(),
+          ),
+          TextField(
+            onSubmitted: (value) {},
+            decoration:
+                const InputDecoration(hintText: 'Hours (e.g., 8, 9:30, 8.30)'),
+            onChanged: (value) {
+              hours = value
+                  .split(',')
+                  .map((e) => normalizeTimeInput(e.trim()))
+                  .where((hour) => hour != "Invalid Time")
+                  .toList();
+            },
+          ),
+        ],
+      ),
+      actions: [
+        TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text('Cancel')),
+        TextButton(
+            onPressed: () {
+              if (selectedDay != null && hours.isNotEmpty) {
+                Navigator.of(context).pop(
+                    NonReservableTimeBlocks(day: selectedDay!, hours: hours));
+              }
+            },
+            child: const Text('Add')),
+      ],
+    );
   }
 }
