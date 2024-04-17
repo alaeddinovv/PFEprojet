@@ -6,6 +6,8 @@ const URLHTTP = '192.168.95.68:3000'; //IP Houssem
 
 const RESERVERTERRAINWITHADMIN = '/api/reservationadmin/';
 const ADDTERRAIN = '/api/terrain';
+const DELETETERRAIN = '/api/terrain/';
+
 const GETMYTERRAINS = '/api/myterrains';
 const Loginjoueur = '/api/loginjoueur';
 const REGISTERJOUER = '/api/joueur';

@@ -279,4 +279,21 @@ class TerrainCubit extends Cubit<TerrainState> {
       emit(UpdateTerrainStateBad());
     });
   }
+
+  Future<void> deleteTerrain({required String id}) async {
+    emit(DeleteTerrainLoadingState());
+
+    await Httplar.httpdelete(path: DELETETERRAIN + id).then((value) {
+      if (value.statusCode == 204) {
+        emit(DeleteTerrainStateGood());
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(DeleteTerrainStateBad());
+    });
+  }
 }

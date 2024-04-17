@@ -57,6 +57,12 @@ class UpdateTerrainStateGood extends TerrainState {}
 
 class UpdateTerrainStateBad extends TerrainState {}
 
+class DeleteTerrainLoadingState extends TerrainState {}
+
+class DeleteTerrainStateGood extends TerrainState {}
+
+class DeleteTerrainStateBad extends TerrainState {}
+
 class EditingNonReservableTimeBlock extends TerrainState {
   final int? index;
 

@@ -15,7 +15,7 @@ class Terrains extends StatelessWidget {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          navigatAndReturn(context: context, page: AddTerrainPage());
+          navigatAndReturn(context: context, page: const AddTerrainPage());
         },
         child: const Icon(Icons.add),
       ),
@@ -24,6 +24,14 @@ class Terrains extends StatelessWidget {
             const EdgeInsetsDirectional.symmetric(horizontal: 20, vertical: 20),
         child: BlocBuilder<TerrainCubit, TerrainState>(
           builder: (context, state) {
+            if (state is DeleteTerrainStateGood) {
+              showToast(
+                  msg: "Deleted Successfully", state: ToastStates.success);
+              terrainCubit.getMyTerrains();
+            }
+            if (state is DeleteTerrainStateBad) {
+              showToast(msg: "Error Deleting", state: ToastStates.error);
+            }
             if (state is ErrorTerrainsState) {
               return Center(
                 child: Text(state.errorModel.message!),
@@ -56,6 +64,35 @@ class Terrains extends StatelessWidget {
             page: TerrainDetailsScreen(
               terrainModel: terrainModel,
             ));
+      },
+      onLongPress: () {
+        // Show a dialog for deleting the item
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text("Delete Terrain"),
+              content:
+                  const Text("Are you sure you want to delete this terrain?"),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text("Cancel"),
+                ),
+                TextButton(
+                  onPressed: () {
+                    TerrainCubit.get(context)
+                        .deleteTerrain(id: terrainModel.id!);
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text("Delete"),
+                ),
+              ],
+            );
+          },
+        );
       },
       child: Card(
         elevation: 5,
