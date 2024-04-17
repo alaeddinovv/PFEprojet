@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pfeprojet/Model/terrain_model.dart';
 import 'package:pfeprojet/component/components.dart';
+import 'package:pfeprojet/component/const.dart';
+import 'package:pfeprojet/screen/AdminScreens/terrains/cubit/terrain_cubit.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/location/add_location_terrain.dart';
 
 class EditTerrainPage extends StatefulWidget {
@@ -17,7 +20,8 @@ class EditTerrainPage extends StatefulWidget {
 
 class _EditTerrainPageState extends State<EditTerrainPage> {
   final _formKey = GlobalKey<FormState>();
-  Set<int> _editingIndexes = {};
+  late final TerrainCubit cubit;
+
   final TextEditingController _adresseController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _latitudeController = TextEditingController();
@@ -36,6 +40,7 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
   @override
   void initState() {
     super.initState();
+    cubit = TerrainCubit.get(context);
 
     _adresseController.text = widget.terrainModel.adresse!;
     _descriptionController.text = widget.terrainModel.description!;
@@ -256,7 +261,15 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
                     ],
                   ),
                   const SizedBox(height: 10),
-                  ..._buildTimeBlocksList(),
+                  BlocBuilder<TerrainCubit, TerrainState>(
+                    builder: (BuildContext context, state) {
+                      return Column(
+                        children: [
+                          ..._buildTimeBlocksList(state),
+                        ],
+                      );
+                    },
+                  )
                 ],
               ),
             ),
@@ -266,26 +279,95 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
     );
   }
 
-  List<Widget> _buildTimeBlocksList() {
+  List<Widget> _buildTimeBlocksList(TerrainState state) {
     return List.generate(widget.terrainModel.nonReservableTimeBlocks!.length,
         (index) {
       var block = widget.terrainModel.nonReservableTimeBlocks![index];
-      return ListTile(
-        title: Text("${block.day}: ${block.hours!.join(', ')}"),
-        trailing: Wrap(
-          spacing: 12, // space between two icons
-          children: <Widget>[
-            IconButton(
-              icon: Icon(Icons.edit),
-              onPressed: () => {},
+      if (state is EditingNonReservableTimeBlock && state.index == index) {
+        return Column(
+          children: [
+            TextField(
+              controller: TextEditingController(text: block.day),
+              // Update day on change or after editing is done
+              onChanged: (newDay) {
+                block.day = newDay;
+              },
             ),
-            IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: () => {},
+            TextField(
+              controller: TextEditingController(text: block.hours!.join(', ')),
+              // Update hours on change
+              onChanged: (newHours) {
+                // block.hours = newHours.split(',').map((e) => e.trim()).toList();
+                block.hours = newHours
+                    .split(',')
+                    .map((e) => normalizeTimeInput(e.trim()))
+                    .where((hour) => hour != "Invalid Time")
+                    .toList();
+              },
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.save, color: Colors.green),
+                  onPressed: () => cubit.editeOneOfNonReservableTimeBlock(null),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.cancel, color: Colors.red),
+                  onPressed: () => cubit.editeOneOfNonReservableTimeBlock(null),
+                ),
+              ],
+            )
           ],
-        ),
-      );
+        );
+      } else {
+        return ListTile(
+          title: Text("${block.day}: ${block.hours!.join(', ')}"),
+          trailing: Wrap(
+            spacing: 12, // space between two icons
+            children: <Widget>[
+              IconButton(
+                icon: const Icon(Icons.edit, color: Colors.blue),
+                onPressed: () => {
+                  cubit.editeOneOfNonReservableTimeBlock(index),
+                },
+              ),
+              IconButton(
+                icon: const Icon(Icons.delete, color: Colors.red),
+                onPressed: () => {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return AlertDialog(
+                          title: const Text('Delete Time Block'),
+                          content: const Text(
+                              'Are you sure you want to delete this time block?'),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {
+                                setState(() {
+                                  widget.terrainModel.nonReservableTimeBlocks!
+                                      .removeAt(index);
+                                });
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('Yes'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: const Text('No'),
+                            ),
+                          ],
+                        );
+                      })
+                },
+              ),
+            ],
+          ),
+        );
+      }
     });
   }
 }
