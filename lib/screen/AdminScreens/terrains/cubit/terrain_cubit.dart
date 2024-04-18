@@ -207,24 +207,33 @@ class TerrainCubit extends Cubit<TerrainState> {
     emit(RemoveImageState());
   }
 
-  List<String> linkTerrainImg = [];
-
-  Future<void> uploadTerrainImg() async {
-    for (var image in images) {
-      await firebase_storage.FirebaseStorage.instance
-          .ref()
-          .child('terrains/${Uri.file(image.path).pathSegments.last}')
-          .putFile(image)
-          .then((p0) async {
-        await p0.ref.getDownloadURL().then((value) {
-          linkTerrainImg.add(value);
-          print(linkTerrainImg);
-          // emit(UploadProfileImgAndGetUrlStateGood());  //! bah matro7ch  LodingUpdateUserStateGood() t3 Widget LinearProgressIndicator
-        }).catchError((e) {
-          print(e.toString());
-          emit(UploadTerrainImageAndAddUrlStateBad());
-        });
+  Future<void> uploadTerrainImg(
+      {required File image, required List<String> linkTerrainUpdateImg}) async {
+    await firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('terrains/${Uri.file(image.path).pathSegments.last}')
+        .putFile(image)
+        .then((p0) async {
+      await p0.ref.getDownloadURL().then((value) {
+        linkTerrainUpdateImg.add(value);
+        print(linkTerrainUpdateImg);
+        // emit(UploadProfileImgAndGetUrlStateGood());  //! bah matro7ch  LodingUpdateUserStateGood() t3 Widget LinearProgressIndicator
+      }).catchError((e) {
+        print(e.toString());
+        emit(UploadTerrainImageAndAddUrlStateBad());
       });
+    });
+  }
+
+  Future<void> deleteImageFromFirebaseStorage(String fileUrl) async {
+    try {
+      firebase_storage.Reference ref =
+          firebase_storage.FirebaseStorage.instance.refFromURL(fileUrl);
+      await ref.delete();
+      print("Deleted old image: $fileUrl");
+    } catch (e) {
+      print("Failed to delete image: $e");
+      // Handle deletion error if needed
     }
   }
 
@@ -232,8 +241,13 @@ class TerrainCubit extends Cubit<TerrainState> {
     Map<String, dynamic>? model,
   }) async {
     emit(CreerTerrainLoadingState());
+    List<String> linkTerrainImg = [];
+
     if (images.isNotEmpty) {
-      await uploadTerrainImg();
+      for (var image in images) {
+        await uploadTerrainImg(
+            image: image, linkTerrainUpdateImg: linkTerrainImg);
+      }
     }
     if (linkTerrainImg.isNotEmpty) {
       model!.addAll({"photos": linkTerrainImg});
@@ -254,24 +268,6 @@ class TerrainCubit extends Cubit<TerrainState> {
     });
   }
 
-  Future<void> uploadUpdateTerrainImage(
-      File image, List<String> linkTerrainUpdateImg) async {
-    await firebase_storage.FirebaseStorage.instance
-        .ref()
-        .child('terrains/${Uri.file(image.path).pathSegments.last}')
-        .putFile(image)
-        .then((p0) async {
-      await p0.ref.getDownloadURL().then((value) {
-        linkTerrainUpdateImg.add(value);
-        print(linkTerrainUpdateImg);
-        // emit(UploadProfileImgAndGetUrlStateGood());  //! bah matro7ch  LodingUpdateUserStateGood() t3 Widget LinearProgressIndicator
-      }).catchError((e) {
-        print(e.toString());
-        emit(UploadTerrainImageAndAddUrlStateBad());
-      });
-    });
-  }
-
   Future<void> updateTerrain(
       {required Map<String, dynamic> model,
       required String id,
@@ -283,7 +279,8 @@ class TerrainCubit extends Cubit<TerrainState> {
         if (image is String) {
           linkTerrainUpdateImg.add(image);
         } else if (image is File) {
-          await uploadUpdateTerrainImage(image, linkTerrainUpdateImg);
+          await uploadTerrainImg(
+              image: image, linkTerrainUpdateImg: linkTerrainUpdateImg);
         }
       }
       print(linkTerrainUpdateImg);

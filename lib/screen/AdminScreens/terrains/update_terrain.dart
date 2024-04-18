@@ -248,8 +248,7 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
                               return 'Type Must Not Be Empty';
                             }
                           },
-                          readOnly:
-                              true, // Make this read-only if the value is set from the map
+                          readOnly: true,
                         ),
                       ),
                       const SizedBox(width: 10),
@@ -262,8 +261,7 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
                               return 'Type Must Not Be Empty';
                             }
                           },
-                          readOnly:
-                              true, // Make this read-only if the value is set from the map
+                          readOnly: true,
                         ),
                       ),
                     ],
