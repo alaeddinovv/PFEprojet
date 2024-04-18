@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pfeprojet/Model/terrain_model.dart';
 import 'package:pfeprojet/component/components.dart';
@@ -403,10 +404,12 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
                           "nonReservableTimeBlocks":
                               widget.terrainModel.nonReservableTimeBlocks!,
                           "duree_creneau": _dureeController.text,
-                          //'photos': displayImages
+                          // 'photos': displayImages   //! ni neb3etha fl cubit b3d ma nrd photo url
                         };
                         cubit.updateTerrain(
-                            id: widget.terrainModel.id!, model: _model);
+                            id: widget.terrainModel.id!,
+                            model: _model,
+                            photos: displayImages);
                       }
                     },
                   ),
@@ -427,21 +430,30 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
 
   Future<void> _pickImage() async {
     final List<XFile> pickedFiles = await _picker.pickMultiImage();
+
     if (pickedFiles.isNotEmpty) {
-      int availableSlots = 3 - displayImages.length;
       List<File> selectedImages =
           pickedFiles.map((file) => File(file.path)).toList();
+      int availableSlots = 3 - displayImages.length;
 
-      if (selectedImages.length > availableSlots) {
-        selectedImages = selectedImages.take(availableSlots).toList();
-        showToast(
-            msg: "You can only add up to 3 images.",
-            state: ToastStates.warning);
+      for (var image in selectedImages) {
+        if (selectedImages.length <= availableSlots) {
+          await FlutterImageCompress.compressAndGetFile(
+            image.absolute.path,
+            '${image.path}.jpg',
+            quality: 10,
+          ).then((value) {
+            setState(() {
+              displayImages.add(File(value!.path));
+            });
+          });
+        } else {
+          showToast(
+              msg: "You can only add up to 3 images.",
+              state: ToastStates.error);
+          break;
+        }
       }
-
-      setState(() {
-        displayImages.addAll(selectedImages);
-      });
     }
   }
 

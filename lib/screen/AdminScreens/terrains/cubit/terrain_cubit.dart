@@ -207,9 +207,9 @@ class TerrainCubit extends Cubit<TerrainState> {
     emit(RemoveImageState());
   }
 
-  List<String> linkProfileImg = [];
+  List<String> linkTerrainImg = [];
 
-  Future<void> updateProfileImg() async {
+  Future<void> uploadTerrainImg() async {
     for (var image in images) {
       await firebase_storage.FirebaseStorage.instance
           .ref()
@@ -217,8 +217,8 @@ class TerrainCubit extends Cubit<TerrainState> {
           .putFile(image)
           .then((p0) async {
         await p0.ref.getDownloadURL().then((value) {
-          linkProfileImg.add(value);
-          print(linkProfileImg);
+          linkTerrainImg.add(value);
+          print(linkTerrainImg);
           // emit(UploadProfileImgAndGetUrlStateGood());  //! bah matro7ch  LodingUpdateUserStateGood() t3 Widget LinearProgressIndicator
         }).catchError((e) {
           print(e.toString());
@@ -233,10 +233,10 @@ class TerrainCubit extends Cubit<TerrainState> {
   }) async {
     emit(CreerTerrainLoadingState());
     if (images.isNotEmpty) {
-      await updateProfileImg();
+      await uploadTerrainImg();
     }
-    if (linkProfileImg.isNotEmpty) {
-      model!.addAll({"photos": linkProfileImg});
+    if (linkTerrainImg.isNotEmpty) {
+      model!.addAll({"photos": linkTerrainImg});
     }
 
     await Httplar.httpPost(path: ADDTERRAIN, data: model!).then((value) {
@@ -254,11 +254,41 @@ class TerrainCubit extends Cubit<TerrainState> {
     });
   }
 
-  Future<void> updateTerrain({
-    required Map<String, dynamic> model,
-    required String id,
-  }) async {
+  Future<void> uploadUpdateTerrainImage(
+      File image, List<String> linkTerrainUpdateImg) async {
+    await firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('terrains/${Uri.file(image.path).pathSegments.last}')
+        .putFile(image)
+        .then((p0) async {
+      await p0.ref.getDownloadURL().then((value) {
+        linkTerrainUpdateImg.add(value);
+        print(linkTerrainUpdateImg);
+        // emit(UploadProfileImgAndGetUrlStateGood());  //! bah matro7ch  LodingUpdateUserStateGood() t3 Widget LinearProgressIndicator
+      }).catchError((e) {
+        print(e.toString());
+        emit(UploadTerrainImageAndAddUrlStateBad());
+      });
+    });
+  }
+
+  Future<void> updateTerrain(
+      {required Map<String, dynamic> model,
+      required String id,
+      List<dynamic>? photos}) async {
     emit(UpdateTerrainLoadingState());
+    List<String> linkTerrainUpdateImg = [];
+    if (photos != null) {
+      for (var image in photos) {
+        if (image is String) {
+          linkTerrainUpdateImg.add(image);
+        } else if (image is File) {
+          await uploadUpdateTerrainImage(image, linkTerrainUpdateImg);
+        }
+      }
+      print(linkTerrainUpdateImg);
+      model.addAll({"photos": linkTerrainUpdateImg});
+    }
 
     await Httplar.httpPut(path: UPDATETERRAIN + id, data: model).then((value) {
       if (value.statusCode == 200) {
