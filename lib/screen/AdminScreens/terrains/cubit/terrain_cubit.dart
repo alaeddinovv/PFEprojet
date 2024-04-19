@@ -295,7 +295,10 @@ class TerrainCubit extends Cubit<TerrainState> {
             await deleteImageFromFirebaseStorage(oldIamge);
           }
         }
-        emit(UpdateTerrainStateGood());
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(UpdateTerrainStateGood(
+            terrainModel: TerrainModel.fromJson(jsonResponse)));
       } else {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;

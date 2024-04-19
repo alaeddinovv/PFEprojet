@@ -53,7 +53,11 @@ class CreerTerrainStateBad extends TerrainState {}
 
 class UpdateTerrainLoadingState extends TerrainState {}
 
-class UpdateTerrainStateGood extends TerrainState {}
+class UpdateTerrainStateGood extends TerrainState {
+  final TerrainModel terrainModel;
+
+  UpdateTerrainStateGood({required this.terrainModel});
+}
 
 class UpdateTerrainStateBad extends TerrainState {}
 

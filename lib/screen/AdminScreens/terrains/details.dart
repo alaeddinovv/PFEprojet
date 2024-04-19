@@ -12,10 +12,16 @@ import 'package:pfeprojet/screen/AdminScreens/terrains/location/terrain_location
 import 'package:pfeprojet/screen/AdminScreens/terrains/reserve.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/update_terrain.dart';
 
-class TerrainDetailsScreen extends StatelessWidget {
-  final TerrainModel terrainModel;
-  const TerrainDetailsScreen({super.key, required this.terrainModel});
+// ignore: must_be_immutable
+class TerrainDetailsScreen extends StatefulWidget {
+  TerrainModel terrainModel;
+  TerrainDetailsScreen({super.key, required this.terrainModel});
 
+  @override
+  State<TerrainDetailsScreen> createState() => _TerrainDetailsScreenState();
+}
+
+class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     final terrainCubit = TerrainCubit.get(context);
@@ -24,37 +30,47 @@ class TerrainDetailsScreen extends StatelessWidget {
     var screenHeight = MediaQuery.of(context).size.height;
     // var screenWidth = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Terrain Details'),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            BlocBuilder<TerrainCubit, TerrainState>(
-              builder: (context, state) {
-                return carouselSliderWithIndicator(
-                    _controller, screenHeight, terrainCubit);
-              },
-            ),
-            SizedBox(
-              height: screenHeight * 0.015,
-            ),
-            BlocBuilder<TerrainCubit, TerrainState>(
-              builder: (context, state) {
-                return togeleReserveOrShowDescription(terrainCubit, context);
-              },
-            ),
-            BlocBuilder<TerrainCubit, TerrainState>(
-              builder: (context, state) {
-                if (terrainCubit.showStadiumDetails) {
-                  return descriptionInfo(screenHeight, context);
-                } else {
-                  return reservationGrid(screenHeight, terrainCubit, context);
-                }
-              },
-            ),
-          ],
+    return BlocListener<TerrainCubit, TerrainState>(
+      listener: (context, state) {
+        if (state is UpdateTerrainStateGood) {
+          setState(() {
+            widget.terrainModel = state
+                .terrainModel; // Update the local model with the new details
+          });
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Terrain Details'),
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              BlocBuilder<TerrainCubit, TerrainState>(
+                builder: (context, state) {
+                  return carouselSliderWithIndicator(
+                      _controller, screenHeight, terrainCubit);
+                },
+              ),
+              SizedBox(
+                height: screenHeight * 0.015,
+              ),
+              BlocBuilder<TerrainCubit, TerrainState>(
+                builder: (context, state) {
+                  return togeleReserveOrShowDescription(terrainCubit, context);
+                },
+              ),
+              BlocBuilder<TerrainCubit, TerrainState>(
+                builder: (context, state) {
+                  if (terrainCubit.showStadiumDetails) {
+                    return descriptionInfo(screenHeight, context);
+                  } else {
+                    return reservationGrid(screenHeight, terrainCubit, context);
+                  }
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -124,7 +140,7 @@ class TerrainDetailsScreen extends StatelessWidget {
                   []; //! Initialize with empty list (if no non-reservable hours are available)
 
               // Populate nonReservableHours based on selected day from nonReservableTimeBlocks
-              for (var block in terrainModel.nonReservableTimeBlocks!) {
+              for (var block in widget.terrainModel.nonReservableTimeBlocks!) {
                 if (block.day == dayOfWeek || block.day == 'All') {
                   nonReservableHours.addAll(block.hours!.map((hour) => hour
                       .toString())); // Ensure hours are in string format if they aren't already
@@ -133,8 +149,8 @@ class TerrainDetailsScreen extends StatelessWidget {
 
               // Assuming operational hours are part of your terrainModel, adjust this to match your actual data structure
               List<String> timeSlots = terrainCubit.generateTimeSlots(
-                  terrainModel.heureDebutTemps!,
-                  terrainModel.heureFinTemps!,
+                  widget.terrainModel.heureDebutTemps!,
+                  widget.terrainModel.heureFinTemps!,
                   nonReservableHours);
 
               return GridView.builder(
@@ -161,7 +177,7 @@ class TerrainDetailsScreen extends StatelessWidget {
                             page: Reserve(
                                 date: terrainCubit.selectedDate,
                                 hour: hour,
-                                idTerrain: terrainModel.id!));
+                                idTerrain: widget.terrainModel.id!));
                       }
                     },
                     child:
@@ -203,7 +219,7 @@ class TerrainDetailsScreen extends StatelessWidget {
                       ),
                     ),
                     TextSpan(
-                      text: terrainModel.adresse!,
+                      text: widget.terrainModel.adresse!,
                       style: const TextStyle(fontStyle: FontStyle.italic),
                     ),
                   ],
@@ -259,7 +275,7 @@ class TerrainDetailsScreen extends StatelessWidget {
                       text: 'Nombre de joueurs: ',
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   TextSpan(
-                      text: "${terrainModel.capacite} joueurs",
+                      text: "${widget.terrainModel.capacite} joueurs",
                       style: const TextStyle(fontStyle: FontStyle.italic)),
                 ],
               ))
@@ -282,7 +298,7 @@ class TerrainDetailsScreen extends StatelessWidget {
                         text: 'État du terrain: ',
                         style: TextStyle(fontWeight: FontWeight.bold)),
                     TextSpan(
-                        text: terrainModel.etat!,
+                        text: widget.terrainModel.etat!,
                         style: const TextStyle(fontStyle: FontStyle.italic)),
                   ],
                 ),
@@ -297,7 +313,7 @@ class TerrainDetailsScreen extends StatelessWidget {
             height: 8,
           ),
           Text(
-            terrainModel.description!,
+            widget.terrainModel.description!,
             textAlign: TextAlign.center,
           ),
           Align(
@@ -308,9 +324,10 @@ class TerrainDetailsScreen extends StatelessWidget {
                 navigatAndReturn(
                     context: context,
                     page: LocationTErrain(
-                      terrainId: terrainModel.id!,
-                      location: LatLng(terrainModel.coordonnee!.latitude!,
-                          terrainModel.coordonnee!.longitude!),
+                      terrainId: widget.terrainModel.id!,
+                      location: LatLng(
+                          widget.terrainModel.coordonnee!.latitude!,
+                          widget.terrainModel.coordonnee!.longitude!),
                     ));
               },
               icon: const Icon(
@@ -324,7 +341,7 @@ class TerrainDetailsScreen extends StatelessWidget {
               onPressed: () {
                 navigatAndReturn(
                     context: context,
-                    page: EditTerrainPage(terrainModel: terrainModel));
+                    page: EditTerrainPage(terrainModel: widget.terrainModel));
               })
         ],
       ),
@@ -368,7 +385,7 @@ class TerrainDetailsScreen extends StatelessWidget {
               terrainCubit.setCurrentSlide(index);
             },
           ),
-          items: terrainModel.photos!.isEmpty
+          items: widget.terrainModel.photos!.isEmpty
               ? [
                   Builder(
                     builder: (BuildContext context) {
@@ -386,7 +403,7 @@ class TerrainDetailsScreen extends StatelessWidget {
                     },
                   ),
                 ]
-              : terrainModel.photos!.map((imagePath) {
+              : widget.terrainModel.photos!.map((imagePath) {
                   return Builder(
                     builder: (BuildContext context) {
                       return Container(
@@ -411,7 +428,8 @@ class TerrainDetailsScreen extends StatelessWidget {
           bottom: 0,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: List.generate(terrainModel.photos!.length, (index) {
+            children:
+                List.generate(widget.terrainModel.photos!.length, (index) {
               return AnimatedContainer(
                 duration: const Duration(milliseconds: 150),
                 width: terrainCubit.indexSlide == index ? 20.0 : 8.0,

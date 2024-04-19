@@ -379,36 +379,65 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
                   const SizedBox(
                     height: 10,
                   ),
-                  defaultSubmit2(
-                    text: 'Update Terrain',
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        Map<String, dynamic> _model = {
-                          "adresse": _adresseController.text,
-                          "description": _descriptionController.text,
-                          "coordonnee": {
-                            "latitude": _latitudeController.text,
-                            "longitude": _longitudeController.text,
-                          },
-                          "largeur": _largeurController.text,
-                          "longeur": _longueurController.text,
-                          "superficie": _superficieController.text,
-                          "prix": _prixController.text,
-                          "capacite": _capaciteController.text,
-                          "etat": _etatController.text,
-                          "heure_debut_temps": _sTempsController.text,
-                          "heure_fin_temps": _eTempsController.text,
-                          "nonReservableTimeBlocks":
-                              widget.terrainModel.nonReservableTimeBlocks!,
-                          "duree_creneau": _dureeController.text,
-                          // 'photos': displayImages   //! ni neb3etha fl cubit b3d ma nrd photo url
-                        };
-                        cubit.updateTerrain(
-                            id: widget.terrainModel.id!,
-                            model: _model,
-                            photos: displayImages,
-                            imagesToDelete: imagesToDelete);
+                  BlocConsumer<TerrainCubit, TerrainState>(
+                    listener: (context, state) {
+                      if (state is UpdateTerrainLoadingState) {
+                        canPop = false;
+                      } else {
+                        canPop = true;
                       }
+                      if (state is UpdateTerrainStateGood) {
+                        showToast(
+                            msg: 'Terrain Updated Successfully',
+                            state: ToastStates.success);
+                        cubit.getMyTerrains().then((value) {
+                          Navigator.pop(context);
+                        });
+                      } else if (state is ErrorState) {
+                        showToast(
+                            msg: state.errorModel.message!,
+                            state: ToastStates.error);
+                      }
+                    },
+                    builder: (context, state) {
+                      return Column(
+                        children: [
+                          if (state is UpdateTerrainLoadingState)
+                            const LinearProgressIndicator(),
+                          defaultSubmit2(
+                            text: 'Update Terrain',
+                            onPressed: () {
+                              if (_formKey.currentState!.validate()) {
+                                Map<String, dynamic> _model = {
+                                  "adresse": _adresseController.text,
+                                  "description": _descriptionController.text,
+                                  "coordonnee": {
+                                    "latitude": _latitudeController.text,
+                                    "longitude": _longitudeController.text,
+                                  },
+                                  "largeur": _largeurController.text,
+                                  "longeur": _longueurController.text,
+                                  "superficie": _superficieController.text,
+                                  "prix": _prixController.text,
+                                  "capacite": _capaciteController.text,
+                                  "etat": _etatController.text,
+                                  "heure_debut_temps": _sTempsController.text,
+                                  "heure_fin_temps": _eTempsController.text,
+                                  "nonReservableTimeBlocks": widget
+                                      .terrainModel.nonReservableTimeBlocks!,
+                                  "duree_creneau": _dureeController.text,
+                                  // 'photos': displayImages   //! ni neb3etha fl cubit b3d ma nrd photo url
+                                };
+                                cubit.updateTerrain(
+                                    id: widget.terrainModel.id!,
+                                    model: _model,
+                                    photos: displayImages,
+                                    imagesToDelete: imagesToDelete);
+                              }
+                            },
+                          ),
+                        ],
+                      );
                     },
                   ),
                 ],
