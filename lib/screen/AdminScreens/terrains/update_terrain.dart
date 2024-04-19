@@ -24,6 +24,7 @@ class EditTerrainPage extends StatefulWidget {
 class _EditTerrainPageState extends State<EditTerrainPage> {
   final ImagePicker _picker = ImagePicker();
   List<dynamic> displayImages = [];
+  List<String> imagesToDelete = [];
   final _formKey = GlobalKey<FormState>();
   late final TerrainCubit cubit;
 
@@ -405,7 +406,8 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
                         cubit.updateTerrain(
                             id: widget.terrainModel.id!,
                             model: _model,
-                            photos: displayImages);
+                            photos: displayImages,
+                            imagesToDelete: imagesToDelete);
                       }
                     },
                   ),
@@ -419,6 +421,10 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
   }
 
   void _removeImage(int index) {
+    if (displayImages[index] is String) {
+      // Assuming URLs are strings
+      imagesToDelete.add(displayImages[index]);
+    }
     setState(() {
       displayImages.removeAt(index);
     });

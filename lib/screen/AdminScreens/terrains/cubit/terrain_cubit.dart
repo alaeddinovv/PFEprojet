@@ -230,10 +230,9 @@ class TerrainCubit extends Cubit<TerrainState> {
       firebase_storage.Reference ref =
           firebase_storage.FirebaseStorage.instance.refFromURL(fileUrl);
       await ref.delete();
-      print("Deleted old image: $fileUrl");
+      print("Deleted image: $fileUrl");
     } catch (e) {
       print("Failed to delete image: $e");
-      // Handle deletion error if needed
     }
   }
 
@@ -271,10 +270,11 @@ class TerrainCubit extends Cubit<TerrainState> {
   Future<void> updateTerrain(
       {required Map<String, dynamic> model,
       required String id,
-      List<dynamic>? photos}) async {
+      required List<dynamic> photos,
+      required List<String> imagesToDelete}) async {
     emit(UpdateTerrainLoadingState());
     List<String> linkTerrainUpdateImg = [];
-    if (photos != null) {
+    if (photos.isNotEmpty) {
       for (var image in photos) {
         if (image is String) {
           linkTerrainUpdateImg.add(image);
@@ -287,8 +287,14 @@ class TerrainCubit extends Cubit<TerrainState> {
       model.addAll({"photos": linkTerrainUpdateImg});
     }
 
-    await Httplar.httpPut(path: UPDATETERRAIN + id, data: model).then((value) {
+    await Httplar.httpPut(path: UPDATETERRAIN + id, data: model)
+        .then((value) async {
       if (value.statusCode == 200) {
+        if (imagesToDelete.isNotEmpty) {
+          for (var oldIamge in imagesToDelete) {
+            await deleteImageFromFirebaseStorage(oldIamge);
+          }
+        }
         emit(UpdateTerrainStateGood());
       } else {
         var jsonResponse =
