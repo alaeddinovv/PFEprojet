@@ -100,7 +100,7 @@ class Reserve extends StatelessWidget {
                     type: TextInputType.datetime,
                     valid: (String value) {},
                     labelText:
-                        '${date.toLocal().day}/${date.toLocal().month}/${date.toLocal().year}',
+                        "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}",
                     controller: dateController,
                   ),
                 ),
@@ -229,11 +229,14 @@ class Reserve extends StatelessWidget {
                         if (formKey.currentState!.validate()) {
                           Map<String, dynamic>? _model = {
                             "joueur_id": userIdController.text,
-                            "jour": date.toLocal().toString(),
-                            "debut_temps": hour,
+                            "jour":
+                                "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}",
+                            "heure_debut_temps": hour,
                             "duree": dureeController.text,
-                            "payement": isOuiChecked ? "Oui" : "Non",
+                            "etat": "reserver",
+                            "payment": isOuiChecked,
                           };
+
                           TerrainCubit.get(context).addReservation(
                               idTerrain: idTerrain, model: _model);
                         }
