@@ -211,16 +211,16 @@ class Reserve extends StatelessWidget {
                   listener: (context, state) {
                     if (state is AddReservationStateGood) {
                       showToast(
-                          msg: "Reservation Added Successfully",
-                          state: ToastStates.success,
-                          gravity: ToastGravity.CENTER);
+                        msg: "Reservation Added Successfully",
+                        state: ToastStates.success,
+                      );
                       Navigator.pop(context);
                     } else if (state is AddReservationStateBad ||
                         state is ErrorState) {
                       showToast(
-                          msg: "Error Adding Reservation",
-                          state: ToastStates.error,
-                          gravity: ToastGravity.CENTER);
+                        msg: "Error Adding Reservation",
+                        state: ToastStates.error,
+                      );
                     }
                   },
                   builder: (context, state) {

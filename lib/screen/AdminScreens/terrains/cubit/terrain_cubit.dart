@@ -332,16 +332,18 @@ class TerrainCubit extends Cubit<TerrainState> {
   }
 
   List<ReservationModel> reservationList = [];
-  Future<void> fetchReservations({
-    required String terrainId,
-    required DateTime date,
-  }) async {
+  Future<void> fetchReservations(
+      {bool payment = true,
+      required String terrainId,
+      required DateTime date,
+      String heure_debut_temps = ""}) async {
     emit(GetReservationLoadingState());
     String formattedDate = DateFormat('yyyy-MM-dd').format(date);
     await Httplar.httpget(path: FILTERRESERVATION, query: {
-      "payment": "true",
+      "payment": payment.toString(),
       "terrain_id": terrainId,
-      "jour": formattedDate
+      "jour": formattedDate,
+      if (heure_debut_temps.isNotEmpty) "heure_debut_temps": heure_debut_temps
     }).then((value) {
       if (value.statusCode == 200) {
         var jsonResponse = convert.jsonDecode(value.body) as List;
@@ -353,9 +355,12 @@ class TerrainCubit extends Cubit<TerrainState> {
       } else {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
+        print(jsonResponse);
         emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
       }
     }).catchError((e) {
+      print(e.toString());
+
       emit(GetReservationStateBad());
     });
   }

@@ -28,6 +28,8 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
     timeSlots = TerrainCubit.get(context).generateTimeSlots(
         widget.terrainModel.heureDebutTemps!,
         widget.terrainModel.heureFinTemps!);
+    TerrainCubit.get(context).fetchReservations(
+        terrainId: widget.terrainModel.id!, date: DateTime.now());
     super.initState();
   }
 
@@ -46,6 +48,10 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
             widget.terrainModel = state
                 .terrainModel; // Update the local model with the new details
           });
+        }
+        if (state is AddReservationStateGood) {
+          cubit.fetchReservations(
+              terrainId: widget.terrainModel.id!, date: cubit.selectedDate);
         }
       },
       child: Scaffold(
@@ -151,13 +157,14 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
             builder: (context, state) {
               if (state is GetReservationLoadingState) {
                 return const Center(
-                  child: CircularProgressIndicator(),
+                  child: Center(child: CircularProgressIndicator()),
                 );
-              } else if (state is GetReservationStateBad) {
+              } else if (state is GetReservationStateBad ||
+                  state is ErrorState) {
                 return const Center(
                   child: Text('Failed to fetch reservations'),
                 );
-              } else if (state is GetReservationStateGood) {
+              } else {
                 DateTime date = terrainCubit
                     .selectedDate; // changed with the selectedDate from listview
                 String dayOfWeek =
@@ -194,13 +201,14 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                   ),
                   itemCount: timeSlots.length,
                   itemBuilder: (context, index) {
+                    bool isCharge = hourPayments.contains(timeSlots[index]);
                     bool isReservable =
-                        !nonReservableHours.contains(timeSlots[index]);
-                    bool isCharge = !hourPayments.contains(timeSlots[index]);
+                        !nonReservableHours.contains(timeSlots[index]) &&
+                            !isCharge;
                     return GestureDetector(
                       onTap: () {
                         print('Selected time slot: ${timeSlots[index]}');
-                        if (isReservable && isCharge) {
+                        if (isReservable) {
                           String hour = timeSlots[index];
                           print(timeSlots[index]);
                           navigatAndReturn(
@@ -209,16 +217,16 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                                   date: terrainCubit.selectedDate,
                                   hour: hour,
                                   idTerrain: widget.terrainModel.id!));
+                        } else if (isCharge) {
+                          showToast(
+                              msg: "This slot is already booked",
+                              state: ToastStates.warning);
                         }
                       },
                       child: itemGridViewReservation(
                           nonReservableHours, hourPayments, timeSlots, index),
                     );
                   },
-                );
-              } else {
-                return const Center(
-                  child: Text('Select a date to view reservations'),
                 );
               }
             },
@@ -493,7 +501,7 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
     int index,
   ) {
     Color backgroundColor =
-        Colors.green; // Default to green for available slots
+        Colors.green[500]!; // Default to green for available slots
 
     // If the slot is not reservable (blocked), it gets a red color
     if (isReservable.contains(timeSlots[index])) {
