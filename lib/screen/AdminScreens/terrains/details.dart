@@ -22,9 +22,18 @@ class TerrainDetailsScreen extends StatefulWidget {
 }
 
 class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
+  List<String> timeSlots = [];
+  @override
+  void initState() {
+    timeSlots = TerrainCubit.get(context).generateTimeSlots(
+        widget.terrainModel.heureDebutTemps!,
+        widget.terrainModel.heureFinTemps!);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final terrainCubit = TerrainCubit.get(context);
+    final cubit = TerrainCubit.get(context);
 
     final CarouselController _controller = CarouselController();
     var screenHeight = MediaQuery.of(context).size.height;
@@ -49,7 +58,7 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
               BlocBuilder<TerrainCubit, TerrainState>(
                 builder: (context, state) {
                   return carouselSliderWithIndicator(
-                      _controller, screenHeight, terrainCubit);
+                      _controller, screenHeight, cubit);
                 },
               ),
               SizedBox(
@@ -57,15 +66,15 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
               ),
               BlocBuilder<TerrainCubit, TerrainState>(
                 builder: (context, state) {
-                  return togeleReserveOrShowDescription(terrainCubit, context);
+                  return togeleReserveOrShowDescription(cubit, context);
                 },
               ),
               BlocBuilder<TerrainCubit, TerrainState>(
                 builder: (context, state) {
-                  if (terrainCubit.showStadiumDetails) {
+                  if (cubit.showStadiumDetails) {
                     return descriptionInfo(screenHeight, context);
                   } else {
-                    return reservationGrid(screenHeight, terrainCubit, context);
+                    return reservationGrid(screenHeight, cubit, context);
                   }
                 },
               ),
@@ -94,8 +103,14 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                     i < 7;
                     i++) // Display 7 days and allow user to select a date in the last index
                   GestureDetector(
-                    onTap: () => terrainCubit
-                        .selectDate(DateTime.now().add(Duration(days: i))),
+                    onTap: () {
+                      DateTime selectedDate =
+                          DateTime.now().add(Duration(days: i));
+                      terrainCubit.selectDate(selectedDate);
+                      terrainCubit.fetchReservations(
+                          terrainId: widget.terrainModel.id!,
+                          date: terrainCubit.selectedDate);
+                    },
                     child: Container(
                       width: 60,
                       height: 60,
@@ -121,6 +136,9 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                   icon: const Icon(Icons.calendar_today),
                   onPressed: () async {
                     await dateTimePicker(context, terrainCubit);
+                    terrainCubit.fetchReservations(
+                        terrainId: widget.terrainModel.id!,
+                        date: terrainCubit.selectedDate);
                   },
                 ),
               ],
@@ -131,60 +149,78 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 18),
           child: BlocBuilder<TerrainCubit, TerrainState>(
             builder: (context, state) {
-              var terrainCubit = TerrainCubit.get(context);
-              DateTime date = terrainCubit
-                  .selectedDate; // changed with the selectedDate from listview
-              String dayOfWeek =
-                  DateFormat('EEEE').format(date); // 'Sunday', 'Monday', etc.
-              List<dynamic> nonReservableHours =
-                  []; //! Initialize with empty list (if no non-reservable hours are available)
+              if (state is GetReservationLoadingState) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (state is GetReservationStateBad) {
+                return const Center(
+                  child: Text('Failed to fetch reservations'),
+                );
+              } else if (state is GetReservationStateGood) {
+                DateTime date = terrainCubit
+                    .selectedDate; // changed with the selectedDate from listview
+                String dayOfWeek =
+                    DateFormat('EEEE').format(date); // 'Sunday', 'Monday', etc.
+                List<String> nonReservableHours =
+                    []; //! Initialize with empty list (if no non-reservable hours are available)
 
-              // Populate nonReservableHours based on selected day from nonReservableTimeBlocks
-              for (var block in widget.terrainModel.nonReservableTimeBlocks!) {
-                if (block.day == dayOfWeek || block.day == 'All') {
-                  nonReservableHours.addAll(block.hours!.map((hour) => hour
-                      .toString())); // Ensure hours are in string format if they aren't already
+                // Populate nonReservableHours based on selected day from nonReservableTimeBlocks
+                for (var block
+                    in widget.terrainModel.nonReservableTimeBlocks!) {
+                  if (block.day == dayOfWeek || block.day == 'All') {
+                    nonReservableHours.addAll(block.hours!.map((hour) => hour
+                        .toString())); // Ensure hours are in string format if they aren't already
+                  }
                 }
+                List<String> hourPayments = [];
+                for (var block in terrainCubit.reservationList) {
+                  if (block.jour.month + block.jour.day + block.jour.year ==
+                      terrainCubit.selectedDate.month +
+                          terrainCubit.selectedDate.day +
+                          terrainCubit.selectedDate.year) {
+                    hourPayments.add(block.heureDebutTemps);
+                  }
+                }
+
+                return GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 5,
+                    childAspectRatio: 1,
+                    crossAxisSpacing: 8,
+                    mainAxisSpacing: 15,
+                  ),
+                  itemCount: timeSlots.length,
+                  itemBuilder: (context, index) {
+                    bool isReservable =
+                        !nonReservableHours.contains(timeSlots[index]);
+                    bool isCharge = !hourPayments.contains(timeSlots[index]);
+                    return GestureDetector(
+                      onTap: () {
+                        print('Selected time slot: ${timeSlots[index]}');
+                        if (isReservable && isCharge) {
+                          String hour = timeSlots[index];
+                          print(timeSlots[index]);
+                          navigatAndReturn(
+                              context: context,
+                              page: Reserve(
+                                  date: terrainCubit.selectedDate,
+                                  hour: hour,
+                                  idTerrain: widget.terrainModel.id!));
+                        }
+                      },
+                      child: itemGridViewReservation(
+                          nonReservableHours, hourPayments, timeSlots, index),
+                    );
+                  },
+                );
+              } else {
+                return const Center(
+                  child: Text('Select a date to view reservations'),
+                );
               }
-
-              // Assuming operational hours are part of your terrainModel, adjust this to match your actual data structure
-              List<String> timeSlots = terrainCubit.generateTimeSlots(
-                  widget.terrainModel.heureDebutTemps!,
-                  widget.terrainModel.heureFinTemps!,
-                  nonReservableHours);
-
-              return GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 5,
-                  childAspectRatio: 1,
-                  crossAxisSpacing: 8,
-                  mainAxisSpacing: 15,
-                ),
-                itemCount: timeSlots.length,
-                itemBuilder: (context, index) {
-                  bool isReservable =
-                      !nonReservableHours.contains(timeSlots[index]);
-                  return GestureDetector(
-                    onTap: () {
-                      print('Selected time slot: ${timeSlots[index]}');
-                      if (isReservable) {
-                        String hour = timeSlots[index];
-                        print(timeSlots[index]);
-                        navigatAndReturn(
-                            context: context,
-                            page: Reserve(
-                                date: terrainCubit.selectedDate,
-                                hour: hour,
-                                idTerrain: widget.terrainModel.id!));
-                      }
-                    },
-                    child:
-                        itemGridViewReservation(isReservable, timeSlots, index),
-                  );
-                },
-              );
             },
           ),
         ),
@@ -451,11 +487,27 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
   }
 
   Container itemGridViewReservation(
-      bool isReservable, List<String> timeSlots, int index) {
+    List<String> isReservable,
+    List<String> isCharge,
+    List<String> timeSlots,
+    int index,
+  ) {
+    Color backgroundColor =
+        Colors.green; // Default to green for available slots
+
+    // If the slot is not reservable (blocked), it gets a red color
+    if (isReservable.contains(timeSlots[index])) {
+      backgroundColor = Colors.red; // Red for non-reservable (blocked) slots
+    }
+    // If the slot is charged (booked or taken), it gets a gray color
+    else if (isCharge.contains(timeSlots[index])) {
+      backgroundColor = Colors.grey[300]!; // Gray for charged (booked) slots
+    }
+
     return Container(
       height: 20,
       decoration: BoxDecoration(
-        color: isReservable ? Colors.tealAccent[100] : Colors.grey[300],
+        color: backgroundColor,
         borderRadius: BorderRadius.circular(10),
       ),
       alignment: Alignment.center,

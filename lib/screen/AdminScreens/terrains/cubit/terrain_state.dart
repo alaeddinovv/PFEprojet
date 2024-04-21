@@ -67,6 +67,16 @@ class DeleteTerrainStateGood extends TerrainState {}
 
 class DeleteTerrainStateBad extends TerrainState {}
 
+class GetReservationLoadingState extends TerrainState {}
+
+class GetReservationStateGood extends TerrainState {
+  final List<ReservationModel> reservations;
+
+  GetReservationStateGood({required this.reservations});
+}
+
+class GetReservationStateBad extends TerrainState {}
+
 class EditingNonReservableTimeBlock extends TerrainState {
   final int? index;
 
