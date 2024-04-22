@@ -25,7 +25,7 @@ class ProfileAdminCubit extends Cubit<ProfileAdminState> {
       {required String nom,
       required String prenom,
       required String telephone,
-      required String wilaya,
+       String? wilaya,
       String? deleteOldImage}) async {
     emit(UpdateAdminLoadingState());
 

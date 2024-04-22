@@ -13,6 +13,7 @@ import 'package:pfeprojet/screen/AdminScreens/terrains/cubit/terrain_cubit.dart'
 import 'package:pfeprojet/screen/Auth/cubit/auth_cubit.dart';
 import 'package:pfeprojet/screen/Auth/login.dart';
 import 'package:pfeprojet/screen/Auth/onboarding.dart';
+import 'package:pfeprojet/screen/joueurScreens/annonce/cubit/annonce_joueur_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/home/cubit/home_joueur_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/home/home.dart';
 import 'package:pfeprojet/screen/joueurScreens/profile/cubit/profile_cubit.dart';
@@ -67,6 +68,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(
           create: ((context) => AnnonceCubit()..getMyAnnonce()),
+        ),
+        BlocProvider(
+          create: ((context) => AnnonceJoueurCubit()..getMyAnnonceJoueur()),
         ),
         BlocProvider(
           create: ((context) => HomeAdminCubit()..getMyInfo()),

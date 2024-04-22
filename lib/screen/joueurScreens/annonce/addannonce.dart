@@ -2,9 +2,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pfeprojet/component/components.dart';
-import 'package:pfeprojet/screen/AdminScreens/home/home.dart';
-import 'cubit/annonce_cubit.dart';
-import 'package:pfeprojet/Api/wilaya_list.dart';// Import your JSON data
+
+
+import 'package:pfeprojet/Api/wilaya_list.dart';
+import 'package:pfeprojet/screen/JoueurScreens/home/home.dart';
+import 'package:pfeprojet/screen/joueurScreens/annonce/cubit/annonce_joueur_cubit.dart';// Import your JSON data
 
 class AddAnnonce extends StatefulWidget {
   AddAnnonce({Key? key}) : super(key: key);
@@ -68,9 +70,9 @@ class _AddAnnonceState extends State<AddAnnonce> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  BlocBuilder<AnnonceCubit, AnnonceState>(
+                  BlocBuilder<AnnonceJoueurCubit, AnnonceJoueurState>(
                     builder: (context, state) {
-                      if (state is CreerAnnonceLoadingState) {
+                      if (state is CreerAnnonceJoueurLoadingState) {
                         return const LinearProgressIndicator();
                       }
                       return const SizedBox(height: 30);
@@ -152,28 +154,28 @@ class _AddAnnonceState extends State<AddAnnonce> {
                   const SizedBox(height: 20),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: BlocConsumer<AnnonceCubit, AnnonceState>(
+                    child: BlocConsumer<AnnonceJoueurCubit, AnnonceJoueurState>(
                       listener: (context, state) {
-                        if (state is CreerAnnonceLoadingState) {
+                        if (state is CreerAnnonceJoueurLoadingState) {
                           canPop = false;
                         } else {
                           canPop = true;
                         }
-                        if (state is CreerAnnonceStateGood) {
+                        if (state is CreerAnnonceJoueurStateGood) {
                           showToast(
                               msg: "annonce publier avec succes",
                               state: ToastStates.success);
-                          AnnonceCubit.get(context)
-                              .getMyAnnonce(cursor: "")
+                          AnnonceJoueurCubit.get(context)
+                              .getMyAnnonceJoueur(cursor: "")
                               .then((value) {
                             Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const HomeAdmin()),
+                                  builder: (context) => const HomeJoueur()),
                                   (route) => false,
                             );
                           });
-                        } else if (state is CreerAnnonceStateBad) {
+                        } else if (state is CreerAnnonceJoueurStateBad) {
                           showToast(
                               msg: "server crashed", state: ToastStates.error);
                         } else if (state is ErrorState) {
@@ -188,7 +190,7 @@ class _AddAnnonceState extends State<AddAnnonce> {
                           background: Colors.blueAccent,
                           onPressed: () {
                             if (formkey.currentState!.validate()) {
-                              AnnonceCubit.get(context).creerAnnonce(
+                              AnnonceJoueurCubit.get(context).creerAnnonceJoueur(
                                   type: _typeController.text,
                                   text: _textController.text,
                                   wilaya: selectedWilaya,

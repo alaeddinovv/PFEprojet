@@ -9,17 +9,17 @@ import 'package:pfeprojet/Api/httplaravel.dart';
 import '../../../../Model/annonce_admin_model.dart';
 import '../../../../Model/error_model.dart';
 
-part 'annonce_state.dart';
+part 'annonce_joueur_state.dart';
 
-class AnnonceCubit extends Cubit<AnnonceState> {
-  AnnonceCubit() : super(AnnonceInitial());
+class AnnonceJoueurCubit extends Cubit<AnnonceJoueurState> {
+  AnnonceJoueurCubit() : super(AnnonceJoueurInitial());
 
-  static AnnonceCubit get(context) => BlocProvider.of<AnnonceCubit>(context);
+  static AnnonceJoueurCubit get(context) => BlocProvider.of<AnnonceJoueurCubit>(context);
 
   // creer annonce -----------------------------------------------------------------------
-  Future<void> creerAnnonce(
+  Future<void> creerAnnonceJoueur(
       {required String type, required String text, String? wilaya, String? commune}) async {
-    emit(CreerAnnonceLoadingState());
+    emit(CreerAnnonceJoueurLoadingState());
 
     Map<String, dynamic> _model = {
       "type": type,
@@ -30,15 +30,15 @@ class AnnonceCubit extends Cubit<AnnonceState> {
 
     await Httplar.httpPost(path: ADDANNONCE, data: _model).then((value) {
       if (value.statusCode == 201) {
-        emit(CreerAnnonceStateGood());
+        emit(CreerAnnonceJoueurStateGood());
       } else {
         var jsonResponse =
-            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        convert.jsonDecode(value.body) as Map<String, dynamic>;
         emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
       }
     }).catchError((e) {
       print(e.toString());
-      emit(CreerAnnonceStateBad());
+      emit(CreerAnnonceJoueurStateBad());
     });
   }
 
@@ -46,9 +46,9 @@ class AnnonceCubit extends Cubit<AnnonceState> {
 
   List<AnnonceAdminData> annonceData = [];
   String cursorId = "";
-  Future<void> getMyAnnonce({String cursor = ''}) async {
-    emit(GetMyAnnonceLoading());
-    await Httplar.httpget(path: GETMYANNONCEADMIN, query: {'cursor': cursor})
+  Future<void> getMyAnnonceJoueur({String cursor = ''}) async {
+    emit(GetMyAnnonceJoueurLoading());
+    await Httplar.httpget(path: GETMYANNONCEJOUEUR, query: {'cursor': cursor})
         .then((value) {
       if (value.statusCode == 200) {
         if (cursor == "") {
@@ -56,49 +56,50 @@ class AnnonceCubit extends Cubit<AnnonceState> {
           cursorId = "";
         }
         var jsonResponse =
-            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        convert.jsonDecode(value.body) as Map<String, dynamic>;
         AnnonceAdminModel model = AnnonceAdminModel.fromJson(jsonResponse);
         annonceData.addAll(model.data!);
         cursorId = model.nextCursor!;
-        emit(GetMyAnnonceStateGood());
+        print(annonceData);
+        emit(GetMyAnnonceJoueurStateGood());
       } else {
         var jsonResponse =
-            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        convert.jsonDecode(value.body) as Map<String, dynamic>;
         emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
       }
     }).catchError((e) {
       print(e.toString());
-      emit(GetMyAnnonceStateBad());
+      emit(GetMyAnnonceJoueurStateBad());
     });
   }
 
   //delete annonce  -----------------------------------------------------------------------
 
-  Future<void> deleteAnnonce({required String id}) async {
-    emit(DeleteAnnonceLoadingState());
+  Future<void> deleteAnnonceJoueur({required String id}) async {
+    emit(DeleteAnnonceJoueurLoadingState());
 
     await Httplar.httpdelete(path: DELETEANNONCE + id).then((value) {
       if (value.statusCode == 204) {
-        emit(DeleteAnnonceStateGood());
+        emit(DeleteAnnonceJoueurStateGood());
       } else {
         var jsonResponse =
-            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        convert.jsonDecode(value.body) as Map<String, dynamic>;
         emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
       }
     }).catchError((e) {
       print(e.toString());
-      emit(DeleteAnnonceStateBad());
+      emit(DeleteAnnonceJoueurStateBad());
     });
   }
 
   //update annonce  -----------------------------------------------------------------------
 
-  Future<void> updateAnnonce({
+  Future<void> updateAnnonceJoueur({
     required String id,
     required String type,
     required String description,  String? wilaya, String? commune
   }) async {
-    emit(UpdateAnnonceLoadingState());
+    emit(UpdateAnnonceJoueurLoadingState());
 
     Map<String, dynamic> _model = {
       "type": type,
@@ -108,15 +109,15 @@ class AnnonceCubit extends Cubit<AnnonceState> {
     };
     await Httplar.httpPut(path: UPDATEANNONCE + id, data: _model).then((value) {
       if (value.statusCode == 200) {
-        emit(UpdateAnnonceStateGood());
+        emit(UpdateAnnonceJoueurStateGood());
       } else {
         var jsonResponse =
-            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        convert.jsonDecode(value.body) as Map<String, dynamic>;
         emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
       }
     }).catchError((e) {
       print(e.toString());
-      emit(UpdateAnnonceStateBad());
+      emit(UpdateAnnonceJoueurStateBad());
     });
   }
 }

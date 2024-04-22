@@ -50,9 +50,9 @@ class _AnnonceState extends State<Annonce> {
                   .getMyAnnonce()
                   .then((value) => Navigator.pop(context));
             }
-            if (state is DeleteAnnonceStateGood) {
-              AnnonceCubit.get(context).getMyAnnonce();
-            }
+            // if (state is DeleteAnnonceStateGood) {
+            //   AnnonceCubit.get(context).getMyAnnonce();
+            // }
           },
           builder: (context, state) {
             if (state is GetMyAnnonceStateBad) {
