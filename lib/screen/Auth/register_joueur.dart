@@ -111,7 +111,7 @@ class RegisterJoueur extends StatelessWidget {
                               return 'user name Must Not Be Empty';
                             }
                           },
-                          onFieldSubmitted: () {},
+
                           prefixIcon: const Icon(
                             Icons.person_outlined,
                           ),
@@ -214,7 +214,7 @@ class RegisterJoueur extends StatelessWidget {
                               return 'Email Must Not Be Empty';
                             }
                           },
-                          onFieldSubmitted: () {},
+
                           prefixIcon: const Icon(
                             Icons.email_outlined,
                           ),

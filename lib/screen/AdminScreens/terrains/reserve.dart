@@ -66,7 +66,7 @@ class Reserve extends StatelessWidget {
                       return TextButton(
                           onPressed: () {
                             TerrainCubit.get(context)
-                                .checkUserById(id: userIdController.text);
+                                .checkUserById(username: userIdController.text);
                           },
                           child: const Text('Check'));
                     },
