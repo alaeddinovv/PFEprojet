@@ -74,7 +74,6 @@ class Login extends StatelessWidget {
                             textInputAction: TextInputAction.done,
                             controller: passController,
                             type: TextInputType.visiblePassword,
-                            onFieldSubmitted: () {},
                             obscureText: AuthCubit.get(context).ishidden,
                             valid: (value) {
                               if (value.isEmpty) {

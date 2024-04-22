@@ -53,9 +53,8 @@ class UpdateMdpForm extends StatelessWidget {
                       textInputAction: TextInputAction.done,
                       controller: _oldController,
                       type: TextInputType.visiblePassword,
-                      onFieldSubmitted: () {},
                       obscureText:
-                      ProfileJoueurCubit.get(context).isHidden['pass']!,
+                          ProfileJoueurCubit.get(context).isHidden['pass']!,
                       valid: (value) {
                         if (value.isEmpty) {
                           return 'mot_de_passe Must Be Not Empty';
@@ -91,7 +90,6 @@ class UpdateMdpForm extends StatelessWidget {
                       textInputAction: TextInputAction.done,
                       controller: _new1Controller,
                       type: TextInputType.visiblePassword,
-                      onFieldSubmitted: () {},
                       valid: (value) {
                         if (value.isEmpty) {
                           return 'mot_de_passe Must Be Not Empty';
@@ -101,7 +99,7 @@ class UpdateMdpForm extends StatelessWidget {
                         }
                       },
                       obscureText:
-                      ProfileJoueurCubit.get(context).isHidden['pass1']!,
+                          ProfileJoueurCubit.get(context).isHidden['pass1']!,
                       labelText: 'nouveau mot de passe',
                       prefixIcon: const Icon(
                         Icons.password_outlined,
@@ -132,9 +130,8 @@ class UpdateMdpForm extends StatelessWidget {
                       textInputAction: TextInputAction.done,
                       controller: _new2Controller,
                       type: TextInputType.visiblePassword,
-                      onFieldSubmitted: () {},
                       obscureText:
-                      ProfileJoueurCubit.get(context).isHidden['pass2']!,
+                          ProfileJoueurCubit.get(context).isHidden['pass2']!,
                       valid: (value) {
                         if (value.isEmpty) {
                           return 'mot_de_passe Must Be Not Empty';
@@ -183,7 +180,7 @@ class UpdateMdpForm extends StatelessWidget {
                           context,
                           MaterialPageRoute(
                               builder: (context) => const ProfileJoueur()),
-                              (route) => false,
+                          (route) => false,
                         );
                       } else if (state is UpdateMdpJoueurStateBad) {
                         showToast(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:intl/intl.dart';
 
 Widget defaultForm(
         {controller,
@@ -43,33 +44,38 @@ Widget defaultForm(
       keyboardType: type,
       obscureText: obscureText,
     );
-TextFormField defaultForm3(
-    {controller,
-    int maxline = 1,
-    Widget? suffix,
-    Widget? prifix,
-    required context,
-    String? sufixText,
-    TextInputType type = TextInputType.text,
-    required Function valid,
-    Text? lable,
-    String? labelText,
-    Icon? prefixIcon,
-    Widget? sufixIcon,
-    TextInputAction? textInputAction = TextInputAction.next,
-    bool obscureText = false,
-    bool readOnly = false,
-    bool enabled = true,
-    String? valeurinitial,
-    Function? onFieldSubmitted}) {
+TextFormField defaultForm3({
+  controller,
+  int maxline = 1,
+  Widget? suffix,
+  Widget? prifix,
+  required context,
+  String? sufixText,
+  TextInputType type = TextInputType.text,
+  required Function valid,
+  Text? lable,
+  String? labelText,
+  Icon? prefixIcon,
+  Widget? sufixIcon,
+  TextInputAction? textInputAction = TextInputAction.next,
+  bool obscureText = false,
+  bool readOnly = false,
+  bool enabled = true,
+  String? valeurinitial,
+  Function()? onTap,
+
+  // Function? onFieldSubmitted
+}) {
   return TextFormField(
+    onTap: onTap,
     enabled: enabled,
     readOnly: readOnly,
     initialValue: valeurinitial,
     textInputAction: textInputAction,
-    onFieldSubmitted: (k) {
-      onFieldSubmitted!();
-    },
+    // onFieldSubmitted: (k) {
+    // onFieldSubmitted!();
+    // },
+
     validator: (String? value) {
       return valid(value);
     },
@@ -287,3 +293,65 @@ PreferredSizeWidget defaultAppBar(
             : leading,
         title: title,
         actions: actions);
+
+Widget buildTimeRow(
+    BuildContext context,
+    TextEditingController sTempsController,
+    TextEditingController eTempsController) {
+  return Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: <Widget>[
+      Expanded(
+        child: _buildTimePickerField(context, sTempsController, 'Start Time'),
+      ),
+      const SizedBox(width: 10), // Adds space between the time pickers
+      Expanded(
+        child: _buildTimePickerField(context, eTempsController, 'End Time'),
+      ),
+    ],
+  );
+}
+
+Widget _buildTimePickerField(
+    BuildContext context, TextEditingController controller, String labelText) {
+  return TextFormField(
+    controller: controller,
+    decoration: InputDecoration(
+      labelText: labelText,
+      suffixIcon: const Icon(Icons.access_time),
+      border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0)),
+    ),
+    readOnly: true,
+    onTap: () => _selectTime(context, controller),
+    validator: (value) =>
+        value == null || value.isEmpty ? 'Please enter $labelText' : null,
+  );
+}
+
+Future<void> _selectTime(
+    BuildContext context, TextEditingController controller) async {
+  final TimeOfDay? pickedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+      builder: (BuildContext context, Widget? child) {
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
+          child: child!,
+        );
+      });
+
+  if (pickedTime != null) {
+    // Format the TimeOfDay to a 24-hour format string
+    String formattedTime = _formatTimeOfDay(pickedTime);
+    controller.text = formattedTime;
+  }
+}
+
+// Helper function to format TimeOfDay to a "HH:mm" string
+String _formatTimeOfDay(TimeOfDay timeOfDay) {
+  final now = DateTime.now();
+  final dt =
+      DateTime(now.year, now.month, now.day, timeOfDay.hour, timeOfDay.minute);
+  final format = DateFormat("HH:mm"); // Using 24-hour format
+  return format.format(dt);
+}

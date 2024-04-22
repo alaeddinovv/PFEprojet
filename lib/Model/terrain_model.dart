@@ -119,23 +119,19 @@ class NonReservableTimeBlocks {
   NonReservableTimeBlocks({
     required this.day,
     required this.hours,
-    required this.id,
   });
   String? day;
   List<String>? hours;
-  String? id;
 
   NonReservableTimeBlocks.fromJson(Map<String, dynamic> json) {
     day = json['day'];
     hours = List.castFrom<dynamic, String>(json['hours']);
-    id = json['_id'];
   }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
     _data['day'] = day;
     _data['hours'] = hours;
-    _data['_id'] = id;
     return _data;
   }
 }

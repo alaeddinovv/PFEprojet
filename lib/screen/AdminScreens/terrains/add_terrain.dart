@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
-import 'package:pfeprojet/Model/non_reservable_time_block.dart';
+import 'package:pfeprojet/Model/terrain_model.dart';
+import 'package:pfeprojet/component/add_time_block.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/const.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/location/add_location_terrain.dart';
@@ -96,20 +95,16 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
             key: formKey,
             child: Column(
               children: <Widget>[
-                _buildTimeRow(context, _sTempsController, _eTempsController),
+                buildTimeRow(context, _sTempsController, _eTempsController),
                 const SizedBox(height: 10),
                 defaultForm3(
                   // ! hta nrigl duree yrje3 form HH:MM
-                  enabled: false,
+                  // enabled: false,
                   controller: _dureeController,
                   labelText: 'Duree',
                   type: TextInputType.number,
                   context: context,
-                  valid: (String value) {
-                    if (value.isEmpty) {
-                      return 'Duree Must Not Be Empty';
-                    }
-                  },
+                  valid: (String value) {},
                 ),
                 const SizedBox(
                   height: 10,
@@ -256,7 +251,7 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                             .entries
                             .map((entry) {
                           int idx = entry.key;
-                          NonReservableTimeBlock block = entry.value;
+                          NonReservableTimeBlocks block = entry.value;
                           // Return widgets for editing, e.g., TextFields for day and hours
                           if (state is EditingNonReservableTimeBlock &&
                               state.index == idx) {
@@ -272,12 +267,18 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                                 ),
                                 TextField(
                                   controller: TextEditingController(
-                                      text: block.hours.join(', ')),
+                                      text: block.hours!.join(', ')),
                                   // Update hours on change
                                   onChanged: (newHours) {
+                                    // block.hours = newHours
+                                    //     .split(',')
+                                    //     .map((e) => e.trim())
+                                    //     .toList();
                                     block.hours = newHours
                                         .split(',')
-                                        .map((e) => e.trim())
+                                        .map(
+                                            (e) => normalizeTimeInput(e.trim()))
+                                        .where((hour) => hour != "Invalid Time")
                                         .toList();
                                   },
                                 ),
@@ -305,7 +306,7 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                           } else {
                             return ListTile(
                               title: Text(
-                                  "${block.day}: ${block.hours.join(', ')}"), //day and hours
+                                  "${block.day}: ${block.hours!.join(', ')}"), //day and hours
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
@@ -470,6 +471,7 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                                 "heure_fin_temps": _eTempsController.text,
                                 "nonReservableTimeBlocks":
                                     nonReservableTimeBlockstoJsonArray(),
+                                "duree_creneau": _dureeController.text,
                                 // "photos": cubit.images,
                               };
 
@@ -494,74 +496,12 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
   }
 }
 
-Widget _buildTimeRow(
-    BuildContext context,
-    TextEditingController sTempsController,
-    TextEditingController eTempsController) {
-  return Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    children: <Widget>[
-      Expanded(
-        child: _buildTimePickerField(context, sTempsController, 'Start Time'),
-      ),
-      const SizedBox(width: 10), // Adds space between the time pickers
-      Expanded(
-        child: _buildTimePickerField(context, eTempsController, 'End Time'),
-      ),
-    ],
-  );
-}
-
-Widget _buildTimePickerField(
-    BuildContext context, TextEditingController controller, String labelText) {
-  return TextFormField(
-    controller: controller,
-    decoration: InputDecoration(
-      labelText: labelText,
-      suffixIcon: const Icon(Icons.access_time),
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0)),
-    ),
-    readOnly: true,
-    onTap: () => _selectTime(context, controller),
-    validator: (value) =>
-        value == null || value.isEmpty ? 'Please enter $labelText' : null,
-  );
-}
-
-Future<void> _selectTime(
-    BuildContext context, TextEditingController controller) async {
-  final TimeOfDay? pickedTime = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-      builder: (BuildContext context, Widget? child) {
-        return MediaQuery(
-          data: MediaQuery.of(context).copyWith(alwaysUse24HourFormat: true),
-          child: child!,
-        );
-      });
-
-  if (pickedTime != null) {
-    // Format the TimeOfDay to a 24-hour format string
-    String formattedTime = _formatTimeOfDay(pickedTime);
-    controller.text = formattedTime;
-  }
-}
-
-// Helper function to format TimeOfDay to a "HH:mm" string
-String _formatTimeOfDay(TimeOfDay timeOfDay) {
-  final now = DateTime.now();
-  final dt =
-      DateTime(now.year, now.month, now.day, timeOfDay.hour, timeOfDay.minute);
-  final format = DateFormat("HH:mm"); // Using 24-hour format
-  return format.format(dt);
-}
-
 void _addTimeBlock(BuildContext context, TerrainCubit cubit) async {
-  final result = await showDialog<NonReservableTimeBlock>(
+  final result = await showDialog<NonReservableTimeBlocks>(
     context: context,
     builder: (context) => const AddTimeBlockDialog(),
   );
-  if (result != null && result.hours.isNotEmpty) {
+  if (result != null && result.hours!.isNotEmpty) {
     cubit.addNonReservableTimeBlock(result);
   } else {
     // Optionally handle the case where no valid time block was added
@@ -584,78 +524,13 @@ void _showDeleteConfirmation(
         ),
         TextButton(
           onPressed: () => Navigator.of(context).pop(true),
-          child: const Text('Delete'),
           style: TextButton.styleFrom(foregroundColor: Colors.red),
+          child: const Text('Delete'),
         ),
       ],
     ),
   );
   if (result ?? false) {
     cubit.removeNonReservableTimeBlock(index);
-  }
-}
-
-class AddTimeBlockDialog extends StatefulWidget {
-  const AddTimeBlockDialog({Key? key}) : super(key: key);
-
-  @override
-  _AddTimeBlockDialogState createState() => _AddTimeBlockDialogState();
-}
-
-class _AddTimeBlockDialogState extends State<AddTimeBlockDialog> {
-  String? selectedDay;
-  List<String> hours = [];
-
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      title: const Text('Add Non-Reservable Time Block'),
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          DropdownButton<String>(
-            hint: const Text('Select Day'),
-            value: selectedDay,
-            onChanged: (value) => setState(() => selectedDay = value),
-            items: [
-              'Monday',
-              'Tuesday',
-              'Wednesday',
-              'Thursday',
-              'Friday',
-              'Saturday',
-              'Sunday'
-            ]
-                .map((day) => DropdownMenuItem(value: day, child: Text(day)))
-                .toList(),
-          ),
-          TextField(
-            onSubmitted: (value) {},
-            decoration:
-                const InputDecoration(hintText: 'Hours (e.g., 8, 9:30, 8.30)'),
-            onChanged: (value) {
-              hours = value
-                  .split(',')
-                  .map((e) => normalizeTimeInput(e.trim()))
-                  .where((hour) => hour != "Invalid Time")
-                  .toList();
-            },
-          ),
-        ],
-      ),
-      actions: [
-        TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel')),
-        TextButton(
-            onPressed: () {
-              if (selectedDay != null && hours.isNotEmpty) {
-                Navigator.of(context).pop(
-                    NonReservableTimeBlock(day: selectedDay!, hours: hours));
-              }
-            },
-            child: const Text('Add')),
-      ],
-    );
   }
 }

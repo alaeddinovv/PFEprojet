@@ -62,7 +62,6 @@ class RegisterJoueur extends StatelessWidget {
                                     return 'Nom Must Not Be Empty';
                                   }
                                 },
-                                onFieldSubmitted: () {},
                                 prefixIcon: const Icon(
                                   Icons.person_outlined,
                                 ),
@@ -80,7 +79,6 @@ class RegisterJoueur extends StatelessWidget {
                                     return 'prenom Must Not Be Empty';
                                   }
                                 },
-                                onFieldSubmitted: () {},
                                 prefixIcon: const Icon(
                                   Icons.person_outlined,
                                 ),
@@ -99,7 +97,6 @@ class RegisterJoueur extends StatelessWidget {
                               return 'Email Must Not Be Empty';
                             }
                           },
-                          onFieldSubmitted: () {},
                           prefixIcon: const Icon(
                             Icons.email_outlined,
                           ),
@@ -115,7 +112,6 @@ class RegisterJoueur extends StatelessWidget {
                             return 'telephone Must Not Be Empty';
                           }
                         },
-                        onFieldSubmitted: () {},
                         prefixIcon: const Icon(
                           Icons.phone,
                         ),
@@ -128,7 +124,6 @@ class RegisterJoueur extends StatelessWidget {
                               textInputAction: TextInputAction.done,
                               controller: motDePasseController,
                               type: TextInputType.visiblePassword,
-                              onFieldSubmitted: () {},
                               obscureText: AuthCubit.get(context).ishidden,
                               valid: (value) {
                                 if (value.isEmpty) {
@@ -158,37 +153,39 @@ class RegisterJoueur extends StatelessWidget {
                               return 'Age Must Not Be Empty';
                             }
                           },
-                          onFieldSubmitted: () {},
                           prefixIcon: const Icon(
                             Icons.format_list_numbered_rounded,
                           ),
                           textInputAction: TextInputAction.next),
                       SizedBox(height: sizedBoxSpacing),
-            DropdownButtonFormField<String>(
-              decoration: InputDecoration(
-                labelText: 'Wilaya',
-                prefixIcon: Icon(Icons.map),
-                border: OutlineInputBorder(),
-              ),
-              value: selectedWilaya,
-              onChanged: (String? newValue) {
-                selectedWilaya = newValue!;
-              },
-              validator: (value) => value == null ? 'Please select a wilaya' : null,
-              items: wilayas.map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-            ),
+                      DropdownButtonFormField<String>(
+                        decoration: InputDecoration(
+                          labelText: 'Wilaya',
+                          prefixIcon: Icon(Icons.map),
+                          border: OutlineInputBorder(),
+                        ),
+                        value: selectedWilaya,
+                        onChanged: (String? newValue) {
+                          selectedWilaya = newValue!;
+                        },
+                        validator: (value) =>
+                            value == null ? 'Please select a wilaya' : null,
+                        items: wilayas
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
                       SizedBox(height: screenHeight * 0.03),
                       BlocConsumer<AuthCubit, AuthState>(
                         listener: (BuildContext context, AuthState state) {
                           if (state is RegisterStateGood) {
                             CachHelper.putcache(
-                                key: "TOKEN", value: state.model.token).then((value) {
-                                  TOKEN=state.model.token;
+                                    key: "TOKEN", value: state.model.token)
+                                .then((value) {
+                              TOKEN = state.model.token;
                               navigatAndFinish(
                                   context: context, page: const HomeJoueur());
                             });
@@ -196,7 +193,6 @@ class RegisterJoueur extends StatelessWidget {
                             showToast(
                                 msg: 'Hi ${state.model.data!.nom!}',
                                 state: ToastStates.success);
-
                           } else if (state is ErrorState) {
                             showToast(
                                 msg: ' ${state.errorModel.message}',

@@ -53,7 +53,6 @@ class UpdateMdpForm extends StatelessWidget {
                       textInputAction: TextInputAction.done,
                       controller: _oldController,
                       type: TextInputType.visiblePassword,
-                      onFieldSubmitted: () {},
                       obscureText:
                           ProfileAdminCubit.get(context).isHidden['pass']!,
                       valid: (value) {
@@ -91,7 +90,6 @@ class UpdateMdpForm extends StatelessWidget {
                       textInputAction: TextInputAction.done,
                       controller: _new1Controller,
                       type: TextInputType.visiblePassword,
-                      onFieldSubmitted: () {},
                       valid: (value) {
                         if (value.isEmpty) {
                           return 'mot_de_passe Must Be Not Empty';
@@ -132,7 +130,6 @@ class UpdateMdpForm extends StatelessWidget {
                       textInputAction: TextInputAction.done,
                       controller: _new2Controller,
                       type: TextInputType.visiblePassword,
-                      onFieldSubmitted: () {},
                       obscureText:
                           ProfileAdminCubit.get(context).isHidden['pass2']!,
                       valid: (value) {
