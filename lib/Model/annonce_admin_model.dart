@@ -28,6 +28,8 @@ class AnnonceAdminData {
   String? createdAt;
   String? updatedAt;
   int? _V;
+  String? wilaya;  // Added wilaya field
+  String? commune;
 
   AnnonceAdminData.fromJson(Map<String, dynamic> json) {
     id = json['_id'];
@@ -37,6 +39,8 @@ class AnnonceAdminData {
     createdAt = json['createdAt'];
     updatedAt = json['updatedAt'];
     _V = json['__v'];
+    wilaya = json['wilaya'];  // Deserialize wilaya
+    commune = json['commune'];
   }
 
   Map<String, dynamic> toJson() {
@@ -48,6 +52,8 @@ class AnnonceAdminData {
     _data['createdAt'] = createdAt;
     _data['updatedAt'] = updatedAt;
     _data['__v'] = _V;
+    _data['wilaya'] = wilaya;  // Serialize wilaya
+    _data['commune'] = commune;
     return _data;
   }
 }

@@ -3,12 +3,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pfeprojet/Api/wilaya_list.dart';
 import 'package:pfeprojet/Model/annonce_admin_model.dart';
 import 'package:pfeprojet/component/components.dart';
-import 'package:pfeprojet/screen/AdminScreens/annonce/cubit/annonce_cubit.dart';
+
 import 'dart:convert';
+
+import 'package:pfeprojet/screen/joueurScreens/annonce/cubit/annonce_joueur_cubit.dart';
 
 class EditAnnoncePage extends StatefulWidget {
   final AnnonceAdminData
-      annonceModel; // Assuming AnnonceModel is your data model
+  annonceModel; // Assuming AnnonceModel is your data model
 
   const EditAnnoncePage({Key? key, required this.annonceModel})
       : super(key: key);
@@ -84,9 +86,9 @@ class _EditAnnoncePageState extends State<EditAnnoncePage> {
               child: Column(
                 // padding: const EdgeInsets.all(16),
                 children: <Widget>[
-                  BlocBuilder<AnnonceCubit, AnnonceState>(
+                  BlocBuilder<AnnonceJoueurCubit, AnnonceJoueurState>(
                     builder: (context, state) {
-                      if (state is UpdateAnnonceLoadingState) {
+                      if (state is UpdateAnnonceJoueurLoadingState) {
                         return const LinearProgressIndicator();
                       }
                       return const SizedBox(height: 30);
@@ -108,7 +110,7 @@ class _EditAnnoncePageState extends State<EditAnnoncePage> {
                     labelText: "TYPE DE L'ANNONCE",
                     textInputAction: TextInputAction.next,
                   ),
-          
+
                   const SizedBox(height: 20),
                   defaultForm3(
                     context: context,
@@ -166,26 +168,26 @@ class _EditAnnoncePageState extends State<EditAnnoncePage> {
                       );
                     }).toList(),
                   ),
-          
+
                   const SizedBox(height: 20),
                   // Add more fields if necessary
-          
-                  BlocConsumer<AnnonceCubit, AnnonceState>(
+
+                  BlocConsumer<AnnonceJoueurCubit, AnnonceJoueurState>(
                     listener: (context, state) {
-                      if (state is UpdateAnnonceLoadingState) {
+                      if (state is UpdateAnnonceJoueurLoadingState) {
                         canPop = false;
                       } else {
                         canPop = true;
                       }
-                      if (state is UpdateAnnonceStateGood) {
+                      if (state is UpdateAnnonceJoueurStateGood) {
                         // Handle success
                         showToast(msg: "Succes", state: ToastStates.success);
-                        AnnonceCubit.get(context)
-                            .getMyAnnonce(cursor: "")
+                        AnnonceJoueurCubit.get(context)
+                            .getMyAnnonceJoueur(cursor: "")
                             .then((value) {
                           Navigator.pop(context);
                         });
-                      } else if (state is UpdateAnnonceStateBad) {
+                      } else if (state is UpdateAnnonceJoueurStateBad) {
                         // Handle failure
                         showToast(msg: "Failed", state: ToastStates.error);
                       }
@@ -200,10 +202,10 @@ class _EditAnnoncePageState extends State<EditAnnoncePage> {
                               background: Colors.blueAccent,
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
-                                  AnnonceCubit.get(context).updateAnnonce(
-                                    id: widget.annonceModel.id!,
-                                    type: _titleController.text,
-                                    description: _descriptionController.text,
+                                  AnnonceJoueurCubit.get(context).updateAnnonceJoueur(
+                                      id: widget.annonceModel.id!,
+                                      type: _titleController.text,
+                                      description: _descriptionController.text,
                                       wilaya: selectedWilaya,
                                       commune: selectedCommune
                                   );

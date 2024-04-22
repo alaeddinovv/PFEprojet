@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pfeprojet/Api/wilaya_list.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/const.dart';
 import 'package:pfeprojet/helper/cachhelper.dart';
@@ -10,26 +13,37 @@ class RegisterJoueur extends StatelessWidget {
   RegisterJoueur({super.key});
 
   final nomController = TextEditingController();
+  final usernameController =  TextEditingController();
   final prenomController = TextEditingController();
   final emailController = TextEditingController();
   final motDePasseController = TextEditingController();
   final telephoneController = TextEditingController();
   final ageController = TextEditingController();
   final wilayaController = TextEditingController();
+  final posteController = TextEditingController();
   final formKey = GlobalKey<FormState>();
   String? selectedWilaya;
-  final List<String> wilayas = [
-    'Algiers',
-    'Oran',
-    'Constantine',
-    // Add more options as needed
-  ];
+
+
+  List<Map<String, dynamic>> getWilayas() {
+    final parsed = json.decode(wilayasJson) as Map<String, dynamic>;
+    return List<Map<String, dynamic>>.from(parsed['Wilayas']);
+  }
 
   @override
   Widget build(BuildContext context) {
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWidth = MediaQuery.of(context).size.width;
     var sizedBoxSpacing = screenHeight * 0.015;
+
+    List<Map<String, dynamic>> wilayas = getWilayas();
+    List<DropdownMenuItem<String>> dropdownItems = wilayas
+        .map((wilaya) => DropdownMenuItem<String>(
+      value: "${wilaya['name']}",
+      child: Text("${wilaya['name']}"),
+    ))
+        .toList();
+
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(
@@ -91,6 +105,22 @@ class RegisterJoueur extends StatelessWidget {
                       SizedBox(height: sizedBoxSpacing),
                       defaultForm3(
                           context: context,
+                          controller: usernameController,
+                          type: TextInputType.text,
+                          labelText: "user name",
+                          valid: (String value) {
+                            if (value.isEmpty) {
+                              return 'user name Must Not Be Empty';
+                            }
+                          },
+                          onFieldSubmitted: () {},
+                          prefixIcon: const Icon(
+                            Icons.person_outlined,
+                          ),
+                          textInputAction: TextInputAction.next),
+                      SizedBox(height: sizedBoxSpacing),
+                      defaultForm3(
+                          context: context,
                           controller: emailController,
                           type: TextInputType.emailAddress,
                           labelText: "E-Mail",
@@ -105,6 +135,7 @@ class RegisterJoueur extends StatelessWidget {
                           ),
                           textInputAction: TextInputAction.next),
                       SizedBox(height: sizedBoxSpacing),
+
                       defaultForm3(
                         context: context,
                         controller: telephoneController,
@@ -164,24 +195,35 @@ class RegisterJoueur extends StatelessWidget {
                           ),
                           textInputAction: TextInputAction.next),
                       SizedBox(height: sizedBoxSpacing),
-            DropdownButtonFormField<String>(
-              decoration: InputDecoration(
-                labelText: 'Wilaya',
-                prefixIcon: Icon(Icons.map),
-                border: OutlineInputBorder(),
-              ),
-              value: selectedWilaya,
-              onChanged: (String? newValue) {
-                selectedWilaya = newValue!;
-              },
-              validator: (value) => value == null ? 'Please select a wilaya' : null,
-              items: wilayas.map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-            ),
+                      DropdownButtonFormField<String>(
+                        decoration: InputDecoration(
+                          labelText: 'Wilaya',
+                          prefixIcon: Icon(Icons.map),
+                          border: OutlineInputBorder(),
+                        ),
+                        value: selectedWilaya,
+                        onChanged: (String? newValue) {
+                          selectedWilaya = newValue!;
+                        },
+                        validator: (value) => value == null ? 'Please select a wilaya' : null,
+                        items: dropdownItems,
+                      ),
+                      SizedBox(height: sizedBoxSpacing),
+                      defaultForm3(
+                          context: context,
+                          controller: posteController,
+                          type: TextInputType.text,
+                          labelText: "poste",
+                          valid: (String value) {
+                            if (value.isEmpty) {
+                              return 'Email Must Not Be Empty';
+                            }
+                          },
+                          onFieldSubmitted: () {},
+                          prefixIcon: const Icon(
+                            Icons.email_outlined,
+                          ),
+                          textInputAction: TextInputAction.next),
                       SizedBox(height: screenHeight * 0.03),
                       BlocConsumer<AuthCubit, AuthState>(
                         listener: (BuildContext context, AuthState state) {
@@ -215,12 +257,14 @@ class RegisterJoueur extends StatelessWidget {
                                   Map<String, dynamic> sendinfologin = {
                                     'nom': nomController.text,
                                     "prenom": prenomController.text,
+                                    "username": usernameController.text,
                                     "email": emailController.text,
                                     "age": ageController.text,
                                     'mot_de_passe': motDePasseController.text,
                                     "telephone": telephoneController.text,
                                     // 'wilaya': wilayaController.text
-                                    'wilaya': selectedWilaya
+                                    'wilaya': selectedWilaya,
+                                    "poste": posteController.text,
                                   };
                                   AuthCubit.get(context)
                                       .registerUser(data: sendinfologin);

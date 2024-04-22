@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:pfeprojet/Api/wilaya_list.dart';
 import 'package:pfeprojet/Model/admin_medel.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
@@ -17,20 +20,31 @@ class UpdateAdminForm extends StatefulWidget {
 class _UpdateAdminFormState extends State<UpdateAdminForm> {
   final TextEditingController _nomController = TextEditingController();
   final TextEditingController _prenomController = TextEditingController();
-  final TextEditingController _wilayaController = TextEditingController();
+  // final TextEditingController _wilayaController = TextEditingController();
   final TextEditingController _telephoneController = TextEditingController();
+  String? selectedWilaya;
+  List<dynamic> wilayas = [];
   final formkey = GlobalKey<FormState>();
   late final DataAdminModel homeAdminCubit;
   @override
   void initState() {
     // TODO: implement setState
+    super.initState();
+
     homeAdminCubit = HomeAdminCubit.get(context).adminModel!;
     _nomController.text = homeAdminCubit.nom!;
     _prenomController.text = homeAdminCubit.prenom!;
-    _wilayaController.text = homeAdminCubit.wilaya!;
+    // _wilayaController.text = homeAdminCubit.wilaya!;
     _telephoneController.text = homeAdminCubit.telephone!.toString();
 
-    super.initState();
+    final parsed = json.decode(wilayasJson) as Map<String, dynamic>;
+    setState(() {
+      wilayas = parsed['Wilayas'];
+      selectedWilaya = homeAdminCubit.wilaya ?? (wilayas.isNotEmpty ? wilayas[0]['name'] : null);
+      // updateCommunes(selectedWilaya);
+    });
+
+
   }
 
   @override
@@ -38,7 +52,7 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
     // TODO: implement dispose
     _nomController.dispose();
     _prenomController.dispose();
-    _wilayaController.dispose();
+    // _wilayaController.dispose();
     _telephoneController.dispose();
     super.dispose();
   }
@@ -145,17 +159,26 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
                 const SizedBox(
                   height: 20,
                 ),
-                defaultForm2(
-                    controller: _wilayaController,
-                    textInputAction: TextInputAction.next,
-                    label: 'Wilaya',
-                    prefixIcon: const Icon(Icons.location_city),
-                    type: TextInputType.text,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return "Wilaya Must Be Not Empty";
-                      }
-                    }),
+                DropdownButtonFormField<String>(
+                  decoration: InputDecoration(
+                    labelText: 'Select Wilaya',
+                    border: OutlineInputBorder(),
+                  ),
+                  value: selectedWilaya,
+                  onChanged: (newValue) {
+                    setState(() {
+                      selectedWilaya = newValue;
+                    });
+                  },
+                  items: wilayas.map<DropdownMenuItem<String>>((dynamic wilaya) {
+                    return DropdownMenuItem<String>(
+                      value: wilaya['name'],
+                      child: Text(wilaya['name']),
+                    );
+                  }).toList(),
+                ),
+
+
                 const SizedBox(
                   height: 20,
                 ),
@@ -208,7 +231,7 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
                                   nom: _nomController.text,
                                   prenom: _prenomController.text,
                                   telephone: _telephoneController.text,
-                                  wilaya: _wilayaController.text,
+                                  wilaya: selectedWilaya,
                                   deleteOldImage: homeAdminCubit.photo);
                             }
                           });

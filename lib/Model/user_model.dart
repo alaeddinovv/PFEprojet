@@ -26,6 +26,7 @@ class DataJoueurModel {
     this.id,
     this.nom,
     this.prenom,
+    this.username,
     this.email,
     this.telephone,
     this.age,
@@ -44,6 +45,7 @@ class DataJoueurModel {
   String? id;
   String? nom;
   String? prenom;
+  String? username;
   String? email;
   int? telephone;
   int? age;
@@ -61,6 +63,7 @@ class DataJoueurModel {
     id = json['_id'];
     nom = json['nom'];
     prenom = json['prenom'];
+    username = json['username'];
     email = json['email'];
     telephone = json['telephone'];
     age = json['age'];
@@ -80,6 +83,7 @@ class DataJoueurModel {
     _data['_id'] = id;
     _data['nom'] = nom;
     _data['prenom'] = prenom;
+    _data['username'] = username;
     _data['email'] = email;
     _data['telephone'] = telephone;
     _data['age'] = age;

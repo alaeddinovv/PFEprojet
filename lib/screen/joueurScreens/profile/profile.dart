@@ -7,6 +7,8 @@ import 'package:pfeprojet/screen/joueurScreens/home/cubit/home_joueur_cubit.dart
 import 'package:pfeprojet/screen/joueurScreens/profile/cubit/profile_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/profile/update_form.dart';
 import 'package:pfeprojet/screen/joueurScreens/profile/update_mdp.dart';
+import 'package:flutter/services.dart';
+
 
 import '../../../Model/user_model.dart';
 
@@ -69,6 +71,19 @@ class ProfileJoueur extends StatelessWidget {
                     ),
                     const SizedBox(
                       height: 5,
+                    ),
+                    ListTile(
+                      leading: const Icon(Icons.person),
+                      title: const Text('Username'),
+                      subtitle: Text(joueurModel.username!),
+                      trailing: IconButton(
+                        icon: const Icon(Icons.copy),
+                        onPressed: () {
+                          Clipboard.setData(ClipboardData(text: joueurModel.username!)).then((_) {
+                            showToast(msg: "username copied successfully", state: ToastStates.error);
+                          });
+                        },
+                      ),
                     ),
                     ListTile(
                       leading: const Icon(Icons.person),

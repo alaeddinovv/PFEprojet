@@ -67,8 +67,9 @@ class HomeJoueur extends StatelessWidget {
             NavigationDestination(icon: Icon(Icons.home), label: 'terrain'),
             NavigationDestination(
                 icon: Icon(Icons.more_time_rounded), label: 'Reservation'),
-            NavigationDestination(icon: Icon(Icons.add), label: 'equipe'),
-            NavigationDestination(icon: Icon(Icons.groups_2), label: 'annonce'),
+            NavigationDestination(icon: Icon(Icons.add), label: 'annonce'),
+            NavigationDestination(icon: Icon(Icons.groups_2), label: 'equipe'),
+
           ],
         ));
   }

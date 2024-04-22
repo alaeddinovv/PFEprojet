@@ -25,10 +25,14 @@ class ProfileJoueurCubit extends Cubit<ProfileJoueurState> {
   static ProfileJoueurCubit get(context) => BlocProvider.of(context);
 
   Future<void> updateJoueur(
-      {required String nom,
+      {
+        required String username,
+        required String nom,
         required String prenom,
         required String telephone,
-        required String wilaya,
+         String? wilaya,
+         String? age,
+         String? poste,
         String? deleteOldImage}) async {
     emit(UpdateJoueurLoadingState());
 
@@ -36,10 +40,13 @@ class ProfileJoueurCubit extends Cubit<ProfileJoueurState> {
       await updateProfileImg(deleteOldImage: deleteOldImage);
     }
     Map<String, dynamic> _model = {
+      "username": username,
       "nom": nom,
       "prenom": prenom,
       "telephone": telephone,
       "wilaya": wilaya,
+      "age": age,
+      "poste": poste,
       if (linkProfileImg != null) "photo": linkProfileImg
     };
     await Httplar.httpPut(path: UPDATEJOUEUR, data: _model).then((value) {
