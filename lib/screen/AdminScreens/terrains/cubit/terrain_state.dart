@@ -36,6 +36,12 @@ class CheckUserByIdStateGood extends TerrainState {
 
 class CheckUserByIdStateBad extends TerrainState {}
 
+class AddReservationLoadingState extends TerrainState {}
+
+class AddReservationStateGood extends TerrainState {}
+
+class AddReservationStateBad extends TerrainState {}
+
 //? ------------------------------Create_terrain.dart-------------------------------------------------
 class RemoveNonReservableTimeBlockState extends TerrainState {}
 
@@ -44,6 +50,32 @@ class CreerTerrainLoadingState extends TerrainState {}
 class CreerTerrainStateGood extends TerrainState {}
 
 class CreerTerrainStateBad extends TerrainState {}
+
+class UpdateTerrainLoadingState extends TerrainState {}
+
+class UpdateTerrainStateGood extends TerrainState {
+  final TerrainModel terrainModel;
+
+  UpdateTerrainStateGood({required this.terrainModel});
+}
+
+class UpdateTerrainStateBad extends TerrainState {}
+
+class DeleteTerrainLoadingState extends TerrainState {}
+
+class DeleteTerrainStateGood extends TerrainState {}
+
+class DeleteTerrainStateBad extends TerrainState {}
+
+class GetReservationLoadingState extends TerrainState {}
+
+class GetReservationStateGood extends TerrainState {
+  final List<ReservationModel> reservations;
+
+  GetReservationStateGood({required this.reservations});
+}
+
+class GetReservationStateBad extends TerrainState {}
 
 class EditingNonReservableTimeBlock extends TerrainState {
   final int? index;
