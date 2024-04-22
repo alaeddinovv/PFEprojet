@@ -35,6 +35,7 @@ const VERIFYADMINCODE = '/api/admins/verifytoken';
 
 const Loginadmin = '/api/loginadmin';
 const getJouerById = '/api/joueur/';
+const getJouerByUsername = '/api/joueur/username/';
 String PATH = Loginjoueur;
 String PATH1 = RECOVERPASSWORD;
 String PATH2 = VERIFYJOUEURCODE;
