@@ -69,4 +69,21 @@ class DataAdminModel {
       v: json['__v'],
     );
   }
+  Map<String, dynamic> toJson() {
+    return {
+      "_id": id,
+      "nom": nom,
+      "prenom": prenom,
+      "email": email,
+      "photo": photo,
+      "telephone": telephone,
+      "wilaya": wilaya,
+      "annonces": annonces,
+      "tournois": tournois,
+      "terrains": terrains,
+      "createdAt": createdAt,
+      "updatedAt": updatedAt,
+      "__v": v,
+    };
+  }
 }

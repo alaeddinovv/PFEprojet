@@ -25,6 +25,16 @@ class TerrainViewToggled extends TerrainState {}
 
 class TerrainDateChangedState extends TerrainState {}
 
+class GetReservationLoadingState extends TerrainState {}
+
+class GetReservationStateGood extends TerrainState {
+  final List<ReservationModel> reservations;
+
+  GetReservationStateGood({required this.reservations});
+}
+
+class GetReservationStateBad extends TerrainState {}
+
 // ?-----------------------------------------Reserve.dart------------------------------------------
 class LoadinCheckUserByIdState extends TerrainState {}
 
@@ -66,16 +76,6 @@ class DeleteTerrainLoadingState extends TerrainState {}
 class DeleteTerrainStateGood extends TerrainState {}
 
 class DeleteTerrainStateBad extends TerrainState {}
-
-class GetReservationLoadingState extends TerrainState {}
-
-class GetReservationStateGood extends TerrainState {
-  final List<ReservationModel> reservations;
-
-  GetReservationStateGood({required this.reservations});
-}
-
-class GetReservationStateBad extends TerrainState {}
 
 class EditingNonReservableTimeBlock extends TerrainState {
   final int? index;

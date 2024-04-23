@@ -34,6 +34,7 @@ class TerrainCubit extends Cubit<TerrainState> {
         var jsonResponse = convert.jsonDecode(value.body) as List;
         terrains =
             jsonResponse.map((item) => TerrainModel.fromJson(item)).toList();
+
         emit(GetMyTerrainsStateGood()); // Pass the list here
       } else {
         var jsonResponse =
@@ -47,7 +48,9 @@ class TerrainCubit extends Cubit<TerrainState> {
   }
 
 //? -----------------------------------------Details.dart------------------------------------------
+  DateTime selectedDate = DateTime.now();
   int indexSlide = 0;
+
   void setCurrentSlide(int index) {
     indexSlide = index;
     emit(TerrainSlideChanged());
@@ -87,6 +90,40 @@ class TerrainCubit extends Cubit<TerrainState> {
     }
     // print(timeSlots);
     return timeSlots;
+  }
+
+  List<ReservationModel> reservationList = [];
+  Future<void> fetchReservations(
+      {bool payment = true,
+      required String terrainId,
+      required DateTime date,
+      String heure_debut_temps = ""}) async {
+    emit(GetReservationLoadingState());
+    String formattedDate = DateFormat('yyyy-MM-dd').format(date);
+    await Httplar.httpget(path: FILTERRESERVATION, query: {
+      "payment": payment.toString(),
+      "terrain_id": terrainId,
+      "jour": formattedDate,
+      if (heure_debut_temps.isNotEmpty) "heure_debut_temps": heure_debut_temps
+    }).then((value) {
+      if (value.statusCode == 200) {
+        var jsonResponse = convert.jsonDecode(value.body) as List;
+        // print(jsonResponse);
+        reservationList = jsonResponse
+            .map((item) => ReservationModel.fromJson(item))
+            .toList();
+        emit(GetReservationStateGood(reservations: reservationList));
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        print(jsonResponse);
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
+      }
+    }).catchError((e) {
+      print(e.toString());
+
+      emit(GetReservationStateBad());
+    });
   }
 
 // ?-----------------------------------------Reserve.dart------------------------------------------
@@ -136,8 +173,6 @@ class TerrainCubit extends Cubit<TerrainState> {
       emit(AddReservationStateBad());
     });
   }
-
-  DateTime selectedDate = DateTime.now();
 
 //? ------------------------------Create_terrain.dart-------------------------------------------------
   List<NonReservableTimeBlocks> nonReservableTimeBlocks = [];
@@ -328,40 +363,6 @@ class TerrainCubit extends Cubit<TerrainState> {
     }).catchError((e) {
       print(e.toString());
       emit(DeleteTerrainStateBad());
-    });
-  }
-
-  List<ReservationModel> reservationList = [];
-  Future<void> fetchReservations(
-      {bool payment = true,
-      required String terrainId,
-      required DateTime date,
-      String heure_debut_temps = ""}) async {
-    emit(GetReservationLoadingState());
-    String formattedDate = DateFormat('yyyy-MM-dd').format(date);
-    await Httplar.httpget(path: FILTERRESERVATION, query: {
-      "payment": payment.toString(),
-      "terrain_id": terrainId,
-      "jour": formattedDate,
-      if (heure_debut_temps.isNotEmpty) "heure_debut_temps": heure_debut_temps
-    }).then((value) {
-      if (value.statusCode == 200) {
-        var jsonResponse = convert.jsonDecode(value.body) as List;
-        // print(jsonResponse);
-        reservationList = jsonResponse
-            .map((item) => ReservationModel.fromJson(item))
-            .toList();
-        emit(GetReservationStateGood(reservations: reservationList));
-      } else {
-        var jsonResponse =
-            convert.jsonDecode(value.body) as Map<String, dynamic>;
-        print(jsonResponse);
-        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
-      }
-    }).catchError((e) {
-      print(e.toString());
-
-      emit(GetReservationStateBad());
     });
   }
 }

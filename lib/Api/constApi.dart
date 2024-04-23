@@ -11,6 +11,7 @@ const DELETETERRAIN = '/api/terrain/';
 const UPDATETERRAIN = '/api/terrain/';
 
 const GETMYTERRAINS = '/api/myterrains';
+const GETAllTerrain = '/api//terrains';
 const Loginjoueur = '/api/loginjoueur';
 const REGISTERJOUER = '/api/joueur';
 const GETMYINFORMATIONJOUEUR = '/api/joueur/myinformation';
