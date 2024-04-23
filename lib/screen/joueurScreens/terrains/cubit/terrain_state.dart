@@ -41,3 +41,19 @@ class GetReservationStateGood extends TerrainState {
 }
 
 class GetReservationStateBad extends TerrainState {}
+
+class LoadinCheckUserByIdState extends TerrainState {}
+
+class CheckUserByIdStateGood extends TerrainState {
+  final DataJoueurModel dataJoueurModel;
+
+  CheckUserByIdStateGood({required this.dataJoueurModel});
+}
+
+class CheckUserByIdStateBad extends TerrainState {}
+
+class AddReservationLoadingState extends TerrainState {}
+
+class AddReservationStateGood extends TerrainState {}
+
+class AddReservationStateBad extends TerrainState {}

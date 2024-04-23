@@ -9,6 +9,7 @@ import 'package:pfeprojet/Model/terrain_model.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/cubit/terrain_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/location/terrain_location.dart';
+import 'package:pfeprojet/screen/joueurScreens/terrains/reserve.dart';
 
 // ignore: must_be_immutable
 class TerrainDetailsScreen extends StatefulWidget {
@@ -39,37 +40,40 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
     var screenHeight = MediaQuery.of(context).size.height;
     // var screenWidth = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Terrain Details'),
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            BlocBuilder<TerrainCubit, TerrainState>(
-              builder: (context, state) {
-                return carouselSliderWithIndicator(
-                    _controller, screenHeight, cubit);
-              },
-            ),
-            SizedBox(
-              height: screenHeight * 0.015,
-            ),
-            BlocBuilder<TerrainCubit, TerrainState>(
-              builder: (context, state) {
-                return togeleReserveOrShowDescription(cubit, context);
-              },
-            ),
-            BlocBuilder<TerrainCubit, TerrainState>(
-              builder: (context, state) {
-                if (cubit.showStadiumDetails) {
-                  return descriptionInfo(screenHeight, context);
-                } else {
-                  return reservationGrid(screenHeight, cubit, context);
-                }
-              },
-            ),
-          ],
+    return BlocListener<TerrainCubit, TerrainState>(
+      listener: (context, state) {},
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('Terrain Details'),
+        ),
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              BlocBuilder<TerrainCubit, TerrainState>(
+                builder: (context, state) {
+                  return carouselSliderWithIndicator(
+                      _controller, screenHeight, cubit);
+                },
+              ),
+              SizedBox(
+                height: screenHeight * 0.015,
+              ),
+              BlocBuilder<TerrainCubit, TerrainState>(
+                builder: (context, state) {
+                  return togeleReserveOrShowDescription(cubit, context);
+                },
+              ),
+              BlocBuilder<TerrainCubit, TerrainState>(
+                builder: (context, state) {
+                  if (cubit.showStadiumDetails) {
+                    return descriptionInfo(screenHeight, context);
+                  } else {
+                    return reservationGrid(screenHeight, cubit, context);
+                  }
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -193,14 +197,14 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                       onTap: () {
                         print('Selected time slot: ${timeSlots[index]}');
                         if (isReservable) {
-                          // String hour = timeSlots[index];
+                          String hour = timeSlots[index];
                           print(timeSlots[index]);
-                          // navigatAndReturn(
-                          //     context: context,
-                          //     page: Reserve(
-                          //         date: terrainCubit.selectedDate,
-                          //         hour: hour,
-                          //         idTerrain: widget.terrainModel.id!));
+                          navigatAndReturn(
+                              context: context,
+                              page: Reserve(
+                                  date: terrainCubit.selectedDate,
+                                  hour: hour,
+                                  idTerrain: widget.terrainModel.id!));
                         } else if (isCharge) {
                           showToast(
                               msg: "This slot is already booked",

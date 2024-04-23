@@ -127,12 +127,12 @@ class TerrainCubit extends Cubit<TerrainState> {
   }
 
 // ?-----------------------------------------Reserve.dart------------------------------------------
-  void checkUserById({required String username}) {
+  void checkUserById({required String id}) {
     emit(LoadinCheckUserByIdState());
     Httplar.httpget(
-      path: getJouerByUsername + username,
+      path: getJouerById + id,
     ).then((value) {
-      print(getJouerById + username);
+      print(getJouerById + id);
       if (value.statusCode == 200) {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;

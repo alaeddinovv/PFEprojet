@@ -9,6 +9,8 @@ import 'package:pfeprojet/Model/reservation.dart';
 import 'package:pfeprojet/Model/terrain_model.dart';
 import 'dart:convert' as convert;
 
+import 'package:pfeprojet/Model/user_model.dart';
+
 part 'terrain_state.dart';
 
 class TerrainCubit extends Cubit<TerrainState> {
@@ -115,6 +117,29 @@ class TerrainCubit extends Cubit<TerrainState> {
       print(e.toString());
 
       emit(GetReservationStateBad());
+    });
+  }
+
+  // ?-----------------------------------------Reserve.dart------------------------------------------
+
+  Future<void> addReservation({
+    Map<String, dynamic>? model,
+    String? idTerrain,
+  }) async {
+    emit(AddReservationLoadingState());
+    await Httplar.httpPost(path: ReservationJoueur + idTerrain!, data: model!)
+        .then((value) {
+      if (value.statusCode == 201) {
+        emit(AddReservationStateGood());
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
+        print(jsonResponse.toString());
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(AddReservationStateBad());
     });
   }
 }
