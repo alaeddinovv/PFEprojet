@@ -1,26 +1,6 @@
+import 'package:pfeprojet/Model/admin_medel.dart';
+
 class TerrainModel {
-  TerrainModel({
-    required this.largeur,
-    required this.longeur,
-    required this.superficie,
-    required this.adresse,
-    required this.heureDebutTemps,
-    required this.heureFinTemps,
-    required this.dureeCreneau,
-    required this.prix,
-    required this.description,
-    required this.capacite,
-    required this.etat,
-    required this.coordonnee,
-    required this.reservations,
-    required this.nonReservableTimeBlocks,
-    required this.adminId,
-    required this.photos,
-    required this.id,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.V,
-  });
   int? largeur;
   int? longeur;
   int? superficie;
@@ -35,7 +15,8 @@ class TerrainModel {
   Coordonnee? coordonnee;
   List<dynamic>? reservations;
   List<NonReservableTimeBlocks>? nonReservableTimeBlocks;
-  String? adminId;
+  dynamic
+      admin; //! in get my terrian (api backend) not get json for detail admin just string adminId
   List<dynamic>? photos;
   String? id;
   String? createdAt;
@@ -59,7 +40,13 @@ class TerrainModel {
     nonReservableTimeBlocks = List.from(json['nonReservableTimeBlocks'])
         .map((e) => NonReservableTimeBlocks.fromJson(e))
         .toList();
-    adminId = json['admin_id'];
+    if (json['admin_id'] is String) {
+      admin = json[
+          'admin_id']; //! in get my terrian (api backend) not get json for detail admin just string adminId
+    } else {
+      admin = DataAdminModel.fromJson(json['admin_id']);
+    }
+
     photos = List.castFrom<dynamic, dynamic>(json['photos']);
     id = json['_id'];
     createdAt = json['createdAt'];
@@ -84,7 +71,7 @@ class TerrainModel {
     _data['reservations'] = reservations;
     _data['nonReservableTimeBlocks'] =
         nonReservableTimeBlocks!.map((e) => e.toJson()).toList();
-    _data['admin_id'] = adminId;
+    _data['admin_id'] = admin!.toJson();
     _data['photos'] = photos;
     _data['_id'] = id;
     _data['createdAt'] = createdAt;
