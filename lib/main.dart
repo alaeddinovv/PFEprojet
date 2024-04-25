@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:pfeprojet/component/const.dart';
+import 'package:pfeprojet/fcm-firebase.dart';
 import 'package:pfeprojet/firebase_options.dart';
 import 'package:pfeprojet/helper/cachhelper.dart';
 import 'package:pfeprojet/helper/observer.dart';
@@ -21,6 +22,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/cubit/terrain_cubit.dart'
     as terrainjoueur;
 
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 void main() async {
   Bloc.observer = MyBlocObserver();
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,6 +31,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await FirebaseApi().initNotifications();
   Widget startWidget = Login();
   // CachHelper.removdata(key: "onbording");
   // CachHelper.removdata(key: "TOKEN");
@@ -91,6 +95,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp(
+        navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
         home:
 
