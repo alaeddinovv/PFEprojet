@@ -7,6 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:pfeprojet/Model/terrain_model.dart';
 import 'package:pfeprojet/component/components.dart';
+import 'package:pfeprojet/screen/joueurScreens/home/cubit/home_joueur_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/cubit/terrain_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/location/terrain_location.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/reserve.dart';
@@ -28,7 +29,8 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
         widget.terrainModel.heureDebutTemps!,
         widget.terrainModel.heureFinTemps!);
     TerrainCubit.get(context).fetchReservations(
-        terrainId: widget.terrainModel.id!, date: DateTime.now());
+        terrainId: widget.terrainModel.id!,
+        date: TerrainCubit.get(context).selectedDate);
     super.initState();
   }
 
@@ -168,13 +170,24 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                         .toString())); // Ensure hours are in string format if they aren't already
                   }
                 }
-                List<String> hourPayments = [];
+                List<String> hourPaymentsWithOtherPlayer = [];
+                List<String> hourMyReservationWaiting = [];
+                List<String> hourMyReservationPaying = [];
                 for (var block in terrainCubit.reservationList) {
                   if (block.jour.month + block.jour.day + block.jour.year ==
                       terrainCubit.selectedDate.month +
                           terrainCubit.selectedDate.day +
                           terrainCubit.selectedDate.year) {
-                    hourPayments.add(block.heureDebutTemps);
+                    if (block.joueurId !=
+                        HomeJoueurCubit.get(context).joueurModel!.id) {
+                      hourPaymentsWithOtherPlayer.add(block.heureDebutTemps);
+                    } else {
+                      if (block.payment == false) {
+                        hourMyReservationWaiting.add(block.heureDebutTemps);
+                      } else {
+                        hourMyReservationPaying.add(block.heureDebutTemps);
+                      }
+                    }
                   }
                 }
 
@@ -189,10 +202,17 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                   ),
                   itemCount: timeSlots.length,
                   itemBuilder: (context, index) {
-                    bool isCharge = hourPayments.contains(timeSlots[index]);
+                    bool isCharge =
+                        hourPaymentsWithOtherPlayer.contains(timeSlots[index]);
+                    bool isMyReservationPaying =
+                        hourMyReservationPaying.contains(timeSlots[index]);
+                    bool isMyReservation =
+                        hourMyReservationWaiting.contains(timeSlots[index]);
                     bool isReservable =
                         !nonReservableHours.contains(timeSlots[index]) &&
-                            !isCharge;
+                            !isCharge &&
+                            !isMyReservation &&
+                            !isMyReservationPaying;
                     return GestureDetector(
                       onTap: () {
                         print('Selected time slot: ${timeSlots[index]}');
@@ -209,10 +229,23 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                           showToast(
                               msg: "This slot is already booked",
                               state: ToastStates.warning);
+                        } else if (isMyReservationPaying) {
+                          showToast(
+                              msg: "You have already booked this slot",
+                              state: ToastStates.warning);
+                        } else if (isMyReservation) {
+                          showToast(
+                              msg: "you are waiting for accepte from admin",
+                              state: ToastStates.warning);
                         }
                       },
                       child: itemGridViewReservation(
-                          nonReservableHours, hourPayments, timeSlots, index),
+                          nonReservableHours,
+                          hourPaymentsWithOtherPlayer,
+                          hourMyReservationWaiting,
+                          hourMyReservationPaying,
+                          timeSlots,
+                          index),
                     );
                   },
                 );
@@ -475,6 +508,8 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
   Container itemGridViewReservation(
     List<String> isReservable,
     List<String> isCharge,
+    List<String> hourMyReservation,
+    List<String> hourMyReservationWaiting,
     List<String> timeSlots,
     int index,
   ) {
@@ -488,6 +523,10 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
     // If the slot is charged (booked or taken), it gets a gray color
     else if (isCharge.contains(timeSlots[index])) {
       backgroundColor = Colors.grey[300]!; // Gray for charged (booked) slots
+    } else if (hourMyReservation.contains(timeSlots[index])) {
+      backgroundColor = Colors.amber[300]!;
+    } else if (hourMyReservationWaiting.contains(timeSlots[index])) {
+      backgroundColor = Colors.blue[300]!;
     }
 
     return Container(

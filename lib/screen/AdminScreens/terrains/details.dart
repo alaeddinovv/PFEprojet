@@ -29,7 +29,8 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
         widget.terrainModel.heureDebutTemps!,
         widget.terrainModel.heureFinTemps!);
     TerrainCubit.get(context).fetchReservations(
-        terrainId: widget.terrainModel.id!, date: DateTime.now());
+        terrainId: widget.terrainModel.id!,
+        date: TerrainCubit.get(context).selectedDate);
     super.initState();
   }
 
