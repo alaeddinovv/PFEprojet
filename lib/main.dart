@@ -31,7 +31,6 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  await FirebaseApi().initNotifications();
   Widget startWidget = Login();
   // CachHelper.removdata(key: "onbording");
   // CachHelper.removdata(key: "TOKEN");
@@ -47,6 +46,7 @@ void main() async {
       startWidget = const HomeAdmin();
     }
   }
+  await FirebaseApi().initNotifications();
 
   runApp(MyApp(
     startwidget: startWidget,

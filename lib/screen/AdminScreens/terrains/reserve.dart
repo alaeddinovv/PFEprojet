@@ -40,7 +40,6 @@ class Reserve extends StatelessWidget {
                 const SizedBox(
                   height: 8,
                 ),
-
                 defaultForm3(
                   sufixIcon: BlocConsumer<TerrainCubit, TerrainState>(
                     listener: (context, state) {
@@ -82,7 +81,6 @@ class Reserve extends StatelessWidget {
                   labelText: 'User Id',
                   controller: userIdController,
                 ),
-
                 const SizedBox(
                   height: 16,
                 ),
@@ -104,7 +102,6 @@ class Reserve extends StatelessWidget {
                     controller: dateController,
                   ),
                 ),
-
                 const SizedBox(
                   height: 16,
                 ),
@@ -182,31 +179,9 @@ class Reserve extends StatelessWidget {
                     ),
                   ],
                 ),
-
                 const SizedBox(
                   height: 30,
                 ),
-                // SizedBox(
-                //   width: double.infinity,
-                //   child: ElevatedButton(
-                //     style: ElevatedButton.styleFrom(
-                //         shape: const RoundedRectangleBorder(
-                //             borderRadius: BorderRadius.all(Radius.circular(5))),
-                //         padding: const EdgeInsets.symmetric(
-                //             horizontal: 50, vertical: 15),
-                //         backgroundColor: Colors.blueAccent),
-                //     onPressed: () {
-                //       if (formKey.currentState!.validate()) {
-                //         print('ff');
-                //       }
-                //     },
-                //     child: const Text(
-                //       "Reserver",
-                //       style: TextStyle(color: Colors.white, fontSize: 16),
-                //     ),
-                //   ),
-                // ),
-
                 BlocConsumer<TerrainCubit, TerrainState>(
                   listener: (context, state) {
                     if (state is AddReservationStateGood) {
