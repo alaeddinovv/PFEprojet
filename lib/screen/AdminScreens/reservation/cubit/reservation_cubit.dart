@@ -39,9 +39,7 @@ class ReservationCubit extends Cubit<ReservationState> {
         ReservationPaginationModel model =
             ReservationPaginationModel.fromJson(jsonResponse);
         reservationList.addAll(model.data!);
-        // reservationList = jsonResponse
-        //     .map((item) => ReservationModel.fromJson(item))
-        //     .toList();
+        cursorId = model.nextCursor!;
 
         emit(GetReservationStateGood());
       } else {
