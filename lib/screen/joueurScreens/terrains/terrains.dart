@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:pfeprojet/Model/terrain_model.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/cubit/terrain_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/details.dart';
+import 'package:pfeprojet/screen/joueurScreens/terrains/location/all_terrain_location.dart';
 
 class Terrain extends StatefulWidget {
   const Terrain({super.key});
@@ -50,35 +52,51 @@ class _TerrainState extends State<Terrain> {
             ),
           ),
           Expanded(
-            child: _showList
-                ? BlocBuilder<TerrainCubit, TerrainState>(
-                    builder: (context, state) {
-                      if (state is ErrorTerrainsState) {
-                        return Center(
-                          child: Text(state.errorModel.message!),
-                        );
-                      } else if (state is GetMyTerrainsLoading) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                      return ListView.separated(
-                          physics: const BouncingScrollPhysics(),
-                          itemBuilder: (context, int index) => terrainItem(
-                              context: context,
-                              terrainModel: terrainCubit.terrains[index]),
-                          separatorBuilder: (context, int index) =>
-                              const SizedBox(
-                                height: 16,
-                              ),
-                          itemCount: terrainCubit.terrains.length);
-                    },
-                  )
-                : const Text('google map view'),
-          ),
+              child: _showList
+                  ? BlocBuilder<TerrainCubit, TerrainState>(
+                      builder: (context, state) {
+                        if (state is ErrorTerrainsState) {
+                          return Center(
+                            child: Text(state.errorModel.message!),
+                          );
+                        } else if (state is GetMyTerrainsLoading) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                        return ListView.separated(
+                            physics: const BouncingScrollPhysics(),
+                            itemBuilder: (context, int index) => terrainItem(
+                                context: context,
+                                terrainModel: terrainCubit.terrains[index]),
+                            separatorBuilder: (context, int index) =>
+                                const SizedBox(
+                                  height: 16,
+                                ),
+                            itemCount: terrainCubit.terrains.length);
+                      },
+                    )
+                  : TestMap(terrains: terrainCubit.terrains)),
         ],
       ),
     );
+  }
+
+  Set<Marker> _getMarkers(List<TerrainModel> terrains) {
+    final markers = <Marker>{};
+    for (final terrain in terrains) {
+      final marker = Marker(
+        markerId: MarkerId(terrain.id!), // Use terrain ID for uniqueness
+        position: LatLng(
+            terrain.coordonnee!.latitude!, terrain.coordonnee!.longitude!),
+        infoWindow: InfoWindow(
+          title: terrain.adresse,
+          snippet: terrain.description,
+        ),
+      );
+      markers.add(marker);
+    }
+    return markers;
   }
 
   InkWell terrainItem({required context, required TerrainModel terrainModel}) {

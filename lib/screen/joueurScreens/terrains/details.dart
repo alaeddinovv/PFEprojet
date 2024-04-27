@@ -43,7 +43,14 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
     // var screenWidth = MediaQuery.of(context).size.width;
 
     return BlocListener<TerrainCubit, TerrainState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is AddReservationStateGood) {
+          setState(() {
+            cubit.fetchReservations(
+                terrainId: widget.terrainModel.id!, date: cubit.selectedDate);
+          });
+        }
+      },
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Terrain Details'),
