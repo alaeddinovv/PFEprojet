@@ -28,7 +28,7 @@ class ReservationPaginationModelData {
   String? etat;
   bool? payment;
   JoueurId? joueurId;
-  String? terrainId;
+  TerrainId? terrainId;
   int? V;
 
   ReservationPaginationModelData.fromJson(Map<String, dynamic> json) {
@@ -39,7 +39,7 @@ class ReservationPaginationModelData {
     etat = json['etat'];
     payment = json['payment'];
     joueurId = JoueurId.fromJson(json['joueur_id']);
-    terrainId = json['terrain_id'];
+    terrainId = TerrainId.fromJson(json['terrain_id']);
     V = json['__v'];
   }
 
@@ -52,7 +52,7 @@ class ReservationPaginationModelData {
     _data['etat'] = etat;
     _data['payment'] = payment;
     _data['joueur_id'] = joueurId!.toJson();
-    _data['terrain_id'] = terrainId;
+    _data['terrain_id'] = terrainId!.toJson();
     _data['__v'] = V;
     return _data;
   }
@@ -74,6 +74,23 @@ class JoueurId {
     _data['_id'] = id;
     _data['username'] = username;
     _data['telephone'] = telephone;
+    return _data;
+  }
+}
+
+class TerrainId {
+  String? id;
+  String? nom;
+
+  TerrainId.fromJson(Map<String, dynamic> json) {
+    id = json['_id'];
+    nom = json['nom'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['_id'] = id;
+    _data['nom'] = nom;
     return _data;
   }
 }

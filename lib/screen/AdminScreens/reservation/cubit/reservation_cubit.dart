@@ -17,17 +17,17 @@ class ReservationCubit extends Cubit<ReservationState> {
   List<ReservationPaginationModelData> reservationList = [];
   Future<void> fetchReservations(
       {String cursor = '',
-      // required String terrainId,
-      // required DateTime date,
-      String heure_debut_temps = ""}) async {
+      String? terrainId,
+      String? date,
+      String? heureDebutTemps}) async {
     emit(GetReservationLoadingState());
-    // String formattedDate = DateFormat('yyyy-MM-dd').format(date);
+    // String formattedDate = DateFormat('yyyy-MM-dd').format(date!);
     await Httplar.httpget(path: '$FILTERRESERVATIONPagination', query: {
-      // "terrain_id": terrainId,
       "payment": "false",
       "cursor": cursor,
-      // "jour": formattedDate,
-      // if (heure_debut_temps.isNotEmpty) "heure_debut_temps": heure_debut_temps
+      if (terrainId != null) "terrain_id": terrainId,
+      if (date != null) "jour": date,
+      if (heureDebutTemps != null) "heure_debut_temps": heureDebutTemps
     }).then((value) {
       if (value.statusCode == 200) {
         if (cursor == "") {
