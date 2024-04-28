@@ -19,10 +19,11 @@ class HomeAdminCubit extends Cubit<HomeAdminState> {
   static HomeAdminCubit get(context) => BlocProvider.of(context);
   final List<Widget> body = [
     const Terrains(),
-    const Reservation(),
+    Reservation(),
     const Annonce(),
     const Tournoi()
   ];
+  final List<String> title = ["Terrains", "Reservation", "Annonce", "Tournoi"];
 
   int selectedIndex = 0;
   void changeIndexNavBar(int index) {

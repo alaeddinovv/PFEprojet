@@ -35,6 +35,16 @@ class GetReservationStateGood extends TerrainState {
 
 class GetReservationStateBad extends TerrainState {}
 
+class GetReservationJoueurInfoLoadingState extends TerrainState {}
+
+class GetReservationJoueurInfoStateGood extends TerrainState {
+  final List<ReservationModel> reservations;
+
+  GetReservationJoueurInfoStateGood({required this.reservations});
+}
+
+class GetReservationJoueurInfoStateBad extends TerrainState {}
+
 // ?-----------------------------------------Reserve.dart------------------------------------------
 class LoadinCheckUserByIdState extends TerrainState {}
 

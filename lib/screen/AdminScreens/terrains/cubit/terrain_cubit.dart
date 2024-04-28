@@ -126,13 +126,47 @@ class TerrainCubit extends Cubit<TerrainState> {
     });
   }
 
+  Future<void> reservationPlayerInfo(
+      {bool payment = true,
+      required String terrainId,
+      required DateTime date,
+      String heure_debut_temps = ""}) async {
+    emit(GetReservationJoueurInfoLoadingState());
+    String formattedDate = DateFormat('yyyy-MM-dd').format(date);
+    await Httplar.httpget(path: FILTERRESERVATION, query: {
+      "payment": payment.toString(),
+      "terrain_id": terrainId,
+      "jour": formattedDate,
+      if (heure_debut_temps.isNotEmpty) "heure_debut_temps": heure_debut_temps
+    }).then((value) {
+      if (value.statusCode == 200) {
+        var jsonResponse = convert.jsonDecode(value.body) as List;
+        // print(jsonResponse);
+        print(jsonResponse);
+        emit(GetReservationJoueurInfoStateGood(
+            reservations: jsonResponse
+                .map((item) => ReservationModel.fromJson(item))
+                .toList()));
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        print(jsonResponse);
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
+      }
+    }).catchError((e) {
+      print(e.toString());
+
+      emit(GetReservationJoueurInfoStateBad());
+    });
+  }
+
 // ?-----------------------------------------Reserve.dart------------------------------------------
-  void checkUserById({required String username}) {
+  void checkUserById({required String id}) {
     emit(LoadinCheckUserByIdState());
     Httplar.httpget(
-      path: getJouerByUsername + username,
+      path: getJouerById + id,
     ).then((value) {
-      print(getJouerById + username);
+      print(getJouerById + id);
       if (value.statusCode == 200) {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;

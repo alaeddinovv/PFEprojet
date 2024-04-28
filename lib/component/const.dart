@@ -1,8 +1,19 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 var TOKEN = '';
 var ONBOARDING = '';
 Map<String, dynamic> DECODEDTOKEN = {};
+
+String? formatTimeOfDay(TimeOfDay? time) {
+  if (time == null) return null;
+  return '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
+}
+
+String? formatDate(DateTime? date) {
+  if (date == null) return null;
+  return DateFormat('yyyy-MM-dd').format(date);
+}
 
 String normalizeTimeInput(String input) {
   try {

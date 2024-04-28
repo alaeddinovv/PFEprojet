@@ -9,6 +9,7 @@ import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/cubit/terrain_cubit.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/location/terrain_location.dart';
+import 'package:pfeprojet/screen/AdminScreens/terrains/reservation_player_info.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/reserve.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/update_terrain.dart';
 
@@ -29,7 +30,8 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
         widget.terrainModel.heureDebutTemps!,
         widget.terrainModel.heureFinTemps!);
     TerrainCubit.get(context).fetchReservations(
-        terrainId: widget.terrainModel.id!, date: DateTime.now());
+        terrainId: widget.terrainModel.id!,
+        date: TerrainCubit.get(context).selectedDate);
     super.initState();
   }
 
@@ -221,6 +223,14 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                           showToast(
                               msg: "This slot is already booked",
                               state: ToastStates.warning);
+                          terrainCubit.reservationPlayerInfo(
+                              terrainId: widget.terrainModel.id!,
+                              date: terrainCubit.selectedDate,
+                              heure_debut_temps: timeSlots[index],
+                              payment: true);
+
+                          navigatAndReturn(
+                              context: context, page: ReservationPlayerInfo());
                         }
                       },
                       child: itemGridViewReservation(

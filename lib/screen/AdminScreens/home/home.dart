@@ -13,7 +13,8 @@ class HomeAdmin extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text('HomeAdmin'),
+            title: Text(HomeAdminCubit.get(context)
+                .title[HomeAdminCubit.get(context).selectedIndex]),
             actions: [
               state is GetMyInformationLoading
                   ? const Center(child: CircularProgressIndicator())
