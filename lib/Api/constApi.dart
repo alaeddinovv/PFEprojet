@@ -1,8 +1,9 @@
 // const URLHTTP = '192.168.1.23:3000';
 // const URLHTTP = '192.168.1.2:3000';
 
+
 const URLHTTP = '192.168.95.68:3000'; //IP Houssem
-// const URLHTTP = '192.168.1.8:3000'; //IP Houssem Maktba
+
 
 // const URLHTTP = '10.0.2.2:3000';
 
@@ -36,6 +37,7 @@ const RESETPASSWORD = '/api/joueur/resetpassword';
 const RESETPASSWORDADMIN = '/api/admin/resetpassword';
 const VERIFYJOUEURCODE = '/api/joueurs/verifytoken';
 const VERIFYADMINCODE = '/api/admins/verifytoken';
+const GETALLANNONCE = '/api/annonce';
 
 const Loginadmin = '/api/loginadmin';
 const getJouerById = '/api/joueur/';

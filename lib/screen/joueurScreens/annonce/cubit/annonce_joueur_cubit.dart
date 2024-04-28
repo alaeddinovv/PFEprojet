@@ -5,6 +5,7 @@ import 'dart:convert' as convert;
 
 import 'package:pfeprojet/Api/constApi.dart';
 import 'package:pfeprojet/Api/httplaravel.dart';
+import 'package:pfeprojet/Model/annonce_model.dart';
 
 import '../../../../Model/annonce_admin_model.dart';
 import '../../../../Model/error_model.dart';
@@ -120,4 +121,51 @@ class AnnonceJoueurCubit extends Cubit<AnnonceJoueurState> {
       emit(UpdateAnnonceJoueurStateBad());
     });
   }
+
+  //-----------------------------------
+
+
+  List<AnnonceData> annonces = [];
+  // cusrsorid mdeclari lfug
+  String cursorid = "";
+  Future<void> getAllAnnonce({String cursor = ''}) async {
+    emit(GetAllAnnonceLoading());
+    print('1');
+    await Httplar.httpget(path: GETALLANNONCE, query: {'cursor': cursor})
+        .then((value) {
+      if (value.statusCode == 200) {
+        if (cursor == "") {
+          annonces = [];
+          cursorid = "";
+        }
+
+        print('1');
+        var jsonResponse =
+        convert.jsonDecode(value.body) as Map<String, dynamic>;
+
+        print('1');
+        AnnonceModel model = AnnonceModel.fromJson(jsonResponse);
+        annonces.addAll(model.data!);
+        cursorid = model.nextCursor!;
+
+        print(annonces);
+
+        emit(GetAllAnnonceStateGood());
+      } else {
+        var jsonResponse =
+        convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(GetAllAnnonceStateBad());
+    });
+  }
+
+
+
+
+
+
+
 }

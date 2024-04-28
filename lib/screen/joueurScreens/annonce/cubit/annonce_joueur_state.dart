@@ -31,6 +31,12 @@ final class UpdateAnnonceJoueurStateBad extends AnnonceJoueurState {}
 
 final class GetMyAnnonceJoueurLoading extends AnnonceJoueurState {}
 
-class GetMyAnnonceJoueurStateGood extends AnnonceJoueurState {}
+final class GetMyAnnonceJoueurStateGood extends AnnonceJoueurState {}
 
 final class GetMyAnnonceJoueurStateBad extends AnnonceJoueurState {}
+
+final class GetAllAnnonceLoading extends AnnonceJoueurState {}
+
+final class GetAllAnnonceStateGood extends AnnonceJoueurState {}
+
+final class GetAllAnnonceStateBad extends AnnonceJoueurState {}
