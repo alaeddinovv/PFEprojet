@@ -1,6 +1,7 @@
 import 'package:pfeprojet/Model/admin_medel.dart';
 
 class TerrainModel {
+  String? nom;
   int? largeur;
   int? longeur;
   int? superficie;
@@ -24,6 +25,7 @@ class TerrainModel {
   int? V;
 
   TerrainModel.fromJson(Map<String, dynamic> json) {
+    nom = json['nom'];
     largeur = json['largeur'];
     longeur = json['longeur'];
     superficie = json['superficie'];
@@ -56,6 +58,7 @@ class TerrainModel {
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
+    _data['nom'] = nom;
     _data['largeur'] = largeur;
     _data['longeur'] = longeur;
     _data['superficie'] = superficie;

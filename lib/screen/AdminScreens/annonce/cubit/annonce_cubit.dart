@@ -18,7 +18,10 @@ class AnnonceCubit extends Cubit<AnnonceState> {
 
   // creer annonce -----------------------------------------------------------------------
   Future<void> creerAnnonce(
-      {required String type, required String text, String? wilaya, String? commune}) async {
+      {required String type,
+      required String text,
+      String? wilaya,
+      String? commune}) async {
     emit(CreerAnnonceLoadingState());
 
     Map<String, dynamic> _model = {
@@ -93,11 +96,12 @@ class AnnonceCubit extends Cubit<AnnonceState> {
 
   //update annonce  -----------------------------------------------------------------------
 
-  Future<void> updateAnnonce({
-    required String id,
-    required String type,
-    required String description,  String? wilaya, String? commune
-  }) async {
+  Future<void> updateAnnonce(
+      {required String id,
+      required String type,
+      required String description,
+      String? wilaya,
+      String? commune}) async {
     emit(UpdateAnnonceLoadingState());
 
     Map<String, dynamic> _model = {

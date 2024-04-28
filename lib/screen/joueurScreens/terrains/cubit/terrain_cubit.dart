@@ -9,6 +9,8 @@ import 'package:pfeprojet/Model/reservation.dart';
 import 'package:pfeprojet/Model/terrain_model.dart';
 import 'dart:convert' as convert;
 
+import 'package:pfeprojet/Model/user_model.dart';
+
 part 'terrain_state.dart';
 
 class TerrainCubit extends Cubit<TerrainState> {
@@ -86,24 +88,26 @@ class TerrainCubit extends Cubit<TerrainState> {
 
   List<ReservationModel> reservationList = [];
   Future<void> fetchReservations(
-      {bool payment = true,
-      required String terrainId,
+      {required String terrainId,
       required DateTime date,
       String heure_debut_temps = ""}) async {
     emit(GetReservationLoadingState());
     String formattedDate = DateFormat('yyyy-MM-dd').format(date);
-    await Httplar.httpget(path: FILTERRESERVATION, query: {
-      "payment": payment.toString(),
-      "terrain_id": terrainId,
-      "jour": formattedDate,
-      if (heure_debut_temps.isNotEmpty) "heure_debut_temps": heure_debut_temps
-    }).then((value) {
+    await Httplar.httpget(
+      path: '$MYRESERVATIONWITHOTHER$terrainId/$formattedDate',
+      // query: {
+      //   "terrain_id": terrainId,
+      //   "jour": formattedDate,
+      //   if (heure_debut_temps.isNotEmpty) "heure_debut_temps": heure_debut_temps
+      // }
+    ).then((value) {
       if (value.statusCode == 200) {
         var jsonResponse = convert.jsonDecode(value.body) as List;
         // print(jsonResponse);
         reservationList = jsonResponse
             .map((item) => ReservationModel.fromJson(item))
             .toList();
+
         emit(GetReservationStateGood(reservations: reservationList));
       } else {
         var jsonResponse =
@@ -115,6 +119,29 @@ class TerrainCubit extends Cubit<TerrainState> {
       print(e.toString());
 
       emit(GetReservationStateBad());
+    });
+  }
+
+  // ?-----------------------------------------Reserve.dart------------------------------------------
+
+  Future<void> addReservation({
+    Map<String, dynamic>? model,
+    String? idTerrain,
+  }) async {
+    emit(AddReservationLoadingState());
+    await Httplar.httpPost(path: ReservationJoueur + idTerrain!, data: model!)
+        .then((value) {
+      if (value.statusCode == 201) {
+        emit(AddReservationStateGood());
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
+        print(jsonResponse.toString());
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(AddReservationStateBad());
     });
   }
 }

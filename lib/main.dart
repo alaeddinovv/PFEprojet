@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:pfeprojet/component/const.dart';
+import 'package:pfeprojet/fcm-firebase.dart';
 import 'package:pfeprojet/firebase_options.dart';
 import 'package:pfeprojet/helper/cachhelper.dart';
 import 'package:pfeprojet/helper/observer.dart';
@@ -9,6 +10,7 @@ import 'package:pfeprojet/screen/AdminScreens/annonce/cubit/annonce_cubit.dart';
 import 'package:pfeprojet/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
 import 'package:pfeprojet/screen/AdminScreens/home/home.dart';
 import 'package:pfeprojet/screen/AdminScreens/profile/cubit/profile_admin_cubit.dart';
+import 'package:pfeprojet/screen/AdminScreens/reservation/cubit/reservation_cubit.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/cubit/terrain_cubit.dart';
 import 'package:pfeprojet/screen/Auth/cubit/auth_cubit.dart';
 import 'package:pfeprojet/screen/Auth/login.dart';
@@ -20,6 +22,8 @@ import 'package:pfeprojet/screen/joueurScreens/profile/cubit/profile_cubit.dart'
 import 'package:firebase_core/firebase_core.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/cubit/terrain_cubit.dart'
     as terrainjoueur;
+
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   Bloc.observer = MyBlocObserver();
@@ -43,6 +47,7 @@ void main() async {
       startWidget = const HomeAdmin();
     }
   }
+  await FirebaseApi().initNotifications();
 
   runApp(MyApp(
     startwidget: startWidget,
@@ -89,8 +94,12 @@ class MyApp extends StatelessWidget {
         BlocProvider(
           create: ((context) => terrainjoueur.TerrainCubit()..getMyTerrains()),
         ),
+        BlocProvider(
+          create: ((context) => ReservationCubit()..fetchReservations()),
+        ),
       ],
       child: MaterialApp(
+        navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
         home:
 
