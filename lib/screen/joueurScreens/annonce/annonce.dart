@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:pfeprojet/Model/annonce_model.dart';
 import 'package:pfeprojet/component/components.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 
 import 'package:pfeprojet/screen/joueurScreens/annonce/addannonce.dart';
@@ -24,16 +27,37 @@ class _AnnonceState extends State<Annonce> {
   @override
   void initState() {
     super.initState();
+    _controller = ScrollController();
     _controller = ScrollController()
       ..addListener(() {
+
         if (_controller.offset >= _controller.position.maxScrollExtent &&
-            !_controller.position.outOfRange &&
-            AnnonceJoueurCubit.get(context).cursorId != "") {
-          AnnonceJoueurCubit.get(context)
-              .getMyAnnonceJoueur(cursor: AnnonceJoueurCubit.get(context).cursorId);
+            !_controller.position.outOfRange
+
+        )
+
+        {
+          if (_showList) {
+            if (AnnonceJoueurCubit.get(context).cursorId !="" ) {
+              AnnonceJoueurCubit.get(context).getMyAnnonceJoueur(cursor: AnnonceJoueurCubit.get(context).cursorId);
+              print('ggggg');
+
+        }
+
+        } else {
+        if (AnnonceJoueurCubit.get(context).cursorid != "") {
+        AnnonceJoueurCubit.get(context).getAllAnnonce(cursor: AnnonceJoueurCubit.get(context).cursorid);
+        print('ggggg');
+
+        print(AnnonceJoueurCubit.get(context).cursorid);
+        }
+        }
         }
       });
+    // _controller.addListener(_onScroll);
   }
+
+
 
   @override
   void dispose() {
@@ -49,20 +73,15 @@ class _AnnonceState extends State<Annonce> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ToggleButtons(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Text('My annonces'),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Text('All annonces'),
-                ),
-              ],
               isSelected: [_showList, !_showList],
               onPressed: (int index) {
                 setState(() {
                   _showList = index == 0;
+                  if (!_showList) {
+                    AnnonceJoueurCubit.get(context).getAllAnnonce(); // Call getAllAnnonce when "All annonces" is selected
+                  } else {
+                    AnnonceJoueurCubit.get(context).getMyAnnonceJoueur(); // Optional: Refresh "My annonces" when switching back
+                  }
                 });
               },
               borderRadius: BorderRadius.circular(8),
@@ -70,11 +89,93 @@ class _AnnonceState extends State<Annonce> {
               selectedBorderColor: Colors.blueAccent,
               selectedColor: Colors.white,
               fillColor: Colors.lightBlueAccent.withOpacity(0.5),
-              constraints: BoxConstraints(minHeight: 40.0),
+              constraints: const BoxConstraints(minHeight: 40.0),
+              children: const <Widget>[
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: Text('My annonces'),
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: Text('All annonces'),
+                ),
+              ],
             ),
           ),
           Expanded(
-            child: _showList ? buildAnnonceList() : buildSimpleView(),
+            child: _showList ?
+            Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          child: BlocConsumer<AnnonceJoueurCubit, AnnonceJoueurState>(
+          listener: (context, state) {
+          if (state is DeleteAnnonceJoueurStateGood) {
+          AnnonceJoueurCubit.get(context)
+              .getMyAnnonceJoueur()
+              .then((value) => Navigator.pop(context));
+          }
+          },
+          builder: (context, state) {
+
+          if (state is GetMyAnnonceJoueurLoading && AnnonceJoueurCubit.get(context).cursorId == '') {
+          return const Center(child: CircularProgressIndicator());
+          }
+
+          return ListView.separated(
+            controller: _controller,
+            physics: const BouncingScrollPhysics(),
+            itemBuilder: (context, index) {
+              return _buildAnnonceItem(
+                  AnnonceJoueurCubit.get(context).annonceData[index],
+                  index,
+                  context);
+            },
+            separatorBuilder: (context, int index) => const SizedBox(height: 16),
+            itemCount: AnnonceJoueurCubit.get(context).annonceData.length,
+            shrinkWrap: true, // to prevent infinite height error
+          );
+          //
+          return const SizedBox();
+          },
+          ),
+          )
+
+          //       SizedBox()
+                :
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+              child: BlocConsumer<AnnonceJoueurCubit, AnnonceJoueurState>(
+                listener: (context, state) {
+                  if (state is DeleteAnnonceJoueurStateGood) {
+                    AnnonceJoueurCubit.get(context)
+                        .getAllAnnonce()
+                        .then((value) => Navigator.pop(context));
+                  }
+
+                },
+                builder: (context, state) {
+
+
+                  if (state is GetAllAnnonceLoading && AnnonceJoueurCubit.get(context).cursorid == '') {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+
+                  return ListView.separated(
+                    controller: _controller,
+                    physics: const BouncingScrollPhysics(),
+                    itemBuilder: (context, index) {
+                      return _buildAllAnnonceItem(
+                          AnnonceJoueurCubit.get(context).annonces[index],
+                          index,
+                          context);
+                    },
+                    separatorBuilder: (context, int index) => const SizedBox(height: 16),
+                    itemCount: AnnonceJoueurCubit.get(context).annonces.length,
+                    shrinkWrap: true, // to prevent infinite height error
+                  );
+                },
+              ),
+            ),
+
           ),
         ],
       ),
@@ -88,10 +189,11 @@ class _AnnonceState extends State<Annonce> {
           : null,
     );
   }
-//----------------------------------------
+//---------------------------------------- myyyyyyyyyyyyyyyyyyyyy
   Widget buildAnnonceList() {
     return SingleChildScrollView(
-      child: Padding(
+      child:
+      Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: BlocConsumer<AnnonceJoueurCubit, AnnonceJoueurState>(
           listener: (context, state) {
@@ -102,9 +204,7 @@ class _AnnonceState extends State<Annonce> {
             }
           },
           builder: (context, state) {
-            if (state is GetMyAnnonceJoueurStateBad) {
-              return const Text('Failed to fetch data');
-            }
+
             if (state is GetMyAnnonceJoueurLoading && AnnonceJoueurCubit.get(context).cursorId == '') {
               return const Center(child: CircularProgressIndicator());
             }
@@ -122,52 +222,194 @@ class _AnnonceState extends State<Annonce> {
               itemCount: AnnonceJoueurCubit.get(context).annonceData.length,
               shrinkWrap: true, // to prevent infinite height error
             );
+            //
+
           },
         ),
       ),
     );
   }
-//---------------------------------------------------------
-  Widget buildSimpleView() {
-    return const Center(
-      child: Text(
-        'Annonce',
-        style: TextStyle(fontSize: 40),
-      ),
-    );
-  }
-//----------------------------------------------------------------
-  Widget _buildAnnonceItem(AnnonceAdminData model, int index, BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        border: Border.all(color: Colors.blueAccent, width: 2),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: ListTile(
-        title: Text(model.type ?? ''),
-        subtitle: Text(model.description ?? ''),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            IconButton(
-              icon: const Icon(Icons.edit, color: Colors.green),
-              onPressed: () {
-                navigatAndReturn(
-                    context: context,
-                    page: EditAnnoncePage(annonceModel: model));
+//--------------------------------------------------------- allllllllllllllllllllllllllllll
+  Widget buildSimpleView({required ScrollController controller}) {
+    return SingleChildScrollView(
+      child:
+      Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        child: BlocConsumer<AnnonceJoueurCubit, AnnonceJoueurState>(
+          listener: (context, state) {
+            if (state is DeleteAnnonceJoueurStateGood) {
+              AnnonceJoueurCubit.get(context)
+                  .getAllAnnonce()
+                  .then((value) => Navigator.pop(context));
+            }
+
+          },
+          builder: (context, state) {
+            if (state is GetAllAnnonceStateBad) {
+              return const Text('Failed to fetch data');
+            }
+
+            if (state is GetAllAnnonceLoading && AnnonceJoueurCubit.get(context).cursorid == '') {
+              return const Center(child: CircularProgressIndicator());
+            }
+
+            return ListView.separated(
+              controller: controller,
+              physics: const BouncingScrollPhysics(),
+              itemBuilder: (context, index) {
+                return _buildAllAnnonceItem(
+                    AnnonceJoueurCubit.get(context).annonces[index],
+                    index,
+                    context);
               },
-            ),
-            IconButton(
-              icon: const Icon(Icons.delete, color: Colors.red),
-              onPressed: () => dialogDelete(context, model),
-            ),
-          ],
+              separatorBuilder: (context, int index) => const SizedBox(height: 16),
+              itemCount: AnnonceJoueurCubit.get(context).annonces.length,
+              shrinkWrap: true, // to prevent infinite height error
+            );
+          },
         ),
       ),
+
     );
   }
+//----------------------------------------------------------------mmmmmmmmmmmmmmmmmmmmmyyyyyyyyyyyyy
+  Widget _buildAnnonceItem(
+      AnnonceAdminData model, int index, BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(
+          horizontal: 8.0, vertical: 4.0), // Adjusted for visual balance
+      decoration: BoxDecoration(
+        color: Colors.white, // Maintains a clean background
+        border: Border.all(
+            color: Colors.blueAccent,
+            width: 2), // Slightly thicker border for emphasis
+        borderRadius: BorderRadius.circular(8.0), // Rounded corners
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ListTile(
+            title: Text(
+              model.type ?? '',
+              style: const TextStyle(
+                color: Colors.black87,
+                fontWeight: FontWeight.w600,
+                fontSize: 18, // Larger font size for prominence
+              ),
+            ),
+            trailing: Row(
+              mainAxisSize: MainAxisSize
+                  .min, // Ensures the Row only takes as much width as it needs
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.edit, color: Colors.green),
+                  onPressed: () {
+                    navigatAndReturn(
+                        context: context,
+                        page: EditAnnoncePage(annonceModel: model));
+                    // Your code to handle edit action
+                  },
+                ),
+                IconButton(
+                  icon: const Icon(Icons.delete, color: Colors.grey),
+                  onPressed: () {
+                    dialogDelete(context, model);
+                  },
+                ),
+              ],
+            ),
+            // contentPadding: const EdgeInsets.symmetric(
+            //     horizontal: 12.0, vertical: 8.0), // Adjusted padding for layout
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical:
+                8.0), // Padding that slightly indents the description from the border
+            child: Text(
+              model.description ?? '', // Display the description
+              style: const TextStyle(
+                  fontSize: 16), // Slightly larger font for readability
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  //--------------------------------------alallllllllllllllllllllllllllllllllllll
+  Widget _buildAllAnnonceItem(
+      AnnonceData model, int index, BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(
+          horizontal: 8.0, vertical: 4.0), // Adjusted for visual balance
+      decoration: BoxDecoration(
+        color: Colors.white, // Maintains a clean background
+        border: Border.all(
+            color: Colors.blueAccent,
+            width: 2), // Slightly thicker border for emphasis
+        borderRadius: BorderRadius.circular(8.0), // Rounded corners
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          ListTile(
+            title: Text(
+              model.type ?? '',
+              style: const TextStyle(
+                color: Colors.black87,
+                fontWeight: FontWeight.w600,
+                fontSize: 18, // Larger font size for prominence
+              ),
+            ),
+            trailing: Row(
+              mainAxisSize: MainAxisSize
+                  .min, // Ensures the Row only takes as much width as it needs
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.call, color: Colors.green),
+                  onPressed: () {
+                    int? phoneNumber = model.admin?.telephone ?? model.joueur?.telephone;
+                    if (phoneNumber != null) {
+                      _makePhoneCall(phoneNumber.toString());
+
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("No telephone number available."),
+                        ),
+                      );
+                    }
+                  },
+                ),
+
+                IconButton(
+                  icon: const Icon(Icons.delete, color: Colors.grey),
+                  onPressed: () {
+                    dialogDeletee(context, model);
+                  },
+                ),
+              ],
+            ),
+            // contentPadding: const EdgeInsets.symmetric(
+            //     horizontal: 12.0, vertical: 8.0), // Adjusted padding for layout
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(
+                horizontal: 16.0,
+                vertical:
+                8.0), // Padding that slightly indents the description from the border
+            child: Text(
+              model.description ?? '', // Display the description
+              style: const TextStyle(
+                  fontSize: 16), // Slightly larger font for readability
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+  //-----------------------------------------------------------------------------
 
   Future<dynamic> dialogDelete(BuildContext context, AnnonceAdminData model) {
     return showDialog(
@@ -195,4 +437,55 @@ class _AnnonceState extends State<Annonce> {
       },
     );
   }
+
+
+  Future<dynamic> dialogDeletee(BuildContext context, AnnonceData model) {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Delete Annonce'),
+          content: const Text('Are you sure you want to delete this annonce?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                AnnonceJoueurCubit.get(context).deleteAnnonceJoueur(id: model.id!);
+
+              },
+              child: const Text('Yes'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: const Text('No'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _makePhoneCall(String phoneNumber) async {
+    print(phoneNumber.runtimeType);
+    print(phoneNumber);
+    var status = await Permission.phone.status;
+    if (!status.isGranted) {
+      await Permission.phone.request();
+    }
+
+    if (await Permission.phone.isGranted) {
+      final Uri launchUri = Uri(scheme: 'tel', path: phoneNumber);
+
+        await launchUrl(launchUri);
+
+
+
+    } else {
+      print('Permission denied');
+    }
+  }
+
+
+
 }
