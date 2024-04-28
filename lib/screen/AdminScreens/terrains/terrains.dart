@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pfeprojet/Model/terrain_model.dart';
@@ -102,15 +103,22 @@ class Terrains extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Image(
-              image: terrainModel.photos!.isNotEmpty
-                  ? NetworkImage(terrainModel.photos![0])
-                  : const AssetImage('assets/images/terr.jpg')
-                      as ImageProvider<Object>,
-              height: 180,
-              width: double.infinity,
-              fit: BoxFit.fill,
-            ),
+            terrainModel.photos!.isNotEmpty
+                ? CachedNetworkImage(
+                    height: 150,
+                    width: double.infinity,
+                    fit: BoxFit.fill,
+                    imageUrl: terrainModel.photos![0],
+                    placeholder: (context, url) => Container(),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
+                  )
+                : Image.asset(
+                    'assets/images/terr.jpg',
+                    height: 150,
+                    width: double.infinity,
+                    fit: BoxFit.fill,
+                  ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 5),
               child: SizedBox(
