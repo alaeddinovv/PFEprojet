@@ -132,55 +132,16 @@ class Reserve extends StatelessWidget {
                   prefixIcon: const Icon(Icons.timer_outlined),
                   context: context,
                   type: TextInputType.number,
-                  valid: (String value) {},
+                  valid: (String value) {
+                    if (value.isEmpty) {
+                      return 'Duree Must Not Be Empty';
+                    }
+                  },
                   labelText: 'Duree',
                   controller: dureeController,
                 ),
                 const SizedBox(
-                  height: 16,
-                ),
-                const Text('Prix: 0.0', style: TextStyle(fontSize: 20)),
-                const SizedBox(
-                  height: 16,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    const Text('Payement: ', style: TextStyle(fontSize: 20)),
-                    StatefulBuilder(
-                      builder: (BuildContext context, StateSetter setState) {
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Checkbox(
-                              value: isOuiChecked,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  isOuiChecked = value!;
-                                  if (isOuiChecked) isNonChecked = false;
-                                });
-                              },
-                            ),
-                            const Text('Oui'),
-                            const SizedBox(width: 10),
-                            Checkbox(
-                              value: isNonChecked,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  isNonChecked = value!;
-                                  if (isNonChecked) isOuiChecked = false;
-                                });
-                              },
-                            ),
-                            const Text('Non'),
-                          ],
-                        );
-                      },
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height: 30,
+                  height: 46,
                 ),
                 BlocConsumer<TerrainCubit, TerrainState>(
                   listener: (context, state) {

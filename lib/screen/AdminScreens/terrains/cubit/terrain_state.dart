@@ -114,3 +114,10 @@ final class ErrorState extends TerrainState {
 
   ErrorState({required this.errorModel});
 }
+
+// ---------------------------------------ReservationPlayerInfo---------------------
+class DeleteReservationLoadingState extends TerrainState {}
+
+class DeleteReservationStateGood extends TerrainState {}
+
+class DeleteReservationStateBad extends TerrainState {}

@@ -1,13 +1,13 @@
 // const URLHTTP = '192.168.1.23:3000';
 // const URLHTTP = '192.168.1.2:3000';
 
-
 const URLHTTP = '192.168.95.68:3000'; //IP Houssem
-
 
 // const URLHTTP = '10.0.2.2:3000';
 
 const ReservationJoueur = '/api/reservation/';
+const DELETGROUPRESERVATION =
+    '/api/ReservationGroup/'; // delete group reservation or one reservation but payment is true
 const RESERVERTERRAINWITHADMIN = '/api/reservationadmin/';
 const FILTERRESERVATION = '/api/reservations/filter';
 const FILTERRESERVATIONPagination = '/api/reservationspagination/filter';

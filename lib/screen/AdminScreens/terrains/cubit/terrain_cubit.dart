@@ -399,4 +399,23 @@ class TerrainCubit extends Cubit<TerrainState> {
       emit(DeleteTerrainStateBad());
     });
   }
+
+// --------------------------------------ReservationPlayerInfo----------------------
+  Future<void> deleteReservationGroup({required String groupID}) async {
+    emit(DeleteReservationLoadingState());
+
+    await Httplar.httpdelete(path: DELETGROUPRESERVATION + groupID)
+        .then((value) {
+      if (value.statusCode == 204) {
+        emit(DeleteReservationStateGood());
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(DeleteReservationStateBad());
+    });
+  }
 }

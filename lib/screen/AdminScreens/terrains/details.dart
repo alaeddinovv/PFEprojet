@@ -55,6 +55,10 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
           cubit.fetchReservations(
               terrainId: widget.terrainModel.id!, date: cubit.selectedDate);
         }
+        if (state is DeleteReservationStateGood) {
+          cubit.fetchReservations(
+              terrainId: widget.terrainModel.id!, date: cubit.selectedDate);
+        }
       },
       child: Scaffold(
         appBar: AppBar(
@@ -184,11 +188,11 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                 }
                 List<String> hourPayments = [];
                 for (var block in terrainCubit.reservationList) {
-                  if (block.jour.month + block.jour.day + block.jour.year ==
+                  if (block.jour!.month + block.jour!.day + block.jour!.year ==
                       terrainCubit.selectedDate.month +
                           terrainCubit.selectedDate.day +
                           terrainCubit.selectedDate.year) {
-                    hourPayments.add(block.heureDebutTemps);
+                    hourPayments.add(block.heureDebutTemps!);
                   }
                 }
 
@@ -220,9 +224,6 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                                   hour: hour,
                                   idTerrain: widget.terrainModel.id!));
                         } else if (isCharge) {
-                          showToast(
-                              msg: "This slot is already booked",
-                              state: ToastStates.warning);
                           terrainCubit.reservationPlayerInfo(
                               terrainId: widget.terrainModel.id!,
                               date: terrainCubit.selectedDate,

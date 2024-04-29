@@ -181,18 +181,18 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                 List<String> hourMyReservationWaiting = [];
                 List<String> hourMyReservationPaying = [];
                 for (var block in terrainCubit.reservationList) {
-                  if (block.jour.month + block.jour.day + block.jour.year ==
+                  if (block.jour!.month + block.jour!.day + block.jour!.year ==
                       terrainCubit.selectedDate.month +
                           terrainCubit.selectedDate.day +
                           terrainCubit.selectedDate.year) {
                     if (block.joueurId !=
                         HomeJoueurCubit.get(context).joueurModel!.id) {
-                      hourPaymentsWithOtherPlayer.add(block.heureDebutTemps);
+                      hourPaymentsWithOtherPlayer.add(block.heureDebutTemps!);
                     } else {
                       if (block.payment == false) {
-                        hourMyReservationWaiting.add(block.heureDebutTemps);
+                        hourMyReservationWaiting.add(block.heureDebutTemps!);
                       } else {
-                        hourMyReservationPaying.add(block.heureDebutTemps);
+                        hourMyReservationPaying.add(block.heureDebutTemps!);
                       }
                     }
                   }
