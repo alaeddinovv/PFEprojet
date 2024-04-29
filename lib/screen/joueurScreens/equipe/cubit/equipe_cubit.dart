@@ -8,7 +8,6 @@ import 'package:pfeprojet/Api/httplaravel.dart';
 import 'package:pfeprojet/Model/equipe_model.dart';
 import 'package:pfeprojet/Model/equipes_model.dart';
 
-
 import '../../../../Model/error_model.dart';
 
 part 'equipe_state.dart';
@@ -20,8 +19,8 @@ class EquipeCubit extends Cubit<EquipeState> {
 //------------------ equipe creer---------------------
   Future<void> creerEquipe(
       {required String nom,
-        required String numero_joueurs,
-        String? wilaya}) async {
+      required String numero_joueurs,
+      String? wilaya}) async {
     emit(CreerEquipeLoadingState());
 
     Map<String, dynamic> _model = {
@@ -35,7 +34,7 @@ class EquipeCubit extends Cubit<EquipeState> {
         emit(CreerEquipeStateGood());
       } else {
         var jsonResponse =
-        convert.jsonDecode(value.body) as Map<String, dynamic>;
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
         emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
       }
     }).catchError((e) {
@@ -43,6 +42,7 @@ class EquipeCubit extends Cubit<EquipeState> {
       emit(CreerEquipeStateBad());
     });
   }
+
   //----------------- get my terrain--------------------
   List<EquipeData> equipeData = [];
   String cursorId = "";
@@ -57,7 +57,7 @@ class EquipeCubit extends Cubit<EquipeState> {
           cursorId = "";
         }
         var jsonResponse =
-        convert.jsonDecode(value.body) as Map<String, dynamic>;
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
         EquipeModel model = EquipeModel.fromJson(jsonResponse);
         equipeData.addAll(model.data!);
         cursorId = model.nextCursor!;
@@ -65,7 +65,7 @@ class EquipeCubit extends Cubit<EquipeState> {
         emit(GetMyEquipeStateGood());
       } else {
         var jsonResponse =
-        convert.jsonDecode(value.body) as Map<String, dynamic>;
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
         emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
       }
     }).catchError((e) {
@@ -73,6 +73,7 @@ class EquipeCubit extends Cubit<EquipeState> {
       emit(GetMyEquipeStateBad());
     });
   }
+
   //-------------------------delete equipe ---------------------------------
   Future<void> deleteEquipe({required String id}) async {
     emit(DeleteEquipeLoadingState());
@@ -82,7 +83,7 @@ class EquipeCubit extends Cubit<EquipeState> {
         emit(DeleteEquipeStateGood());
       } else {
         var jsonResponse =
-        convert.jsonDecode(value.body) as Map<String, dynamic>;
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
         emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
       }
     }).catchError((e) {
@@ -90,15 +91,13 @@ class EquipeCubit extends Cubit<EquipeState> {
       emit(DeleteEquipeStateBad());
     });
   }
+
   //----------------- update equipe -------------------------------
   Future<void> updateEquipe(
-      {
-        required String id,
-        required String nom,
-        required String numero_joueurs,
-
-        String? wilaya
-        }) async {
+      {required String id,
+      required String nom,
+      required String numero_joueurs,
+      String? wilaya}) async {
     emit(UpdateEquipeLoadingState());
 
     Map<String, dynamic> _model = {
@@ -111,7 +110,7 @@ class EquipeCubit extends Cubit<EquipeState> {
         emit(UpdateEquipeStateGood());
       } else {
         var jsonResponse =
-        convert.jsonDecode(value.body) as Map<String, dynamic>;
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
         emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
       }
     }).catchError((e) {
@@ -119,13 +118,13 @@ class EquipeCubit extends Cubit<EquipeState> {
       emit(UpdateEquipeStateBad());
     });
   }
+
   //-------------------- get all equipes ----------------------------
   List<EquipesData> equipes = [];
   // cusrsorid mdeclari lfug
   String cursorid = "";
   Future<void> getAllEquipe({String cursor = ''}) async {
     emit(GetAllEquipeLoading());
-    print('1');
     await Httplar.httpget(path: GETALLEQUIPE, query: {'cursor': cursor})
         .then((value) {
       if (value.statusCode == 200) {
@@ -134,21 +133,17 @@ class EquipeCubit extends Cubit<EquipeState> {
           cursorid = "";
         }
 
-        print('1');
         var jsonResponse =
-        convert.jsonDecode(value.body) as Map<String, dynamic>;
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
 
-        print('1');
         EquipesModel model = EquipesModel.fromJson(jsonResponse);
         equipes.addAll(model.data!);
         cursorid = model.nextCursor!;
 
-        print(equipes);
-
         emit(GetAllEquipeStateGood());
       } else {
         var jsonResponse =
-        convert.jsonDecode(value.body) as Map<String, dynamic>;
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
         emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
       }
     }).catchError((e) {
@@ -156,6 +151,4 @@ class EquipeCubit extends Cubit<EquipeState> {
       emit(GetAllEquipeStateBad());
     });
   }
-
-
 }
