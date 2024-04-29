@@ -32,6 +32,8 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  String deviceInfo = await CachHelper.getData(key: 'deviceInfo') ??
+      await getDeviceIdentifier();
   Widget startWidget = Login();
   // CachHelper.removdata(key: "onbording");
   // CachHelper.removdata(key: "TOKEN");

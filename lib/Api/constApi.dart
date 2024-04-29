@@ -5,6 +5,11 @@ const URLHTTP = '192.168.95.68:3000'; //IP Houssem
 
 // const URLHTTP = '10.0.2.2:3000';
 
+const ADDORUPDATETOKENFCMADMIN = '/api/addOrUpdateTokenAdmin/';
+const REMOVETETOKENFCMADMIN = '/api/removeTokenFcmAdmin/';
+const ADDORUPDATETOKENFCMJoueur = '/api/addOrUpdateTokenJoueur/';
+const REMOVETETOKENFCMJoueur = '/api/removeTokenFcmJoueur/';
+
 const ReservationJoueur = '/api/reservation/';
 const DELETGROUPRESERVATION =
     '/api/ReservationGroup/'; // delete group reservation or one reservation but payment is true

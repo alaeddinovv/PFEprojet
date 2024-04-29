@@ -150,21 +150,33 @@ class Login extends StatelessWidget {
                     BlocConsumer<AuthCubit, AuthState>(
                       listener: (BuildContext context, AuthState state) async {
                         if (state is LoginStateGood) {
-                          if (PATH == Loginadmin) {
-                            HomeAdminCubit.get(context)
-                                .setAdminModel(state.model.data!);
-                            navigatAndFinish(
-                                context: context, page: const HomeAdmin());
-                          } else if (PATH == Loginjoueur) {
-                            navigatAndFinish(
-                                context: context, page: const HomeJoueur());
-                          }
                           showToast(
                               msg: 'Hi ${state.model.data!.nom!}',
                               state: ToastStates.success);
                           TOKEN = state.model.token!;
                           print(TOKEN);
                           CachHelper.putcache(key: "TOKEN", value: TOKEN);
+                          if (PATH == Loginadmin) {
+                            HomeAdminCubit.get(context)
+                                .setAdminModel(state.model.data!);
+                            AuthCubit.get(context)
+                                .addOrUpdateFCMTokenAdmin(
+                                    fcmToken: fCMToken, device: 'gggg')
+                                .then((value) {
+                              navigatAndFinish(
+                                  context: context, page: const HomeAdmin());
+                            });
+                          } else if (PATH == Loginjoueur) {
+                            AuthCubit.get(context)
+                                .addOrUpdateFCMTokenJoueur(
+                                    fcmToken: fCMToken,
+                                    device: await CachHelper.getData(
+                                        key: 'deviceInfo'))
+                                .then((value) {
+                              navigatAndFinish(
+                                  context: context, page: const HomeJoueur());
+                            });
+                          }
                         } else if (state is ErrorState) {
                           showToast(
                               msg: ' ${state.errorModel.message}',

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/helper/cachhelper.dart';
+import 'package:pfeprojet/screen/Auth/cubit/auth_cubit.dart';
 import 'package:pfeprojet/screen/Auth/login.dart';
 import 'package:pfeprojet/screen/joueurScreens/home/cubit/home_joueur_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/profile/cubit/profile_cubit.dart';
@@ -9,9 +10,7 @@ import 'package:pfeprojet/screen/joueurScreens/profile/update_form.dart';
 import 'package:pfeprojet/screen/joueurScreens/profile/update_mdp.dart';
 import 'package:flutter/services.dart';
 
-
 import '../../../Model/user_model.dart';
-
 
 import '../home/home.dart';
 
@@ -20,7 +19,8 @@ class ProfileJoueur extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final DataJoueurModel joueurModel = HomeJoueurCubit.get(context).joueurModel!;
+    final DataJoueurModel joueurModel =
+        HomeJoueurCubit.get(context).joueurModel!;
 
     return Scaffold(
         appBar: AppBar(
@@ -33,10 +33,15 @@ class ProfileJoueur extends StatelessWidget {
           title: const Text('Profile'),
           actions: [
             TextButton(
-                onPressed: () {
-                  navigatAndFinish(context: context, page: Login());
-                  CachHelper.removdata(key: "TOKEN");
-                  showToast(msg: "Disconnect", state: ToastStates.error);
+                onPressed: () async {
+                  AuthCubit.get(context)
+                      .removeFCMTokenAdmin(
+                          device: await CachHelper.getData(key: 'deviceInfo'))
+                      .then((value) {
+                    navigatAndFinish(context: context, page: Login());
+                    CachHelper.removdata(key: "TOKEN");
+                    showToast(msg: "Disconnect", state: ToastStates.error);
+                  });
                 },
                 child: const Text(
                   "Disconnect",
@@ -67,7 +72,7 @@ class ProfileJoueur extends StatelessWidget {
                       backgroundImage: joueurModel.photo != null
                           ? NetworkImage(joueurModel.photo!)
                           : const AssetImage('assets/images/user.png')
-                      as ImageProvider<Object>,
+                              as ImageProvider<Object>,
                     ),
                     const SizedBox(
                       height: 5,
@@ -79,8 +84,12 @@ class ProfileJoueur extends StatelessWidget {
                       trailing: IconButton(
                         icon: const Icon(Icons.copy),
                         onPressed: () {
-                          Clipboard.setData(ClipboardData(text: joueurModel.username!)).then((_) {
-                            showToast(msg: "username copied successfully", state: ToastStates.error);
+                          Clipboard.setData(
+                                  ClipboardData(text: joueurModel.username!))
+                              .then((_) {
+                            showToast(
+                                msg: "username copied successfully",
+                                state: ToastStates.error);
                           });
                         },
                       ),

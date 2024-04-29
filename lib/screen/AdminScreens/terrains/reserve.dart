@@ -22,8 +22,6 @@ class Reserve extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isOuiChecked = true;
-    bool isNonChecked = false;
     return Scaffold(
       appBar: AppBar(
         title: const Text('Reserve'),
@@ -169,8 +167,6 @@ class Reserve extends StatelessWidget {
                                 "${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}",
                             "heure_debut_temps": hour,
                             "duree": dureeController.text,
-                            "etat": "reserver",
-                            "payment": isOuiChecked,
                           };
 
                           TerrainCubit.get(context).addReservation(

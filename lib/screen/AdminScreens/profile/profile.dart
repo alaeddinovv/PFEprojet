@@ -7,11 +7,11 @@ import 'package:pfeprojet/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
 import 'package:pfeprojet/screen/AdminScreens/home/home.dart';
 import 'package:pfeprojet/screen/AdminScreens/profile/cubit/profile_admin_cubit.dart';
 import 'package:pfeprojet/screen/AdminScreens/profile/update_form.dart';
+import 'package:pfeprojet/screen/Auth/cubit/auth_cubit.dart';
 
 import 'package:pfeprojet/screen/Auth/login.dart';
 
 import 'package:pfeprojet/screen/AdminScreens/profile/update_mdp.dart';
-
 
 class ProfileAdmin extends StatelessWidget {
   const ProfileAdmin({super.key});
@@ -31,10 +31,15 @@ class ProfileAdmin extends StatelessWidget {
           title: const Text('Profile'),
           actions: [
             TextButton(
-                onPressed: () {
-                  navigatAndFinish(context: context, page: Login());
-                  CachHelper.removdata(key: "TOKEN");
-                  showToast(msg: "Disconnect", state: ToastStates.error);
+                onPressed: () async {
+                  AuthCubit.get(context)
+                      .removeFCMTokenAdmin(
+                          device: await CachHelper.getData(key: 'deviceInfo'))
+                      .then((value) {
+                    navigatAndFinish(context: context, page: Login());
+                    CachHelper.removdata(key: "TOKEN");
+                    showToast(msg: "Disconnect", state: ToastStates.error);
+                  });
                 },
                 child: const Text(
                   "Disconnect",
