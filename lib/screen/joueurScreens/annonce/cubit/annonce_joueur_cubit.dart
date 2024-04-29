@@ -66,6 +66,7 @@ class AnnonceJoueurCubit extends Cubit<AnnonceJoueurState> {
       } else {
         var jsonResponse =
         convert.jsonDecode(value.body) as Map<String, dynamic>;
+        print(jsonResponse.toString());
         emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
       }
     }).catchError((e) {
