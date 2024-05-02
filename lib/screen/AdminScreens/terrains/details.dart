@@ -11,6 +11,7 @@ import 'package:pfeprojet/screen/AdminScreens/terrains/cubit/terrain_cubit.dart'
 import 'package:pfeprojet/screen/AdminScreens/terrains/location/terrain_location.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/reservation_player_info.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/reserve.dart';
+import 'package:pfeprojet/screen/AdminScreens/terrains/searchJoueur.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/update_terrain.dart';
 
 // ignore: must_be_immutable
@@ -61,6 +62,11 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
         }
       },
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            navigatAndReturn(context: context, page: SearchTest());
+          },
+        ),
         appBar: AppBar(
           title: const Text('Terrain Details'),
         ),

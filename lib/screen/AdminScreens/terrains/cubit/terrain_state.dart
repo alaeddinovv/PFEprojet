@@ -121,3 +121,10 @@ class DeleteReservationLoadingState extends TerrainState {}
 class DeleteReservationStateGood extends TerrainState {}
 
 class DeleteReservationStateBad extends TerrainState {}
+// ---------------------------------------SearchTest------------------------
+
+class GetSearchJoueurLoading extends TerrainState {}
+
+class GetSearchJoueurStateGood extends TerrainState {}
+
+class GetSearchJoueurStateBad extends TerrainState {}
