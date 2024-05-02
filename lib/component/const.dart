@@ -1,9 +1,9 @@
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:pfeprojet/Api/constApi.dart';
+import 'package:pfeprojet/Api/httplaravel.dart';
 import 'package:pfeprojet/helper/cachhelper.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
 
 var TOKEN = '';
 late final fCMToken;
@@ -49,60 +49,41 @@ Future<String> getDeviceIdentifier() async {
   return deviceInfo;
 }
 
-Future<void> updateDeviceToken(String fcmToken) async {
-  try {
-    String deviceId = await getDeviceIdentifier();
-
-    addOrUpdateToken(fcmToken, deviceId);
-  } catch (e) {
-    print("Failed to get device identifier: $e");
-  }
+Future<void> addOrUpdateFCMTokenAdmin(
+    {required String fcmToken, required String device}) async {
+  await Httplar.httpPost(
+      path: ADDORUPDATETOKENFCMADMIN,
+      data: {'token': fcmToken, 'device': device}).then((value) {
+    print('add or update fcm token admin');
+  }).catchError((e) {
+    print(e.toString());
+  });
 }
 
-Future<void> addOrUpdateToken(String fcmToken, String device) async {
-  const String apiUrl = 'http://localhost:3000/api/addOrUpdateTokenAdmin';
-  try {
-    var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: <String, String>{
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $TOKEN'
-      },
-      body: jsonEncode({
-        'fcmToken': fcmToken,
-        'device': device,
-      }),
-    );
-
-    if (response.statusCode == 200) {
-      print("FCM Token updated successfully");
-    } else {
-      print("Failed to update FCM Token: ${response.body}");
-    }
-  } catch (e) {
-    print("Error when updating FCM Token: $e");
-  }
+Future<void> removeFCMTokenAdmin({required String device}) async {
+  await Httplar.httpPost(path: REMOVETETOKENFCMADMIN, data: {'device': device})
+      .then((value) {
+    print('remove fcm token admin');
+  }).catchError((e) {
+    print(e.toString());
+  });
 }
 
-Future<void> removeToken(String joueurId, String device) async {
-  const String apiUrl = 'https://your-api-url.com/api/joueur/remove-token';
-  try {
-    var response = await http.post(
-      Uri.parse(apiUrl),
-      headers: <String, String>{
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode({
-        'joueurId': joueurId,
-        'device': device,
-      }),
-    );
-    if (response.statusCode == 200) {
-      print("FCM Token removed successfully");
-    } else {
-      print("Failed to remove FCM Token: ${response.body}");
-    }
-  } catch (e) {
-    print("Error when removing FCM Token: $e");
-  }
+Future<void> addOrUpdateFCMTokenJoueur(
+    {required String fcmToken, required String device}) async {
+  await Httplar.httpPost(
+          path: ADDORUPDATETOKENFCMJoueur,
+          data: {'token': fcmToken, 'device': device})
+      .then((value) {})
+      .catchError((e) {
+    print(e.toString());
+  });
+}
+
+Future<void> removeFCMTokenJoueur({required String device}) async {
+  await Httplar.httpPost(path: REMOVETETOKENFCMJoueur, data: {'device': device})
+      .then((value) {})
+      .catchError((e) {
+    print(e.toString());
+  });
 }

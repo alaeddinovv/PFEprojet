@@ -167,42 +167,4 @@ class AuthCubit extends Cubit<AuthState> {
     isHidden[fieldKey] = !isHidden[fieldKey]!;
     emit(PasswordVisibilityChanged());
   }
-
-  Future<void> addOrUpdateFCMTokenAdmin(
-      {required String fcmToken, required String device}) async {
-    await Httplar.httpPost(
-        path: ADDORUPDATETOKENFCMADMIN,
-        data: {'token': fcmToken, 'device': device}).then((value) {
-      print('fff');
-    }).catchError((e) {
-      print(e.toString());
-    });
-  }
-
-  Future<void> removeFCMTokenAdmin({required String device}) async {
-    await Httplar.httpPost(
-        path: REMOVETETOKENFCMADMIN,
-        data: {'device': device}).then((value) {}).catchError((e) {
-      print(e.toString());
-    });
-  }
-
-  Future<void> addOrUpdateFCMTokenJoueur(
-      {required String fcmToken, required String device}) async {
-    await Httplar.httpPost(
-            path: ADDORUPDATETOKENFCMJoueur,
-            data: {'token': fcmToken, 'device': device})
-        .then((value) {})
-        .catchError((e) {
-      print(e.toString());
-    });
-  }
-
-  Future<void> removeFCMTokenJoueur({required String device}) async {
-    await Httplar.httpPost(
-        path: REMOVETETOKENFCMJoueur,
-        data: {'device': device}).then((value) {}).catchError((e) {
-      print(e.toString());
-    });
-  }
 }

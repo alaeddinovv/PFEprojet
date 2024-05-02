@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pfeprojet/component/components.dart';
+import 'package:pfeprojet/component/const.dart';
 import 'package:pfeprojet/helper/cachhelper.dart';
-import 'package:pfeprojet/screen/Auth/cubit/auth_cubit.dart';
 import 'package:pfeprojet/screen/Auth/login.dart';
 import 'package:pfeprojet/screen/joueurScreens/home/cubit/home_joueur_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/profile/cubit/profile_cubit.dart';
@@ -34,8 +34,7 @@ class ProfileJoueur extends StatelessWidget {
           actions: [
             TextButton(
                 onPressed: () async {
-                  AuthCubit.get(context)
-                      .removeFCMTokenAdmin(
+                  removeFCMTokenJoueur(
                           device: await CachHelper.getData(key: 'deviceInfo'))
                       .then((value) {
                     navigatAndFinish(context: context, page: Login());

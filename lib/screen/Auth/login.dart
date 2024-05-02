@@ -159,16 +159,16 @@ class Login extends StatelessWidget {
                           if (PATH == Loginadmin) {
                             HomeAdminCubit.get(context)
                                 .setAdminModel(state.model.data!);
-                            AuthCubit.get(context)
-                                .addOrUpdateFCMTokenAdmin(
-                                    fcmToken: fCMToken, device: 'gggg')
+                            addOrUpdateFCMTokenAdmin(
+                                    fcmToken: fCMToken,
+                                    device: await CachHelper.getData(
+                                        key: 'deviceInfo'))
                                 .then((value) {
                               navigatAndFinish(
                                   context: context, page: const HomeAdmin());
                             });
                           } else if (PATH == Loginjoueur) {
-                            AuthCubit.get(context)
-                                .addOrUpdateFCMTokenJoueur(
+                            addOrUpdateFCMTokenJoueur(
                                     fcmToken: fCMToken,
                                     device: await CachHelper.getData(
                                         key: 'deviceInfo'))
