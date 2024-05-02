@@ -52,8 +52,8 @@ const ANNULERREJOINDREEQUIPE = '/api/joueur/annuler/';
 
 const CAPITAINEACCEPTJOUEUR = '/api/joueur//capitaine/accept/';
 const CAPITAINEREFUSEJOUEUR = '/api/joueur/capitaine/refuser/';
-const CAPITAINEINVITEJOUEUR = '/api/joueur//capitaine/demande/';
-const CAPITAINEANNULEINVITATIONJOUEUR = '/api/joueur//capitaine/annuler/';
+const CAPITAINEINVITEJOUEUR = '/api/joueur/capitaine/demande/';
+const CAPITAINEANNULEINVITATIONJOUEUR = '/api/joueur/capitaine/annuler/';
 const QUITEREQUIPE ='/api/joueur/supprimer/';
 
 

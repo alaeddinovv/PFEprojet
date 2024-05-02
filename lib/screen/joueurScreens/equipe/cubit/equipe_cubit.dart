@@ -7,6 +7,7 @@ import 'package:pfeprojet/Api/constApi.dart';
 import 'package:pfeprojet/Api/httplaravel.dart';
 import 'package:pfeprojet/Model/equipe_model.dart';
 import 'package:pfeprojet/Model/equipes_model.dart';
+import 'package:pfeprojet/Model/user_model.dart';
 
 import '../../../../Model/error_model.dart';
 
@@ -299,6 +300,7 @@ class EquipeCubit extends Cubit<EquipeState> {
   }
   //---------------------------------------------------------------
   //--------------CAPITAINE ACCEPT DEMANDE JOUEUR-----------------
+
   Future<void> capitaineAceeptJoueur(
       {required String id , required String joueurId}) async {
     emit(CapitaineAceeptJoueurLoadingState());
@@ -341,18 +343,24 @@ class EquipeCubit extends Cubit<EquipeState> {
   }
 
   //---------------------CAPITAINE invite JOUEUR-----------------
+ late DataJoueurModel joueur ;
   Future<void> capitaineInviteJoueur(
-      {required String id , required String joueurId}) async {
+      {required String equipeId , required String joueurId}) async {
     emit(CapitaineInviteJoueurLoadingState());
 
     Map<String, dynamic> _model = {};
+    print(CAPITAINEINVITEJOUEUR + equipeId + '/' + joueurId);
 
-    await Httplar.httpPost(path: CAPITAINEINVITEJOUEUR + id + '/' + joueurId, data: _model).then((value) {
+    await Httplar.httpPost(path: CAPITAINEINVITEJOUEUR + equipeId + '/' + joueurId, data: _model).then((value) {
       if (value.statusCode == 200) {
+        var jsonResponse =
+        convert.jsonDecode(value.body) as Map<String, dynamic>;
+         joueur = DataJoueurModel.fromJson(jsonResponse);
         emit(CapitaineInviteJoueurStateGood());
       } else {
         var jsonResponse =
         convert.jsonDecode(value.body) as Map<String, dynamic>;
+
         emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
       }
     }).catchError((e) {
@@ -364,14 +372,14 @@ class EquipeCubit extends Cubit<EquipeState> {
 
   //---------------------CAPITAINE annuler invitation JOUEUR-----------------
   Future<void> capitaineAnnuleInvitationJoueur(
-      {required String id , required String joueurId}) async {
+      {required String equipeId , required String joueurId}) async {
     emit(CapitaineAnnuleInvitationJoueurLoadingState());
 
     Map<String, dynamic> _model = {};
 
-    await Httplar.httpPost(path: CAPITAINEANNULEINVITATIONJOUEUR + id + '/' + joueurId, data: _model).then((value) {
+    await Httplar.httpPost(path: CAPITAINEANNULEINVITATIONJOUEUR + equipeId + '/' + joueurId, data: _model).then((value) {
       if (value.statusCode == 200) {
-        emit(CapitaineAnnuleInvitationJoueurStateGood());
+        emit(CapitaineAnnuleInvitationJoueurStateGood(idJoueur: joueurId));
       } else {
         var jsonResponse =
         convert.jsonDecode(value.body) as Map<String, dynamic>;
@@ -392,7 +400,7 @@ class EquipeCubit extends Cubit<EquipeState> {
 
     await Httplar.httpPost(path: QUITEREQUIPE + equipeId + '/' + joueurId, data: _model).then((value) {
       if (value.statusCode == 200) {
-        emit(QuiterEquipeStateGood());
+        emit(QuiterEquipeStateGood(idJoueur: joueurId));
       } else {
         var jsonResponse =
         convert.jsonDecode(value.body) as Map<String, dynamic>;
@@ -401,6 +409,32 @@ class EquipeCubit extends Cubit<EquipeState> {
     }).catchError((e) {
       print(e.toString());
       emit(QuiterEquipeStateBad());
+    });
+  }
+
+  //-------------------- check by usernme -------------------------
+  void checkUserByUsername({required String username}) {
+    emit(LoadinCheckUserByUsernameState());
+    Httplar.httpget(
+      path: getJouerByUsername + username,
+    ).then((value) {
+print(getJouerByUsername + username);
+      if (value.statusCode == 200) {
+        var jsonResponse =
+        convert.jsonDecode(value.body) as Map<String, dynamic>;
+        print(jsonResponse);
+        // emit(TerrainViewToggled());
+
+        emit(CheckUserByUsernameStateGood(
+            dataJoueurModel: DataJoueurModel.fromJson(jsonResponse)));
+      } else {
+        var jsonResponse =
+        convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(CheckUserByUsernameStateBad());
     });
   }
 

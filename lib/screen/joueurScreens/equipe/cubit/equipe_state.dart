@@ -113,7 +113,12 @@ final class CapitaineInviteJoueurStateBad extends EquipeState {}
 
 final class CapitaineAnnuleInvitationJoueurLoadingState extends EquipeState {}
 
-final class CapitaineAnnuleInvitationJoueurStateGood extends EquipeState {}
+final class CapitaineAnnuleInvitationJoueurStateGood extends EquipeState {
+
+  final String idJoueur;
+
+  CapitaineAnnuleInvitationJoueurStateGood({required this.idJoueur});
+}
 
 final class CapitaineAnnuleInvitationJoueurStateBad extends EquipeState {}
 
@@ -121,6 +126,24 @@ final class CapitaineAnnuleInvitationJoueurStateBad extends EquipeState {}
 
 final class QuiterEquipeLoadingState extends EquipeState {}
 
-final class QuiterEquipeStateGood extends EquipeState {}
+final class QuiterEquipeStateGood extends EquipeState {
+  final String idJoueur;
+
+  QuiterEquipeStateGood({required this.idJoueur});
+}
 
 final class QuiterEquipeStateBad extends EquipeState {}
+
+
+
+
+
+class LoadinCheckUserByUsernameState extends EquipeState {}
+
+class CheckUserByUsernameStateGood extends EquipeState {
+  final DataJoueurModel dataJoueurModel;
+
+  CheckUserByUsernameStateGood({required this.dataJoueurModel});
+}
+
+class CheckUserByUsernameStateBad extends EquipeState {}

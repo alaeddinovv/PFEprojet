@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pfeprojet/Model/equipe_model.dart';
+import 'package:pfeprojet/Model/user_model.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/screen/joueurScreens/equipe/cubit/equipe_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/home/cubit/home_joueur_cubit.dart';
@@ -49,21 +50,41 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                 listener: (context, state) {
                   if (state is QuiterEquipeStateGood) {
                     showToast(msg: "Operation successful", state: ToastStates.success);
-                    widget.equipeData.joueurs.removeWhere((element) => element.username == 'boulrens');
                     setState(() {
-
+                      widget.equipeData.joueurs.removeWhere(
+                              (element) => element.id == state.idJoueur);
                     });
+
                     EquipeCubit.get(context).getMyEquipe();
 
                     // This should re-fetch the equipe data
-                  } else if (state is QuiterEquipeStateBad) {
+                  } else if (state is CapitaineAnnuleInvitationJoueurStateGood) {
+                    showToast(msg: "Operation successful", state: ToastStates.success);
+                    setState(() {
+                      widget.equipeData.attenteJoueurs.removeWhere(
+                              (element) => element.id == state.idJoueur);
+                    });
+
+                    EquipeCubit.get(context).getMyEquipe();
+                  } else if (state is CapitaineInviteJoueurStateGood ) {
+                    setState(() {
+                      // Adding the newly invited joueur to the 'attenteJoueurs' list
+                      widget.equipeData.attenteJoueurs.add(AttenteJoueurs(
+                        id: EquipeCubit.get(context).joueur.id!,
+                        username: EquipeCubit.get(context).joueur.username!,
+                        nom: EquipeCubit.get(context).joueur.nom!,
+                        telephone: EquipeCubit.get(context).joueur.telephone!,
+                      ));
+                    });
+                    showToast(msg: "Player successfully invited.", state: ToastStates.success);
+                  }else if (state is QuiterEquipeStateBad || state is CapitaineAnnuleInvitationJoueurStateBad) {
                     showToast(msg: "Failed to perform operation", state: ToastStates.error);
                   } else if (state is ErrorState) {
                     showToast(msg: state.errorModel.message!, state: ToastStates.error);
                   }
                 },
                   builder: (context, state) {
-                    if (state is QuiterEquipeLoadingState) {
+                    if (state is QuiterEquipeLoadingState || state is CapitaineAnnuleInvitationJoueurLoadingState) {
                       return CircularProgressIndicator();  // Show loading indicator while data is being fetched
                     }
 
@@ -76,12 +97,10 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                               .equipeData.id, joueur.username,
                               joueur.telephone );
                         } else if (index < joueurCount + attenteJoueursCount) {
-                          return _buildProgressItem(index, widget.equipeData
-                              .attenteJoueurs[index -
-                              widget.equipeData.joueurs.length]
-                              .username); // Use the new progress item for 3rd and 4th items
+                          // AttenteJoueurs attentejoueur = widget.equipeData.attenteJoueurs[index - widget.equipeData.joueurs.length];
+                          return _buildProgressItem(index, widget.equipeData.attenteJoueurs[index - widget.equipeData.joueurs.length].id, widget.equipeData.id, widget.equipeData.attenteJoueurs[index - widget.equipeData.joueurs.length].username); // Use the new progress item for 3rd and 4th items
                         } else {
-                          return _buildAddItem(index);
+                          return _buildAddItem(index, widget.equipeData.id);
                         }
                       },
                     );
@@ -94,8 +113,8 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
     );
   }
   //-------------------- attente---------------------------------------------
-  Widget _buildProgressItem(int index , String username) {
-    final joueurId = HomeJoueurCubit.get(context).joueurModel!.id;
+  Widget _buildProgressItem(int index , String joueurId , String equipeId , String username) {
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Container(
@@ -127,19 +146,7 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
             SizedBox(width: 12,),
             IconButton(
               onPressed: () {
-                if (joueurId != null) { // Check if joueurId is not null
-                  EquipeCubit.get(context).capitaineAnnuleInvitationJoueur(id: widget.equipeData.id, joueurId: joueurId).then((_) {
-                    showToast(msg: "joueur suprimer", state: ToastStates.success);
-                    EquipeCubit.get(context).getMyEquipe(); // Refresh the list after refusing
-                  }).catchError((error) {
-                    showToast(msg: "ressayer", state: ToastStates.error);
-                  });
-                } else {
-                  // Handle the error state here if joueurId is null
-                  showToast(
-                      msg: "ressayer", state: ToastStates.error);
-
-                }
+                EquipeCubit.get(context).capitaineAnnuleInvitationJoueur(equipeId: equipeId, joueurId: joueurId);
               },
               icon: Icon(Icons.cancel),
               color: Colors.red,
@@ -211,13 +218,13 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
 
 
 //-------------------------------------------------------- add --------------------------------------
-  Widget _buildAddItem(int index) {
+  Widget _buildAddItem(int index , String id) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: InkWell(
         onTap: () {
           // Add action
-          _showAddDialog(context);
+          _showAddDialog(context , id);
         },
         child: Container(
           height: 50,
@@ -239,55 +246,79 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
       ),
     );
   }
-//------------------------------------ ajouter equipe dialog --------------------------------
-  void _showAddDialog(BuildContext context) {
+//------------------------------------ ajouter joueur dialog --------------------------------
+
+  void _showAddDialog(BuildContext context, String equipeId) {
     TextEditingController textEditingController = TextEditingController();
-    bool showText = false; // State to manage visibility of the text
+    String message = "";
+    String? joueurId;
 
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return StatefulBuilder(  // Enables local state management within the dialog
+        return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
             return AlertDialog(
-              title: Text("add username:"),
+              title: Text("Add username:"),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  TextField(
+                    controller: textEditingController,
+                    decoration: InputDecoration(
+                      hintText: "Enter username",
+                      suffixIcon: IconButton(
+                        icon: Icon(Icons.search),
+                        onPressed: () {
+                          if (textEditingController.text.isNotEmpty) {
+                            EquipeCubit.get(context).checkUserByUsername(username: textEditingController.text);
+                          }
+                        },
+                      ),
+                    ),
+                    onChanged: (value) {
+                      if (message.isNotEmpty) {
+                        setState(() => message = ""); // Clear message when typing starts
+                      }
+                    },
+                  ),
+                  SizedBox(height: 10),
+                  BlocConsumer<EquipeCubit, EquipeState>(
+                    listener: (context, state) {
+                      if (state is CheckUserByUsernameStateGood) {
+                        joueurId = state.dataJoueurModel.id; // Store the joueur ID
+                        setState(() => message = "Player exists: ${state.dataJoueurModel.username}");
+                      } else if (state is CheckUserByUsernameStateBad || state is ErrorState) {
+                        setState(() => message = "Player does not exist");
+                      }
+                    },
+                    builder: (context, state) {
+                      if (state is LoadinCheckUserByUsernameState) {
+                        return CircularProgressIndicator();
+                      }
+                      return Text(message);
+                    },
+                  ),
+                  SizedBox(height: 20),
                   Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Expanded(
-                        child: TextField(
-                          controller: textEditingController,
-                          decoration: InputDecoration(
-                            hintText: "Enter text here",
-                            suffixIcon: TextButton(
-                              onPressed: () {
-                                setState(() {
-                                  showText = true; // Show the text when 'Check' is clicked
-                                });
-                              },
-                              child: Text('Check'),
-                            ),
-                          ),
-                          onChanged: (value) {
-                            if (showText) {
-                              setState(() {
-                                showText = false; // Hide the text when typing starts
-                              });
-                            }
-                          },
-                        ),
+                      ElevatedButton(
+                        onPressed: () {
+                          if (joueurId != null) {
+                            EquipeCubit.get(context).capitaineInviteJoueur(equipeId: equipeId, joueurId: joueurId!);
+                            Navigator.of(context).pop(); // Close the dialog after inviting
+                          }
+                        },
+                        child: Text("Invite"),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.of(context).pop(); // Close the dialog
+                        },
+                        child: Text("Cancel"),
                       ),
                     ],
-                  ),
-                  if (showText) Text('Hi'), // Conditional rendering of the text
-                  SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();  // Close the dialog
-                    },
-                    child: Text("Add"),
                   ),
                 ],
               ),
@@ -297,6 +328,9 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
       },
     );
   }
+
+
+
 
 
 
