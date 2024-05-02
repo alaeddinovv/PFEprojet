@@ -29,22 +29,12 @@ class _AddEquipeState extends State<AddEquipe> {
     super.initState();
     loadWilayas();
   }
-
   void loadWilayas() {
     final parsed = json.decode(wilayasJson) as Map<String, dynamic>;
     setState(() {
       wilayas = parsed['Wilayas'];
     });
   }
-
-  // void updateCommunes(String? wilayaName) {
-  //   setState(() {
-  //     selectedCommune = null;  // Reset the commune selection
-  //     communes = wilayaName != null
-  //         ? List<String>.from(wilayas.firstWhere((element) => element['name'] == wilayaName)['communes'])
-  //         : [];
-  //   });
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -128,25 +118,7 @@ class _AddEquipeState extends State<AddEquipe> {
                       );
                     }).toList(),
                   ),
-                  // const SizedBox(height: 20),
-                  // DropdownButtonFormField<String>(
-                  //   decoration: InputDecoration(
-                  //     labelText: 'Select Commune',
-                  //     border: OutlineInputBorder(),
-                  //   ),
-                  //   value: selectedCommune,
-                  //   onChanged: (newValue) {
-                  //     setState(() {
-                  //       selectedCommune = newValue;
-                  //     });
-                  //   },
-                  //   items: communes.map((String commune) {
-                  //     return DropdownMenuItem<String>(
-                  //       value: commune,
-                  //       child: Text(commune),
-                  //     );
-                  //   }).toList(),
-                  // ),
+
                   const SizedBox(height: 20),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
