@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pfeprojet/Model/equipe_model.dart';
-import 'package:pfeprojet/Model/equipes_model.dart';
+import 'package:pfeprojet/Model/oneequipe_model.dart';
 
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/screen/joueurScreens/equipe/addequipe.dart';

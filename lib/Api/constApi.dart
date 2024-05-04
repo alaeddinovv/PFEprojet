@@ -50,7 +50,7 @@ const REFUSERINVITATION = '/api/joueur/refuser/';
 const DEMANDERREJOINDREEQUIPE = '/api/joueur/rejoindre/';
 const ANNULERREJOINDREEQUIPE = '/api/joueur/annuler/';
 
-const CAPITAINEACCEPTJOUEUR = '/api/joueur//capitaine/accept/';
+const CAPITAINEACCEPTJOUEUR = '/api/joueur/capitaine/accept/';
 const CAPITAINEREFUSEJOUEUR = '/api/joueur/capitaine/refuser/';
 const CAPITAINEINVITEJOUEUR = '/api/joueur/capitaine/demande/';
 const CAPITAINEANNULEINVITATIONJOUEUR = '/api/joueur/capitaine/annuler/';

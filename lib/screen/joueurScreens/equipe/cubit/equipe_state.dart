@@ -97,7 +97,11 @@ final class CapitaineAceeptJoueurStateBad extends EquipeState {}
 
 final class CapitaineRefuseJoueurLoadingState extends EquipeState {}
 
-final class CapitaineRefuseJoueurStateGood extends EquipeState {}
+final class CapitaineRefuseJoueurStateGood extends EquipeState {
+  final String idJoueur;
+
+  CapitaineRefuseJoueurStateGood({required this.idJoueur});
+}
 
 final class CapitaineRefuseJoueurStateBad extends EquipeState {}
 

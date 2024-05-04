@@ -6,7 +6,7 @@ import 'dart:convert' as convert;
 import 'package:pfeprojet/Api/constApi.dart';
 import 'package:pfeprojet/Api/httplaravel.dart';
 import 'package:pfeprojet/Model/equipe_model.dart';
-import 'package:pfeprojet/Model/equipes_model.dart';
+import 'package:pfeprojet/Model/oneequipe_model.dart';
 import 'package:pfeprojet/Model/user_model.dart';
 
 import '../../../../Model/error_model.dart';
@@ -300,15 +300,19 @@ class EquipeCubit extends Cubit<EquipeState> {
   }
   //---------------------------------------------------------------
   //--------------CAPITAINE ACCEPT DEMANDE JOUEUR-----------------
-
+  late DataJoueurModel joueuraccepted ;
   Future<void> capitaineAceeptJoueur(
-      {required String id , required String joueurId}) async {
+      {required String equipeId , required String joueurId}) async {
     emit(CapitaineAceeptJoueurLoadingState());
 
     Map<String, dynamic> _model = {};
-
-    await Httplar.httpPost(path: CAPITAINEACCEPTJOUEUR + id + '/' + joueurId, data: _model).then((value) {
+print(CAPITAINEACCEPTJOUEUR + equipeId + '/' + joueurId);
+    await Httplar.httpPost(path: CAPITAINEACCEPTJOUEUR + equipeId + '/' + joueurId, data: _model).then((value) {
       if (value.statusCode == 200) {
+        var jsonResponse =
+        convert.jsonDecode(value.body) as Map<String, dynamic>;
+        joueuraccepted = DataJoueurModel.fromJson(jsonResponse);
+        print('ala ala');
         emit(CapitaineAceeptJoueurStateGood());
       } else {
         var jsonResponse =
@@ -323,14 +327,14 @@ class EquipeCubit extends Cubit<EquipeState> {
 
   //---------------------CAPITAINE refuse DEMANDE JOUEUR-----------------
   Future<void> capitaineRefuseJoueur(
-      {required String id , required String joueurId}) async {
+      {required String equipeId , required String joueurId}) async {
     emit(CapitaineRefuseJoueurLoadingState());
 
     Map<String, dynamic> _model = {};
 
-    await Httplar.httpPost(path: CAPITAINEREFUSEJOUEUR + id + '/' + joueurId, data: _model).then((value) {
+    await Httplar.httpPost(path: CAPITAINEREFUSEJOUEUR + equipeId + '/' + joueurId, data: _model).then((value) {
       if (value.statusCode == 200) {
-        emit(CapitaineRefuseJoueurStateGood());
+        emit(CapitaineRefuseJoueurStateGood(idJoueur: joueurId));
       } else {
         var jsonResponse =
         convert.jsonDecode(value.body) as Map<String, dynamic>;
