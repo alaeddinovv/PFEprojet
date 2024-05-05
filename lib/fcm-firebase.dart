@@ -1,8 +1,11 @@
 import 'dart:convert';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:pfeprojet/component/const.dart';
+import 'package:pfeprojet/main.dart';
+import 'package:pfeprojet/screen/joueurScreens/profile/profile.dart';
 
 Future<void> handleBackgroudMessage(RemoteMessage message) async {
   print("Title: ${message.notification?.title}");
@@ -22,6 +25,9 @@ class FirebaseApi {
   void handleMessage(RemoteMessage? message) {
     if (message == null) {
       return;
+    } else if (message.notification!.title == 'equipe') {
+      navigatorKey.currentState?.push(
+          MaterialPageRoute(builder: (context) => const ProfileJoueur()));
     }
   }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pfeprojet/Api/socket_io.dart';
 import 'dart:async';
 import 'package:pfeprojet/screen/AdminScreens/terrains/cubit/terrain_cubit.dart';
 
@@ -53,6 +54,13 @@ class _SearchTestState extends State<SearchTest> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     SocketService.socket!.emit('liked');
+      //     print('ff');
+      //   },
+      //   child: const Icon(Icons.search),
+      // ),
       appBar: AppBar(
         title: const Text('Search Test'),
       ),
@@ -140,6 +148,14 @@ class _SearchTestState extends State<SearchTest> {
                     );
                   },
                 ),
+                // TextButton(
+                //     onPressed: () {
+                //       SocketService.socket!.on('likeupdate', (count) {
+                //         print(count);
+                //       });
+                //       print('ddd');
+                //     },
+                //     child: Text('button'))
               ],
             ),
           )),
