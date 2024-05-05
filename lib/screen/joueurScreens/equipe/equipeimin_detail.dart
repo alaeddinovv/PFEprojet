@@ -119,7 +119,7 @@ class _EquipeImInDetailsScreenState extends State<EquipeImInDetailsScreen> {
                         msg: "equipe quiter avec succes",
                         state: ToastStates.success);
                     EquipeCubit.get(context)
-                        .getAllEquipe(cursor: "")
+                        .getAllEquipe(cursor: "" , capitanId: HomeJoueurCubit.get(context).joueurModel!.id!)
                         .then((value) {
                       Navigator.pushAndRemoveUntil(
                         context,

@@ -124,7 +124,7 @@ class EquipeCubit extends Cubit<EquipeState> {
   List<EquipeData> equipes = [];
   // cusrsorid mdeclari lfug
   String cursorid = "";
-  Future<void> getAllEquipe({String cursor = ''}) async {
+  Future<void> getAllEquipe({String cursor = '', String capitanId = ''}) async {
     emit(GetAllEquipeLoading());
     await Httplar.httpget(path: GETALLEQUIPE, query: {'cursor': cursor})
         .then((value) {
@@ -135,16 +135,22 @@ class EquipeCubit extends Cubit<EquipeState> {
         }
 
         var jsonResponse =
-            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        convert.jsonDecode(value.body) as Map<String, dynamic>;
 
         EquipeModel model = EquipeModel.fromJson(jsonResponse);
-        equipes.addAll(model.data!);
-        cursorid = model.nextCursor!;
+        print(capitanId);
+        model.data.forEach((element) {
+          if (element.capitaineId.id != capitanId) {
+            equipes.add(element);
+          }
+        });
+        // equipes.addAll(model.data);
+        cursorid = model.nextCursor;
 
         emit(GetAllEquipeStateGood());
       } else {
         var jsonResponse =
-            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        convert.jsonDecode(value.body) as Map<String, dynamic>;
         emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
       }
     }).catchError((e) {

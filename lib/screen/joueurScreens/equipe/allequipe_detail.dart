@@ -34,7 +34,7 @@ class _AllEquipeDetailsScreenState extends State<AllEquipeDetailsScreen> {
       onPopInvoked: (didPop) async {
         if (!didPop) {
           if (canPop == true)  {
-            await EquipeCubit.get(context).getAllEquipe();
+            await EquipeCubit.get(context).getAllEquipe(capitanId: HomeJoueurCubit.get(context).joueurModel!.id!);
             Navigator.pop(context);
           }
         }
