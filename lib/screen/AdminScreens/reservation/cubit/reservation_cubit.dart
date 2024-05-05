@@ -54,4 +54,45 @@ class ReservationCubit extends Cubit<ReservationState> {
       emit(GetReservationStateBad());
     });
   }
+
+//------------------------------ReservationDetailsScreen--------------------------------
+
+  Future<void> addReservation({
+    Map<String, dynamic>? model,
+    String? idTerrain,
+  }) async {
+    emit(AddReservationLoadingState());
+    await Httplar.httpPost(
+            path: RESERVERTERRAINWITHADMIN + idTerrain!, data: model!)
+        .then((value) {
+      if (value.statusCode == 201) {
+        emit(AddReservationStateGood());
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
+        print(jsonResponse.toString());
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(AddReservationStateBad());
+    });
+  }
+
+  Future<void> removeReservation({required String idReservation}) async {
+    emit(DeleteReservationLoadingState());
+    await Httplar.httpdelete(path: ReservationJoueur + idReservation)
+        .then((value) {
+      if (value.statusCode == 204) {
+        emit(DeleteReservationStateGood());
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(DeleteReservationStateBad());
+    });
+  }
 }

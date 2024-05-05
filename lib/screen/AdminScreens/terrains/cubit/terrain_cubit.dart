@@ -15,6 +15,7 @@ import 'package:pfeprojet/Model/terrain_model.dart';
 import 'package:pfeprojet/Model/user_model.dart';
 import 'dart:convert' as convert;
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:pfeprojet/Model/user_pagination_model.dart';
 
 import 'package:pfeprojet/component/components.dart';
 
@@ -397,6 +398,60 @@ class TerrainCubit extends Cubit<TerrainState> {
     }).catchError((e) {
       print(e.toString());
       emit(DeleteTerrainStateBad());
+    });
+  }
+
+// --------------------------------------ReservationPlayerInfo----------------------
+  Future<void> deleteReservationGroup({required String groupID}) async {
+    emit(DeleteReservationLoadingState());
+
+    await Httplar.httpdelete(path: DELETGROUPRESERVATION + groupID)
+        .then((value) {
+      if (value.statusCode == 204) {
+        emit(DeleteReservationStateGood());
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(DeleteReservationStateBad());
+    });
+  }
+
+// -----------------------------------SearchTest-------------------------------------
+//  List<TerrainModel> terrains = [];
+  List<DataJoueurModel> joueursSearch = [];
+  String cursorId = "";
+
+  Future<void> searchJoueur({String cursor = '', String? username}) async {
+    emit(GetSearchJoueurLoading());
+    await Httplar.httpget(
+        path: SEARCHJOUEURPAGINATION,
+        query: {'cursor': cursor, 'username': username}).then((value) {
+      if (value.statusCode == 200) {
+        if (cursor == "") {
+          joueursSearch = [];
+          cursorId = "";
+        }
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        UserPaginationModel model = UserPaginationModel.fromJson(jsonResponse);
+        joueursSearch.addAll(model.data!);
+        print(joueursSearch.length);
+        cursorId = model.nextCursor!;
+        print(cursorId);
+
+        emit(GetSearchJoueurStateGood()); // Pass the list here
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(GetSearchJoueurStateGood());
     });
   }
 }

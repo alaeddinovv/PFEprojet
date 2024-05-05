@@ -11,6 +11,7 @@ import 'package:pfeprojet/screen/AdminScreens/terrains/cubit/terrain_cubit.dart'
 import 'package:pfeprojet/screen/AdminScreens/terrains/location/terrain_location.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/reservation_player_info.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/reserve.dart';
+import 'package:pfeprojet/screen/AdminScreens/terrains/searchJoueur.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/update_terrain.dart';
 
 // ignore: must_be_immutable
@@ -55,8 +56,17 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
           cubit.fetchReservations(
               terrainId: widget.terrainModel.id!, date: cubit.selectedDate);
         }
+        if (state is DeleteReservationStateGood) {
+          cubit.fetchReservations(
+              terrainId: widget.terrainModel.id!, date: cubit.selectedDate);
+        }
       },
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            navigatAndReturn(context: context, page: SearchTest());
+          },
+        ),
         appBar: AppBar(
           title: const Text('Terrain Details'),
         ),
@@ -184,11 +194,11 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                 }
                 List<String> hourPayments = [];
                 for (var block in terrainCubit.reservationList) {
-                  if (block.jour.month + block.jour.day + block.jour.year ==
+                  if (block.jour!.month + block.jour!.day + block.jour!.year ==
                       terrainCubit.selectedDate.month +
                           terrainCubit.selectedDate.day +
                           terrainCubit.selectedDate.year) {
-                    hourPayments.add(block.heureDebutTemps);
+                    hourPayments.add(block.heureDebutTemps!);
                   }
                 }
 
@@ -220,9 +230,6 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                                   hour: hour,
                                   idTerrain: widget.terrainModel.id!));
                         } else if (isCharge) {
-                          showToast(
-                              msg: "This slot is already booked",
-                              state: ToastStates.warning);
                           terrainCubit.reservationPlayerInfo(
                               terrainId: widget.terrainModel.id!,
                               date: terrainCubit.selectedDate,
