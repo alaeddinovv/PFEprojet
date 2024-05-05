@@ -276,14 +276,19 @@ class _AnnonceState extends State<Annonce> {
   Widget _buildAnnonceItem(
       AnnonceAdminData model, int index, BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(
-          horizontal: 8.0, vertical: 4.0), // Adjusted for visual balance
+      margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
       decoration: BoxDecoration(
-        color: Colors.white, // Maintains a clean background
-        border: Border.all(
-            color: Colors.blueAccent,
-            width: 2), // Slightly thicker border for emphasis
-        borderRadius: BorderRadius.circular(8.0), // Rounded corners
+        color: Colors.white,
+        border: Border.all(color: Colors.blueAccent, width: 1), // Softer blue border
+        borderRadius: BorderRadius.circular(10.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 1,
+            blurRadius: 5,
+            offset: Offset(0, 3), // Elevated shadow effect
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -291,18 +296,17 @@ class _AnnonceState extends State<Annonce> {
           ListTile(
             title: Text(
               model.type ?? '',
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.black87,
-                fontWeight: FontWeight.w600,
-                fontSize: 18, // Larger font size for prominence
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
               ),
             ),
             trailing: Row(
-              mainAxisSize: MainAxisSize
-                  .min, // Ensures the Row only takes as much width as it needs
+              mainAxisSize: MainAxisSize.min, // Ensures compactness
               children: [
                 IconButton(
-                  icon: const Icon(Icons.edit, color: Colors.green),
+                  icon: Icon(Icons.edit, color: Color(0xFF4CAF50)), // Softer green
                   onPressed: () {
                     navigatAndReturn(
                         context: context,
@@ -311,25 +315,23 @@ class _AnnonceState extends State<Annonce> {
                   },
                 ),
                 IconButton(
-                  icon: const Icon(Icons.delete, color: Colors.grey),
+                  icon: Icon(Icons.delete, color: Color(0xFFBDBDBD)), // Softer grey
                   onPressed: () {
                     dialogDelete(context, model);
+                    // Your code to handle delete action
                   },
                 ),
               ],
             ),
-            // contentPadding: const EdgeInsets.symmetric(
-            //     horizontal: 12.0, vertical: 8.0), // Adjusted padding for layout
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical:
-                8.0), // Padding that slightly indents the description from the border
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             child: Text(
               model.description ?? '', // Display the description
-              style: const TextStyle(
-                  fontSize: 16), // Slightly larger font for readability
+              style: TextStyle(
+                fontSize: 16, // Readability enhancement
+                color: Colors.black54, // Softer text color
+              ),
             ),
           ),
         ],
@@ -337,18 +339,24 @@ class _AnnonceState extends State<Annonce> {
     );
   }
 
+
   //--------------------------------------alallllllllllllllllllllllllllllllllllll
   Widget _buildAllAnnonceItem(
       AnnonceData model, int index, BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(
-          horizontal: 8.0, vertical: 4.0), // Adjusted for visual balance
+      margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
       decoration: BoxDecoration(
-        color: Colors.white, // Maintains a clean background
-        border: Border.all(
-            color: Colors.blueAccent,
-            width: 2), // Slightly thicker border for emphasis
-        borderRadius: BorderRadius.circular(8.0), // Rounded corners
+        color: Colors.white,
+        border: Border.all(color: Colors.blueAccent, width: 1),
+        borderRadius: BorderRadius.circular(10.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 1,
+            blurRadius: 5,
+            offset: Offset(0, 3), // Changes position of shadow
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -356,26 +364,24 @@ class _AnnonceState extends State<Annonce> {
           ListTile(
             title: Text(
               model.type ?? '',
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.black87,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.bold,
                 fontSize: 18, // Larger font size for prominence
               ),
             ),
             trailing: Row(
-              mainAxisSize: MainAxisSize
-                  .min, // Ensures the Row only takes as much width as it needs
+              mainAxisSize: MainAxisSize.min, // Keeps the Row compact
               children: [
                 IconButton(
-                  icon: const Icon(Icons.call, color: Colors.green),
+                  icon: Icon(Icons.call, color: Color(0xFF4CAF50)), // Softer green
                   onPressed: () {
                     int? phoneNumber = model.admin?.telephone ?? model.joueur?.telephone;
                     if (phoneNumber != null) {
                       _makePhoneCall(phoneNumber.toString());
-
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
+                        SnackBar(
                           content: Text("No telephone number available."),
                         ),
                       );
@@ -383,32 +389,24 @@ class _AnnonceState extends State<Annonce> {
                   },
                 ),
 
-                IconButton(
-                  icon: const Icon(Icons.delete, color: Colors.grey),
-                  onPressed: () {
-                    dialogDeletee(context, model);
-                  },
-                ),
               ],
             ),
-            // contentPadding: const EdgeInsets.symmetric(
-            //     horizontal: 12.0, vertical: 8.0), // Adjusted padding for layout
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical:
-                8.0), // Padding that slightly indents the description from the border
+            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             child: Text(
               model.description ?? '', // Display the description
-              style: const TextStyle(
-                  fontSize: 16), // Slightly larger font for readability
+              style: TextStyle(
+                fontSize: 16, // Slightly larger font for readability
+                color: Colors.black54, // Softer text color
+              ),
             ),
           ),
         ],
       ),
     );
   }
+
   //-----------------------------------------------------------------------------
 
   Future<dynamic> dialogDelete(BuildContext context, AnnonceAdminData model) {
@@ -439,32 +437,6 @@ class _AnnonceState extends State<Annonce> {
   }
 
 
-  Future<dynamic> dialogDeletee(BuildContext context, AnnonceData model) {
-    return showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('Delete Annonce'),
-          content: const Text('Are you sure you want to delete this annonce?'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                AnnonceJoueurCubit.get(context).deleteAnnonceJoueur(id: model.id!);
-
-              },
-              child: const Text('Yes'),
-            ),
-            TextButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              child: const Text('No'),
-            ),
-          ],
-        );
-      },
-    );
-  }
 
   Future<void> _makePhoneCall(String phoneNumber) async {
     print(phoneNumber.runtimeType);
