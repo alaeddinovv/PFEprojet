@@ -26,6 +26,7 @@ class ReservationPaginationModelData {
   String? heureDebutTemps;
   int? duree;
   String? etat;
+  String? reservationGroupId;
   bool? payment;
   JoueurId? joueurId;
   TerrainId? terrainId;
@@ -36,6 +37,7 @@ class ReservationPaginationModelData {
     jour = DateTime.parse(json['jour']);
     heureDebutTemps = json['heure_debut_temps'];
     duree = json['duree'];
+    reservationGroupId = json['reservation_group_id'];
     etat = json['etat'];
     payment = json['payment'];
     joueurId = JoueurId.fromJson(json['joueur_id']);
@@ -49,6 +51,7 @@ class ReservationPaginationModelData {
     _data['jour'] = jour;
     _data['heure_debut_temps'] = heureDebutTemps;
     _data['duree'] = duree;
+    _data['reservation_group_id'] = reservationGroupId;
     _data['etat'] = etat;
     _data['payment'] = payment;
     _data['joueur_id'] = joueurId!.toJson();

@@ -1,7 +1,12 @@
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:pfeprojet/Api/constApi.dart';
+import 'package:pfeprojet/Api/httplaravel.dart';
+import 'package:pfeprojet/helper/cachhelper.dart';
 
 var TOKEN = '';
+late final fCMToken;
 var ONBOARDING = '';
 Map<String, dynamic> DECODEDTOKEN = {};
 
@@ -33,4 +38,65 @@ String normalizeTimeInput(String input) {
     // Return null or an invalid time string to indicate failure
     return "Invalid Time";
   }
+}
+
+Future<String> getDeviceIdentifier() async {
+  DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+  AndroidDeviceInfo androidInfo = await deviceInfoPlugin.androidInfo;
+
+  String deviceInfo = '${androidInfo.model}(${androidInfo.id})';
+  await CachHelper.putcache(key: 'deviceInfo', value: deviceInfo);
+  return deviceInfo;
+}
+
+Future<void> addOrUpdateFCMTokenAdmin(
+    {required String fcmToken, required String device}) async {
+  await Httplar.httpPost(
+      path: ADDORUPDATETOKENFCMADMIN,
+      data: {'token': fcmToken, 'device': device}).then((value) {
+    print('add or update fcm token admin');
+  }).catchError((e) {
+    print(e.toString());
+  });
+}
+
+Future<void> removeFCMTokenAdmin({required String device}) async {
+  await Httplar.httpPost(path: REMOVETETOKENFCMADMIN, data: {'device': device})
+      .then((value) {
+    print('remove fcm token admin');
+  }).catchError((e) {
+    print(e.toString());
+  });
+}
+
+Future<void> addOrUpdateFCMTokenJoueur(
+    {required String fcmToken, required String device}) async {
+  await Httplar.httpPost(
+          path: ADDORUPDATETOKENFCMJoueur,
+          data: {'token': fcmToken, 'device': device})
+      .then((value) {})
+      .catchError((e) {
+    print(e.toString());
+  });
+}
+
+Future<void> removeFCMTokenJoueur({required String device}) async {
+  await Httplar.httpPost(path: REMOVETETOKENFCMJoueur, data: {'device': device})
+      .then((value) {})
+      .catchError((e) {
+    print(e.toString());
+  });
+}
+
+Future<void> sendNotificationToAdmin(
+    {required String title,
+    required String body,
+    required String adminId}) async {
+  await Httplar.httpPost(
+      path: SENDNOTIFICATIONTOADMIN + adminId,
+      data: {'title': title, 'body': body}).then((value) {
+    print('notification send successfully');
+  }).catchError((e) {
+    print(e.toString());
+  });
 }

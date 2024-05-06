@@ -132,7 +132,8 @@ class TerrainCubit extends Cubit<TerrainState> {
     await Httplar.httpPost(path: ReservationJoueur + idTerrain!, data: model!)
         .then((value) {
       if (value.statusCode == 201) {
-        emit(AddReservationStateGood());
+        emit(AddReservationStateGood(
+            date: model['jour'], houre: model['heure_debut_temps']));
       } else {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;

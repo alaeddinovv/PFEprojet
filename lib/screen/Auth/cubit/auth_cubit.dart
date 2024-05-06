@@ -85,18 +85,12 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-
-
-
-
-
   RecoverPasswordModel? recoverPasswordModel;
 
   Future<void> recoverPassword({required String email}) async {
     emit(PasswordRecoveryLoading());
     Map<String, dynamic> _model = {
       "email": email,
-
     };
 
     Httplar.httpPost(path: PATH1, data: _model).then((value) {
@@ -107,7 +101,7 @@ class AuthCubit extends Cubit<AuthState> {
         emit(PasswordRecoverySuccess());
       } else {
         var jsonResponse =
-        convert.jsonDecode(value.body) as Map<String, dynamic>;
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
         emit(PasswordRecoveryFailure(
             errorModel: ErrorModel.fromJson(jsonResponse)));
       }
@@ -117,9 +111,8 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-
-
-  Future<void> verifycode({required String email ,required String codeVerification}) async {
+  Future<void> verifycode(
+      {required String email, required String codeVerification}) async {
     emit(PasswordResetLoading());
     Map<String, dynamic> _model = {
       "email": email,
@@ -128,13 +121,11 @@ class AuthCubit extends Cubit<AuthState> {
 
     Httplar.httpPost(path: PATH2, data: _model).then((value) {
       if (value.statusCode == 200) {
-
         emit(VerifyCodeSuccess());
       } else {
         var jsonResponse =
-        convert.jsonDecode(value.body) as Map<String, dynamic>;
-        emit(VerifyCodeFailure(
-            errorModel: ErrorModel.fromJson(jsonResponse)));
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(VerifyCodeFailure(errorModel: ErrorModel.fromJson(jsonResponse)));
       }
     }).catchError((e) {
       print(e.toString());
@@ -142,31 +133,23 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-
-
-
-
-
-
-
-
-
-
-  Future<void> resetPassword({required String email ,required String mdp ,required String codeVerification}) async {
+  Future<void> resetPassword(
+      {required String email,
+      required String mdp,
+      required String codeVerification}) async {
     emit(PasswordResetLoading());
     Map<String, dynamic> _model = {
       "email": email,
       "newPassword": mdp,
-      "codeVerification":codeVerification
+      "codeVerification": codeVerification
     };
 
     Httplar.httpPost(path: PATH3, data: _model).then((value) {
       if (value.statusCode == 200) {
-
         emit(PasswordResetSuccess());
       } else {
         var jsonResponse =
-        convert.jsonDecode(value.body) as Map<String, dynamic>;
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
         emit(PasswordResetFailure(
             errorModel: ErrorModel.fromJson(jsonResponse)));
       }
@@ -176,21 +159,12 @@ class AuthCubit extends Cubit<AuthState> {
     });
   }
 
-
-
   Map<String, bool> isHidden = {
     "pass": true,
     "pass1": true,
-
   };
   void togglePasswordVisibility(String fieldKey) {
     isHidden[fieldKey] = !isHidden[fieldKey]!;
     emit(PasswordVisibilityChanged());
   }
-
-
-
-
-
-
 }
