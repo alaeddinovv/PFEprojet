@@ -7,6 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:pfeprojet/Model/terrain_model.dart';
 import 'package:pfeprojet/component/components.dart';
+import 'package:pfeprojet/component/const.dart';
 import 'package:pfeprojet/screen/joueurScreens/home/cubit/home_joueur_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/cubit/terrain_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/location/terrain_location.dart';
@@ -45,9 +46,13 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
     return BlocListener<TerrainCubit, TerrainState>(
       listener: (context, state) {
         if (state is AddReservationStateGood) {
-          setState(() {
+          setState(() async {
             cubit.fetchReservations(
                 terrainId: widget.terrainModel.id!, date: cubit.selectedDate);
+            await sendNotificationToAdmin(
+                adminId: widget.terrainModel.admin!.id!,
+                body: 'jour :${state.date} \n heure :${state.houre}',
+                title: 'demande de reservation');
           });
         }
       },

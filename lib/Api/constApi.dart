@@ -1,12 +1,11 @@
 // const URLHTTP = '192.168.1.23:3000';
 // const URLHTTP = '192.168.1.2:3000';
 
-
 const URLHTTP = '192.168.95.68:3000'; //IP Houssem
-
 
 // const URLHTTP = '10.0.2.2:3000';
 
+const SENDNOTIFICATIONTOADMIN = '/api/notification/';
 const SEARCHJOUEURPAGINATION = '/api/search/joueur/';
 const ADDORUPDATETOKENFCMADMIN = '/api/addOrUpdateTokenAdmin/';
 const REMOVETETOKENFCMADMIN = '/api/removeTokenFcmAdmin/';
@@ -64,9 +63,7 @@ const CAPITAINEACCEPTJOUEUR = '/api/joueur/capitaine/accept/';
 const CAPITAINEREFUSEJOUEUR = '/api/joueur/capitaine/refuser/';
 const CAPITAINEINVITEJOUEUR = '/api/joueur/capitaine/demande/';
 const CAPITAINEANNULEINVITATIONJOUEUR = '/api/joueur/capitaine/annuler/';
-const QUITEREQUIPE ='/api/joueur/supprimer/';
-
-
+const QUITEREQUIPE = '/api/joueur/supprimer/';
 
 const Loginadmin = '/api/loginadmin';
 const getJouerById = '/api/joueur/';

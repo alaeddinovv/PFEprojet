@@ -54,6 +54,11 @@ class CheckUserByIdStateBad extends TerrainState {}
 
 class AddReservationLoadingState extends TerrainState {}
 
-class AddReservationStateGood extends TerrainState {}
+class AddReservationStateGood extends TerrainState {
+  final String houre;
+  final String date;
+
+  AddReservationStateGood({required this.houre, required this.date});
+}
 
 class AddReservationStateBad extends TerrainState {}
