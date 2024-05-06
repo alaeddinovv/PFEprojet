@@ -1,4 +1,4 @@
-const algeria_cites = [
+const algeriaCities = [
   {
     "id": 22,
     "commune_name_ascii": "Timekten",

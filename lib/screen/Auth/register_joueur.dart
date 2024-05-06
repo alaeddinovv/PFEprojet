@@ -6,6 +6,7 @@ import 'package:pfeprojet/Api/wilaya_list.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/const.dart';
 import 'package:pfeprojet/helper/cachhelper.dart';
+import 'package:pfeprojet/component/drop_down_wilaya.dart';
 import 'package:pfeprojet/screen/Auth/cubit/auth_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/home/home.dart';
 
@@ -13,17 +14,17 @@ class RegisterJoueur extends StatelessWidget {
   RegisterJoueur({super.key});
 
   final nomController = TextEditingController();
-  final usernameController =  TextEditingController();
+  final usernameController = TextEditingController();
   final prenomController = TextEditingController();
   final emailController = TextEditingController();
   final motDePasseController = TextEditingController();
   final telephoneController = TextEditingController();
   final ageController = TextEditingController();
   final wilayaController = TextEditingController();
+  final dairaController = TextEditingController();
   final posteController = TextEditingController();
   final formKey = GlobalKey<FormState>();
-  String? selectedWilaya;
-
+  // String? selectedWilaya;
 
   List<Map<String, dynamic>> getWilayas() {
     final parsed = json.decode(wilayasJson) as Map<String, dynamic>;
@@ -39,9 +40,9 @@ class RegisterJoueur extends StatelessWidget {
     List<Map<String, dynamic>> wilayas = getWilayas();
     List<DropdownMenuItem<String>> dropdownItems = wilayas
         .map((wilaya) => DropdownMenuItem<String>(
-      value: "${wilaya['name']}",
-      child: Text("${wilaya['name']}"),
-    ))
+              value: "${wilaya['name']}",
+              child: Text("${wilaya['name']}"),
+            ))
         .toList();
 
     return Scaffold(
@@ -111,7 +112,6 @@ class RegisterJoueur extends StatelessWidget {
                               return 'user name Must Not Be Empty';
                             }
                           },
-
                           prefixIcon: const Icon(
                             Icons.person_outlined,
                           ),
@@ -132,7 +132,6 @@ class RegisterJoueur extends StatelessWidget {
                           ),
                           textInputAction: TextInputAction.next),
                       SizedBox(height: sizedBoxSpacing),
-
                       defaultForm3(
                         context: context,
                         controller: telephoneController,
@@ -189,19 +188,9 @@ class RegisterJoueur extends StatelessWidget {
                           ),
                           textInputAction: TextInputAction.next),
                       SizedBox(height: sizedBoxSpacing),
-                      DropdownButtonFormField<String>(
-                        decoration: InputDecoration(
-                          labelText: 'Wilaya',
-                          prefixIcon: Icon(Icons.map),
-                          border: OutlineInputBorder(),
-                        ),
-                        value: selectedWilaya,
-                        onChanged: (String? newValue) {
-                          selectedWilaya = newValue!;
-                        },
-                        
-                        validator: (value) => value == null ? 'Please select a wilaya' : null,
-                        items: dropdownItems,
+                      DropdownScreen(
+                        selectedDaira: dairaController,
+                        selectedWilaya: wilayaController,
                       ),
                       SizedBox(height: sizedBoxSpacing),
                       defaultForm3(
@@ -214,12 +203,10 @@ class RegisterJoueur extends StatelessWidget {
                               return 'Email Must Not Be Empty';
                             }
                           },
-
                           prefixIcon: const Icon(
                             Icons.email_outlined,
                           ),
                           textInputAction: TextInputAction.next),
-
                       SizedBox(height: screenHeight * 0.03),
                       BlocConsumer<AuthCubit, AuthState>(
                         listener: (BuildContext context, AuthState state) {
@@ -249,6 +236,8 @@ class RegisterJoueur extends StatelessWidget {
                           }
                           return defaultSubmit(
                               valid: () {
+                                // print('test');
+                                // print(wilayaController.text);
                                 if (formKey.currentState!.validate()) {
                                   Map<String, dynamic> sendinfologin = {
                                     'nom': nomController.text,
@@ -258,8 +247,7 @@ class RegisterJoueur extends StatelessWidget {
                                     "age": ageController.text,
                                     'mot_de_passe': motDePasseController.text,
                                     "telephone": telephoneController.text,
-                                    // 'wilaya': wilayaController.text
-                                    'wilaya': selectedWilaya,
+                                    'wilaya': wilayaController.text,
                                     "poste": posteController.text,
                                   };
                                   AuthCubit.get(context)
