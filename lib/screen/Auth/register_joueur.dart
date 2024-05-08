@@ -36,15 +36,6 @@ class RegisterJoueur extends StatelessWidget {
     var screenHeight = MediaQuery.of(context).size.height;
     var screenWidth = MediaQuery.of(context).size.width;
     var sizedBoxSpacing = screenHeight * 0.015;
-
-    List<Map<String, dynamic>> wilayas = getWilayas();
-    List<DropdownMenuItem<String>> dropdownItems = wilayas
-        .map((wilaya) => DropdownMenuItem<String>(
-              value: "${wilaya['name']}",
-              child: Text("${wilaya['name']}"),
-            ))
-        .toList();
-
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(

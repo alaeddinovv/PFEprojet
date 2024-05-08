@@ -55,6 +55,7 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
         if (state is AddReservationStateGood) {
           cubit.fetchReservations(
               terrainId: widget.terrainModel.id!, date: cubit.selectedDate);
+          // sendNotificationToJoueur(title: 'accept Reservation', body: body, adminId: adminId)
         }
         if (state is DeleteReservationStateGood) {
           cubit.fetchReservations(

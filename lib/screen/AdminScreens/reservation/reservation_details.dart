@@ -131,8 +131,7 @@ class ReservationDetailsScreen extends StatelessWidget {
                             "duree": reservation.duree,
                           };
                           ReservationCubit.get(context).addReservation(
-                              model: _model,
-                              idTerrain: reservation.terrainId!.id);
+                              model: _model, idReservation: reservation.id);
                         },
                       ),
                     );

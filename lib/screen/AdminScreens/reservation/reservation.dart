@@ -53,6 +53,13 @@ class _ReservationState extends State<Reservation> {
                 heureDebutTemps: formatTimeOfDay(widget.selectedTime),
                 terrainId: widget.dropdownValue);
           });
+        } else if (state is AddReservationStateGood) {
+          setState(() {
+            cubit.fetchReservations(
+                date: formatDate(widget.selectedDate),
+                heureDebutTemps: formatTimeOfDay(widget.selectedTime),
+                terrainId: widget.dropdownValue);
+          });
         }
       },
       child: Column(

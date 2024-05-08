@@ -16,6 +16,7 @@ const ReservationJoueur = '/api/reservation/';
 const DELETGROUPRESERVATION =
     '/api/ReservationGroup/'; // delete group reservation or one reservation but payment is true
 const RESERVERTERRAINWITHADMIN = '/api/reservationadmin/';
+const SETRESERVEWITHADMIN = '/api/setreservewithadmin/';
 const FILTERRESERVATION = '/api/reservations/filter';
 const FILTERRESERVATIONPagination = '/api/reservationspagination/filter';
 const MYRESERVATIONWITHOTHER = '/api/myreservationswithother/';
