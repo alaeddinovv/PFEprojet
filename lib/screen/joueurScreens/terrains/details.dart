@@ -49,6 +49,7 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
           setState(() async {
             cubit.fetchReservations(
                 terrainId: widget.terrainModel.id!, date: cubit.selectedDate);
+
             await sendNotificationToAdmin(
                 adminId: widget.terrainModel.admin!.id!,
                 body: 'jour :${state.date} \n heure :${state.houre}',

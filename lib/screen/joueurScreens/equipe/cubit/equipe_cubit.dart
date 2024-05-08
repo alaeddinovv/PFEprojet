@@ -355,7 +355,7 @@ print(CAPITAINEACCEPTJOUEUR + equipeId + '/' + joueurId);
   //---------------------CAPITAINE invite JOUEUR-----------------
  late DataJoueurModel joueur ;
   Future<void> capitaineInviteJoueur(
-      {required String equipeId , required String joueurId}) async {
+      {required String equipeId , required String joueurId , required String equipename}) async {
     emit(CapitaineInviteJoueurLoadingState());
 
     Map<String, dynamic> _model = {};
@@ -366,7 +366,7 @@ print(CAPITAINEACCEPTJOUEUR + equipeId + '/' + joueurId);
         var jsonResponse =
         convert.jsonDecode(value.body) as Map<String, dynamic>;
          joueur = DataJoueurModel.fromJson(jsonResponse);
-        emit(CapitaineInviteJoueurStateGood());
+        emit(CapitaineInviteJoueurStateGood(equipename: equipename , joueurId:joueurId));
       } else {
         var jsonResponse =
         convert.jsonDecode(value.body) as Map<String, dynamic>;
