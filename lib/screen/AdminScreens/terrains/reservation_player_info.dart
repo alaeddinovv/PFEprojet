@@ -29,7 +29,6 @@ class ReservationPlayerInfo extends StatelessWidget {
               state: ToastStates.success);
           Navigator.pop(context);
         }
-      }, builder: (context, state) {
         if (state is GetReservationJoueurInfoStateGood) {
           userIdController.text = state.reservations.first.joueurId.toString();
           dateController.text =
@@ -38,6 +37,13 @@ class ReservationPlayerInfo extends StatelessWidget {
               state.reservations.first.heureDebutTemps.toString();
           dureeController.text = state.reservations.first.duree.toString();
           groupID = state.reservations.first.reservationGroupId!;
+        }
+      }, builder: (context, state) {
+        if (state is GetReservationJoueurInfoLoadingState) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else {
           return SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(20.0),
@@ -127,21 +133,7 @@ class ReservationPlayerInfo extends StatelessWidget {
                       height: 40,
                     ),
                     BlocConsumer<TerrainCubit, TerrainState>(
-                      listener: (context, state) {
-                        if (state is AddReservationStateGood) {
-                          showToast(
-                            msg: "Reservation Added Successfully",
-                            state: ToastStates.success,
-                          );
-                          Navigator.pop(context);
-                        } else if (state is AddReservationStateBad ||
-                            state is ErrorState) {
-                          showToast(
-                            msg: "Error Adding Reservation",
-                            state: ToastStates.error,
-                          );
-                        }
-                      },
+                      listener: (context, state) {},
                       builder: (context, state) {
                         if (state is DeleteReservationLoadingState) {
                           return const Center(
@@ -164,12 +156,6 @@ class ReservationPlayerInfo extends StatelessWidget {
               ),
             ),
           );
-        } else if (state is GetReservationJoueurInfoStateBad) {
-          return const Center(
-            child: Text('Error Loading Data'),
-          );
-        } else {
-          return const Center(child: CircularProgressIndicator());
         }
       }),
     );

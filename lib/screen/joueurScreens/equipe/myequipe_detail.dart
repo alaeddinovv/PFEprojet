@@ -9,7 +9,7 @@ import 'package:pfeprojet/screen/joueurScreens/home/cubit/home_joueur_cubit.dart
 import 'package:url_launcher/url_launcher.dart'; // Ensure this path is correct
 
 class MyEquipeDetailsScreen extends StatefulWidget {
-   EquipeData equipeData;
+  EquipeData equipeData;
   MyEquipeDetailsScreen({super.key, required this.equipeData});
 
   @override
@@ -25,6 +25,7 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
     int attenteJoueursCount = widget.equipeData.attenteJoueurs.length;
 
     int joueurenattenteitems = widget.equipeData.attenteJoueursDemande.length;
+
 
     bool canPop = true;
     return PopScope(
@@ -68,7 +69,9 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                                 (element) => element.id == state.idJoueur);
                       });
 
-                      EquipeCubit.get(context).getMyEquipe();
+
+                    EquipeCubit.get(context).getMyEquipe();
+
 
                       // This should re-fetch the equipe data
                     } else
@@ -219,6 +222,7 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                 SizedBox(height: 10,),
               ],
             ),
+
           ),
         ),
       ),
@@ -226,8 +230,8 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
   }
 
   //-------------------- attente---------------------------------------------
-  Widget _buildProgressItem(int index, String joueurId, String equipeId,
-      String username) {
+  Widget _buildProgressItem(
+      int index, String joueurId, String equipeId, String username) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Container(
@@ -247,8 +251,8 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
         child: Row(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(
-                  vertical: 8.0, horizontal: 12.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
               child: Text(username, style: TextStyle(fontSize: 16)),
             ),
             Spacer(),
@@ -257,7 +261,9 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
               color: Colors.blue, // Blue color to signify ongoing progress
               size: 24, // Icon size for visual balance
             ),
-            SizedBox(width: 12,),
+            SizedBox(
+              width: 12,
+            ),
             IconButton(
               onPressed: () {
                 EquipeCubit.get(context).capitaineAnnuleInvitationJoueur(
@@ -271,7 +277,6 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
       ),
     );
   }
-
 
 //-------------------------------------------------joueur --------------------------
   Widget _buildJoueurItem(int index, String joueurId, String equipeId,
@@ -298,11 +303,12 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
         child: Row(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(
-                  vertical: 8.0, horizontal: 12.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
               // Internal padding for text and icons
-              child: Text(username, style: TextStyle(
-                  fontSize: 16)), // Increased font size for readability
+              child: Text(username,
+                  style: TextStyle(
+                      fontSize: 16)), // Increased font size for readability
             ),
             Spacer(),
             IconButton(
@@ -322,23 +328,20 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
               color: Colors
                   .green, // Green color to signify calling is a positive action
             ),
-
             IconButton(
               onPressed: () {
-                EquipeCubit.get(context).quiterEquipe(
-                    equipeId: equipeId, joueurId: joueurId);
+                EquipeCubit.get(context)
+                    .quiterEquipe(equipeId: equipeId, joueurId: joueurId);
                 // indexjoueur = index;
               },
               icon: Icon(Icons.cancel),
               color: Colors.red,
             ),
-
           ],
         ),
       ),
     );
   }
-
 
 //-------------------------------------------------------- add --------------------------------------
   Widget _buildAddItem(int index, String id) {
@@ -404,7 +407,7 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                     onChanged: (value) {
                       if (message.isNotEmpty) {
                         setState(() =>
-                        message = ""); // Clear message when typing starts
+                            message = ""); // Clear message when typing starts
                       }
                     },
                   ),
@@ -415,7 +418,7 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                         joueurId =
                             state.dataJoueurModel.id; // Store the joueur ID
                         setState(() => message =
-                        "Player exists: ${state.dataJoueurModel.username}");
+                            "Player exists: ${state.dataJoueurModel.username}");
                       } else if (state is CheckUserByUsernameStateBad ||
                           state is ErrorState) {
                         setState(() => message = "Player does not exist");
@@ -460,11 +463,10 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
     );
   }
 
-
   //------------------------ les demande ----------------------------------
 
   Widget _buildDemandeItem(int index, String joueurId, String equipeId,
-  String username, int? telephone) {
+      String username, int? telephone) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       // Added padding to the entire row for better spacing
@@ -487,23 +489,24 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
         child: Row(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(
-                  vertical: 8.0, horizontal: 12.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
               // Internal padding for text and icons
-              child: Text(username, style: TextStyle(
-                  fontSize: 16)), // Increased font size for readability
+              child: Text(username,
+                  style: TextStyle(
+                      fontSize: 16)), // Increased font size for readability
             ),
             Spacer(),
-                    TextButton(
-                      onPressed: () {
-                        // capitaineAceeptJoueur
-                        EquipeCubit.get(context).capitaineAceeptJoueur(
-                            equipeId: equipeId, joueurId: joueurId);
-                        // Handle accept action
-                        print("Accepting $username");
-                      },
-                      child: Text('Accepter'),
-                    ),
+            TextButton(
+              onPressed: () {
+                // capitaineAceeptJoueur
+                EquipeCubit.get(context).capitaineAceeptJoueur(
+                    equipeId: equipeId, joueurId: joueurId);
+                // Handle accept action
+                print("Accepting $username");
+              },
+              child: Text('Accepter'),
+            ),
             IconButton(
               onPressed: () {
                 int? phoneNumber = telephone;
@@ -521,7 +524,6 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
               color: Colors
                   .green, // Green color to signify calling is a positive action
             ),
-
             IconButton(
               onPressed: () {
                 EquipeCubit.get(context).capitaineRefuseJoueur(
@@ -531,40 +533,30 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
               icon: Icon(Icons.cancel),
               color: Colors.red,
             ),
-
           ],
         ),
       ),
     );
   }
 
-
-
-
 //------------------------ call--------------------------
 
-
-    Future<void> _makePhoneCall(String phoneNumber) async {
-      print(phoneNumber.runtimeType);
-      print(phoneNumber);
-      var status = await Permission.phone.status;
-      if (!status.isGranted) {
-        await Permission.phone.request();
-      }
-
-      if (await Permission.phone.isGranted) {
-        final Uri launchUri = Uri(scheme: 'tel', path: phoneNumber);
-
-        await launchUrl(launchUri);
-      } else {
-        print('Permission denied');
-      }
+  Future<void> _makePhoneCall(String phoneNumber) async {
+    print(phoneNumber.runtimeType);
+    print(phoneNumber);
+    var status = await Permission.phone.status;
+    if (!status.isGranted) {
+      await Permission.phone.request();
     }
 
+    if (await Permission.phone.isGranted) {
+      final Uri launchUri = Uri(scheme: 'tel', path: phoneNumber);
 
-//--------------the end--------------
+      await launchUrl(launchUri);
+    } else {
+      print('Permission denied');
+    }
   }
 
-
-
-
+//--------------the end--------------
+}

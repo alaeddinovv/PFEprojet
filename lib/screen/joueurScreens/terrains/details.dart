@@ -51,7 +51,7 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                 terrainId: widget.terrainModel.id!, date: cubit.selectedDate);
             await sendNotificationToAdmin(
                 adminId: widget.terrainModel.admin!.id!,
-                body: 'jour :${state.date} \n heure :${state.houre}',
+                body: 'jour :${state.date} \n heur :${state.houre}',
                 title: 'demande de reservation');
           });
         }

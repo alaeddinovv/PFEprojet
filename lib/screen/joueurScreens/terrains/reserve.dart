@@ -33,53 +33,6 @@ class Reserve extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                // const Text('User Id: ', style: TextStyle(fontSize: 20)),
-                // const SizedBox(
-                //   height: 8,
-                // ),
-
-                // defaultForm3(
-                //   sufixIcon: BlocConsumer<TerrainCubit, TerrainState>(
-                //     listener: (context, state) {
-                //       if (state is CheckUserByIdStateGood) {
-                //         showDialog(
-                //           context: context,
-                //           builder: (context) => DialogInfoJourur(
-                //             state: state,
-                //           ),
-                //         );
-                //       } else if (state is CheckUserByIdStateBad ||
-                //           state is ErrorState) {
-                //         showToast(
-                //             msg: "User not found",
-                //             state: ToastStates.error,
-                //             gravity: ToastGravity.CENTER);
-                //       }
-                //     },
-                //     builder: (context, state) {
-                //       if (state is LoadinCheckUserByIdState) {
-                //         return const CircularProgressIndicator();
-                //       }
-                //       return TextButton(
-                //           onPressed: () {
-                //             TerrainCubit.get(context)
-                //                 .checkUserById(id: userIdController.text);
-                //           },
-                //           child: const Text('Check'));
-                //     },
-                //   ),
-                //   prefixIcon: const Icon(Icons.person_outline),
-                //   context: context,
-                //   type: TextInputType.text,
-                //   valid: (String value) {
-                //     if (value.isEmpty) {
-                //       return 'User Must Not Be Empty';
-                //     }
-                //   },
-                //   labelText: 'User Id',
-                //   controller: userIdController,
-                // ),
-
                 const SizedBox(
                   height: 16,
                 ),

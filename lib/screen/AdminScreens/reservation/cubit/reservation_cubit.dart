@@ -22,7 +22,7 @@ class ReservationCubit extends Cubit<ReservationState> {
       String? heureDebutTemps}) async {
     emit(GetReservationLoadingState());
     // String formattedDate = DateFormat('yyyy-MM-dd').format(date!);
-    await Httplar.httpget(path: '$FILTERRESERVATIONPagination', query: {
+    await Httplar.httpget(path: FILTERRESERVATIONPagination, query: {
       "payment": "false",
       "cursor": cursor,
       if (terrainId != null) "terrain_id": terrainId,
@@ -59,11 +59,10 @@ class ReservationCubit extends Cubit<ReservationState> {
 
   Future<void> addReservation({
     Map<String, dynamic>? model,
-    String? idTerrain,
+    String? idReservation,
   }) async {
     emit(AddReservationLoadingState());
-    await Httplar.httpPost(
-            path: RESERVERTERRAINWITHADMIN + idTerrain!, data: model!)
+    await Httplar.httpPost(path: SETRESERVEWITHADMIN + idReservation!, data: {})
         .then((value) {
       if (value.statusCode == 201) {
         emit(AddReservationStateGood());
