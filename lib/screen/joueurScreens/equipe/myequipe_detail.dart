@@ -25,197 +25,204 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
     int attenteJoueursCount = widget.equipeData.attenteJoueurs.length;
 
     int joueurenattenteitems = widget.equipeData.attenteJoueursDemande.length;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Détail de l\'équipe'), // Display team name
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Equipe :${widget.equipeData.nom}',
-                // Display team name at the top of the page
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 10),
-              Text(
-                'Capitaine : ${widget.equipeData.capitaineId.username}',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 20),
-              BlocConsumer<EquipeCubit, EquipeState>(
-                listener: (context, state) {
-                  if (state is QuiterEquipeStateGood) {
-                    showToast(
-                        msg: "Operation successful",
-                        state: ToastStates.success);
-                    setState(() {
-                      widget.equipeData.joueurs.removeWhere(
-                          (element) => element.id == state.idJoueur);
-                    });
+
+
+    bool canPop = true;
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) async {
+        if (!didPop) {
+          if (canPop == true)  {
+            await EquipeCubit.get(context).getMyEquipe();
+            Navigator.pop(context);
+          }
+        }
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Détail de l\'équipe'), // Display team name
+        ),
+        body: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Equipe :${widget.equipeData.nom}',
+                  // Display team name at the top of the page
+                  style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 10),
+                Text(
+                  'Capitaine : ${widget.equipeData.capitaineId.username}',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                SizedBox(height: 20),
+                BlocConsumer<EquipeCubit, EquipeState>(
+                  listener: (context, state) {
+                    if (state is QuiterEquipeStateGood) {
+                      showToast(msg: "Operation successful",
+                          state: ToastStates.success);
+                      setState(() {
+                        widget.equipeData.joueurs.removeWhere(
+                                (element) => element.id == state.idJoueur);
+                      });
+
 
                     EquipeCubit.get(context).getMyEquipe();
 
-                    // This should re-fetch the equipe data
-                  } else if (state
-                      is CapitaineAnnuleInvitationJoueurStateGood) {
-                    showToast(
-                        msg: "Operation successful",
-                        state: ToastStates.success);
-                    setState(() {
-                      widget.equipeData.attenteJoueurs.removeWhere(
-                          (element) => element.id == state.idJoueur);
-                    });
 
-                    EquipeCubit.get(context).getMyEquipe();
-                  } else if (state is CapitaineInviteJoueurStateGood) {
-                    setState(() {
-                      // Adding the newly invited joueur to the 'attenteJoueurs' list
-                      widget.equipeData.attenteJoueurs.add(AttenteJoueurs(
-                        id: EquipeCubit.get(context).joueur.id!,
-                        username: EquipeCubit.get(context).joueur.username!,
-                        nom: EquipeCubit.get(context).joueur.nom!,
-                        telephone: EquipeCubit.get(context).joueur.telephone!,
-                      ));
-                    });
-                    showToast(
-                        msg: "Player successfully invited.",
-                        state: ToastStates.success);
-                  } else if (state is QuiterEquipeStateBad ||
-                      state is CapitaineAnnuleInvitationJoueurStateBad) {
-                    showToast(
-                        msg: "Failed to perform operation",
-                        state: ToastStates.error);
-                  } else if (state is ErrorState) {
-                    showToast(
-                        msg: state.errorModel.message!,
-                        state: ToastStates.error);
-                  }
-                },
-                builder: (context, state) {
-                  if (state is QuiterEquipeLoadingState ||
-                      state is CapitaineAnnuleInvitationJoueurLoadingState) {
-                    return CircularProgressIndicator(); // Show loading indicator while data is being fetched
-                  }
+                      // This should re-fetch the equipe data
+                    } else
+                    if (state is CapitaineAnnuleInvitationJoueurStateGood) {
+                      showToast(msg: "Operation successful",
+                          state: ToastStates.success);
+                      setState(() {
+                        widget.equipeData.attenteJoueurs.removeWhere(
+                                (element) => element.id == state.idJoueur);
+                      });
 
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-                    itemCount: totalItems, // Adjust the count as needed
-                    itemBuilder: (context, index) {
-                      if (index < joueurCount) {
-                        Joueurs joueur = widget.equipeData.joueurs[index];
-                        return _buildJoueurItem(
-                            index,
-                            joueur.id,
-                            widget.equipeData.id,
-                            joueur.username,
-                            joueur.telephone);
-                      } else if (index < joueurCount + attenteJoueursCount) {
-                        // AttenteJoueurs attentejoueur = widget.equipeData.attenteJoueurs[index - widget.equipeData.joueurs.length];
-                        return _buildProgressItem(
-                            index,
-                            widget
-                                .equipeData
-                                .attenteJoueurs[
-                                    index - widget.equipeData.joueurs.length]
-                                .id,
-                            widget.equipeData.id,
-                            widget
-                                .equipeData
-                                .attenteJoueurs[
-                                    index - widget.equipeData.joueurs.length]
-                                .username); // Use the new progress item for 3rd and 4th items
+                      EquipeCubit.get(context).getMyEquipe();
+                    } else if (state is CapitaineInviteJoueurStateGood) {
+                      bool alreadyExists = widget.equipeData.attenteJoueurs.any(
+                            (joueur) => joueur.id == EquipeCubit.get(context).joueur.id,
+                      );
+                      if (!alreadyExists) {
+                        setState(() {
+                          widget.equipeData.attenteJoueurs.add(AttenteJoueurs(
+                            id: EquipeCubit.get(context).joueur.id!,
+                            username: EquipeCubit.get(context).joueur.username!,
+                            nom: EquipeCubit.get(context).joueur.nom!,
+                            telephone: EquipeCubit.get(context).joueur.telephone!,
+                          ));
+                          showToast(msg: "Player successfully invited.", state: ToastStates.success);
+                        });
                       } else {
-                        return _buildAddItem(index, widget.equipeData.id);
+                        showToast(msg: "Player already in the waiting list.", state: ToastStates.error);
+                      }
+                    } else if (state is QuiterEquipeStateBad ||
+                        state is CapitaineAnnuleInvitationJoueurStateBad) {
+                      showToast(msg: "Failed to perform operation",
+                          state: ToastStates.error);
+                    } else if (state is ErrorState) {
+                      showToast(msg: state.errorModel.message!,
+                          state: ToastStates.error);
+                    }
+                  },
+                  builder: (context, state) {
+                    if (state is QuiterEquipeLoadingState ||
+                        state is CapitaineAnnuleInvitationJoueurLoadingState) {
+                      return CircularProgressIndicator(); // Show loading indicator while data is being fetched
+                    }
+
+                    return ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: totalItems-1, // Adjust the count as needed
+                      itemBuilder: (context, index) {
+                        if (index < joueurCount) {
+                          Joueurs joueur = widget.equipeData.joueurs[index];
+                          return _buildJoueurItem(index, joueur.id, widget
+                              .equipeData.id, joueur.username,
+                              joueur.telephone);
+                        } else if (index < joueurCount + attenteJoueursCount) {
+                          // AttenteJoueurs attentejoueur = widget.equipeData.attenteJoueurs[index - widget.equipeData.joueurs.length];
+                          return _buildProgressItem(index,
+                              widget.equipeData.attenteJoueurs[index -
+                                  widget.equipeData.joueurs.length].id,
+                              widget.equipeData.id,
+                              widget.equipeData.attenteJoueurs[index -
+                                  widget.equipeData.joueurs.length]
+                                  .username); // Use the new progress item for 3rd and 4th items
+                        } else {
+                          return _buildAddItem(index, widget.equipeData.id);
+                        }
+                      },
+                    );
+                  },
+                ),
+                SizedBox(height: 10,),
+                Text('Les demandes',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+
+
+                BlocConsumer<EquipeCubit, EquipeState>(
+                    listener: (context, state) {
+                      if (state is CapitaineRefuseJoueurStateGood) {
+                        showToast(msg: "Operation successful",
+                            state: ToastStates.success);
+                        setState(() {
+                          widget.equipeData.attenteJoueursDemande.removeWhere(
+                                  (element) => element.id == state.idJoueur);
+                        });
+
+                        EquipeCubit.get(context).getMyEquipe();
+
+                        // This should re-fetch the equipe data
+                      } else if (state is CapitaineAceeptJoueurStateGood) {
+                        setState(() {
+                          // Adding the newly invited joueur to the 'attenteJoueurs' list
+                          widget.equipeData.joueurs.add(Joueurs(
+                            id: EquipeCubit
+                                .get(context)
+                                .joueuraccepted
+                                .id!,
+                            username: EquipeCubit
+                                .get(context)
+                                .joueuraccepted
+                                .username!,
+                            nom: EquipeCubit
+                                .get(context)
+                                .joueuraccepted
+                                .nom!,
+                            telephone: EquipeCubit
+                                .get(context)
+                                .joueuraccepted
+                                .telephone!,
+                          ));
+
+                          widget.equipeData.attenteJoueursDemande.removeWhere(
+                                  (element) => element.id == EquipeCubit
+                                      .get(context)
+                                      .joueuraccepted
+                                      .id!, );
+                        });
+                        showToast(msg: "Player successfully added.",
+                            state: ToastStates.success);
+                      } else if (state is CapitaineAceeptJoueurStateBad ||
+                          state is CapitaineRefuseJoueurStateBad) {
+                        showToast(msg: "Failed to perform operation",
+                            state: ToastStates.error);
+                      } else if (state is ErrorState) {
+                        showToast(msg: state.errorModel.message!,
+                            state: ToastStates.error);
                       }
                     },
-                  );
-                },
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text('Les demandes',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              BlocConsumer<EquipeCubit, EquipeState>(
-                listener: (context, state) {
-                  if (state is CapitaineRefuseJoueurStateGood) {
-                    showToast(
-                        msg: "Operation successful",
-                        state: ToastStates.success);
-                    setState(() {
-                      widget.equipeData.attenteJoueursDemande.removeWhere(
-                          (element) => element.id == state.idJoueur);
-                    });
+                    builder: (context, state) {
+                      if (state is CapitaineRefuseJoueurLoadingState ||
+                          state is CapitaineAceeptJoueurLoadingState) {
+                        return CircularProgressIndicator(); // Show loading indicator while data is being fetched
+                      }
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
 
-                    EquipeCubit.get(context).getMyEquipe();
-
-                    // This should re-fetch the equipe data
-                  } else if (state is CapitaineAceeptJoueurStateGood) {
-                    setState(() {
-                      // Adding the newly invited joueur to the 'attenteJoueurs' list
-                      widget.equipeData.joueurs.add(Joueurs(
-                        id: EquipeCubit.get(context).joueuraccepted.id!,
-                        username:
-                            EquipeCubit.get(context).joueuraccepted.username!,
-                        nom: EquipeCubit.get(context).joueuraccepted.nom!,
-                        telephone:
-                            EquipeCubit.get(context).joueuraccepted.telephone!,
-                      ));
-
-                      widget.equipeData.attenteJoueursDemande.removeWhere(
-                        (element) =>
-                            element.id ==
-                            EquipeCubit.get(context).joueuraccepted.id!,
+                        itemCount: joueurenattenteitems, // Static count as per your request
+                        itemBuilder: (context, index) {
+                          AttenteJoueursDemande joueurattente = widget.equipeData.attenteJoueursDemande[index];
+                          return _buildDemandeItem(
+                              index ,joueurattente.id, widget
+                              .equipeData.id, joueurattente.username,
+                              joueurattente.telephone); // This function will be defined to create each item
+                        },
                       );
-                    });
-                    showToast(
-                        msg: "Player successfully added.",
-                        state: ToastStates.success);
-                  } else if (state is CapitaineAceeptJoueurStateBad ||
-                      state is CapitaineRefuseJoueurStateBad) {
-                    showToast(
-                        msg: "Failed to perform operation",
-                        state: ToastStates.error);
-                  } else if (state is ErrorState) {
-                    showToast(
-                        msg: state.errorModel.message!,
-                        state: ToastStates.error);
-                  }
-                },
-                builder: (context, state) {
-                  if (state is CapitaineRefuseJoueurLoadingState ||
-                      state is CapitaineAceeptJoueurLoadingState) {
-                    return CircularProgressIndicator(); // Show loading indicator while data is being fetched
-                  }
-                  return ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
-
-                    itemCount:
-                        joueurenattenteitems, // Static count as per your request
-                    itemBuilder: (context, index) {
-                      AttenteJoueursDemande joueurattente =
-                          widget.equipeData.attenteJoueursDemande[index];
-                      return _buildDemandeItem(
-                          index,
-                          joueurattente.id,
-                          widget.equipeData.id,
-                          joueurattente.username,
-                          joueurattente
-                              .telephone); // This function will be defined to create each item
                     },
-                  );
-                },
-              ),
-              SizedBox(
-                height: 10,
-              ),
-            ],
+                ),
+                SizedBox(height: 10,),
+              ],
+            ),
+
           ),
         ),
       ),
