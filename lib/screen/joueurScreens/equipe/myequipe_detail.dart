@@ -9,7 +9,7 @@ import 'package:pfeprojet/screen/joueurScreens/home/cubit/home_joueur_cubit.dart
 import 'package:url_launcher/url_launcher.dart'; // Ensure this path is correct
 
 class MyEquipeDetailsScreen extends StatefulWidget {
-   EquipeData equipeData;
+  EquipeData equipeData;
   MyEquipeDetailsScreen({super.key, required this.equipeData});
 
   @override
@@ -49,56 +49,49 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
               BlocConsumer<EquipeCubit, EquipeState>(
                 listener: (context, state) {
                   if (state is QuiterEquipeStateGood) {
-                    showToast(msg: "Operation successful",
+                    showToast(
+                        msg: "Operation successful",
                         state: ToastStates.success);
                     setState(() {
                       widget.equipeData.joueurs.removeWhere(
-                              (element) => element.id == state.idJoueur);
+                          (element) => element.id == state.idJoueur);
                     });
-        
+
                     EquipeCubit.get(context).getMyEquipe();
-        
+
                     // This should re-fetch the equipe data
-                  } else
-                  if (state is CapitaineAnnuleInvitationJoueurStateGood) {
-                    showToast(msg: "Operation successful",
+                  } else if (state
+                      is CapitaineAnnuleInvitationJoueurStateGood) {
+                    showToast(
+                        msg: "Operation successful",
                         state: ToastStates.success);
                     setState(() {
                       widget.equipeData.attenteJoueurs.removeWhere(
-                              (element) => element.id == state.idJoueur);
+                          (element) => element.id == state.idJoueur);
                     });
-        
+
                     EquipeCubit.get(context).getMyEquipe();
                   } else if (state is CapitaineInviteJoueurStateGood) {
                     setState(() {
                       // Adding the newly invited joueur to the 'attenteJoueurs' list
                       widget.equipeData.attenteJoueurs.add(AttenteJoueurs(
-                        id: EquipeCubit
-                            .get(context)
-                            .joueur
-                            .id!,
-                        username: EquipeCubit
-                            .get(context)
-                            .joueur
-                            .username!,
-                        nom: EquipeCubit
-                            .get(context)
-                            .joueur
-                            .nom!,
-                        telephone: EquipeCubit
-                            .get(context)
-                            .joueur
-                            .telephone!,
+                        id: EquipeCubit.get(context).joueur.id!,
+                        username: EquipeCubit.get(context).joueur.username!,
+                        nom: EquipeCubit.get(context).joueur.nom!,
+                        telephone: EquipeCubit.get(context).joueur.telephone!,
                       ));
                     });
-                    showToast(msg: "Player successfully invited.",
+                    showToast(
+                        msg: "Player successfully invited.",
                         state: ToastStates.success);
                   } else if (state is QuiterEquipeStateBad ||
                       state is CapitaineAnnuleInvitationJoueurStateBad) {
-                    showToast(msg: "Failed to perform operation",
+                    showToast(
+                        msg: "Failed to perform operation",
                         state: ToastStates.error);
                   } else if (state is ErrorState) {
-                    showToast(msg: state.errorModel.message!,
+                    showToast(
+                        msg: state.errorModel.message!,
                         state: ToastStates.error);
                   }
                 },
@@ -107,7 +100,7 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                       state is CapitaineAnnuleInvitationJoueurLoadingState) {
                     return CircularProgressIndicator(); // Show loading indicator while data is being fetched
                   }
-        
+
                   return ListView.builder(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
@@ -115,17 +108,26 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                     itemBuilder: (context, index) {
                       if (index < joueurCount) {
                         Joueurs joueur = widget.equipeData.joueurs[index];
-                        return _buildJoueurItem(index, joueur.id, widget
-                            .equipeData.id, joueur.username,
+                        return _buildJoueurItem(
+                            index,
+                            joueur.id,
+                            widget.equipeData.id,
+                            joueur.username,
                             joueur.telephone);
                       } else if (index < joueurCount + attenteJoueursCount) {
                         // AttenteJoueurs attentejoueur = widget.equipeData.attenteJoueurs[index - widget.equipeData.joueurs.length];
-                        return _buildProgressItem(index,
-                            widget.equipeData.attenteJoueurs[index -
-                                widget.equipeData.joueurs.length].id,
+                        return _buildProgressItem(
+                            index,
+                            widget
+                                .equipeData
+                                .attenteJoueurs[
+                                    index - widget.equipeData.joueurs.length]
+                                .id,
                             widget.equipeData.id,
-                            widget.equipeData.attenteJoueurs[index -
-                                widget.equipeData.joueurs.length]
+                            widget
+                                .equipeData
+                                .attenteJoueurs[
+                                    index - widget.equipeData.joueurs.length]
                                 .username); // Use the new progress item for 3rd and 4th items
                       } else {
                         return _buildAddItem(index, widget.equipeData.id);
@@ -134,84 +136,85 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                   );
                 },
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               Text('Les demandes',
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-        
-        
               BlocConsumer<EquipeCubit, EquipeState>(
-                  listener: (context, state) {
-                    if (state is CapitaineRefuseJoueurStateGood) {
-                      showToast(msg: "Operation successful",
-                          state: ToastStates.success);
-                      setState(() {
-                        widget.equipeData.attenteJoueursDemande.removeWhere(
-                                (element) => element.id == state.idJoueur);
-                      });
+                listener: (context, state) {
+                  if (state is CapitaineRefuseJoueurStateGood) {
+                    showToast(
+                        msg: "Operation successful",
+                        state: ToastStates.success);
+                    setState(() {
+                      widget.equipeData.attenteJoueursDemande.removeWhere(
+                          (element) => element.id == state.idJoueur);
+                    });
 
-                      EquipeCubit.get(context).getMyEquipe();
+                    EquipeCubit.get(context).getMyEquipe();
 
-                      // This should re-fetch the equipe data
-                    } else if (state is CapitaineAceeptJoueurStateGood) {
-                      setState(() {
-                        // Adding the newly invited joueur to the 'attenteJoueurs' list
-                        widget.equipeData.joueurs.add(Joueurs(
-                          id: EquipeCubit
-                              .get(context)
-                              .joueuraccepted
-                              .id!,
-                          username: EquipeCubit
-                              .get(context)
-                              .joueuraccepted
-                              .username!,
-                          nom: EquipeCubit
-                              .get(context)
-                              .joueuraccepted
-                              .nom!,
-                          telephone: EquipeCubit
-                              .get(context)
-                              .joueuraccepted
-                              .telephone!,
-                        ));
+                    // This should re-fetch the equipe data
+                  } else if (state is CapitaineAceeptJoueurStateGood) {
+                    setState(() {
+                      // Adding the newly invited joueur to the 'attenteJoueurs' list
+                      widget.equipeData.joueurs.add(Joueurs(
+                        id: EquipeCubit.get(context).joueuraccepted.id!,
+                        username:
+                            EquipeCubit.get(context).joueuraccepted.username!,
+                        nom: EquipeCubit.get(context).joueuraccepted.nom!,
+                        telephone:
+                            EquipeCubit.get(context).joueuraccepted.telephone!,
+                      ));
 
-                        widget.equipeData.attenteJoueursDemande.removeWhere(
-                                (element) => element.id == EquipeCubit
-                                    .get(context)
-                                    .joueuraccepted
-                                    .id!, );
-                      });
-                      showToast(msg: "Player successfully added.",
-                          state: ToastStates.success);
-                    } else if (state is CapitaineAceeptJoueurStateBad ||
-                        state is CapitaineRefuseJoueurStateBad) {
-                      showToast(msg: "Failed to perform operation",
-                          state: ToastStates.error);
-                    } else if (state is ErrorState) {
-                      showToast(msg: state.errorModel.message!,
-                          state: ToastStates.error);
-                    }
-                  },
-                  builder: (context, state) {
-                    if (state is CapitaineRefuseJoueurLoadingState ||
-                        state is CapitaineAceeptJoueurLoadingState) {
-                      return CircularProgressIndicator(); // Show loading indicator while data is being fetched
-                    }
-                    return ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
+                      widget.equipeData.attenteJoueursDemande.removeWhere(
+                        (element) =>
+                            element.id ==
+                            EquipeCubit.get(context).joueuraccepted.id!,
+                      );
+                    });
+                    showToast(
+                        msg: "Player successfully added.",
+                        state: ToastStates.success);
+                  } else if (state is CapitaineAceeptJoueurStateBad ||
+                      state is CapitaineRefuseJoueurStateBad) {
+                    showToast(
+                        msg: "Failed to perform operation",
+                        state: ToastStates.error);
+                  } else if (state is ErrorState) {
+                    showToast(
+                        msg: state.errorModel.message!,
+                        state: ToastStates.error);
+                  }
+                },
+                builder: (context, state) {
+                  if (state is CapitaineRefuseJoueurLoadingState ||
+                      state is CapitaineAceeptJoueurLoadingState) {
+                    return CircularProgressIndicator(); // Show loading indicator while data is being fetched
+                  }
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
 
-                      itemCount: joueurenattenteitems, // Static count as per your request
-                      itemBuilder: (context, index) {
-                        AttenteJoueursDemande joueurattente = widget.equipeData.attenteJoueursDemande[index];
-                        return _buildDemandeItem(
-                            index ,joueurattente.id, widget
-                            .equipeData.id, joueurattente.username,
-                            joueurattente.telephone); // This function will be defined to create each item
-                      },
-                    );
-                  },
+                    itemCount:
+                        joueurenattenteitems, // Static count as per your request
+                    itemBuilder: (context, index) {
+                      AttenteJoueursDemande joueurattente =
+                          widget.equipeData.attenteJoueursDemande[index];
+                      return _buildDemandeItem(
+                          index,
+                          joueurattente.id,
+                          widget.equipeData.id,
+                          joueurattente.username,
+                          joueurattente
+                              .telephone); // This function will be defined to create each item
+                    },
+                  );
+                },
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
             ],
           ),
         ),
@@ -220,8 +223,8 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
   }
 
   //-------------------- attente---------------------------------------------
-  Widget _buildProgressItem(int index, String joueurId, String equipeId,
-      String username) {
+  Widget _buildProgressItem(
+      int index, String joueurId, String equipeId, String username) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Container(
@@ -241,8 +244,8 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
         child: Row(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(
-                  vertical: 8.0, horizontal: 12.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
               child: Text(username, style: TextStyle(fontSize: 16)),
             ),
             Spacer(),
@@ -251,7 +254,9 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
               color: Colors.blue, // Blue color to signify ongoing progress
               size: 24, // Icon size for visual balance
             ),
-            SizedBox(width: 12,),
+            SizedBox(
+              width: 12,
+            ),
             IconButton(
               onPressed: () {
                 EquipeCubit.get(context).capitaineAnnuleInvitationJoueur(
@@ -265,7 +270,6 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
       ),
     );
   }
-
 
 //-------------------------------------------------joueur --------------------------
   Widget _buildJoueurItem(int index, String joueurId, String equipeId,
@@ -292,11 +296,12 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
         child: Row(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(
-                  vertical: 8.0, horizontal: 12.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
               // Internal padding for text and icons
-              child: Text(username, style: TextStyle(
-                  fontSize: 16)), // Increased font size for readability
+              child: Text(username,
+                  style: TextStyle(
+                      fontSize: 16)), // Increased font size for readability
             ),
             Spacer(),
             IconButton(
@@ -316,23 +321,20 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
               color: Colors
                   .green, // Green color to signify calling is a positive action
             ),
-
             IconButton(
               onPressed: () {
-                EquipeCubit.get(context).quiterEquipe(
-                    equipeId: equipeId, joueurId: joueurId);
+                EquipeCubit.get(context)
+                    .quiterEquipe(equipeId: equipeId, joueurId: joueurId);
                 // indexjoueur = index;
               },
               icon: Icon(Icons.cancel),
               color: Colors.red,
             ),
-
           ],
         ),
       ),
     );
   }
-
 
 //-------------------------------------------------------- add --------------------------------------
   Widget _buildAddItem(int index, String id) {
@@ -398,7 +400,7 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                     onChanged: (value) {
                       if (message.isNotEmpty) {
                         setState(() =>
-                        message = ""); // Clear message when typing starts
+                            message = ""); // Clear message when typing starts
                       }
                     },
                   ),
@@ -409,7 +411,7 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                         joueurId =
                             state.dataJoueurModel.id; // Store the joueur ID
                         setState(() => message =
-                        "Player exists: ${state.dataJoueurModel.username}");
+                            "Player exists: ${state.dataJoueurModel.username}");
                       } else if (state is CheckUserByUsernameStateBad ||
                           state is ErrorState) {
                         setState(() => message = "Player does not exist");
@@ -454,11 +456,10 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
     );
   }
 
-
   //------------------------ les demande ----------------------------------
 
   Widget _buildDemandeItem(int index, String joueurId, String equipeId,
-  String username, int? telephone) {
+      String username, int? telephone) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       // Added padding to the entire row for better spacing
@@ -481,23 +482,24 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
         child: Row(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(
-                  vertical: 8.0, horizontal: 12.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
               // Internal padding for text and icons
-              child: Text(username, style: TextStyle(
-                  fontSize: 16)), // Increased font size for readability
+              child: Text(username,
+                  style: TextStyle(
+                      fontSize: 16)), // Increased font size for readability
             ),
             Spacer(),
-                    TextButton(
-                      onPressed: () {
-                        // capitaineAceeptJoueur
-                        EquipeCubit.get(context).capitaineAceeptJoueur(
-                            equipeId: equipeId, joueurId: joueurId);
-                        // Handle accept action
-                        print("Accepting $username");
-                      },
-                      child: Text('Accepter'),
-                    ),
+            TextButton(
+              onPressed: () {
+                // capitaineAceeptJoueur
+                EquipeCubit.get(context).capitaineAceeptJoueur(
+                    equipeId: equipeId, joueurId: joueurId);
+                // Handle accept action
+                print("Accepting $username");
+              },
+              child: Text('Accepter'),
+            ),
             IconButton(
               onPressed: () {
                 int? phoneNumber = telephone;
@@ -515,7 +517,6 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
               color: Colors
                   .green, // Green color to signify calling is a positive action
             ),
-
             IconButton(
               onPressed: () {
                 EquipeCubit.get(context).capitaineRefuseJoueur(
@@ -525,40 +526,30 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
               icon: Icon(Icons.cancel),
               color: Colors.red,
             ),
-
           ],
         ),
       ),
     );
   }
 
-
-
-
 //------------------------ call--------------------------
 
-
-    Future<void> _makePhoneCall(String phoneNumber) async {
-      print(phoneNumber.runtimeType);
-      print(phoneNumber);
-      var status = await Permission.phone.status;
-      if (!status.isGranted) {
-        await Permission.phone.request();
-      }
-
-      if (await Permission.phone.isGranted) {
-        final Uri launchUri = Uri(scheme: 'tel', path: phoneNumber);
-
-        await launchUrl(launchUri);
-      } else {
-        print('Permission denied');
-      }
+  Future<void> _makePhoneCall(String phoneNumber) async {
+    print(phoneNumber.runtimeType);
+    print(phoneNumber);
+    var status = await Permission.phone.status;
+    if (!status.isGranted) {
+      await Permission.phone.request();
     }
 
+    if (await Permission.phone.isGranted) {
+      final Uri launchUri = Uri(scheme: 'tel', path: phoneNumber);
 
-//--------------the end--------------
+      await launchUrl(launchUri);
+    } else {
+      print('Permission denied');
+    }
   }
 
-
-
-
+//--------------the end--------------
+}

@@ -427,6 +427,11 @@ class TerrainCubit extends Cubit<TerrainState> {
 
   Future<void> searchJoueur({String cursor = '', String? username}) async {
     emit(GetSearchJoueurLoading());
+    if (username == '') {
+      joueursSearch = [];
+      cursorId = "";
+      return;
+    }
     await Httplar.httpget(
         path: SEARCHJOUEURPAGINATION,
         query: {'cursor': cursor, 'username': username}).then((value) {
