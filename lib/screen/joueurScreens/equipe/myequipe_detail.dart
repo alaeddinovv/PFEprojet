@@ -4,6 +4,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:pfeprojet/Model/equipe_model.dart';
 import 'package:pfeprojet/Model/user_model.dart';
 import 'package:pfeprojet/component/components.dart';
+import 'package:pfeprojet/component/const.dart';
 import 'package:pfeprojet/screen/joueurScreens/equipe/cubit/equipe_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/home/cubit/home_joueur_cubit.dart';
 import 'package:url_launcher/url_launcher.dart'; // Ensure this path is correct
@@ -60,7 +61,7 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                 ),
                 SizedBox(height: 20),
                 BlocConsumer<EquipeCubit, EquipeState>(
-                  listener: (context, state) {
+                  listener: (context, state) async {
                     if (state is QuiterEquipeStateGood) {
                       showToast(msg: "Operation successful",
                           state: ToastStates.success);
@@ -88,6 +89,10 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                       bool alreadyExists = widget.equipeData.attenteJoueurs.any(
                             (joueur) => joueur.id == EquipeCubit.get(context).joueur.id,
                       );
+                      await sendNotificationToAdmin(
+                      adminId: state.joueurId,
+                      body: 'une equiep vous a envoyer une invitation',
+                      title: 'invitation from ${state.equipename}');
                       if (!alreadyExists) {
                         setState(() {
                           widget.equipeData.attenteJoueurs.add(AttenteJoueurs(
@@ -136,7 +141,7 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                                   widget.equipeData.joueurs.length]
                                   .username); // Use the new progress item for 3rd and 4th items
                         } else {
-                          return _buildAddItem(index, widget.equipeData.id);
+                          return _buildAddItem(index, widget.equipeData.id , widget.equipeData.nom);
                         }
                       },
                     );
@@ -344,13 +349,13 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
   }
 
 //-------------------------------------------------------- add --------------------------------------
-  Widget _buildAddItem(int index, String id) {
+  Widget _buildAddItem(int index, String id , String equipename) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: InkWell(
         onTap: () {
           // Add action
-          _showAddDialog(context, id);
+          _showAddDialog(context, id , equipename);
         },
         child: Container(
           height: 50,
@@ -375,7 +380,7 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
 
 //------------------------------------ ajouter joueur dialog --------------------------------
 
-  void _showAddDialog(BuildContext context, String equipeId) {
+  void _showAddDialog(BuildContext context, String equipeId ,String equipename) {
     TextEditingController textEditingController = TextEditingController();
     String message = "";
     String? joueurId;
@@ -439,7 +444,7 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                         onPressed: () {
                           if (joueurId != null) {
                             EquipeCubit.get(context).capitaineInviteJoueur(
-                                equipeId: equipeId, joueurId: joueurId!);
+                                equipeId: equipeId, joueurId: joueurId! , equipename : equipename);
                             Navigator.of(context)
                                 .pop(); // Close the dialog after inviting
                           }

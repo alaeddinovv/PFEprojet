@@ -109,7 +109,12 @@ final class CapitaineRefuseJoueurStateBad extends EquipeState {}
 
 final class CapitaineInviteJoueurLoadingState extends EquipeState {}
 
-final class CapitaineInviteJoueurStateGood extends EquipeState {}
+final class CapitaineInviteJoueurStateGood extends EquipeState {
+  final String equipename;
+  final String joueurId;
+
+  CapitaineInviteJoueurStateGood({required this.equipename,required this.joueurId});
+}
 
 final class CapitaineInviteJoueurStateBad extends EquipeState {}
 
