@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pfeprojet/Model/equipe_model.dart';
 import 'package:pfeprojet/component/components.dart';
+import 'package:pfeprojet/component/const.dart';
 import 'package:pfeprojet/screen/joueurScreens/equipe/addequipe.dart';
 import 'package:pfeprojet/screen/joueurScreens/equipe/allequipe_detail.dart';
 import 'package:pfeprojet/screen/joueurScreens/equipe/cubit/equipe_cubit.dart';
@@ -207,7 +208,13 @@ class _EquipeState extends State<Equipe> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
               child: BlocConsumer<EquipeCubit, EquipeState>(
-                listener: (context, state) {
+                listener: (context, state) async {
+                  if (state is AccepterInvStateGood){
+                    await sendNotificationToJoueur(
+                    joueurId: state.joueurId,
+                    body: 'une equipe vous a envoyer une invitation',
+                    title: 'invitation from ${state.equipename}');
+                  }
                 },
                 builder: (context, state) {
                   if (state is GetEquipeInviteLoading && EquipeCubit.get(context).cursorId2 == '') {
@@ -490,7 +497,8 @@ class _EquipeState extends State<Equipe> {
 
   //------------------------------------- invitation--------------------------------------------------
 
-  Widget _buildEquipeInvitationItem(EquipeData model, int index, BuildContext context) {
+  Widget _buildEquipeInvitationItem(EquipeData model, int index , BuildContext context) {
+    // String joueurId, String equipename,
     return InkWell(
       onTap: () {
         // Add your onTap functionality here if needed
@@ -533,7 +541,7 @@ class _EquipeState extends State<Equipe> {
                   ElevatedButton(
                       onPressed: () {
                         // Add your acce
-                        EquipeCubit.get(context).accepterInvitation(id: model.id).then((_) {
+                        EquipeCubit.get(context).accepterInvitation(id: model.id , joueurId: model.capitaineId.id , equipename: model.nom ).then((_) {
                           showToast(msg: "Invitation accepted", state: ToastStates.success);
                           EquipeCubit.get(context).getEquipeInvite(); // Refresh the list after accepting
                         }).catchError((error) {

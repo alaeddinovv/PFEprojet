@@ -239,6 +239,7 @@ class RegisterJoueur extends StatelessWidget {
                                     'mot_de_passe': motDePasseController.text,
                                     "telephone": telephoneController.text,
                                     'wilaya': wilayaController.text,
+                                    'commune': dairaController.text,
                                     "poste": posteController.text,
                                   };
                                   AuthCubit.get(context)

@@ -21,13 +21,15 @@ class EquipeCubit extends Cubit<EquipeState> {
   Future<void> creerEquipe(
       {required String nom,
       required String numero_joueurs,
-      String? wilaya}) async {
+      String? wilaya ,
+        String? commune}) async {
     emit(CreerEquipeLoadingState());
 
     Map<String, dynamic> _model = {
       "nom": nom,
       "numero_joueurs": numero_joueurs,
-      "wilaya": wilaya
+      "wilaya": wilaya ,
+      "commune": commune
     };
 
     await Httplar.httpPost(path: ADDEQUIPE, data: _model).then((value) {
@@ -223,14 +225,14 @@ class EquipeCubit extends Cubit<EquipeState> {
 
   //-------------- acceoter invitation pour rejoindre equipe----
   Future<void> accepterInvitation(
-      {required String id}) async {
+      {required String id , required String equipename , required String joueurId}) async {
     emit(AccepterInvLoadingState());
 
     Map<String, dynamic> _model = {};
 
     await Httplar.httpPost(path: ACCEPTERINVITATION + id, data: _model).then((value) {
       if (value.statusCode == 200) {
-        emit(AccepterInvStateGood());
+        emit(AccepterInvStateGood(equipename: equipename , joueurId:joueurId));
       } else {
         var jsonResponse =
         convert.jsonDecode(value.body) as Map<String, dynamic>;
@@ -308,7 +310,7 @@ class EquipeCubit extends Cubit<EquipeState> {
   //--------------CAPITAINE ACCEPT DEMANDE JOUEUR-----------------
   late DataJoueurModel joueuraccepted ;
   Future<void> capitaineAceeptJoueur(
-      {required String equipeId , required String joueurId}) async {
+      {required String equipeId , required String joueurId ,  required String equipename}) async {
     emit(CapitaineAceeptJoueurLoadingState());
 
     Map<String, dynamic> _model = {};
@@ -319,7 +321,7 @@ print(CAPITAINEACCEPTJOUEUR + equipeId + '/' + joueurId);
         convert.jsonDecode(value.body) as Map<String, dynamic>;
         joueuraccepted = DataJoueurModel.fromJson(jsonResponse);
         print('ala ala');
-        emit(CapitaineAceeptJoueurStateGood());
+        emit(CapitaineAceeptJoueurStateGood(equipename: equipename , joueurId:joueurId));
       } else {
         var jsonResponse =
         convert.jsonDecode(value.body) as Map<String, dynamic>;
