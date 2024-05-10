@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pfeprojet/Model/equipe_model.dart';
+import 'package:pfeprojet/Model/user_model.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/const.dart';
 import 'package:pfeprojet/screen/joueurScreens/equipe/addequipe.dart';
@@ -212,8 +213,8 @@ class _EquipeState extends State<Equipe> {
                   if (state is AccepterInvStateGood){
                     await sendNotificationToJoueur(
                     joueurId: state.joueurId,
-                    body: 'une equipe vous a envoyer une invitation',
-                    title: 'invitation from ${state.equipename}');
+                    body: '${state.joueurname} a accepter votre invitation',
+                    title: 'invitation acceptée');
                   }
                 },
                 builder: (context, state) {
@@ -541,7 +542,7 @@ class _EquipeState extends State<Equipe> {
                   ElevatedButton(
                       onPressed: () {
                         // Add your acce
-                        EquipeCubit.get(context).accepterInvitation(id: model.id , joueurId: model.capitaineId.id , equipename: model.nom ).then((_) {
+                        EquipeCubit.get(context).accepterInvitation(id: model.id , joueurId: model.capitaineId.id , joueurname: HomeJoueurCubit.get(context).joueurModel!.username! ).then((_) {
                           showToast(msg: "Invitation accepted", state: ToastStates.success);
                           EquipeCubit.get(context).getEquipeInvite(); // Refresh the list after accepting
                         }).catchError((error) {

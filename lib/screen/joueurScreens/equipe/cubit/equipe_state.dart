@@ -62,9 +62,9 @@ final class GetEquipeInviteStateBad extends EquipeState {}
 final class AccepterInvLoadingState extends EquipeState {}
 
 final class AccepterInvStateGood extends EquipeState {
-  final String equipename;
+  final String joueurname;
   final String joueurId;
-  AccepterInvStateGood({required this.equipename,required this.joueurId});
+  AccepterInvStateGood({required this.joueurname,required this.joueurId});
 }
 
 final class AccepterInvStateBad extends EquipeState {}

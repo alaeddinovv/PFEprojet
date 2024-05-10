@@ -169,8 +169,8 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                       } else if (state is CapitaineAceeptJoueurStateGood) {
                         await sendNotificationToJoueur(
                         joueurId: state.joueurId,
-                        body: 'une equipe vous a envoyer une invitation',
-                        title: 'invitation from ${state.equipename}');
+                        body: 'Vous êtes désormais un joueur de cette équipe',
+                        title: '${state.equipename} a accepté votre demande');
                         setState(() {
                           // Adding the newly invited joueur to the 'attenteJoueurs' list
                           widget.equipeData.joueurs.add(Joueurs(
