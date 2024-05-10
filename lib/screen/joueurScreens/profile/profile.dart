@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/const.dart';
+import 'package:pfeprojet/cubit/main_cubit.dart';
 import 'package:pfeprojet/helper/cachhelper.dart';
 import 'package:pfeprojet/screen/Auth/login.dart';
 import 'package:pfeprojet/screen/joueurScreens/home/cubit/home_joueur_cubit.dart';
@@ -45,7 +46,37 @@ class ProfileJoueur extends StatelessWidget {
                 child: const Text(
                   "Disconnect",
                   style: TextStyle(color: Colors.red),
-                ))
+                )),
+            IconButton(
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                            title: const Text('Change Language'),
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                ListTile(
+                                  title: const Text('English'),
+                                  onTap: () {
+                                    MainCubit.get(context)
+                                        .changeLanguage(const Locale('en'));
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                                ListTile(
+                                  title: const Text('Arabic'),
+                                  onTap: () {
+                                    MainCubit.get(context)
+                                        .changeLanguage(const Locale('ar'));
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ],
+                            ),
+                          ));
+                },
+                icon: const Icon(Icons.translate))
           ],
         ),
         body: BlocConsumer<ProfileJoueurCubit, ProfileJoueurState>(
@@ -137,7 +168,7 @@ class ProfileJoueur extends StatelessWidget {
                       height: 30,
                     ),
                     Padding(
-                      padding: EdgeInsets.all(16.0),
+                      padding: const EdgeInsets.all(16.0),
                       child: Row(
                         children: [
                           Expanded(
@@ -167,7 +198,7 @@ class ProfileJoueur extends StatelessWidget {
                               ),
                             ),
                           ),
-                          SizedBox(width: 10),
+                          const SizedBox(width: 10),
                           Expanded(
                             child: Container(
                               height: 55,

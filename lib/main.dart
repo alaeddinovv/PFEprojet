@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:pfeprojet/Api/socket_io.dart';
 import 'package:pfeprojet/component/const.dart';
+import 'package:pfeprojet/cubit/main_cubit.dart';
 import 'package:pfeprojet/fcm-firebase.dart';
 import 'package:pfeprojet/firebase_options.dart';
 import 'package:pfeprojet/generated/l10n.dart';
@@ -75,6 +76,9 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
+          create: ((context) => MainCubit()),
+        ),
+        BlocProvider(
           create: ((context) => AuthCubit()),
         ),
         BlocProvider(
@@ -108,22 +112,29 @@ class MyApp extends StatelessWidget {
           create: ((context) => ReservationCubit()..fetchReservations()),
         ),
       ],
-      child: MaterialApp(
-        locale: const Locale('en'),
-        localizationsDelegates: const [
-          S.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: S.delegate.supportedLocales,
-        navigatorKey: navigatorKey,
-        debugShowCheckedModeBanner: false,
-        home:
+      child: BlocConsumer<MainCubit, MainState>(
+        listener: (context, state) {
+          // TODO: implement listener
+        },
+        builder: (context, state) {
+          return MaterialApp(
+            locale: MainCubit.get(context).locale,
+            localizationsDelegates: const [
+              S.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: S.delegate.supportedLocales,
+            navigatorKey: navigatorKey,
+            debugShowCheckedModeBanner: false,
+            home:
 
-            // Onbording(),
+                // Onbording(),
 
-            onbordingmain ? startwidget : const Onbording(),
+                onbordingmain ? startwidget : const Onbording(),
+          );
+        },
       ),
     );
   }
