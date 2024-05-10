@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pfeprojet/component/components.dart';
+import 'package:pfeprojet/component/drop_down_wilaya.dart';
 import 'package:pfeprojet/screen/AdminScreens/home/home.dart';
 import 'package:pfeprojet/screen/JoueurScreens/home/home.dart';
 import 'cubit/equipe_cubit.dart';
@@ -17,6 +18,8 @@ class AddEquipe extends StatefulWidget {
 class _AddEquipeState extends State<AddEquipe> {
   final TextEditingController _typeController = TextEditingController();
   final TextEditingController _numberController = TextEditingController();
+  final wilayaController = TextEditingController();
+  final dairaController = TextEditingController();
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
   String? selectedWilaya;
@@ -99,24 +102,28 @@ class _AddEquipeState extends State<AddEquipe> {
                       ),
                       textInputAction: TextInputAction.next),
                   const SizedBox(height: 20),
-                  DropdownButtonFormField<String>(
-                    decoration: InputDecoration(
-                      labelText: 'Select Wilaya',
-                      border: OutlineInputBorder(),
-                    ),
-                    value: selectedWilaya,
-                    onChanged: (newValue) {
-                      setState(() {
-                        selectedWilaya = newValue;
-                        // updateCommunes(newValue);
-                      });
-                    },
-                    items: wilayas.map((dynamic wilaya) {
-                      return DropdownMenuItem<String>(
-                        value: wilaya['name'],
-                        child: Text(wilaya['name']),
-                      );
-                    }).toList(),
+                  // DropdownButtonFormField<String>(
+                  //   decoration: InputDecoration(
+                  //     labelText: 'Select Wilaya',
+                  //     border: OutlineInputBorder(),
+                  //   ),
+                  //   value: selectedWilaya,
+                  //   onChanged: (newValue) {
+                  //     setState(() {
+                  //       selectedWilaya = newValue;
+                  //       // updateCommunes(newValue);
+                  //     });
+                  //   },
+                  //   items: wilayas.map((dynamic wilaya) {
+                  //     return DropdownMenuItem<String>(
+                  //       value: wilaya['name'],
+                  //       child: Text(wilaya['name']),
+                  //     );
+                  //   }).toList(),
+                  // ),
+                  DropdownScreen(
+                    selectedDaira: dairaController,
+                    selectedWilaya: wilayaController,
                   ),
 
                   const SizedBox(height: 20),
@@ -161,7 +168,8 @@ class _AddEquipeState extends State<AddEquipe> {
                               EquipeCubit.get(context).creerEquipe(
                                   nom: _typeController.text,
                                   numero_joueurs: _numberController.text,
-                                  wilaya: selectedWilaya
+                                  wilaya: wilayaController.text,
+                                  commune: dairaController.text
                                   // commune: selectedCommune
                               );
                             }

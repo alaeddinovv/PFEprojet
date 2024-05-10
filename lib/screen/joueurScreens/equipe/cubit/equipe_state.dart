@@ -61,7 +61,11 @@ final class GetEquipeInviteStateBad extends EquipeState {}
 
 final class AccepterInvLoadingState extends EquipeState {}
 
-final class AccepterInvStateGood extends EquipeState {}
+final class AccepterInvStateGood extends EquipeState {
+  final String joueurname;
+  final String joueurId;
+  AccepterInvStateGood({required this.joueurname,required this.joueurId});
+}
 
 final class AccepterInvStateBad extends EquipeState {}
 
@@ -89,7 +93,11 @@ final class AnnulerRejoindreEquipeInvStateBad extends EquipeState {}
 
 final class CapitaineAceeptJoueurLoadingState extends EquipeState {}
 
-final class CapitaineAceeptJoueurStateGood extends EquipeState {}
+final class CapitaineAceeptJoueurStateGood extends EquipeState {
+  final String equipename;
+  final String joueurId;
+  CapitaineAceeptJoueurStateGood({required this.equipename,required this.joueurId});
+}
 
 final class CapitaineAceeptJoueurStateBad extends EquipeState {}
 

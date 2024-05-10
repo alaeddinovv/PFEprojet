@@ -89,9 +89,10 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                       bool alreadyExists = widget.equipeData.attenteJoueurs.any(
                             (joueur) => joueur.id == EquipeCubit.get(context).joueur.id,
                       );
-                      await sendNotificationToAdmin(
-                      adminId: state.joueurId,
-                      body: 'une equiep vous a envoyer une invitation',
+                      print(state.joueurId);
+                      await sendNotificationToJoueur(
+                      joueurId: state.joueurId,
+                      body: 'une equipe vous a envoyer une invitation',
                       title: 'invitation from ${state.equipename}');
                       if (!alreadyExists) {
                         setState(() {
@@ -153,7 +154,7 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
 
 
                 BlocConsumer<EquipeCubit, EquipeState>(
-                    listener: (context, state) {
+                    listener: (context, state) async {
                       if (state is CapitaineRefuseJoueurStateGood) {
                         showToast(msg: "Operation successful",
                             state: ToastStates.success);
@@ -166,6 +167,10 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
 
                         // This should re-fetch the equipe data
                       } else if (state is CapitaineAceeptJoueurStateGood) {
+                        await sendNotificationToJoueur(
+                        joueurId: state.joueurId,
+                        body: 'Vous êtes désormais un joueur de cette équipe',
+                        title: '${state.equipename} a accepté votre demande');
                         setState(() {
                           // Adding the newly invited joueur to the 'attenteJoueurs' list
                           widget.equipeData.joueurs.add(Joueurs(
@@ -218,7 +223,7 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                           AttenteJoueursDemande joueurattente = widget.equipeData.attenteJoueursDemande[index];
                           return _buildDemandeItem(
                               index ,joueurattente.id, widget
-                              .equipeData.id, joueurattente.username,
+                              .equipeData.id, widget.equipeData.nom, joueurattente.username,
                               joueurattente.telephone); // This function will be defined to create each item
                         },
                       );
@@ -470,7 +475,7 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
 
   //------------------------ les demande ----------------------------------
 
-  Widget _buildDemandeItem(int index, String joueurId, String equipeId,
+  Widget _buildDemandeItem(int index, String joueurId, String equipeId, String equipename ,
       String username, int? telephone) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -506,7 +511,7 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
               onPressed: () {
                 // capitaineAceeptJoueur
                 EquipeCubit.get(context).capitaineAceeptJoueur(
-                    equipeId: equipeId, joueurId: joueurId);
+                    equipeId: equipeId, joueurId: joueurId , equipename: equipename);
                 // Handle accept action
                 print("Accepting $username");
               },

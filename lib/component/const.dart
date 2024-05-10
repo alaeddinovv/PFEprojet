@@ -106,7 +106,7 @@ Future<void> sendNotificationToJoueur(
     required String body,
     required String joueurId}) async {
   await Httplar.httpPost(
-      path: SENDNOTIFICATIONTOADMIN + joueurId,
+      path: SENDNOTIFICATIONTOJOUEUR + joueurId,
       data: {'title': title, 'body': body}).then((value) {
     print('notification send successfully');
   }).catchError((e) {

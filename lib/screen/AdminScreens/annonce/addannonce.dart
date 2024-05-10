@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pfeprojet/component/components.dart';
+import 'package:pfeprojet/component/drop_down_wilaya.dart';
 import 'package:pfeprojet/screen/AdminScreens/home/home.dart';
 import 'cubit/annonce_cubit.dart';
 import 'package:pfeprojet/Api/wilaya_list.dart';// Import your JSON data
@@ -16,6 +17,8 @@ class AddAnnonce extends StatefulWidget {
 class _AddAnnonceState extends State<AddAnnonce> {
   final TextEditingController _typeController = TextEditingController();
   final TextEditingController _textController = TextEditingController();
+  final wilayaController = TextEditingController();
+  final dairaController = TextEditingController();
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
   String? selectedWilaya;
@@ -111,43 +114,47 @@ class _AddAnnonceState extends State<AddAnnonce> {
                     textInputAction: TextInputAction.next,
                   ),
                   const SizedBox(height: 20),
-                  DropdownButtonFormField<String>(
-                    decoration: InputDecoration(
-                      labelText: 'Select Wilaya',
-                      border: OutlineInputBorder(),
-                    ),
-                    value: selectedWilaya,
-                    onChanged: (newValue) {
-                      setState(() {
-                        selectedWilaya = newValue;
-                        updateCommunes(newValue);
-                      });
-                    },
-                    items: wilayas.map((dynamic wilaya) {
-                      return DropdownMenuItem<String>(
-                        value: wilaya['name'],
-                        child: Text(wilaya['name']),
-                      );
-                    }).toList(),
-                  ),
-                  const SizedBox(height: 20),
-                  DropdownButtonFormField<String>(
-                    decoration: InputDecoration(
-                      labelText: 'Select Commune',
-                      border: OutlineInputBorder(),
-                    ),
-                    value: selectedCommune,
-                    onChanged: (newValue) {
-                      setState(() {
-                        selectedCommune = newValue;
-                      });
-                    },
-                    items: communes.map((String commune) {
-                      return DropdownMenuItem<String>(
-                        value: commune,
-                        child: Text(commune),
-                      );
-                    }).toList(),
+                  // DropdownButtonFormField<String>(
+                  //   decoration: InputDecoration(
+                  //     labelText: 'Select Wilaya',
+                  //     border: OutlineInputBorder(),
+                  //   ),
+                  //   value: selectedWilaya,
+                  //   onChanged: (newValue) {
+                  //     setState(() {
+                  //       selectedWilaya = newValue;
+                  //       updateCommunes(newValue);
+                  //     });
+                  //   },
+                  //   items: wilayas.map((dynamic wilaya) {
+                  //     return DropdownMenuItem<String>(
+                  //       value: wilaya['name'],
+                  //       child: Text(wilaya['name']),
+                  //     );
+                  //   }).toList(),
+                  // ),
+                  // const SizedBox(height: 20),
+                  // DropdownButtonFormField<String>(
+                  //   decoration: InputDecoration(
+                  //     labelText: 'Select Commune',
+                  //     border: OutlineInputBorder(),
+                  //   ),
+                  //   value: selectedCommune,
+                  //   onChanged: (newValue) {
+                  //     setState(() {
+                  //       selectedCommune = newValue;
+                  //     });
+                  //   },
+                  //   items: communes.map((String commune) {
+                  //     return DropdownMenuItem<String>(
+                  //       value: commune,
+                  //       child: Text(commune),
+                  //     );
+                  //   }).toList(),
+                  // ),
+                  DropdownScreen(
+                    selectedDaira: dairaController,
+                    selectedWilaya: wilayaController,
                   ),
                   const SizedBox(height: 20),
                   Padding(
@@ -191,8 +198,8 @@ class _AddAnnonceState extends State<AddAnnonce> {
                               AnnonceCubit.get(context).creerAnnonce(
                                   type: _typeController.text,
                                   text: _textController.text,
-                                  wilaya: selectedWilaya,
-                                  commune: selectedCommune
+                                  wilaya: wilayaController.text,
+                                  commune: dairaController.text
                               );
                             }
                           },
