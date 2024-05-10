@@ -15,12 +15,26 @@ class _DropdownScreenState extends State<DropdownScreen> {
   String? selectedWilaya;
   String? selectedDaira;
   List<String> dairas = [];
+  @override
+  void initState() {
+    // TODO: implement initState
+    selectedWilaya =
+        widget.selectedWilaya.text == "" ? null : widget.selectedWilaya.text;
+
+    if (selectedWilaya != null) {
+      updateDairas(selectedWilaya);
+    }
+    selectedDaira =
+        widget.selectedDaira.text == "" ? null : widget.selectedDaira.text;
+    super.initState();
+  }
 
   void updateDairas(String? wilaya) {
     if (wilaya == null) {
       setState(() {
         dairas = [];
         selectedDaira = null;
+        widget.selectedDaira.text = "";
       });
       return;
     }
@@ -61,9 +75,13 @@ class _DropdownScreenState extends State<DropdownScreen> {
                 isExpanded: true,
                 value: selectedWilaya,
                 onChanged: (value) {
+                  print(value);
                   setState(() {
                     selectedWilaya = value;
-                    widget.selectedWilaya.text = value!.split(' - ')[1];
+                    // widget.selectedWilaya.text = value!.split(' - ')[1];
+                    widget.selectedWilaya.text = value!;
+                    widget.selectedDaira.text = "";
+
                     updateDairas(value);
                   });
                 },

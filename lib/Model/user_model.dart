@@ -32,6 +32,7 @@ class DataJoueurModel {
     this.age,
     this.poste,
     this.wilaya,
+    this.commune,
     this.photo,
     this.equipes,
     this.annonces,
@@ -51,6 +52,7 @@ class DataJoueurModel {
   int? age;
   String? poste;
   String? wilaya;
+  String? commune;
   String? photo;
   List<dynamic>? equipes;
   List<dynamic>? annonces;
@@ -69,6 +71,7 @@ class DataJoueurModel {
     age = json['age'];
     poste = json['poste'];
     wilaya = json['wilaya'];
+    commune = json['commune'];
     photo = json['photo'];
     equipes = json['equipes'];
     annonces = json['annonces'];
@@ -89,6 +92,7 @@ class DataJoueurModel {
     _data['age'] = age;
     _data['poste'] = poste;
     _data['wilaya'] = wilaya;
+    _data['commune'] = commune;
     _data['photo'] = photo;
     _data['equipes'] = equipes;
     _data['annonces'] = annonces;
