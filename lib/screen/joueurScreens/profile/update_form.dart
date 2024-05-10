@@ -1,26 +1,17 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:pfeprojet/Api/wilaya_list.dart';
 import 'package:pfeprojet/Model/user_model.dart';
 
 import 'package:pfeprojet/component/components.dart';
+import 'package:pfeprojet/component/drop_down_wilaya.dart';
 import 'package:pfeprojet/screen/JoueurScreens/profile/profile.dart';
 import 'package:pfeprojet/screen/joueurScreens/home/cubit/home_joueur_cubit.dart';
 
-
-
-
 import 'cubit/profile_cubit.dart';
 
-
 class UpdateJoueurForm extends StatefulWidget {
-
   const UpdateJoueurForm({super.key});
-  // final DataJoueurModel
-  // joueurModel;
 
   @override
   State<UpdateJoueurForm> createState() => _UpdateJoueurFormState();
@@ -30,44 +21,29 @@ class _UpdateJoueurFormState extends State<UpdateJoueurForm> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _nomController = TextEditingController();
   final TextEditingController _prenomController = TextEditingController();
-  // final TextEditingController _wilayaController = TextEditingController();
   final TextEditingController _telephoneController = TextEditingController();
   final TextEditingController _ageController = TextEditingController();
   final TextEditingController _posteController = TextEditingController();
-  String? selectedWilaya;
-  List<dynamic> wilayas = [];
+  final TextEditingController _wilayaController = TextEditingController();
+  final TextEditingController _dairaController = TextEditingController();
 
   final formkey = GlobalKey<FormState>();
 
-
-   late final DataJoueurModel homeJoueurCubit;
+  late final DataJoueurModel homeJoueurCubit;
   @override
   void initState() {
     // TODO: implement setState
     super.initState();
-     homeJoueurCubit = HomeJoueurCubit.get(context).joueurModel!;
+    homeJoueurCubit = HomeJoueurCubit.get(context).joueurModel!;
     _usernameController.text = homeJoueurCubit.username!;
     _nomController.text = homeJoueurCubit.nom!;
     _prenomController.text = homeJoueurCubit.prenom!;
     _telephoneController.text = homeJoueurCubit.telephone!.toString();
     _ageController.text = homeJoueurCubit.age!.toString();
     _posteController.text = homeJoueurCubit.poste!;
-    // selectedWilaya = homeJoueurCubit.wilaya;
-     final parsed = json.decode(wilayasJson) as Map<String, dynamic>;
-    setState(() {
-      wilayas = parsed['Wilayas'];
-      selectedWilaya = homeJoueurCubit.wilaya ?? (wilayas.isNotEmpty ? wilayas[0]['name'] : null);
-    });
+    _wilayaController.text = homeJoueurCubit.wilaya!;
+    _dairaController.text = homeJoueurCubit.commune!;
   }
-
-  // void loadWilayas() {
-  //   final parsed = json.decode(wilayasJson) as Map<String, dynamic>;
-  //   setState(() {
-  //     wilayas = parsed['Wilayas'];
-  //     selectedWilaya = widget.joueurModel.wilaya ?? (wilayas.isNotEmpty ? wilayas[0]['name'] : null);
-  //     // updateCommunes(selectedWilaya);
-  //   });
-  // }
 
   @override
   void dispose() {
@@ -78,6 +54,7 @@ class _UpdateJoueurFormState extends State<UpdateJoueurForm> {
     _telephoneController.dispose();
     _ageController.dispose();
     _posteController.dispose();
+    _wilayaController.dispose();
     super.dispose();
   }
 
@@ -103,13 +80,14 @@ class _UpdateJoueurFormState extends State<UpdateJoueurForm> {
             key: formkey,
             child: SingleChildScrollView(
               child: Column(children: [
-
                 BlocBuilder<ProfileJoueurCubit, ProfileJoueurState>(
                   builder: (context, state) {
                     if (state is UpdateJoueurLoadingState) {
                       return const LinearProgressIndicator();
                     } else if (state is ErrorState) {
-                      showToast(msg: ' ${state.errorModel.message}', state: ToastStates.error);
+                      showToast(
+                          msg: ' ${state.errorModel.message}',
+                          state: ToastStates.error);
                     }
                     return const SizedBox();
                   },
@@ -122,14 +100,14 @@ class _UpdateJoueurFormState extends State<UpdateJoueurForm> {
                         return CircleAvatar(
                           backgroundColor: Colors.transparent,
                           backgroundImage: ProfileJoueurCubit.get(context)
-                              .imageCompress !=
-                              null
-                              ? FileImage(
-                              ProfileJoueurCubit.get(context).imageCompress!)
+                                      .imageCompress !=
+                                  null
+                              ? FileImage(ProfileJoueurCubit.get(context)
+                                  .imageCompress!)
                               : homeJoueurCubit.photo != null
-                              ? NetworkImage(homeJoueurCubit.photo!)
-                              : const AssetImage('assets/images/user.png')
-                          as ImageProvider<Object>,
+                                  ? NetworkImage(homeJoueurCubit.photo!)
+                                  : const AssetImage('assets/images/user.png')
+                                      as ImageProvider<Object>,
                           radius: 60,
                         );
                       },
@@ -197,36 +175,9 @@ class _UpdateJoueurFormState extends State<UpdateJoueurForm> {
                 const SizedBox(
                   height: 20,
                 ),
-                // defaultForm2(
-                //     controller: _wilayaController,
-                //     textInputAction: TextInputAction.next,
-                //     label: 'Wilaya',
-                //     prefixIcon: const Icon(Icons.location_city),
-                //     type: TextInputType.text,
-                //     validator: (value) {
-                //       if (value!.isEmpty) {
-                //         return "Wilaya Must Be Not Empty";
-                //       }
-                //     }),
-
-                DropdownButtonFormField<String>(
-                  decoration: InputDecoration(
-                    labelText: 'Select Wilaya',
-                    border: OutlineInputBorder(),
-                  ),
-                  value: selectedWilaya,
-                  onChanged: (newValue) {
-                    setState(() {
-                      selectedWilaya = newValue;
-
-                    });
-                  },
-                  items: wilayas.map<DropdownMenuItem<String>>((dynamic wilaya) {
-                    return DropdownMenuItem<String>(
-                      value: wilaya['name'],
-                      child: Text(wilaya['name']),
-                    );
-                  }).toList(),
+                DropdownScreen(
+                  selectedDaira: _dairaController,
+                  selectedWilaya: _wilayaController,
                 ),
                 const SizedBox(
                   height: 20,
@@ -293,7 +244,7 @@ class _UpdateJoueurFormState extends State<UpdateJoueurForm> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => const ProfileJoueur()),
-                                (route) => false,
+                            (route) => false,
                           );
                         });
                       }
@@ -312,8 +263,8 @@ class _UpdateJoueurFormState extends State<UpdateJoueurForm> {
                                   nom: _nomController.text,
                                   prenom: _prenomController.text,
                                   telephone: _telephoneController.text,
-                                  wilaya: selectedWilaya,
-                                  // wilaya: _wilayaController.text,
+                                  wilaya: _wilayaController.text,
+                                  commune: _dairaController.text,
                                   poste: _posteController.text,
                                   age: _ageController.text,
                                   deleteOldImage: homeJoueurCubit.photo);

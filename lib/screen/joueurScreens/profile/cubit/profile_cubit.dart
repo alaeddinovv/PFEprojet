@@ -14,26 +14,23 @@ import 'package:pfeprojet/Model/error_model.dart';
 
 import '../../../../Model/user_model.dart';
 
-
 part 'profile_state.dart';
 
 class ProfileJoueurCubit extends Cubit<ProfileJoueurState> {
-
-
   ProfileJoueurCubit() : super(ProfileJoueurInitial());
 
   static ProfileJoueurCubit get(context) => BlocProvider.of(context);
 
   Future<void> updateJoueur(
-      {
-        required String username,
-        required String nom,
-        required String prenom,
-        required String telephone,
-         String? wilaya,
-         String? age,
-         String? poste,
-        String? deleteOldImage}) async {
+      {required String username,
+      required String nom,
+      required String prenom,
+      required String telephone,
+      String? wilaya,
+      String? commune,
+      String? age,
+      String? poste,
+      String? deleteOldImage}) async {
     emit(UpdateJoueurLoadingState());
 
     if (imageCompress != null) {
@@ -45,6 +42,7 @@ class ProfileJoueurCubit extends Cubit<ProfileJoueurState> {
       "prenom": prenom,
       "telephone": telephone,
       "wilaya": wilaya,
+      "commune": commune,
       "age": age,
       "poste": poste,
       if (linkProfileImg != null) "photo": linkProfileImg
@@ -52,13 +50,13 @@ class ProfileJoueurCubit extends Cubit<ProfileJoueurState> {
     await Httplar.httpPut(path: UPDATEJOUEUR, data: _model).then((value) {
       if (value.statusCode == 200) {
         var jsonResponse =
-        convert.jsonDecode(value.body) as Map<String, dynamic>;
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
         emit(UpdateJoueurStateGood(
             dataJoueurModel: DataJoueurModel.fromJson(jsonResponse)));
       } else {
         // print(value.body);
         var jsonResponse =
-        convert.jsonDecode(value.body) as Map<String, dynamic>;
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
         emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
       }
     }).catchError((e) {
@@ -146,7 +144,7 @@ class ProfileJoueurCubit extends Cubit<ProfileJoueurState> {
         emit(UpdateMdpJoueurStateGood());
       } else {
         var jsonResponse =
-        convert.jsonDecode(value.body) as Map<String, dynamic>;
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
         emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
       }
     }).catchError((e) {
