@@ -456,7 +456,7 @@ class TerrainCubit extends Cubit<TerrainState> {
       }
     }).catchError((e) {
       print(e.toString());
-      emit(GetSearchJoueurStateGood());
+      emit(GetSearchJoueurStateBad());
     });
   }
 }

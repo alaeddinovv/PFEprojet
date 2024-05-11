@@ -62,3 +62,19 @@ class AddReservationStateGood extends TerrainState {
 }
 
 class AddReservationStateBad extends TerrainState {}
+
+class GetSearchEquipeLoading extends TerrainState {}
+
+class GetSearchEquipeStateGood extends TerrainState {}
+
+class GetSearchEquipeStateBad extends TerrainState {}
+
+class GetMyReserveLoading extends TerrainState {}
+
+class GetMyReserveStateGood extends TerrainState {
+  final ReservationModel reservations;
+
+  GetMyReserveStateGood({required this.reservations});
+}
+
+class GetMyReserveStateBad extends TerrainState {}

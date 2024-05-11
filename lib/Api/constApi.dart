@@ -1,16 +1,18 @@
 // const URLHTTP = '192.168.1.23:3000';
 // const URLHTTP = '192.168.1.2:3000';
 
-
-const URLHTTP = '192.168.1.20:3000'; //IP Houssem
-
+const URLHTTP = '192.168.95.68:3000'; //IP Houssem
 
 // const URLHTTP = '10.0.2.2:3000';
+
+const GETMYRESERVE = '/api/reservation/myreservation';
 
 const SENDNOTIFICATIONTOADMIN = '/api/notification/admin/';
 const SENDNOTIFICATIONTOJOUEUR = '/api/notification/joueur/';
 
 const SEARCHJOUEURPAGINATION = '/api/search/joueur/';
+const SEARCHEQUIPEPAGINATION = '/api/myequipe/';
+
 const ADDORUPDATETOKENFCMADMIN = '/api/addOrUpdateTokenAdmin/';
 const REMOVETETOKENFCMADMIN = '/api/removeTokenFcmAdmin/';
 const ADDORUPDATETOKENFCMJoueur = '/api/addOrUpdateTokenJoueur/';

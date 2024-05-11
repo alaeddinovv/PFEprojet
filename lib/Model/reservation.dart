@@ -1,3 +1,5 @@
+import 'package:pfeprojet/Model/equipe_model.dart';
+
 class ReservationModel {
   String? id;
   DateTime? jour;
@@ -8,6 +10,7 @@ class ReservationModel {
   bool? payment;
   String? joueurId;
   String? terrainId;
+  // EquipeData? equipe;
   int? V;
 
   ReservationModel.fromJson(Map<String, dynamic> json) {
@@ -20,6 +23,11 @@ class ReservationModel {
     payment = json['payment'];
     joueurId = json['joueur_id'];
     terrainId = json['terrain_id'];
+    // if (json['equipe_id'] is String) {
+    //   equipe = json['equipe_id'];
+    // } else {
+    //   equipe = EquipeData.fromJson(json['equipe_id']);
+    // }
     V = json['__v'];
   }
 
@@ -32,8 +40,9 @@ class ReservationModel {
     _data['etat'] = etat;
     _data['reservation_group_id'] = reservationGroupId;
     _data['payment'] = payment;
-    _data['joueur_id'] = joueurId;
     _data['terrain_id'] = terrainId;
+    _data['joueur_id'] = joueurId;
+    // _data['equip_id'] = equipe!.toJson();
     _data['__v'] = V;
     return _data;
   }

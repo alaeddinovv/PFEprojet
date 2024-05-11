@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 import 'package:pfeprojet/Api/constApi.dart';
 import 'package:pfeprojet/Api/httplaravel.dart';
+import 'package:pfeprojet/Model/equipe_model.dart';
 import 'package:pfeprojet/Model/error_model.dart';
 import 'package:pfeprojet/Model/reservation.dart';
 import 'package:pfeprojet/Model/terrain_model.dart';
@@ -82,7 +83,6 @@ class TerrainCubit extends Cubit<TerrainState> {
       timeSlots.add(slot);
       startTime = startTime.add(const Duration(hours: 1, minutes: 0));
     }
-    // print(timeSlots);
     return timeSlots;
   }
 
@@ -95,11 +95,6 @@ class TerrainCubit extends Cubit<TerrainState> {
     String formattedDate = DateFormat('yyyy-MM-dd').format(date);
     await Httplar.httpget(
       path: '$MYRESERVATIONWITHOTHER$terrainId/$formattedDate',
-      // query: {
-      //   "terrain_id": terrainId,
-      //   "jour": formattedDate,
-      //   if (heure_debut_temps.isNotEmpty) "heure_debut_temps": heure_debut_temps
-      // }
     ).then((value) {
       if (value.statusCode == 200) {
         var jsonResponse = convert.jsonDecode(value.body) as List;
@@ -143,6 +138,72 @@ class TerrainCubit extends Cubit<TerrainState> {
     }).catchError((e) {
       print(e.toString());
       emit(AddReservationStateBad());
+    });
+  }
+
+  List<EquipeData> equipeSearch = [];
+  String cursorIdEqeuipe = "";
+
+  Future<void> searchEquipe({String cursor = '', String? nomEquipe}) async {
+    emit(GetSearchEquipeLoading());
+    if (nomEquipe == '') {
+      equipeSearch = [];
+      cursorIdEqeuipe = "";
+      return;
+    }
+    await Httplar.httpget(
+        path: SEARCHEQUIPEPAGINATION,
+        query: {'cursor': cursor, 'nom': nomEquipe}).then((value) {
+      if (value.statusCode == 200) {
+        if (cursor == "") {
+          equipeSearch = [];
+          cursorIdEqeuipe = "";
+        }
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        EquipeModel model = EquipeModel.fromJson(jsonResponse);
+        equipeSearch.addAll(model.data);
+        print(equipeSearch.length);
+        cursorIdEqeuipe = model.nextCursor;
+        print(cursorIdEqeuipe);
+
+        emit(GetSearchEquipeStateGood()); // Pass the list here
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(GetSearchEquipeStateBad());
+    });
+  }
+
+// ------------------------DetailMyReserve---------------------------------------
+  Future<void> getMyreserve({
+    required String terrainId,
+    required DateTime date,
+    required String heure_debut_temps,
+  }) async {
+    emit(GetMyReserveLoading());
+    Httplar.httpget(path: GETMYRESERVE, query: {
+      'terrain_id': terrainId,
+      'jour': DateFormat('yyyy-MM-dd').format(date),
+      'heure_debut_temps': heure_debut_temps,
+    }).then((value) {
+      if (value.statusCode == 200) {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(GetMyReserveStateGood(
+            reservations: ReservationModel.fromJson(jsonResponse)));
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(GetMyReserveStateBad());
     });
   }
 }
