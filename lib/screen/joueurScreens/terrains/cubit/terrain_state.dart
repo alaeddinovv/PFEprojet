@@ -73,7 +73,6 @@ class GetMyReserveLoading extends TerrainState {}
 
 class GetMyReserveStateGood extends TerrainState {
   final ReservationModel reservations;
-
   GetMyReserveStateGood({required this.reservations});
 }
 

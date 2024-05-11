@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pfeprojet/Model/reservation.dart';
+import 'package:pfeprojet/Model/reservation_model.dart';
 import 'package:pfeprojet/component/const.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/cubit/terrain_cubit.dart';
+import 'package:pfeprojet/screen/joueurScreens/terrains/search_my_equipe.dart';
 
 class DetailMyReserve extends StatefulWidget {
   final DateTime jour;
   final String heure;
   final String terrainId;
-  const DetailMyReserve(
+  final TextEditingController equipeIdController = TextEditingController();
+  DetailMyReserve(
       {super.key,
       required this.jour,
       required this.heure,
@@ -46,11 +48,15 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
           listener: (context, state) {
             if (state is GetMyReserveStateGood) {
               reservation = state.reservations;
+              print('reservations: $reservation');
             }
           },
           builder: (context, state) {
             if (state is GetMyReserveLoading) {
               return const Center(child: LinearProgressIndicator());
+            }
+            if (state is GetMyReserveStateBad) {
+              return const Center(child: Text('Error'));
             }
             return Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -67,7 +73,8 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                   child: ListTile(
                     leading:
                         const Icon(Icons.calendar_today, color: Colors.green),
-                    title: Text(formatDate(reservation!.jour)!),
+                    title: Text(formatDate(reservation!.jour!)!,
+                        style: const TextStyle(fontSize: 20.0)),
                     subtitle: const Text('Date'),
                   ),
                 ),
@@ -86,45 +93,85 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                   child: ListTile(
                     leading: const Icon(Icons.timer, color: Colors.green),
                     title: Text(reservation!.duree.toString()),
-                    subtitle: const Text('Duration'),
+                    subtitle: const Text('semaines'),
                   ),
                 ),
                 const SizedBox(height: 20.0),
                 // Team Details
-                const Text(
-                  'Your Team',
-                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Your Team',
+                      style: TextStyle(
+                          fontSize: 20.0, fontWeight: FontWeight.bold),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.edit),
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return Dialog(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: SearchTest(
+                                    equipeIdController: equipeIdController,
+                                    onEquipeSelected: (equipe) {
+                                      setState(() {
+                                        // reservation!.equipe1 = equipe;
+                                      });
+                                    },
+                                  ),
+                                ),
+                              );
+                            });
+                      },
+                    ),
+                  ],
                 ),
-
-                Card(
-                  child: Column(
-                    children: List.generate(8, (index) {
-                      return ListTile(
-                        leading: const Icon(Icons.person, color: Colors.green),
-                        title: Text(
-                          'Player ${index + 1}',
-                        ),
-                      );
-                    }),
-                  ),
-                ),
-
+                // reservation!.equipe1 != null
+                //     ? Card(
+                //         child: Column(
+                //           children: List.generate(
+                //               reservation!.equipe1!.joueurs!.length, (index) {
+                //             return ListTile(
+                //               leading:
+                //                   const Icon(Icons.person, color: Colors.green),
+                //               title: Row(
+                //                 mainAxisAlignment:
+                //                     MainAxisAlignment.spaceBetween,
+                //                 children: [
+                //                   Text(
+                //                       '${reservation!.equipe1!.joueurs![index].username!} '),
+                //                   // Text(
+                //                   //     '${reservation!.equipe1!.joueurs![index].poste!} '),
+                //                 ],
+                //               ),
+                //             );
+                //           }),
+                //         ),
+                //       )
+                //     : const Center(child: Text('you dont have a team yet')),
                 const SizedBox(height: 20.0),
                 const Text(
                   "Opponent's Team",
                   style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
                 ),
                 // Display opponent's team list
-                Card(
-                  child: Column(
-                    children: List.generate(8, (index) {
-                      return ListTile(
-                        leading: const Icon(Icons.person, color: Colors.red),
-                        title: Text('Opponent Player ${index + 1}'),
-                      );
-                    }),
-                  ),
-                ),
+                // reservation!.equipe2 != null
+                //     ? Card(
+                //         child: Column(
+                //           children: List.generate(8, (index) {
+                //             return ListTile(
+                //               leading:
+                //                   const Icon(Icons.person, color: Colors.red),
+                //               title: Text('Opponent Player ${index + 1}'),
+                //             );
+                //           }),
+                //         ),
+                //       )
+                //     : const Center(child: Text('No opponent team yet')),
 
                 const SizedBox(height: 20.0),
                 // Confirmation Button

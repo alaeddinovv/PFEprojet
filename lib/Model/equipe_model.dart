@@ -59,14 +59,14 @@ class EquipeData {
     numeroJoueurs = json['numero_joueurs'];
     joueurs =
         List.from(json['joueurs']).map((e) => Joueurs.fromJson(e)).toList();
-    attenteJoueurs = List.from(json['attente_joueurs'])
+    attenteJoueurs = List.from(json['attente_joueurs'] ?? [])
         .map((e) => AttenteJoueurs.fromJson(e))
         .toList();
-    attenteJoueursDemande = List.from(json['attente_joueurs_demande'])
+    attenteJoueursDemande = List.from(json['attente_joueurs_demande'] ?? [])
         .map((e) => AttenteJoueursDemande.fromJson(e))
         .toList();
-    capitaineId = CapitaineId.fromJson(json['capitaine_id']);
-    tournois = List.castFrom<dynamic, dynamic>(json['tournois']);
+    capitaineId = CapitaineId.fromJson(json['capitaine_id'] ?? []);
+    tournois = List.castFrom<dynamic, dynamic>(json['tournois'] ?? []);
     wilaya = json['wilaya'];
     commune = json['commune'];
     createdAt = json['createdAt'];

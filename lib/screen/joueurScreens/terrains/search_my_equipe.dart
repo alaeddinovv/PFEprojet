@@ -52,7 +52,7 @@ class _SearchTestState extends State<SearchTest> {
       selectedEquipe = equipe;
       showResults = false;
       widget.equipeIdController.text =
-          equipe.id!; // Update the parent's TextEditingController
+          equipe.id; // Update the parent's TextEditingController
     });
     if (widget.onEquipeSelected != null) {
       widget.onEquipeSelected!(equipe);
@@ -84,37 +84,23 @@ class _SearchTestState extends State<SearchTest> {
       child: SingleChildScrollView(
         child: Stack(
           children: [
-            Column(
-              children: [
-                TextFormField(
-                  controller: searchController,
-                  onChanged: _onSearchChanged,
-                  decoration: InputDecoration(
-                    hintText: 'Search players...',
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                    prefixIcon:
-                        const Icon(Icons.search, color: Colors.deepPurple),
-                    filled: true,
-                    fillColor: Colors.white,
-                    labelStyle: const TextStyle(color: Colors.deepPurple),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.deepPurple),
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                  ),
+            TextFormField(
+              controller: searchController,
+              onChanged: _onSearchChanged,
+              decoration: InputDecoration(
+                hintText: 'Search players...',
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(15.0),
                 ),
-                if (selectedEquipe != null)
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 5.0),
-                    child: Text(
-                      'Selected Equipe: ${selectedEquipe!.nom}',
-                      style: const TextStyle(
-                          fontSize: 16.0, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-              ],
+                prefixIcon: const Icon(Icons.search, color: Colors.deepPurple),
+                filled: true,
+                fillColor: Colors.white,
+                labelStyle: const TextStyle(color: Colors.deepPurple),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.deepPurple),
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
+              ),
             ),
             BlocConsumer<TerrainCubit, TerrainState>(
               listener: (context, state) {},
@@ -151,14 +137,14 @@ class _SearchTestState extends State<SearchTest> {
                                     ),
                                     elevation: 4,
                                     child: ListTile(
-                                      title: Text(joueur.nom!),
+                                      title: Text(joueur.nom),
                                       subtitle: Text(
-                                          'Age: ${joueur.capitaineId!.nom} - Position: ${joueur.id}'),
+                                          'Age: ${joueur.capitaineId.nom} - Position: ${joueur.id}'),
                                       onTap: () {
                                         print(joueur.id);
                                         _selectJoueur(joueur);
                                         widget.equipeIdController.text =
-                                            joueur.id!;
+                                            joueur.id;
                                         // widget.onSelectedJoueur(joueur.id!);
                                       },
                                     ),
