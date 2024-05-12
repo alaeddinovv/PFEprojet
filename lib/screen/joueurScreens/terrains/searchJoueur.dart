@@ -3,30 +3,28 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pfeprojet/Model/houssem/equipe_model.dart';
-import 'package:pfeprojet/screen/joueurScreens/terrains/cubit/terrain_cubit.dart';
+import 'package:pfeprojet/Model/user_model.dart';
 
-class SearchEquipe extends StatefulWidget {
-  final TextEditingController equipeIdController;
-  final Function(EquipeModelData)? onEquipeSelected;
-  final bool isOnlyMy;
-  // final Function(String) onSelectedJoueur; // Add this line
+import 'package:pfeprojet/screen/AdminScreens/terrains/cubit/terrain_cubit.dart';
 
-  const SearchEquipe({
+class SearchJoueur extends StatefulWidget {
+  final TextEditingController userIdController;
+  final Function(DataJoueurModel)? onEquipeSelected;
+
+  const SearchJoueur({
     Key? key,
-    required this.equipeIdController,
+    required this.userIdController,
     this.onEquipeSelected,
-    required this.isOnlyMy,
     // required this.onSelectedJoueur, // Add this line
   }) : super(key: key);
 
   @override
-  State<SearchEquipe> createState() => _SearchEquipeState();
+  State<SearchJoueur> createState() => _SearchJoueurState();
 }
 
-class _SearchEquipeState extends State<SearchEquipe> {
+class _SearchJoueurState extends State<SearchJoueur> {
   bool showResults = true;
-  EquipeModelData? selectedEquipe;
+  DataJoueurModel? selectedJoueur;
   Timer? _debounce;
   late ScrollController _controller;
   TextEditingController searchController = TextEditingController();
@@ -41,24 +39,23 @@ class _SearchEquipeState extends State<SearchEquipe> {
       ..addListener(() {
         if (_controller.offset >= _controller.position.maxScrollExtent &&
             !_controller.position.outOfRange &&
-            TerrainCubit.get(context).cursorIdEqeuipe != "") {
-          TerrainCubit.get(context).searchEquipe(
-              isOnlyMy: widget.isOnlyMy,
-              cursor: TerrainCubit.get(context).cursorIdEqeuipe,
-              nomEquipe: searchController.text);
+            TerrainCubit.get(context).cursorId != "") {
+          TerrainCubit.get(context).searchJoueur(
+              cursor: TerrainCubit.get(context).cursorId,
+              username: searchController.text);
         }
       });
   }
 
-  void _selectJoueur(EquipeModelData equipe) {
+  void _selectJoueur(DataJoueurModel joueur) {
     setState(() {
-      selectedEquipe = equipe;
+      selectedJoueur = joueur;
       showResults = false;
-      widget.equipeIdController.text =
-          equipe.id!; // Update the parent's TextEditingController
+      widget.userIdController.text = joueur.id!;
+      // Update the parent's TextEditingController
     });
     if (widget.onEquipeSelected != null) {
-      widget.onEquipeSelected!(equipe);
+      widget.onEquipeSelected!(joueur);
     }
     Navigator.pop(context);
   }
@@ -67,8 +64,8 @@ class _SearchEquipeState extends State<SearchEquipe> {
   void dispose() {
     _debounce?.cancel(); // Cancel the timer when the widget is disposed
     searchController.dispose();
-    cubit.cursorIdEqeuipe = '';
-    cubit.equipeSearch = [];
+    cubit.cursorId = '';
+    cubit.joueursSearch = [];
 
     super.dispose();
   }
@@ -76,8 +73,7 @@ class _SearchEquipeState extends State<SearchEquipe> {
   void _onSearchChanged(String value) {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 500), () {
-      TerrainCubit.get(context)
-          .searchEquipe(nomEquipe: value, isOnlyMy: widget.isOnlyMy);
+      TerrainCubit.get(context).searchJoueur(username: value);
       showResults = true;
     });
   }
@@ -93,7 +89,7 @@ class _SearchEquipeState extends State<SearchEquipe> {
               controller: searchController,
               onChanged: _onSearchChanged,
               decoration: InputDecoration(
-                hintText: 'Search equipes...',
+                hintText: 'Search players...',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15.0),
                 ),
@@ -110,8 +106,8 @@ class _SearchEquipeState extends State<SearchEquipe> {
             BlocConsumer<TerrainCubit, TerrainState>(
               listener: (context, state) {},
               builder: (context, state) {
-                bool hasResults = cubit.equipeSearch.isNotEmpty;
-                bool isLoading = state is GetSearchEquipeLoading;
+                bool hasResults = cubit.joueursSearch.isNotEmpty;
+                bool isLoading = state is GetSearchJoueurLoading;
                 bool isSearchTextEmpty = searchController.text.isEmpty;
                 bool shouldShowResults =
                     hasResults || (isLoading && !isSearchTextEmpty);
@@ -131,10 +127,8 @@ class _SearchEquipeState extends State<SearchEquipe> {
                                 physics: const AlwaysScrollableScrollPhysics(),
                                 controller: _controller,
                                 itemBuilder: (context, index) {
-                                  var joueur = cubit.equipeSearch[index];
+                                  var joueur = cubit.joueursSearch[index];
                                   return Card(
-                                    color:
-                                        Colors.green.shade50.withOpacity(0.8),
                                     margin:
                                         const EdgeInsets.symmetric(vertical: 4),
                                     shape: RoundedRectangleBorder(
@@ -142,20 +136,28 @@ class _SearchEquipeState extends State<SearchEquipe> {
                                     ),
                                     elevation: 4,
                                     child: ListTile(
-                                      title: Text(joueur.nom!),
+                                      leading: CircleAvatar(
+                                        radius: 20,
+                                        backgroundImage: joueur.photo != null
+                                            ? NetworkImage(joueur.photo!)
+                                            : const AssetImage(
+                                                    'assets/images/user.png')
+                                                as ImageProvider,
+                                      ),
+                                      title: Text(joueur.username!),
                                       subtitle: Text(
-                                          'Age: ${joueur.capitaineId!.nom} - Position: ${joueur.id}'),
+                                          'Age: ${joueur.age} - Position: ${joueur.poste}'),
                                       onTap: () {
                                         print(joueur.id);
                                         _selectJoueur(joueur);
-                                        widget.equipeIdController.text =
+                                        widget.userIdController.text =
                                             joueur.id!;
                                         // widget.onSelectedJoueur(joueur.id!);
                                       },
                                     ),
                                   );
                                 },
-                                itemCount: cubit.equipeSearch.length,
+                                itemCount: cubit.joueursSearch.length,
                                 separatorBuilder:
                                     (BuildContext context, int index) =>
                                         const Divider(),
@@ -163,7 +165,7 @@ class _SearchEquipeState extends State<SearchEquipe> {
                             ),
                             if (isLoading &&
                                 !isSearchTextEmpty &&
-                                cubit.cursorIdEqeuipe != '')
+                                cubit.cursorId != '')
                               const CircularProgressIndicator(),
                           ],
                         ),
@@ -172,7 +174,7 @@ class _SearchEquipeState extends State<SearchEquipe> {
                   );
                 }
               },
-            ),
+            )
           ],
         ),
       ),

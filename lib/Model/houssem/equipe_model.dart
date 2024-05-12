@@ -1,3 +1,5 @@
+import 'package:pfeprojet/Model/user_model.dart';
+
 class EquipeModel {
   List<EquipeModelData>? data;
   bool? moreDataAvailable;
@@ -24,7 +26,7 @@ class EquipeModelData {
   String? id;
   String? nom;
   int? numeroJoueurs;
-  List<Joueurs>? joueurs;
+  List<DataJoueurModel>? joueurs;
   List<dynamic>? attenteJoueurs;
   List<dynamic>? attenteJoueursDemande;
   CapitaineId? capitaineId;
@@ -39,8 +41,9 @@ class EquipeModelData {
     id = json['_id'];
     nom = json['nom'];
     numeroJoueurs = json['numero_joueurs'];
-    joueurs =
-        List.from(json['joueurs']).map((e) => Joueurs.fromJson(e)).toList();
+    joueurs = List.from(json['joueurs'])
+        .map((e) => DataJoueurModel.fromJson(e))
+        .toList();
     attenteJoueurs =
         List.castFrom<dynamic, dynamic>(json['attente_joueurs'] ?? []);
     attenteJoueursDemande =
@@ -73,28 +76,28 @@ class EquipeModelData {
   }
 }
 
-class Joueurs {
-  String? id;
-  String? username;
-  String? nom;
-  int? telephone;
+// class Joueurs {
+//   String? id;
+//   String? username;
+//   String? nom;
+//   int? telephone;
 
-  Joueurs.fromJson(Map<String, dynamic> json) {
-    id = json['_id'];
-    username = json['username'];
-    nom = json['nom'];
-    telephone = json['telephone'];
-  }
+//   Joueurs.fromJson(Map<String, dynamic> json) {
+//     id = json['_id'];
+//     username = json['username'];
+//     nom = json['nom'];
+//     telephone = json['telephone'];
+//   }
 
-  Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['_id'] = id;
-    _data['username'] = username;
-    _data['nom'] = nom;
-    _data['telephone'] = telephone;
-    return _data;
-  }
-}
+//   Map<String, dynamic> toJson() {
+//     final _data = <String, dynamic>{};
+//     _data['_id'] = id;
+//     _data['username'] = username;
+//     _data['nom'] = nom;
+//     _data['telephone'] = telephone;
+//     return _data;
+//   }
+// }
 
 class CapitaineId {
   String? id;

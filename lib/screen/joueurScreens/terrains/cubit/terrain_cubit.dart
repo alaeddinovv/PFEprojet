@@ -224,8 +224,8 @@ class TerrainCubit extends Cubit<TerrainState> {
     emit(ConfirmConnectEquipeLoading());
     Httplar.httpPut(path: CONFIRMCONNECTEQUIPE, data: {
       "reservation_group_id": reservationGroupId,
-      if (equipe1 != null) "equipe_id1": equipe1,
-      if (equipe2 != null) "equipe_id2": equipe2
+      "equipe_id1": equipe1,
+      "equipe_id2": equipe2
     }).then((value) {
       if (value.statusCode == 200) {
         emit(ConfirmConnectEquipeStateGood());

@@ -1,9 +1,12 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pfeprojet/Model/reservation_model.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/const.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/cubit/terrain_cubit.dart';
+import 'package:pfeprojet/screen/joueurScreens/terrains/searchJoueur.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/search_my_equipe.dart';
 
 class DetailMyReserve extends StatefulWidget {
@@ -11,6 +14,7 @@ class DetailMyReserve extends StatefulWidget {
   final String heure;
   final String terrainId;
   final TextEditingController equipeIdController = TextEditingController();
+  final TextEditingController userIdController = TextEditingController();
   DetailMyReserve(
       {super.key,
       required this.jour,
@@ -22,6 +26,8 @@ class DetailMyReserve extends StatefulWidget {
 }
 
 class _DetailMyReserveState extends State<DetailMyReserve> {
+  bool isEditeEquipe1 = false;
+  bool isEditeEquipe2 = false;
   late final TerrainCubit cubit;
 
   final TextEditingController equipeIdController = TextEditingController();
@@ -103,70 +109,126 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                 ),
                 const SizedBox(height: 20.0),
                 // Team Details
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Your Team : (${reservation!.equipe1 != null ? reservation!.equipe1!.nom : 'No team'})',
-                      style: const TextStyle(
-                          fontSize: 20.0, fontWeight: FontWeight.bold),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.edit),
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                                  title: const Text('choose :'),
-                                  content: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      ListTile(
-                                        title:
-                                            const Text('for all reservation'),
-                                        onTap: () {
-                                          Navigator.pop(context);
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            'Your Team : (${reservation!.equipe1 != null ? reservation!.equipe1!.nom : 'No team'})',
+                            style: const TextStyle(
+                                fontSize: 20.0, fontWeight: FontWeight.bold),
+                          ),
+                          IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  isEditeEquipe1 = !isEditeEquipe1;
+                                });
+                              },
+                              icon: Icon(
+                                isEditeEquipe1 ? Icons.done : (Icons.edit),
+                                color: Colors.green,
+                              )),
+                        ],
+                      ),
+                      TextButton(
+                        child: const Text('change equipe'),
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                    content: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        ListTile(
+                                          title: const Text(
+                                              'for all reservations'),
+                                          onTap: () {
+                                            Navigator.pop(context);
 
-                                          showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return Dialog(
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: SearchTest(
-                                                      isOnlyMy: true,
-                                                      equipeIdController:
-                                                          equipeIdController,
-                                                      onEquipeSelected:
-                                                          (equipe) {
-                                                        setState(() {
-                                                          reservation!.equipe1 =
-                                                              equipe;
-                                                          print(
-                                                              'equipe1: ${reservation!.equipe1!.id}');
-                                                        });
-                                                      },
+                                            showDialog(
+                                                context: context,
+                                                builder:
+                                                    (BuildContext context) {
+                                                  return Dialog(
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: SearchEquipe(
+                                                        isOnlyMy: true,
+                                                        equipeIdController:
+                                                            equipeIdController,
+                                                        onEquipeSelected:
+                                                            (equipe) {
+                                                          setState(() {
+                                                            reservation!
+                                                                    .equipe1 =
+                                                                equipe;
+                                                            print(
+                                                                'equipe1: ${reservation!.equipe1!.id}');
+                                                          });
+                                                        },
+                                                      ),
                                                     ),
-                                                  ),
-                                                );
-                                              });
-                                        },
-                                      ),
-                                      ListTile(
-                                        title: const Text(
-                                            'for this reservation only'),
-                                        onTap: () {
-                                          Navigator.pop(context);
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                ));
-                      },
-                    ),
-                  ],
+                                                  );
+                                                });
+                                          },
+                                        ),
+                                        ListTile(
+                                          title: const Text(
+                                              'for this reservation only'),
+                                          onTap: () {
+                                            Navigator.pop(context);
+                                          },
+                                        ),
+                                        ListTile(
+                                          title: const Text('remove equipe'),
+                                          onTap: () {
+                                            Navigator.pop(context);
+                                            showDialog(
+                                                context: context,
+                                                builder: (context) =>
+                                                    AlertDialog(
+                                                      title: const Text(
+                                                          'remove equipe'),
+                                                      content: const Text(
+                                                          'Are you sure you want to remove your team from this reservation?'),
+                                                      actions: [
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child:
+                                                              const Text('No'),
+                                                        ),
+                                                        TextButton(
+                                                          onPressed: () {
+                                                            setState(() {
+                                                              reservation!
+                                                                      .equipe1 =
+                                                                  null;
+                                                            });
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child:
+                                                              const Text('Yes'),
+                                                        ),
+                                                      ],
+                                                    ));
+                                          },
+                                        ),
+                                      ],
+                                    ),
+                                  ));
+                        },
+                      ),
+                    ],
+                  ),
                 ),
                 reservation!.equipe1 != null
                     ? Card(
@@ -176,6 +238,95 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                             return ListTile(
                               leading:
                                   const Icon(Icons.person, color: Colors.green),
+                              trailing: isEditeEquipe1
+                                  ? index <
+                                          reservation!.equipe1!.joueurs!.length
+                                      ? Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            IconButton(
+                                              icon: const Icon(Icons.edit,
+                                                  color: Colors.green),
+                                              onPressed: () {
+                                                showDialog(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return Container(
+                                                        height: 300,
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child: Dialog(
+                                                          child: SearchJoueur(
+                                                            userIdController: widget
+                                                                .userIdController,
+                                                            onEquipeSelected:
+                                                                (joueur) {
+                                                              setState(() {
+                                                                reservation!
+                                                                        .equipe1!
+                                                                        .joueurs![
+                                                                    index] = joueur;
+                                                              });
+                                                            },
+                                                          ),
+                                                        ),
+                                                      );
+                                                    });
+                                              },
+                                            ),
+                                            IconButton(
+                                              icon: const Icon(Icons.clear,
+                                                  color: Colors.red),
+                                              onPressed: () {
+                                                setState(() {
+                                                  reservation!.equipe1!.joueurs!
+                                                      .removeAt(index);
+                                                });
+                                              },
+                                            ),
+                                          ],
+                                        )
+                                      : Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            IconButton(
+                                              icon: const Icon(Icons.add,
+                                                  color: Colors.green),
+                                              onPressed: () {
+                                                showDialog(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return Container(
+                                                        height: 300,
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child: Dialog(
+                                                          child: SearchJoueur(
+                                                            userIdController: widget
+                                                                .userIdController,
+                                                            onEquipeSelected:
+                                                                (joueur) {
+                                                              setState(() {
+                                                                reservation!
+                                                                    .equipe1!
+                                                                    .joueurs!
+                                                                    .add(
+                                                                        joueur);
+                                                              });
+                                                            },
+                                                          ),
+                                                        ),
+                                                      );
+                                                    });
+                                              },
+                                            ),
+                                          ],
+                                        )
+                                  : const SizedBox(),
                               title:
                                   index < reservation!.equipe1!.joueurs!.length
                                       ? Text(reservation!
@@ -190,70 +341,94 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                       )
                     : const Center(child: Text('you dont have a team yet')),
                 const SizedBox(height: 20.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Opponent's Team : (${reservation!.equipe2 != null ? reservation!.equipe2!.nom : 'No team'})",
-                      style: const TextStyle(
-                          fontSize: 20.0, fontWeight: FontWeight.bold),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.edit),
-                      onPressed: () {
-                        showDialog(
-                            context: context,
-                            builder: (context) => AlertDialog(
-                                  title: const Text('choose :'),
-                                  content: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      ListTile(
-                                        title:
-                                            const Text('for all reservation'),
-                                        onTap: () {
-                                          Navigator.pop(context);
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          Text(
+                            "Opponent's Team : (${reservation!.equipe2 != null ? reservation!.equipe2!.nom : 'No team'})",
+                            style: const TextStyle(
+                                fontSize: 20.0, fontWeight: FontWeight.bold),
+                          ),
+                          IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  isEditeEquipe2 = !isEditeEquipe2;
+                                });
+                              },
+                              icon: Icon(
+                                isEditeEquipe2 ? Icons.done : (Icons.edit),
+                                color: Colors.green,
+                              )),
+                        ],
+                      ),
+                      TextButton(
+                        child: const Text('change equipe'),
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (context) => Container(
+                                    height: 300,
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: AlertDialog(
+                                      title: const Text('choose :'),
+                                      content: Column(
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          ListTile(
+                                            title: const Text(
+                                                'for all reservation'),
+                                            onTap: () {
+                                              Navigator.pop(context);
 
-                                          showDialog(
-                                              context: context,
-                                              builder: (BuildContext context) {
-                                                return Dialog(
-                                                  child: Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: SearchTest(
-                                                      isOnlyMy: false,
-                                                      equipeIdController:
-                                                          equipeIdController,
-                                                      onEquipeSelected:
-                                                          (equipe) {
-                                                        setState(() {
-                                                          reservation!.equipe2 =
-                                                              equipe;
-                                                          print(
-                                                              'equipe2: ${reservation!.equipe2!.id}');
-                                                        });
-                                                      },
-                                                    ),
-                                                  ),
-                                                );
-                                              });
-                                        },
+                                              showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return Dialog(
+                                                      child: Container(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        height: 300,
+                                                        child: SearchEquipe(
+                                                          isOnlyMy: false,
+                                                          equipeIdController:
+                                                              equipeIdController,
+                                                          onEquipeSelected:
+                                                              (equipe) {
+                                                            setState(() {
+                                                              reservation!
+                                                                      .equipe2 =
+                                                                  equipe;
+                                                              print(
+                                                                  'equipe2: ${reservation!.equipe2!.id}');
+                                                            });
+                                                          },
+                                                        ),
+                                                      ),
+                                                    );
+                                                  });
+                                            },
+                                          ),
+                                          ListTile(
+                                            title: const Text(
+                                                'for this reservation only'),
+                                            onTap: () {
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                        ],
                                       ),
-                                      ListTile(
-                                        title: const Text(
-                                            'for this reservation only'),
-                                        onTap: () {
-                                          Navigator.pop(context);
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                ));
-                      },
-                    ),
-                  ],
+                                    ),
+                                  ));
+                        },
+                      ),
+                    ],
+                  ),
                 ),
                 // Display opponent's team list
                 reservation!.equipe2 != null
@@ -264,6 +439,95 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                             return ListTile(
                               leading:
                                   const Icon(Icons.person, color: Colors.red),
+                              trailing: isEditeEquipe2
+                                  ? index <
+                                          reservation!.equipe2!.joueurs!.length
+                                      ? Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            IconButton(
+                                              icon: const Icon(Icons.edit,
+                                                  color: Colors.green),
+                                              onPressed: () {
+                                                showDialog(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return Container(
+                                                        height: 300,
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child: Dialog(
+                                                          child: SearchJoueur(
+                                                            userIdController: widget
+                                                                .userIdController,
+                                                            onEquipeSelected:
+                                                                (joueur) {
+                                                              setState(() {
+                                                                reservation!
+                                                                        .equipe2!
+                                                                        .joueurs![
+                                                                    index] = joueur;
+                                                              });
+                                                            },
+                                                          ),
+                                                        ),
+                                                      );
+                                                    });
+                                              },
+                                            ),
+                                            IconButton(
+                                              icon: const Icon(Icons.clear,
+                                                  color: Colors.red),
+                                              onPressed: () {
+                                                setState(() {
+                                                  reservation!.equipe2!.joueurs!
+                                                      .removeAt(index);
+                                                });
+                                              },
+                                            ),
+                                          ],
+                                        )
+                                      : Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            IconButton(
+                                              icon: const Icon(Icons.add,
+                                                  color: Colors.green),
+                                              onPressed: () {
+                                                showDialog(
+                                                    context: context,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return Container(
+                                                        height: 300,
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child: Dialog(
+                                                          child: SearchJoueur(
+                                                            userIdController: widget
+                                                                .userIdController,
+                                                            onEquipeSelected:
+                                                                (joueur) {
+                                                              setState(() {
+                                                                reservation!
+                                                                    .equipe2!
+                                                                    .joueurs!
+                                                                    .add(
+                                                                        joueur);
+                                                              });
+                                                            },
+                                                          ),
+                                                        ),
+                                                      );
+                                                    });
+                                              },
+                                            ),
+                                          ],
+                                        )
+                                  : const SizedBox(),
                               title:
                                   index < reservation!.equipe2!.joueurs!.length
                                       ? Text(reservation!
@@ -287,7 +551,7 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                           cubit.confirmConnectEquipe(
                             reservationGroupId:
                                 reservation!.reservationGroupId!,
-                            equipe1: reservation!.equipe1!.id,
+                            equipe1: reservation?.equipe1?.id,
                             equipe2: reservation!.equipe2!.id,
                           );
                         },
