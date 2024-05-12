@@ -6,8 +6,9 @@ import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 import 'package:pfeprojet/Api/constApi.dart';
 import 'package:pfeprojet/Api/httplaravel.dart';
-import 'package:pfeprojet/Model/equipe_model.dart';
+// import 'package:pfeprojet/Model/equipe_model.dart';
 import 'package:pfeprojet/Model/error_model.dart';
+import 'package:pfeprojet/Model/houssem/equipe_model.dart';
 import 'package:pfeprojet/Model/reservation_model.dart';
 import 'package:pfeprojet/Model/terrain_model.dart';
 import 'dart:convert' as convert;
@@ -143,7 +144,7 @@ class TerrainCubit extends Cubit<TerrainState> {
     });
   }
 
-  List<EquipeData> equipeSearch = [];
+  List<EquipeModelData> equipeSearch = [];
   String cursorIdEqeuipe = "";
 
   Future<void> searchEquipe({String cursor = '', String? nomEquipe}) async {
@@ -164,9 +165,9 @@ class TerrainCubit extends Cubit<TerrainState> {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
         EquipeModel model = EquipeModel.fromJson(jsonResponse);
-        equipeSearch.addAll(model.data);
+        equipeSearch.addAll(model.data!);
         print(equipeSearch.length);
-        cursorIdEqeuipe = model.nextCursor;
+        cursorIdEqeuipe = model.nextCursor!;
         print(cursorIdEqeuipe);
 
         emit(GetSearchEquipeStateGood()); // Pass the list here
@@ -206,6 +207,29 @@ class TerrainCubit extends Cubit<TerrainState> {
     }).catchError((e) {
       print(e.toString());
       emit(GetMyReserveStateBad());
+    });
+  }
+
+  Future<void> confirmConnectEquipe(
+      {required String reservationGroupId,
+      String? equipe1,
+      String? equipe2}) async {
+    emit(ConfirmConnectEquipeLoading());
+    Httplar.httpPut(path: CONFIRMCONNECTEQUIPE, data: {
+      "reservation_group_id": reservationGroupId,
+      if (equipe1 != null) "equipe_id1": equipe1,
+      if (equipe2 != null) "equipe_id2": equipe2
+    }).then((value) {
+      if (value.statusCode == 200) {
+        emit(ConfirmConnectEquipeStateGood());
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(ConfirmConnectEquipeStateBad());
     });
   }
 }

@@ -1,4 +1,4 @@
-import 'package:pfeprojet/Model/equipe_model.dart';
+import 'package:pfeprojet/Model/houssem/equipe_model.dart';
 
 class ReservationModel {
   String? id;
@@ -10,11 +10,11 @@ class ReservationModel {
   bool? payment;
   String? joueurId;
   String? terrainId;
-  EquipeData? equipe;
+  EquipeModelData? equipe1;
   String?
-      equipeId; //! equipe w equipeId n9der ndirhom 7aja wahda bs7 fragthom bh nmadlhom type wymdli i9tirahat(ya tkon kayna equipe wla equipeId)
-  // EquipeData? equipe2;
-  // String? equipeId2;
+      equipeId1; //! equipe w equipeId n9der ndirhom 7aja wahda bs7 fragthom bh nmadlhom type wymdli i9tirahat(ya tkon kayna equipe wla equipeId)
+  EquipeModelData? equipe2;
+  String? equipeId2;
   int? V;
 
   ReservationModel.fromJson(Map<String, dynamic> json) {
@@ -27,20 +27,20 @@ class ReservationModel {
     payment = json['payment'];
     joueurId = json['joueur_id'];
     terrainId = json['terrain_id'];
-    if (json['equipe_id'] != null) {
-      if (json['equipe_id'] is String) {
-        equipeId = json['equipe_id'];
+    if (json['equipe_id1'] != null) {
+      if (json['equipe_id1'] is String) {
+        equipeId1 = json['equipe_id1'];
       } else {
-        equipe = EquipeData.fromJson(json['equipe_id']);
+        equipe1 = EquipeModelData.fromJson(json['equipe_id1']);
       }
     }
-    // if (json['equipe_id2'] != null) {
-    //   if (json['equipe_id2'] is String) {
-    //     equipeId2 = json['equipe_id2'];
-    //   } else {
-    //     equipe2 = EquipeData.fromJson(json['equipe_id2']);
-    //   }
-    // }
+    if (json['equipe_id2'] != null) {
+      if (json['equipe_id2'] is String) {
+        equipeId2 = json['equipe_id2'];
+      } else {
+        equipe2 = EquipeModelData.fromJson(json['equipe_id2']);
+      }
+    }
     V = json['__v'];
   }
 
@@ -55,20 +55,20 @@ class ReservationModel {
     _data['payment'] = payment;
     _data['terrain_id'] = terrainId;
     _data['joueur_id'] = joueurId;
-    if (equipe != null) {
-      if (equipe is String) {
-        _data['equipe_id1'] = equipeId;
+    if (equipe1 != null) {
+      if (equipe1 is String) {
+        _data['equipe_id1'] = equipeId1;
       } else {
-        _data['equipe_id1'] = equipe!.toJson();
+        _data['equipe_id1'] = equipe1!.toJson();
       }
     }
-    // if (equipe2 != null) {
-    //   if (equipe2 is String) {
-    //     _data['equipe_id2'] = equipeId2;
-    //   } else {
-    //     _data['equipe_id2'] = equipe2!.toJson();
-    //   }
-    // }
+    if (equipe2 != null) {
+      if (equipe2 is String) {
+        _data['equipe_id2'] = equipeId2;
+      } else {
+        _data['equipe_id2'] = equipe2!.toJson();
+      }
+    }
 
     _data['__v'] = V;
     return _data;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pfeprojet/Model/reservation_model.dart';
+import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/const.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/cubit/terrain_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/search_my_equipe.dart';
@@ -49,6 +50,10 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
             if (state is GetMyReserveStateGood) {
               reservation = state.reservations;
               print('reservations: $reservation');
+            }
+            if (state is ConfirmConnectEquipeStateGood) {
+              showToast(msg: 'Connected Confirm', state: ToastStates.success);
+              Navigator.pop(context);
             }
           },
           builder: (context, state) {
@@ -101,9 +106,9 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text(
-                      'Your Team',
-                      style: TextStyle(
+                    Text(
+                      'Your Team : (${reservation!.equipe1 != null ? reservation!.equipe1!.nom : 'No team'})',
+                      style: const TextStyle(
                           fontSize: 20.0, fontWeight: FontWeight.bold),
                     ),
                     IconButton(
@@ -111,80 +116,112 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                       onPressed: () {
                         showDialog(
                             context: context,
-                            builder: (BuildContext context) {
-                              return Dialog(
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: SearchTest(
-                                    equipeIdController: equipeIdController,
-                                    onEquipeSelected: (equipe) {
-                                      setState(() {
-                                        // reservation!.equipe1 = equipe;
-                                      });
-                                    },
+                            builder: (context) => AlertDialog(
+                                  title: const Text('choose :'),
+                                  content: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      ListTile(
+                                        title:
+                                            const Text('for all reservation'),
+                                        onTap: () {
+                                          Navigator.pop(context);
+
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return Dialog(
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: SearchTest(
+                                                      equipeIdController:
+                                                          equipeIdController,
+                                                      onEquipeSelected:
+                                                          (equipe) {
+                                                        setState(() {
+                                                          reservation!.equipe1 =
+                                                              equipe;
+                                                          print(
+                                                              'equipe1: ${reservation!.equipe1!.id}');
+                                                        });
+                                                      },
+                                                    ),
+                                                  ),
+                                                );
+                                              });
+                                        },
+                                      ),
+                                      ListTile(
+                                        title:
+                                            const Text('for this reservation'),
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                    ],
                                   ),
-                                ),
-                              );
-                            });
+                                ));
                       },
                     ),
                   ],
                 ),
-                // reservation!.equipe1 != null
-                //     ? Card(
-                //         child: Column(
-                //           children: List.generate(
-                //               reservation!.equipe1!.joueurs!.length, (index) {
-                //             return ListTile(
-                //               leading:
-                //                   const Icon(Icons.person, color: Colors.green),
-                //               title: Row(
-                //                 mainAxisAlignment:
-                //                     MainAxisAlignment.spaceBetween,
-                //                 children: [
-                //                   Text(
-                //                       '${reservation!.equipe1!.joueurs![index].username!} '),
-                //                   // Text(
-                //                   //     '${reservation!.equipe1!.joueurs![index].poste!} '),
-                //                 ],
-                //               ),
-                //             );
-                //           }),
-                //         ),
-                //       )
-                //     : const Center(child: Text('you dont have a team yet')),
+                reservation!.equipe1 != null
+                    ? Card(
+                        child: Column(
+                          children: List.generate(
+                              reservation!.equipe1!.numeroJoueurs!, (index) {
+                            return ListTile(
+                              leading:
+                                  const Icon(Icons.person, color: Colors.green),
+                              title:
+                                  index < reservation!.equipe1!.joueurs!.length
+                                      ? Text(reservation!
+                                          .equipe1!.joueurs![index].username!)
+                                      : const Text(
+                                          'Not assigned yet',
+                                          style: TextStyle(color: Colors.red),
+                                        ),
+                            );
+                          }),
+                        ),
+                      )
+                    : const Center(child: Text('you dont have a team yet')),
                 const SizedBox(height: 20.0),
-                const Text(
-                  "Opponent's Team",
-                  style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+                Text(
+                  "Opponent's Team : (${reservation!.equipe2 != null ? reservation!.equipe2!.nom : 'No team'})",
+                  style: const TextStyle(
+                      fontSize: 20.0, fontWeight: FontWeight.bold),
                 ),
                 // Display opponent's team list
-                // reservation!.equipe2 != null
-                //     ? Card(
-                //         child: Column(
-                //           children: List.generate(8, (index) {
-                //             return ListTile(
-                //               leading:
-                //                   const Icon(Icons.person, color: Colors.red),
-                //               title: Text('Opponent Player ${index + 1}'),
-                //             );
-                //           }),
-                //         ),
-                //       )
-                //     : const Center(child: Text('No opponent team yet')),
+                reservation!.equipe2 != null
+                    ? Card(
+                        child: Column(
+                          children: List.generate(8, (index) {
+                            return ListTile(
+                              leading:
+                                  const Icon(Icons.person, color: Colors.red),
+                              title: Text('Opponent Player ${index + 1}'),
+                            );
+                          }),
+                        ),
+                      )
+                    : const Center(child: Text('No opponent team yet')),
 
                 const SizedBox(height: 20.0),
-                // Confirmation Button
-                ElevatedButton(
-                  onPressed: () {
-                    // Handle reservation confirmation
-                  },
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.green, // foreground
-                  ),
-                  child: const Text('Confirm Reservation'),
-                ),
+                state is ConfirmConnectEquipeLoading
+                    ? const Center(child: CircularProgressIndicator())
+                    : defaultSubmit2(
+                        text: 'Confirm connection',
+                        onPressed: () {
+                          cubit.confirmConnectEquipe(
+                            reservationGroupId:
+                                reservation!.reservationGroupId!,
+                            equipe1: reservation!.equipe1!.id,
+                          );
+                        },
+                        background: Colors.green),
               ],
             );
           },

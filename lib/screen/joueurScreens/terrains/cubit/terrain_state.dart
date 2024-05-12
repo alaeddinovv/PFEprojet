@@ -77,3 +77,9 @@ class GetMyReserveStateGood extends TerrainState {
 }
 
 class GetMyReserveStateBad extends TerrainState {}
+
+class ConfirmConnectEquipeLoading extends TerrainState {}
+
+class ConfirmConnectEquipeStateGood extends TerrainState {}
+
+class ConfirmConnectEquipeStateBad extends TerrainState {}

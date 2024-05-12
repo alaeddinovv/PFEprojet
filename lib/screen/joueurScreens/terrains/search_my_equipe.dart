@@ -3,12 +3,12 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pfeprojet/Model/equipe_model.dart';
+import 'package:pfeprojet/Model/houssem/equipe_model.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/cubit/terrain_cubit.dart';
 
 class SearchTest extends StatefulWidget {
   final TextEditingController equipeIdController;
-  final Function(EquipeData)? onEquipeSelected;
+  final Function(EquipeModelData)? onEquipeSelected;
   // final Function(String) onSelectedJoueur; // Add this line
 
   SearchTest({
@@ -24,7 +24,7 @@ class SearchTest extends StatefulWidget {
 
 class _SearchTestState extends State<SearchTest> {
   bool showResults = true;
-  EquipeData? selectedEquipe;
+  EquipeModelData? selectedEquipe;
   Timer? _debounce;
   late ScrollController _controller;
   TextEditingController searchController = TextEditingController();
@@ -47,12 +47,12 @@ class _SearchTestState extends State<SearchTest> {
       });
   }
 
-  void _selectJoueur(EquipeData equipe) {
+  void _selectJoueur(EquipeModelData equipe) {
     setState(() {
       selectedEquipe = equipe;
       showResults = false;
       widget.equipeIdController.text =
-          equipe.id; // Update the parent's TextEditingController
+          equipe.id!; // Update the parent's TextEditingController
     });
     if (widget.onEquipeSelected != null) {
       widget.onEquipeSelected!(equipe);
@@ -137,14 +137,14 @@ class _SearchTestState extends State<SearchTest> {
                                     ),
                                     elevation: 4,
                                     child: ListTile(
-                                      title: Text(joueur.nom),
+                                      title: Text(joueur.nom!),
                                       subtitle: Text(
-                                          'Age: ${joueur.capitaineId.nom} - Position: ${joueur.id}'),
+                                          'Age: ${joueur.capitaineId!.nom} - Position: ${joueur.id}'),
                                       onTap: () {
                                         print(joueur.id);
                                         _selectJoueur(joueur);
                                         widget.equipeIdController.text =
-                                            joueur.id;
+                                            joueur.id!;
                                         // widget.onSelectedJoueur(joueur.id!);
                                       },
                                     ),
