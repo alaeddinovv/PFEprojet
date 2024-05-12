@@ -136,6 +136,7 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                                                         const EdgeInsets.all(
                                                             8.0),
                                                     child: SearchTest(
+                                                      isOnlyMy: true,
                                                       equipeIdController:
                                                           equipeIdController,
                                                       onEquipeSelected:
@@ -154,8 +155,8 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                                         },
                                       ),
                                       ListTile(
-                                        title:
-                                            const Text('for this reservation'),
+                                        title: const Text(
+                                            'for this reservation only'),
                                         onTap: () {
                                           Navigator.pop(context);
                                         },
@@ -189,20 +190,88 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                       )
                     : const Center(child: Text('you dont have a team yet')),
                 const SizedBox(height: 20.0),
-                Text(
-                  "Opponent's Team : (${reservation!.equipe2 != null ? reservation!.equipe2!.nom : 'No team'})",
-                  style: const TextStyle(
-                      fontSize: 20.0, fontWeight: FontWeight.bold),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Opponent's Team : (${reservation!.equipe2 != null ? reservation!.equipe2!.nom : 'No team'})",
+                      style: const TextStyle(
+                          fontSize: 20.0, fontWeight: FontWeight.bold),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.edit),
+                      onPressed: () {
+                        showDialog(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                                  title: const Text('choose :'),
+                                  content: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      ListTile(
+                                        title:
+                                            const Text('for all reservation'),
+                                        onTap: () {
+                                          Navigator.pop(context);
+
+                                          showDialog(
+                                              context: context,
+                                              builder: (BuildContext context) {
+                                                return Dialog(
+                                                  child: Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            8.0),
+                                                    child: SearchTest(
+                                                      isOnlyMy: false,
+                                                      equipeIdController:
+                                                          equipeIdController,
+                                                      onEquipeSelected:
+                                                          (equipe) {
+                                                        setState(() {
+                                                          reservation!.equipe2 =
+                                                              equipe;
+                                                          print(
+                                                              'equipe2: ${reservation!.equipe2!.id}');
+                                                        });
+                                                      },
+                                                    ),
+                                                  ),
+                                                );
+                                              });
+                                        },
+                                      ),
+                                      ListTile(
+                                        title: const Text(
+                                            'for this reservation only'),
+                                        onTap: () {
+                                          Navigator.pop(context);
+                                        },
+                                      ),
+                                    ],
+                                  ),
+                                ));
+                      },
+                    ),
+                  ],
                 ),
                 // Display opponent's team list
                 reservation!.equipe2 != null
                     ? Card(
                         child: Column(
-                          children: List.generate(8, (index) {
+                          children: List.generate(
+                              reservation!.equipe2!.numeroJoueurs!, (index) {
                             return ListTile(
                               leading:
                                   const Icon(Icons.person, color: Colors.red),
-                              title: Text('Opponent Player ${index + 1}'),
+                              title:
+                                  index < reservation!.equipe2!.joueurs!.length
+                                      ? Text(reservation!
+                                          .equipe2!.joueurs![index].username!)
+                                      : const Text(
+                                          'Not assigned yet',
+                                          style: TextStyle(color: Colors.red),
+                                        ),
                             );
                           }),
                         ),
@@ -219,6 +288,7 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                             reservationGroupId:
                                 reservation!.reservationGroupId!,
                             equipe1: reservation!.equipe1!.id,
+                            equipe2: reservation!.equipe2!.id,
                           );
                         },
                         background: Colors.green),

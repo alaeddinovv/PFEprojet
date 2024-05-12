@@ -9,12 +9,14 @@ import 'package:pfeprojet/screen/joueurScreens/terrains/cubit/terrain_cubit.dart
 class SearchTest extends StatefulWidget {
   final TextEditingController equipeIdController;
   final Function(EquipeModelData)? onEquipeSelected;
+  final bool isOnlyMy;
   // final Function(String) onSelectedJoueur; // Add this line
 
-  SearchTest({
+  const SearchTest({
     Key? key,
     required this.equipeIdController,
     this.onEquipeSelected,
+    required this.isOnlyMy,
     // required this.onSelectedJoueur, // Add this line
   }) : super(key: key);
 
@@ -41,6 +43,7 @@ class _SearchTestState extends State<SearchTest> {
             !_controller.position.outOfRange &&
             TerrainCubit.get(context).cursorIdEqeuipe != "") {
           TerrainCubit.get(context).searchEquipe(
+              isOnlyMy: widget.isOnlyMy,
               cursor: TerrainCubit.get(context).cursorIdEqeuipe,
               nomEquipe: searchController.text);
         }
@@ -72,7 +75,8 @@ class _SearchTestState extends State<SearchTest> {
   void _onSearchChanged(String value) {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
     _debounce = Timer(const Duration(milliseconds: 500), () {
-      TerrainCubit.get(context).searchEquipe(nomEquipe: value);
+      TerrainCubit.get(context)
+          .searchEquipe(nomEquipe: value, isOnlyMy: widget.isOnlyMy);
       showResults = true;
     });
   }

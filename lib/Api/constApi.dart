@@ -12,7 +12,8 @@ const SENDNOTIFICATIONTOADMIN = '/api/notification/admin/';
 const SENDNOTIFICATIONTOJOUEUR = '/api/notification/joueur/';
 
 const SEARCHJOUEURPAGINATION = '/api/search/joueur/';
-const SEARCHEQUIPEPAGINATION = '/api/myequipe/';
+const SEARCHMYEQUIPEPAGINATION = '/api/myequipe/';
+const SEARCHEQUIPEPAGINATION = '/api/searchequipe/';
 
 const ADDORUPDATETOKENFCMADMIN = '/api/addOrUpdateTokenAdmin/';
 const REMOVETETOKENFCMADMIN = '/api/removeTokenFcmAdmin/';

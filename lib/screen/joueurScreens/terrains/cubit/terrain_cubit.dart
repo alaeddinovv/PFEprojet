@@ -147,15 +147,22 @@ class TerrainCubit extends Cubit<TerrainState> {
   List<EquipeModelData> equipeSearch = [];
   String cursorIdEqeuipe = "";
 
-  Future<void> searchEquipe({String cursor = '', String? nomEquipe}) async {
+  Future<void> searchEquipe(
+      {String cursor = '', String? nomEquipe, required bool isOnlyMy}) async {
     emit(GetSearchEquipeLoading());
     if (nomEquipe == '') {
       equipeSearch = [];
       cursorIdEqeuipe = "";
       return;
     }
+    String pathSearch;
+    if (isOnlyMy) {
+      pathSearch = SEARCHMYEQUIPEPAGINATION;
+    } else {
+      pathSearch = SEARCHEQUIPEPAGINATION;
+    }
     await Httplar.httpget(
-        path: SEARCHEQUIPEPAGINATION,
+        path: pathSearch,
         query: {'cursor': cursor, 'nom': nomEquipe}).then((value) {
       if (value.statusCode == 200) {
         if (cursor == "") {
