@@ -26,6 +26,7 @@ class DetailMyReserve extends StatefulWidget {
 class _DetailMyReserveState extends State<DetailMyReserve> {
   bool isEditeEquipe1 = false;
   bool isEditeEquipe2 = false;
+  bool isSomthingChanged = false;
   late final TerrainCubit cubit;
 
   final TextEditingController equipeIdController = TextEditingController();
@@ -127,6 +128,7 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                               onPressed: () {
                                 setState(() {
                                   isEditeEquipe1 = !isEditeEquipe1;
+                                  isSomthingChanged = true;
                                 });
                               },
                               icon: Icon(
@@ -174,6 +176,8 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                                                                     .map((e) =>
                                                                         e.id!)
                                                                     .toList();
+                                                            isSomthingChanged =
+                                                                true;
                                                           });
                                                         },
                                                       ),
@@ -213,6 +217,8 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                                                                         e.id!)
                                                                     .toList();
                                                           });
+                                                          isSomthingChanged =
+                                                              true;
                                                         },
                                                       ),
                                                     ),
@@ -247,6 +253,8 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                                                               reservation!
                                                                       .equipe1 =
                                                                   null;
+                                                              isSomthingChanged =
+                                                                  true;
                                                             });
                                                             Navigator.pop(
                                                                 context);
@@ -304,6 +312,8 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                                                                         .equipe1!
                                                                         .joueurs![
                                                                     index] = joueur;
+                                                                isSomthingChanged =
+                                                                    true;
                                                               });
                                                             },
                                                           ),
@@ -319,6 +329,7 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                                                 setState(() {
                                                   reservation!.equipe1!.joueurs!
                                                       .removeAt(index);
+                                                  isSomthingChanged = true;
                                                 });
                                               },
                                             ),
@@ -352,6 +363,8 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                                                                     .joueurs!
                                                                     .add(
                                                                         joueur);
+                                                                isSomthingChanged =
+                                                                    true;
                                                               });
                                                             },
                                                           ),
@@ -393,6 +406,7 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                               onPressed: () {
                                 setState(() {
                                   isEditeEquipe2 = !isEditeEquipe2;
+                                  isSomthingChanged = true;
                                 });
                               },
                               icon: Icon(
@@ -442,8 +456,8 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                                                                     .map((e) =>
                                                                         e.id!)
                                                                     .toList();
-                                                            print(
-                                                                'equipe2: ${reservation!.equipe2!.id}');
+                                                            isSomthingChanged =
+                                                                true;
                                                           });
                                                         },
                                                       ),
@@ -487,6 +501,8 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                                                               reservation!
                                                                       .equipe2 =
                                                                   null;
+                                                              isSomthingChanged =
+                                                                  true;
                                                             });
                                                             Navigator.pop(
                                                                 context);
@@ -545,6 +561,8 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                                                                         .equipe2!
                                                                         .joueurs![
                                                                     index] = joueur;
+                                                                isSomthingChanged =
+                                                                    true;
                                                               });
                                                             },
                                                           ),
@@ -560,6 +578,7 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                                                 setState(() {
                                                   reservation!.equipe2!.joueurs!
                                                       .removeAt(index);
+                                                  isSomthingChanged = true;
                                                 });
                                               },
                                             ),
@@ -593,6 +612,8 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                                                                     .joueurs!
                                                                     .add(
                                                                         joueur);
+                                                                isSomthingChanged =
+                                                                    true;
                                                               });
                                                             },
                                                           ),
@@ -637,6 +658,12 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                           print(isEquialEquipe1);
                           print(isEquialEquipe2);
                           if (isEquialEquipe1 && isEquialEquipe2) {
+                            if (!isSomthingChanged) {
+                              showToast(
+                                  msg: 'no changes detected',
+                                  state: ToastStates.error);
+                              return;
+                            }
                             cubit.confirmConnectEquipe(
                               updateAllWeeks: updateAllWeeks,
                               reservationGroupId:
