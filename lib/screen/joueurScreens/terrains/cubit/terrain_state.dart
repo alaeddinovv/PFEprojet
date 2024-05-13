@@ -83,3 +83,13 @@ class ConfirmConnectEquipeLoading extends TerrainState {}
 class ConfirmConnectEquipeStateGood extends TerrainState {}
 
 class ConfirmConnectEquipeStateBad extends TerrainState {}
+
+class CreateEquipeVertialLoading extends TerrainState {}
+
+class CreateEquipeVertialStateGood extends TerrainState {
+  // final EquipeModelData equipeModelData;
+
+  // CreateEquipeVertialStateGood({required this.equipeModelData});
+}
+
+class CreateEquipeVertialStateBad extends TerrainState {}

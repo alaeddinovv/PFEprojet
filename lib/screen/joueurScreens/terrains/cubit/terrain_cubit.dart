@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
@@ -196,9 +195,11 @@ class TerrainCubit extends Cubit<TerrainState> {
     required String heure_debut_temps,
   }) async {
     emit(GetMyReserveLoading());
+    String formattedDate = DateFormat('yyyy-MM-dd').format(date);
+    print(formattedDate);
     Httplar.httpget(path: GETMYRESERVE, query: {
       'terrain_id': terrainId,
-      'jour': DateFormat('yyyy-MM-dd').format(date),
+      'jour': formattedDate,
       'heure_debut_temps': heure_debut_temps,
     }).then((value) {
       if (value.statusCode == 200) {
@@ -218,12 +219,15 @@ class TerrainCubit extends Cubit<TerrainState> {
   }
 
   Future<void> confirmConnectEquipe(
-      {required String reservationGroupId,
+      {required bool updateAllWeeks,
+      String? reservationGroupId,
+      String? reservationId,
       String? equipe1,
       String? equipe2}) async {
     emit(ConfirmConnectEquipeLoading());
-    Httplar.httpPut(path: CONFIRMCONNECTEQUIPE, data: {
-      "reservation_group_id": reservationGroupId,
+    await Httplar.httpPut(path: CONFIRMCONNECTEQUIPE, data: {
+      if (!updateAllWeeks) "reservation_id": reservationId,
+      if (updateAllWeeks) "reservation_group_id": reservationGroupId,
       "equipe_id1": equipe1,
       "equipe_id2": equipe2
     }).then((value) {
@@ -233,10 +237,39 @@ class TerrainCubit extends Cubit<TerrainState> {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
         emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
+        print(jsonResponse.toString());
       }
     }).catchError((e) {
       print(e.toString());
       emit(ConfirmConnectEquipeStateBad());
+    });
+  }
+
+  String? idEquipe1Vertial;
+  String? idEquipe2Vertial;
+  Future<void> createEquipeVertial(
+      {required Map<String, dynamic> model, required bool isMyEquipe}) async {
+    emit(CreateEquipeVertialLoading());
+    await Httplar.httpPost(path: CREATEEQUIPEVERTIAL, data: model)
+        .then((value) {
+      if (value.statusCode == 201) {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        if (isMyEquipe) {
+          idEquipe1Vertial = jsonResponse['_id'];
+        } else {
+          idEquipe2Vertial = jsonResponse['_id'];
+        }
+        // print(jsonResponse['_id']);
+        emit(CreateEquipeVertialStateGood());
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(CreateEquipeVertialStateBad());
     });
   }
 }

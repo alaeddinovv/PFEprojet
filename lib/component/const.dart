@@ -4,11 +4,13 @@ import 'package:intl/intl.dart';
 import 'package:pfeprojet/Api/constApi.dart';
 import 'package:pfeprojet/Api/httplaravel.dart';
 import 'package:pfeprojet/helper/cachhelper.dart';
+import 'package:collection/collection.dart';
 
 var TOKEN = '';
 late final fCMToken;
 var ONBOARDING = '';
 Map<String, dynamic> DECODEDTOKEN = {};
+Function eq = const ListEquality().equals;
 
 String? formatTimeOfDay(TimeOfDay? time) {
   if (time == null) return null;
