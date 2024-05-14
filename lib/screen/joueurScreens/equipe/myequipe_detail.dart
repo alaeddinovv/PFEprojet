@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pfeprojet/Model/equipe_model.dart';
@@ -133,7 +135,7 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                     return ListView.builder(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      itemCount: totalItems - 1, // Adjust the count as needed
+                      itemCount: totalItems, // Adjust the count as needed
                       itemBuilder: (context, index) {
                         if (index < joueurCount) {
                           Joueurs joueur = widget.equipeData.joueurs[index];
@@ -342,31 +344,37 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                       fontSize: 16)), // Increased font size for readability
             ),
             Spacer(),
-            IconButton(
-              onPressed: () {
-                int? phoneNumber = telephone;
-                if (phoneNumber != null) {
-                  _makePhoneCall(phoneNumber.toString());
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text("No telephone number available."),
-                    ),
-                  );
-                }
-              },
-              icon: Icon(Icons.call),
-              color: Colors
-                  .green, // Green color to signify calling is a positive action
+            Visibility(
+              visible: index != 0,
+              child: IconButton(
+                onPressed: () {
+                  int? phoneNumber = telephone;
+                  if (phoneNumber != null) {
+                    _makePhoneCall(phoneNumber.toString());
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(
+                        content: Text("No telephone number available."),
+                      ),
+                    );
+                  }
+                },
+                icon: Icon(Icons.call),
+                color: Colors
+                    .green, // Green color to signify calling is a positive action
+              ),
             ),
-            IconButton(
-              onPressed: () {
-                EquipeCubit.get(context)
-                    .quiterEquipe(equipeId: equipeId, joueurId: joueurId);
-                // indexjoueur = index;
-              },
-              icon: Icon(Icons.cancel),
-              color: Colors.red,
+            Visibility(
+              visible: index != 0,
+              child: IconButton(
+                onPressed: () {
+                  EquipeCubit.get(context)
+                      .quiterEquipe(equipeId: equipeId, joueurId: joueurId);
+                  // indexjoueur = index;
+                },
+                icon: Icon(Icons.cancel),
+                color: Colors.red,
+              ),
             ),
           ],
         ),
