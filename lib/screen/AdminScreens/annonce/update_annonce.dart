@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pfeprojet/Api/wilaya_list.dart';
 import 'package:pfeprojet/Model/annonce_admin_model.dart';
 import 'package:pfeprojet/component/components.dart';
+import 'package:pfeprojet/component/drop_down_wilaya.dart';
 import 'package:pfeprojet/screen/AdminScreens/annonce/cubit/annonce_cubit.dart';
-import 'dart:convert';
 
 class EditAnnoncePage extends StatefulWidget {
   final AnnonceAdminData
@@ -21,41 +20,24 @@ class _EditAnnoncePageState extends State<EditAnnoncePage> {
   final _formKey = GlobalKey<FormState>();
   late TextEditingController _titleController;
   late TextEditingController _descriptionController;
-  String? selectedWilaya;
-  String? selectedCommune;
-  List<dynamic> wilayas = [];
-  List<String> communes = [];
-
+  late TextEditingController _wilayaController;
+  late TextEditingController _dairaController;
   @override
   void initState() {
     super.initState();
     _titleController = TextEditingController(text: widget.annonceModel.type);
-    _descriptionController = TextEditingController(text: widget.annonceModel.description);
-    loadWilayas(); // This needs to complete before setting selectedWilaya and selectedCommune
+    _descriptionController =
+        TextEditingController(text: widget.annonceModel.description);
+    _wilayaController = TextEditingController(text: widget.annonceModel.wilaya);
+    _dairaController = TextEditingController(text: widget.annonceModel.commune);
   }
 
-  void loadWilayas() {
-    final parsed = json.decode(wilayasJson) as Map<String, dynamic>;
-    setState(() {
-      wilayas = parsed['Wilayas'];
-      selectedWilaya = widget.annonceModel.wilaya ?? (wilayas.isNotEmpty ? wilayas[0]['name'] : null);
-      updateCommunes(selectedWilaya);
-    });
-  }
-  void updateCommunes(String? wilayaName) {
-    setState(() {
-      communes = wilayaName != null
-          ? List<String>.from(wilayas.firstWhere((element) => element['name'] == wilayaName)['communes'])
-          : [];
-      if (!communes.contains(selectedCommune)) {
-        selectedCommune = communes.isNotEmpty ? communes[0] : null;
-      }
-    });
-  }
   @override
   void dispose() {
     _titleController.dispose();
     _descriptionController.dispose();
+    _wilayaController.dispose();
+    _dairaController.dispose();
     super.dispose();
   }
 
@@ -108,7 +90,6 @@ class _EditAnnoncePageState extends State<EditAnnoncePage> {
                     labelText: "TYPE DE L'ANNONCE",
                     textInputAction: TextInputAction.next,
                   ),
-          
                   const SizedBox(height: 20),
                   defaultForm3(
                     context: context,
@@ -128,48 +109,11 @@ class _EditAnnoncePageState extends State<EditAnnoncePage> {
                     textInputAction: TextInputAction.done,
                   ),
                   const SizedBox(height: 20),
-                  DropdownButtonFormField<String>(
-                    decoration: InputDecoration(
-                      labelText: 'Select Wilaya',
-                      border: OutlineInputBorder(),
-                    ),
-                    value: selectedWilaya,
-                    onChanged: (newValue) {
-                      setState(() {
-                        selectedWilaya = newValue;
-                        updateCommunes(newValue);
-                      });
-                    },
-                    items: wilayas.map<DropdownMenuItem<String>>((dynamic wilaya) {
-                      return DropdownMenuItem<String>(
-                        value: wilaya['name'],
-                        child: Text(wilaya['name']),
-                      );
-                    }).toList(),
+                  DropdownScreen(
+                    selectedDaira: _dairaController,
+                    selectedWilaya: _wilayaController,
                   ),
                   const SizedBox(height: 20),
-                  DropdownButtonFormField<String>(
-                    decoration: InputDecoration(
-                      labelText: 'Select Commune',
-                      border: OutlineInputBorder(),
-                    ),
-                    value: selectedCommune,
-                    onChanged: (newValue) {
-                      setState(() {
-                        selectedCommune = newValue;
-                      });
-                    },
-                    items: communes.map<DropdownMenuItem<String>>((String commune) {
-                      return DropdownMenuItem<String>(
-                        value: commune,
-                        child: Text(commune),
-                      );
-                    }).toList(),
-                  ),
-          
-                  const SizedBox(height: 20),
-                  // Add more fields if necessary
-          
                   BlocConsumer<AnnonceCubit, AnnonceState>(
                     listener: (context, state) {
                       if (state is UpdateAnnonceLoadingState) {
@@ -204,8 +148,8 @@ class _EditAnnoncePageState extends State<EditAnnoncePage> {
                                     id: widget.annonceModel.id!,
                                     type: _titleController.text,
                                     description: _descriptionController.text,
-                                      wilaya: selectedWilaya,
-                                      commune: selectedCommune
+                                    wilaya: _wilayaController.text,
+                                    commune: _dairaController.text,
                                   );
                                 }
                               },
