@@ -1,11 +1,14 @@
-import 'package:bloc/bloc.dart';
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 import 'package:pfeprojet/Api/constApi.dart';
 import 'package:pfeprojet/Api/httplaravel.dart';
+// import 'package:pfeprojet/Model/equipe_model.dart';
 import 'package:pfeprojet/Model/error_model.dart';
-import 'package:pfeprojet/Model/reservation.dart';
+import 'package:pfeprojet/Model/houssem/equipe_model.dart';
+import 'package:pfeprojet/Model/reservation_model.dart';
 import 'package:pfeprojet/Model/terrain_model.dart';
 import 'dart:convert' as convert;
 
@@ -82,7 +85,6 @@ class TerrainCubit extends Cubit<TerrainState> {
       timeSlots.add(slot);
       startTime = startTime.add(const Duration(hours: 1, minutes: 0));
     }
-    // print(timeSlots);
     return timeSlots;
   }
 
@@ -95,11 +97,6 @@ class TerrainCubit extends Cubit<TerrainState> {
     String formattedDate = DateFormat('yyyy-MM-dd').format(date);
     await Httplar.httpget(
       path: '$MYRESERVATIONWITHOTHER$terrainId/$formattedDate',
-      // query: {
-      //   "terrain_id": terrainId,
-      //   "jour": formattedDate,
-      //   if (heure_debut_temps.isNotEmpty) "heure_debut_temps": heure_debut_temps
-      // }
     ).then((value) {
       if (value.statusCode == 200) {
         var jsonResponse = convert.jsonDecode(value.body) as List;
@@ -143,6 +140,136 @@ class TerrainCubit extends Cubit<TerrainState> {
     }).catchError((e) {
       print(e.toString());
       emit(AddReservationStateBad());
+    });
+  }
+
+  List<EquipeModelData> equipeSearch = [];
+  String cursorIdEqeuipe = "";
+
+  Future<void> searchEquipe(
+      {String cursor = '', String? nomEquipe, required bool isOnlyMy}) async {
+    emit(GetSearchEquipeLoading());
+    if (nomEquipe == '') {
+      equipeSearch = [];
+      cursorIdEqeuipe = "";
+      return;
+    }
+    String pathSearch;
+    if (isOnlyMy) {
+      pathSearch = SEARCHMYEQUIPEPAGINATION;
+    } else {
+      pathSearch = SEARCHEQUIPEPAGINATION;
+    }
+    await Httplar.httpget(
+        path: pathSearch,
+        query: {'cursor': cursor, 'nom': nomEquipe}).then((value) {
+      if (value.statusCode == 200) {
+        if (cursor == "") {
+          equipeSearch = [];
+          cursorIdEqeuipe = "";
+        }
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        EquipeModel model = EquipeModel.fromJson(jsonResponse);
+        equipeSearch.addAll(model.data!);
+        print(equipeSearch.length);
+        cursorIdEqeuipe = model.nextCursor!;
+        print(cursorIdEqeuipe);
+
+        emit(GetSearchEquipeStateGood()); // Pass the list here
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(GetSearchEquipeStateBad());
+    });
+  }
+
+// ------------------------DetailMyReserve---------------------------------------
+  Future<void> getMyreserve({
+    required String terrainId,
+    required DateTime date,
+    required String heure_debut_temps,
+  }) async {
+    emit(GetMyReserveLoading());
+    String formattedDate = DateFormat('yyyy-MM-dd').format(date);
+    print(formattedDate);
+    Httplar.httpget(path: GETMYRESERVE, query: {
+      'terrain_id': terrainId,
+      'jour': formattedDate,
+      'heure_debut_temps': heure_debut_temps,
+    }).then((value) {
+      if (value.statusCode == 200) {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(GetMyReserveStateGood(
+            reservations: ReservationModel.fromJson(jsonResponse)));
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(GetMyReserveStateBad());
+    });
+  }
+
+  Future<void> confirmConnectEquipe(
+      {required bool updateAllWeeks,
+      String? reservationGroupId,
+      String? reservationId,
+      String? equipe1,
+      String? equipe2}) async {
+    emit(ConfirmConnectEquipeLoading());
+    await Httplar.httpPut(path: CONFIRMCONNECTEQUIPE, data: {
+      if (!updateAllWeeks) "reservation_id": reservationId,
+      if (updateAllWeeks) "reservation_group_id": reservationGroupId,
+      "equipe_id1": equipe1,
+      "equipe_id2": equipe2
+    }).then((value) {
+      if (value.statusCode == 200) {
+        emit(ConfirmConnectEquipeStateGood());
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
+        print(jsonResponse.toString());
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(ConfirmConnectEquipeStateBad());
+    });
+  }
+
+  String? idEquipe1Vertial;
+  String? idEquipe2Vertial;
+  Future<void> createEquipeVertial(
+      {required Map<String, dynamic> model, required bool isMyEquipe}) async {
+    emit(CreateEquipeVertialLoading());
+    await Httplar.httpPost(path: CREATEEQUIPEVERTIAL, data: model)
+        .then((value) {
+      if (value.statusCode == 201) {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        if (isMyEquipe) {
+          idEquipe1Vertial = jsonResponse['_id'];
+        } else {
+          idEquipe2Vertial = jsonResponse['_id'];
+        }
+        // print(jsonResponse['_id']);
+        emit(CreateEquipeVertialStateGood());
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(CreateEquipeVertialStateBad());
     });
   }
 }

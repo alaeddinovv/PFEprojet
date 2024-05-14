@@ -10,7 +10,7 @@ import 'package:meta/meta.dart';
 import 'package:pfeprojet/Api/constApi.dart';
 import 'package:pfeprojet/Api/httplaravel.dart';
 import 'package:pfeprojet/Model/error_model.dart';
-import 'package:pfeprojet/Model/reservation.dart';
+import 'package:pfeprojet/Model/reservation_model.dart';
 import 'package:pfeprojet/Model/terrain_model.dart';
 import 'package:pfeprojet/Model/user_model.dart';
 import 'dart:convert' as convert;
@@ -456,7 +456,7 @@ class TerrainCubit extends Cubit<TerrainState> {
       }
     }).catchError((e) {
       print(e.toString());
-      emit(GetSearchJoueurStateGood());
+      emit(GetSearchJoueurStateBad());
     });
   }
 }

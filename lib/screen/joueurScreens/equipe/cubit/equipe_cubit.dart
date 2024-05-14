@@ -21,14 +21,14 @@ class EquipeCubit extends Cubit<EquipeState> {
   Future<void> creerEquipe(
       {required String nom,
       required String numero_joueurs,
-      String? wilaya ,
-        String? commune}) async {
+      String? wilaya,
+      String? commune}) async {
     emit(CreerEquipeLoadingState());
 
     Map<String, dynamic> _model = {
       "nom": nom,
       "numero_joueurs": numero_joueurs,
-      "wilaya": wilaya ,
+      "wilaya": wilaya,
       "commune": commune
     };
 
@@ -49,7 +49,7 @@ class EquipeCubit extends Cubit<EquipeState> {
   //----------------- get my terrain--------------------
   List<EquipeData> equipeData = [];
   String cursorId = "";
-  Future<void> getMyEquipe({String cursor = '' }) async {
+  Future<void> getMyEquipe({String cursor = ''}) async {
     emit(GetMyEquipeLoading());
 
     await Httplar.httpget(path: GETMYEQUIPE, query: {'cursor': cursor})
@@ -100,13 +100,15 @@ class EquipeCubit extends Cubit<EquipeState> {
       {required String id,
       required String nom,
       required String numero_joueurs,
-      String? wilaya}) async {
+      String? wilaya,
+      String? commune}) async {
     emit(UpdateEquipeLoadingState());
 
     Map<String, dynamic> _model = {
       "nom": nom,
       "numero_joueurs": numero_joueurs,
-      "wilaya": wilaya
+      "wilaya": wilaya,
+      "commune": commune
     };
     await Httplar.httpPut(path: UPDATEEQUIPE + id, data: _model).then((value) {
       if (value.statusCode == 200) {
@@ -137,7 +139,7 @@ class EquipeCubit extends Cubit<EquipeState> {
         }
 
         var jsonResponse =
-        convert.jsonDecode(value.body) as Map<String, dynamic>;
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
 
         EquipeModel model = EquipeModel.fromJson(jsonResponse);
         print(capitanId);
@@ -152,7 +154,7 @@ class EquipeCubit extends Cubit<EquipeState> {
         emit(GetAllEquipeStateGood());
       } else {
         var jsonResponse =
-        convert.jsonDecode(value.body) as Map<String, dynamic>;
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
         emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
       }
     }).catchError((e) {
@@ -175,7 +177,7 @@ class EquipeCubit extends Cubit<EquipeState> {
           cursorId1 = "";
         }
         var jsonResponse =
-        convert.jsonDecode(value.body) as Map<String, dynamic>;
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
         EquipeModel model = EquipeModel.fromJson(jsonResponse);
         equipeImInData.addAll(model.data!);
         cursorId1 = model.nextCursor!;
@@ -183,7 +185,7 @@ class EquipeCubit extends Cubit<EquipeState> {
         emit(GetEquipeImInStateGood());
       } else {
         var jsonResponse =
-        convert.jsonDecode(value.body) as Map<String, dynamic>;
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
         emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
       }
     }).catchError((e) {
@@ -191,7 +193,6 @@ class EquipeCubit extends Cubit<EquipeState> {
       emit(GetEquipeImInStateBad());
     });
   }
-
 
   List<EquipeData> equipeInviteData = [];
   String cursorId2 = "";
@@ -206,7 +207,7 @@ class EquipeCubit extends Cubit<EquipeState> {
           cursorId2 = "";
         }
         var jsonResponse =
-        convert.jsonDecode(value.body) as Map<String, dynamic>;
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
         EquipeModel model = EquipeModel.fromJson(jsonResponse);
         equipeInviteData.addAll(model.data!);
         cursorId2 = model.nextCursor!;
@@ -214,7 +215,7 @@ class EquipeCubit extends Cubit<EquipeState> {
         emit(GetEquipeInviteStateGood());
       } else {
         var jsonResponse =
-        convert.jsonDecode(value.body) as Map<String, dynamic>;
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
         emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
       }
     }).catchError((e) {
@@ -225,17 +226,20 @@ class EquipeCubit extends Cubit<EquipeState> {
 
   //-------------- acceoter invitation pour rejoindre equipe----
   Future<void> accepterInvitation(
-      {required String id , required String joueurname , required String joueurId}) async {
+      {required String id,
+      required String joueurname,
+      required String joueurId}) async {
     emit(AccepterInvLoadingState());
 
     Map<String, dynamic> _model = {};
 
-    await Httplar.httpPost(path: ACCEPTERINVITATION + id, data: _model).then((value) {
+    await Httplar.httpPost(path: ACCEPTERINVITATION + id, data: _model)
+        .then((value) {
       if (value.statusCode == 200) {
-        emit(AccepterInvStateGood(joueurname: joueurname , joueurId:joueurId));
+        emit(AccepterInvStateGood(joueurname: joueurname, joueurId: joueurId));
       } else {
         var jsonResponse =
-        convert.jsonDecode(value.body) as Map<String, dynamic>;
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
         emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
       }
     }).catchError((e) {
@@ -245,18 +249,18 @@ class EquipeCubit extends Cubit<EquipeState> {
   }
 
   //-------------- refuser invitation pour rejoindre equipe----
-  Future<void> refuserInvitation(
-      {required String id}) async {
+  Future<void> refuserInvitation({required String id}) async {
     emit(RefuserInvLoadingState());
 
     Map<String, dynamic> _model = {};
 
-    await Httplar.httpPost(path: REFUSERINVITATION + id, data: _model).then((value) {
+    await Httplar.httpPost(path: REFUSERINVITATION + id, data: _model)
+        .then((value) {
       if (value.statusCode == 200) {
         emit(RefuserInvStateGood());
       } else {
         var jsonResponse =
-        convert.jsonDecode(value.body) as Map<String, dynamic>;
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
         emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
       }
     }).catchError((e) {
@@ -264,19 +268,20 @@ class EquipeCubit extends Cubit<EquipeState> {
       emit(RefuserInvStateBad());
     });
   }
+
 //-------------------------- demander rejoindre equipe--------
-  Future<void> demanderRejoindreEquipe(
-      {required String id}) async {
+  Future<void> demanderRejoindreEquipe({required String id}) async {
     emit(DemandeRejoindreEquipeLoadingState());
 
     Map<String, dynamic> _model = {};
 
-    await Httplar.httpPost(path: DEMANDERREJOINDREEQUIPE + id, data: _model).then((value) {
+    await Httplar.httpPost(path: DEMANDERREJOINDREEQUIPE + id, data: _model)
+        .then((value) {
       if (value.statusCode == 200) {
         emit(DemandeRejoindreEquipeStateGood());
       } else {
         var jsonResponse =
-        convert.jsonDecode(value.body) as Map<String, dynamic>;
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
         emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
       }
     }).catchError((e) {
@@ -287,18 +292,18 @@ class EquipeCubit extends Cubit<EquipeState> {
 
   //-------------annuler demande rejoindre equipe-------------------------
 
-  Future<void> annulerRejoindreEquipe(
-      {required String id}) async {
+  Future<void> annulerRejoindreEquipe({required String id}) async {
     emit(AnnulerRejoindreEquipeLoadingState());
 
     Map<String, dynamic> _model = {};
 
-    await Httplar.httpPost(path: ANNULERREJOINDREEQUIPE + id, data: _model).then((value) {
+    await Httplar.httpPost(path: ANNULERREJOINDREEQUIPE + id, data: _model)
+        .then((value) {
       if (value.statusCode == 200) {
         emit(AnnulerRejoindreEquipeStateGood());
       } else {
         var jsonResponse =
-        convert.jsonDecode(value.body) as Map<String, dynamic>;
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
         emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
       }
     }).catchError((e) {
@@ -306,25 +311,32 @@ class EquipeCubit extends Cubit<EquipeState> {
       emit(AnnulerRejoindreEquipeInvStateBad());
     });
   }
+
   //---------------------------------------------------------------
   //--------------CAPITAINE ACCEPT DEMANDE JOUEUR-----------------
-  late DataJoueurModel joueuraccepted ;
+  late DataJoueurModel joueuraccepted;
   Future<void> capitaineAceeptJoueur(
-      {required String equipeId , required String joueurId ,  required String equipename}) async {
+      {required String equipeId,
+      required String joueurId,
+      required String equipename}) async {
     emit(CapitaineAceeptJoueurLoadingState());
 
     Map<String, dynamic> _model = {};
-print(CAPITAINEACCEPTJOUEUR + equipeId + '/' + joueurId);
-    await Httplar.httpPost(path: CAPITAINEACCEPTJOUEUR + equipeId + '/' + joueurId, data: _model).then((value) {
+    print(CAPITAINEACCEPTJOUEUR + equipeId + '/' + joueurId);
+    await Httplar.httpPost(
+            path: CAPITAINEACCEPTJOUEUR + equipeId + '/' + joueurId,
+            data: _model)
+        .then((value) {
       if (value.statusCode == 200) {
         var jsonResponse =
-        convert.jsonDecode(value.body) as Map<String, dynamic>;
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
         joueuraccepted = DataJoueurModel.fromJson(jsonResponse);
         print('ala ala');
-        emit(CapitaineAceeptJoueurStateGood(equipename: equipename , joueurId:joueurId));
+        emit(CapitaineAceeptJoueurStateGood(
+            equipename: equipename, joueurId: joueurId));
       } else {
         var jsonResponse =
-        convert.jsonDecode(value.body) as Map<String, dynamic>;
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
         emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
       }
     }).catchError((e) {
@@ -335,17 +347,20 @@ print(CAPITAINEACCEPTJOUEUR + equipeId + '/' + joueurId);
 
   //---------------------CAPITAINE refuse DEMANDE JOUEUR-----------------
   Future<void> capitaineRefuseJoueur(
-      {required String equipeId , required String joueurId}) async {
+      {required String equipeId, required String joueurId}) async {
     emit(CapitaineRefuseJoueurLoadingState());
 
     Map<String, dynamic> _model = {};
 
-    await Httplar.httpPost(path: CAPITAINEREFUSEJOUEUR + equipeId + '/' + joueurId, data: _model).then((value) {
+    await Httplar.httpPost(
+            path: CAPITAINEREFUSEJOUEUR + equipeId + '/' + joueurId,
+            data: _model)
+        .then((value) {
       if (value.statusCode == 200) {
         emit(CapitaineRefuseJoueurStateGood(idJoueur: joueurId));
       } else {
         var jsonResponse =
-        convert.jsonDecode(value.body) as Map<String, dynamic>;
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
         emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
       }
     }).catchError((e) {
@@ -355,23 +370,29 @@ print(CAPITAINEACCEPTJOUEUR + equipeId + '/' + joueurId);
   }
 
   //---------------------CAPITAINE invite JOUEUR-----------------
- late DataJoueurModel joueur ;
+  late DataJoueurModel joueur;
   Future<void> capitaineInviteJoueur(
-      {required String equipeId , required String joueurId , required String equipename}) async {
+      {required String equipeId,
+      required String joueurId,
+      required String equipename}) async {
     emit(CapitaineInviteJoueurLoadingState());
 
     Map<String, dynamic> _model = {};
     print(CAPITAINEINVITEJOUEUR + equipeId + '/' + joueurId);
 
-    await Httplar.httpPost(path: CAPITAINEINVITEJOUEUR + equipeId + '/' + joueurId, data: _model).then((value) {
+    await Httplar.httpPost(
+            path: CAPITAINEINVITEJOUEUR + equipeId + '/' + joueurId,
+            data: _model)
+        .then((value) {
       if (value.statusCode == 200) {
         var jsonResponse =
-        convert.jsonDecode(value.body) as Map<String, dynamic>;
-         joueur = DataJoueurModel.fromJson(jsonResponse);
-        emit(CapitaineInviteJoueurStateGood(equipename: equipename , joueurId:joueurId));
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        joueur = DataJoueurModel.fromJson(jsonResponse);
+        emit(CapitaineInviteJoueurStateGood(
+            equipename: equipename, joueurId: joueurId));
       } else {
         var jsonResponse =
-        convert.jsonDecode(value.body) as Map<String, dynamic>;
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
 
         emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
       }
@@ -381,20 +402,22 @@ print(CAPITAINEACCEPTJOUEUR + equipeId + '/' + joueurId);
     });
   }
 
-
   //---------------------CAPITAINE annuler invitation JOUEUR-----------------
   Future<void> capitaineAnnuleInvitationJoueur(
-      {required String equipeId , required String joueurId}) async {
+      {required String equipeId, required String joueurId}) async {
     emit(CapitaineAnnuleInvitationJoueurLoadingState());
 
     Map<String, dynamic> _model = {};
 
-    await Httplar.httpPost(path: CAPITAINEANNULEINVITATIONJOUEUR + equipeId + '/' + joueurId, data: _model).then((value) {
+    await Httplar.httpPost(
+            path: CAPITAINEANNULEINVITATIONJOUEUR + equipeId + '/' + joueurId,
+            data: _model)
+        .then((value) {
       if (value.statusCode == 200) {
         emit(CapitaineAnnuleInvitationJoueurStateGood(idJoueur: joueurId));
       } else {
         var jsonResponse =
-        convert.jsonDecode(value.body) as Map<String, dynamic>;
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
         emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
       }
     }).catchError((e) {
@@ -405,17 +428,19 @@ print(CAPITAINEACCEPTJOUEUR + equipeId + '/' + joueurId);
 
   //--------------quiter equipe ------------------------
   Future<void> quiterEquipe(
-      {required String equipeId , required String joueurId}) async {
+      {required String equipeId, required String joueurId}) async {
     emit(QuiterEquipeLoadingState());
 
     Map<String, dynamic> _model = {};
 
-    await Httplar.httpPost(path: QUITEREQUIPE + equipeId + '/' + joueurId, data: _model).then((value) {
+    await Httplar.httpPost(
+            path: QUITEREQUIPE + equipeId + '/' + joueurId, data: _model)
+        .then((value) {
       if (value.statusCode == 200) {
         emit(QuiterEquipeStateGood(idJoueur: joueurId));
       } else {
         var jsonResponse =
-        convert.jsonDecode(value.body) as Map<String, dynamic>;
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
         emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
       }
     }).catchError((e) {
@@ -430,10 +455,10 @@ print(CAPITAINEACCEPTJOUEUR + equipeId + '/' + joueurId);
     Httplar.httpget(
       path: getJouerByUsername + username,
     ).then((value) {
-print(getJouerByUsername + username);
+      print(getJouerByUsername + username);
       if (value.statusCode == 200) {
         var jsonResponse =
-        convert.jsonDecode(value.body) as Map<String, dynamic>;
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
         print(jsonResponse);
         // emit(TerrainViewToggled());
 
@@ -441,7 +466,7 @@ print(getJouerByUsername + username);
             dataJoueurModel: DataJoueurModel.fromJson(jsonResponse)));
       } else {
         var jsonResponse =
-        convert.jsonDecode(value.body) as Map<String, dynamic>;
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
         emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
       }
     }).catchError((e) {
@@ -449,6 +474,4 @@ print(getJouerByUsername + username);
       emit(CheckUserByUsernameStateBad());
     });
   }
-
-
 }

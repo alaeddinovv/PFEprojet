@@ -1,16 +1,14 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pfeprojet/component/components.dart';
 
-
-import 'package:pfeprojet/Api/wilaya_list.dart';
 import 'package:pfeprojet/component/drop_down_wilaya.dart';
 import 'package:pfeprojet/screen/JoueurScreens/home/home.dart';
-import 'package:pfeprojet/screen/joueurScreens/annonce/cubit/annonce_joueur_cubit.dart';// Import your JSON data
+import 'package:pfeprojet/screen/joueurScreens/annonce/addAnnonceNew.dart';
+import 'package:pfeprojet/screen/joueurScreens/annonce/cubit/annonce_joueur_cubit.dart'; // Import your JSON data
 
 class AddAnnonce extends StatefulWidget {
-  AddAnnonce({Key? key}) : super(key: key);
+  const AddAnnonce({Key? key}) : super(key: key);
 
   @override
   _AddAnnonceState createState() => _AddAnnonceState();
@@ -22,33 +20,6 @@ class _AddAnnonceState extends State<AddAnnonce> {
   final wilayaController = TextEditingController();
   final dairaController = TextEditingController();
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
-
-  String? selectedWilaya;
-  String? selectedCommune;
-  List<dynamic> wilayas = [];
-  List<String> communes = [];
-
-  @override
-  void initState() {
-    super.initState();
-    loadWilayas();
-  }
-
-  void loadWilayas() {
-    final parsed = json.decode(wilayasJson) as Map<String, dynamic>;
-    setState(() {
-      wilayas = parsed['Wilayas'];
-    });
-  }
-
-  void updateCommunes(String? wilayaName) {
-    setState(() {
-      selectedCommune = null;  // Reset the commune selection
-      communes = wilayaName != null
-          ? List<String>.from(wilayas.firstWhere((element) => element['name'] == wilayaName)['communes'])
-          : [];
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +34,11 @@ class _AddAnnonceState extends State<AddAnnonce> {
         }
       },
       child: Scaffold(
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            navigatAndReturn(context: context, page: AddAnnonceScreen());
+          },
+        ),
         appBar: AppBar(
           title: const Text("Ajouter une annonce"),
         ),
@@ -116,44 +92,6 @@ class _AddAnnonceState extends State<AddAnnonce> {
                     textInputAction: TextInputAction.next,
                   ),
                   const SizedBox(height: 20),
-                  // DropdownButtonFormField<String>(
-                  //   decoration: InputDecoration(
-                  //     labelText: 'Select Wilaya',
-                  //     border: OutlineInputBorder(),
-                  //   ),
-                  //   value: selectedWilaya,
-                  //   onChanged: (newValue) {
-                  //     setState(() {
-                  //       selectedWilaya = newValue;
-                  //       updateCommunes(newValue);
-                  //     });
-                  //   },
-                  //   items: wilayas.map((dynamic wilaya) {
-                  //     return DropdownMenuItem<String>(
-                  //       value: wilaya['name'],
-                  //       child: Text(wilaya['name']),
-                  //     );
-                  //   }).toList(),
-                  // ),
-                  // const SizedBox(height: 20),
-                  // DropdownButtonFormField<String>(
-                  //   decoration: InputDecoration(
-                  //     labelText: 'Select Commune',
-                  //     border: OutlineInputBorder(),
-                  //   ),
-                  //   value: selectedCommune,
-                  //   onChanged: (newValue) {
-                  //     setState(() {
-                  //       selectedCommune = newValue;
-                  //     });
-                  //   },
-                  //   items: communes.map((String commune) {
-                  //     return DropdownMenuItem<String>(
-                  //       value: commune,
-                  //       child: Text(commune),
-                  //     );
-                  //   }).toList(),
-                  // ),
                   DropdownScreen(
                     selectedDaira: dairaController,
                     selectedWilaya: wilayaController,
@@ -179,7 +117,7 @@ class _AddAnnonceState extends State<AddAnnonce> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => const HomeJoueur()),
-                                  (route) => false,
+                              (route) => false,
                             );
                           });
                         } else if (state is CreerAnnonceJoueurStateBad) {
@@ -197,12 +135,12 @@ class _AddAnnonceState extends State<AddAnnonce> {
                           background: Colors.blueAccent,
                           onPressed: () {
                             if (formkey.currentState!.validate()) {
-                              AnnonceJoueurCubit.get(context).creerAnnonceJoueur(
-                                  type: _typeController.text,
-                                  text: _textController.text,
-                                  wilaya: wilayaController.text,
-                                  commune: dairaController.text
-                              );
+                              AnnonceJoueurCubit.get(context)
+                                  .creerAnnonceJoueur(
+                                      type: _typeController.text,
+                                      text: _textController.text,
+                                      wilaya: wilayaController.text,
+                                      commune: dairaController.text);
                             }
                           },
                         );
