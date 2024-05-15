@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pfeprojet/Model/annonce_model.dart';
 import 'package:pfeprojet/component/components.dart';
+import 'package:pfeprojet/screen/joueurScreens/annonce/test1.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:permission_handler/permission_handler.dart';
-
 
 import 'package:pfeprojet/screen/joueurScreens/annonce/addannonce.dart';
 import 'package:pfeprojet/screen/joueurScreens/annonce/cubit/annonce_joueur_cubit.dart';
@@ -11,7 +11,6 @@ import 'package:pfeprojet/screen/joueurScreens/annonce/update_annonce.dart';
 import '../../../Model/annonce_admin_model.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 
 class Annonce extends StatefulWidget {
   const Annonce({Key? key}) : super(key: key);
@@ -30,34 +29,27 @@ class _AnnonceState extends State<Annonce> {
     _controller = ScrollController();
     _controller = ScrollController()
       ..addListener(() {
-
         if (_controller.offset >= _controller.position.maxScrollExtent &&
-            !_controller.position.outOfRange
-
-        )
-
-        {
+            !_controller.position.outOfRange) {
           if (_showList) {
-            if (AnnonceJoueurCubit.get(context).cursorId !="" ) {
-              AnnonceJoueurCubit.get(context).getMyAnnonceJoueur(cursor: AnnonceJoueurCubit.get(context).cursorId);
+            if (AnnonceJoueurCubit.get(context).cursorId != "") {
+              AnnonceJoueurCubit.get(context).getMyAnnonceJoueur(
+                  cursor: AnnonceJoueurCubit.get(context).cursorId);
+              print('ggggg');
+            }
+          } else {
+            if (AnnonceJoueurCubit.get(context).cursorid != "") {
+              AnnonceJoueurCubit.get(context).getAllAnnonce(
+                  cursor: AnnonceJoueurCubit.get(context).cursorid);
               print('ggggg');
 
-        }
-
-        } else {
-        if (AnnonceJoueurCubit.get(context).cursorid != "") {
-        AnnonceJoueurCubit.get(context).getAllAnnonce(cursor: AnnonceJoueurCubit.get(context).cursorid);
-        print('ggggg');
-
-        print(AnnonceJoueurCubit.get(context).cursorid);
-        }
-        }
+              print(AnnonceJoueurCubit.get(context).cursorid);
+            }
+          }
         }
       });
     // _controller.addListener(_onScroll);
   }
-
-
 
   @override
   void dispose() {
@@ -78,9 +70,11 @@ class _AnnonceState extends State<Annonce> {
                 setState(() {
                   _showList = index == 0;
                   if (!_showList) {
-                    AnnonceJoueurCubit.get(context).getAllAnnonce(); // Call getAllAnnonce when "All annonces" is selected
+                    AnnonceJoueurCubit.get(context)
+                        .getAllAnnonce(); // Call getAllAnnonce when "All annonces" is selected
                   } else {
-                    AnnonceJoueurCubit.get(context).getMyAnnonceJoueur(); // Optional: Refresh "My annonces" when switching back
+                    AnnonceJoueurCubit.get(context)
+                        .getMyAnnonceJoueur(); // Optional: Refresh "My annonces" when switching back
                   }
                 });
               },
@@ -103,97 +97,103 @@ class _AnnonceState extends State<Annonce> {
             ),
           ),
           Expanded(
-            child: _showList ?
-            Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-          child: BlocConsumer<AnnonceJoueurCubit, AnnonceJoueurState>(
-          listener: (context, state) {
-          if (state is DeleteAnnonceJoueurStateGood) {
-          AnnonceJoueurCubit.get(context)
-              .getMyAnnonceJoueur()
-              .then((value) => Navigator.pop(context));
-          }
-          },
-          builder: (context, state) {
+            child: _showList
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 20),
+                    child: BlocConsumer<AnnonceJoueurCubit, AnnonceJoueurState>(
+                      listener: (context, state) {
+                        if (state is DeleteAnnonceJoueurStateGood) {
+                          AnnonceJoueurCubit.get(context)
+                              .getMyAnnonceJoueur()
+                              .then((value) => Navigator.pop(context));
+                        }
+                      },
+                      builder: (context, state) {
+                        if (state is GetMyAnnonceJoueurLoading &&
+                            AnnonceJoueurCubit.get(context).cursorId == '') {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
 
-          if (state is GetMyAnnonceJoueurLoading && AnnonceJoueurCubit.get(context).cursorId == '') {
-          return const Center(child: CircularProgressIndicator());
-          }
+                        return ListView.separated(
+                          controller: _controller,
+                          physics: const BouncingScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return _buildAnnonceItem(
+                                AnnonceJoueurCubit.get(context)
+                                    .annonceData[index],
+                                index,
+                                context);
+                          },
+                          separatorBuilder: (context, int index) =>
+                              const SizedBox(height: 16),
+                          itemCount: AnnonceJoueurCubit.get(context)
+                              .annonceData
+                              .length,
+                          shrinkWrap: true, // to prevent infinite height error
+                        );
+                        //
+                        return const SizedBox();
+                      },
+                    ),
+                  )
 
-          return ListView.separated(
-            controller: _controller,
-            physics: const BouncingScrollPhysics(),
-            itemBuilder: (context, index) {
-              return _buildAnnonceItem(
-                  AnnonceJoueurCubit.get(context).annonceData[index],
-                  index,
-                  context);
-            },
-            separatorBuilder: (context, int index) => const SizedBox(height: 16),
-            itemCount: AnnonceJoueurCubit.get(context).annonceData.length,
-            shrinkWrap: true, // to prevent infinite height error
-          );
-          //
-          return const SizedBox();
-          },
-          ),
-          )
+                //       SizedBox()
+                : Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 20),
+                    child: BlocConsumer<AnnonceJoueurCubit, AnnonceJoueurState>(
+                      listener: (context, state) {
+                        if (state is DeleteAnnonceJoueurStateGood) {
+                          AnnonceJoueurCubit.get(context)
+                              .getAllAnnonce()
+                              .then((value) => Navigator.pop(context));
+                        }
+                      },
+                      builder: (context, state) {
+                        if (state is GetAllAnnonceLoading &&
+                            AnnonceJoueurCubit.get(context).cursorid == '') {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
 
-          //       SizedBox()
-                :
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-              child: BlocConsumer<AnnonceJoueurCubit, AnnonceJoueurState>(
-                listener: (context, state) {
-                  if (state is DeleteAnnonceJoueurStateGood) {
-                    AnnonceJoueurCubit.get(context)
-                        .getAllAnnonce()
-                        .then((value) => Navigator.pop(context));
-                  }
-
-                },
-                builder: (context, state) {
-
-
-                  if (state is GetAllAnnonceLoading && AnnonceJoueurCubit.get(context).cursorid == '') {
-                    return const Center(child: CircularProgressIndicator());
-                  }
-
-                  return ListView.separated(
-                    controller: _controller,
-                    physics: const BouncingScrollPhysics(),
-                    itemBuilder: (context, index) {
-                      return _buildAllAnnonceItem(
-                          AnnonceJoueurCubit.get(context).annonces[index],
-                          index,
-                          context);
-                    },
-                    separatorBuilder: (context, int index) => const SizedBox(height: 16),
-                    itemCount: AnnonceJoueurCubit.get(context).annonces.length,
-                    shrinkWrap: true, // to prevent infinite height error
-                  );
-                },
-              ),
-            ),
-
+                        return ListView.separated(
+                          controller: _controller,
+                          physics: const BouncingScrollPhysics(),
+                          itemBuilder: (context, index) {
+                            return _buildAllAnnonceItem(
+                                AnnonceJoueurCubit.get(context).annonces[index],
+                                index,
+                                context);
+                          },
+                          separatorBuilder: (context, int index) =>
+                              const SizedBox(height: 16),
+                          itemCount:
+                              AnnonceJoueurCubit.get(context).annonces.length,
+                          shrinkWrap: true, // to prevent infinite height error
+                        );
+                      },
+                    ),
+                  ),
           ),
         ],
       ),
       floatingActionButton: _showList
           ? FloatingActionButton(
-        onPressed: () {
-          navigatAndReturn(context: context, page: AddAnnonce());
-        },
-        child: const Icon(Icons.add),
-      )
+              onPressed: () {
+                navigatAndReturn(context: context, page: const AddAnnonce());
+              },
+              child: const Icon(Icons.add),
+            )
           : null,
     );
   }
+
 //---------------------------------------- myyyyyyyyyyyyyyyyyyyyy
   Widget buildAnnonceList() {
     return SingleChildScrollView(
-      child:
-      Padding(
+      child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: BlocConsumer<AnnonceJoueurCubit, AnnonceJoueurState>(
           listener: (context, state) {
@@ -204,8 +204,8 @@ class _AnnonceState extends State<Annonce> {
             }
           },
           builder: (context, state) {
-
-            if (state is GetMyAnnonceJoueurLoading && AnnonceJoueurCubit.get(context).cursorId == '') {
+            if (state is GetMyAnnonceJoueurLoading &&
+                AnnonceJoueurCubit.get(context).cursorId == '') {
               return const Center(child: CircularProgressIndicator());
             }
 
@@ -218,22 +218,22 @@ class _AnnonceState extends State<Annonce> {
                     index,
                     context);
               },
-              separatorBuilder: (context, int index) => const SizedBox(height: 16),
+              separatorBuilder: (context, int index) =>
+                  const SizedBox(height: 16),
               itemCount: AnnonceJoueurCubit.get(context).annonceData.length,
               shrinkWrap: true, // to prevent infinite height error
             );
             //
-
           },
         ),
       ),
     );
   }
+
 //--------------------------------------------------------- allllllllllllllllllllllllllllll
   Widget buildSimpleView({required ScrollController controller}) {
     return SingleChildScrollView(
-      child:
-      Padding(
+      child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         child: BlocConsumer<AnnonceJoueurCubit, AnnonceJoueurState>(
           listener: (context, state) {
@@ -242,14 +242,14 @@ class _AnnonceState extends State<Annonce> {
                   .getAllAnnonce()
                   .then((value) => Navigator.pop(context));
             }
-
           },
           builder: (context, state) {
             if (state is GetAllAnnonceStateBad) {
               return const Text('Failed to fetch data');
             }
 
-            if (state is GetAllAnnonceLoading && AnnonceJoueurCubit.get(context).cursorid == '') {
+            if (state is GetAllAnnonceLoading &&
+                AnnonceJoueurCubit.get(context).cursorid == '') {
               return const Center(child: CircularProgressIndicator());
             }
 
@@ -262,16 +262,17 @@ class _AnnonceState extends State<Annonce> {
                     index,
                     context);
               },
-              separatorBuilder: (context, int index) => const SizedBox(height: 16),
+              separatorBuilder: (context, int index) =>
+                  const SizedBox(height: 16),
               itemCount: AnnonceJoueurCubit.get(context).annonces.length,
               shrinkWrap: true, // to prevent infinite height error
             );
           },
         ),
       ),
-
     );
   }
+
 //----------------------------------------------------------------mmmmmmmmmmmmmmmmmmmmmyyyyyyyyyyyyy
   Widget _buildAnnonceItem(
       AnnonceAdminData model, int index, BuildContext context) {
@@ -279,14 +280,15 @@ class _AnnonceState extends State<Annonce> {
       margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border.all(color: Colors.blueAccent, width: 1), // Softer blue border
+        border: Border.all(
+            color: Colors.blueAccent, width: 1), // Softer blue border
         borderRadius: BorderRadius.circular(10.0),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.5),
             spreadRadius: 1,
             blurRadius: 5,
-            offset: Offset(0, 3), // Elevated shadow effect
+            offset: const Offset(0, 3), // Elevated shadow effect
           ),
         ],
       ),
@@ -294,9 +296,17 @@ class _AnnonceState extends State<Annonce> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ListTile(
+            onTap: () {
+              navigatAndReturn(
+                context: context,
+                page: MatchDetailsPage(
+                  id: model.id!,
+                ),
+              );
+            },
             title: Text(
               model.type ?? '',
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.black87,
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
@@ -306,7 +316,8 @@ class _AnnonceState extends State<Annonce> {
               mainAxisSize: MainAxisSize.min, // Ensures compactness
               children: [
                 IconButton(
-                  icon: Icon(Icons.edit, color: Color(0xFF4CAF50)), // Softer green
+                  icon: const Icon(Icons.edit,
+                      color: Color(0xFF4CAF50)), // Softer green
                   onPressed: () {
                     navigatAndReturn(
                         context: context,
@@ -315,7 +326,8 @@ class _AnnonceState extends State<Annonce> {
                   },
                 ),
                 IconButton(
-                  icon: Icon(Icons.delete, color: Color(0xFFBDBDBD)), // Softer grey
+                  icon: const Icon(Icons.delete,
+                      color: Color(0xFFBDBDBD)), // Softer grey
                   onPressed: () {
                     dialogDelete(context, model);
                     // Your code to handle delete action
@@ -325,10 +337,11 @@ class _AnnonceState extends State<Annonce> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             child: Text(
               model.description ?? '', // Display the description
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 16, // Readability enhancement
                 color: Colors.black54, // Softer text color
               ),
@@ -338,7 +351,6 @@ class _AnnonceState extends State<Annonce> {
       ),
     );
   }
-
 
   //--------------------------------------alallllllllllllllllllllllllllllllllllll
   Widget _buildAllAnnonceItem(
@@ -354,7 +366,7 @@ class _AnnonceState extends State<Annonce> {
             color: Colors.grey.withOpacity(0.5),
             spreadRadius: 1,
             blurRadius: 5,
-            offset: Offset(0, 3), // Changes position of shadow
+            offset: const Offset(0, 3), // Changes position of shadow
           ),
         ],
       ),
@@ -362,9 +374,17 @@ class _AnnonceState extends State<Annonce> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ListTile(
+            onTap: () {
+              navigatAndReturn(
+                context: context,
+                page: MatchDetailsPage(
+                  id: model.id!,
+                ),
+              );
+            },
             title: Text(
               model.type ?? '',
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.black87,
                 fontWeight: FontWeight.bold,
                 fontSize: 18, // Larger font size for prominence
@@ -374,29 +394,31 @@ class _AnnonceState extends State<Annonce> {
               mainAxisSize: MainAxisSize.min, // Keeps the Row compact
               children: [
                 IconButton(
-                  icon: Icon(Icons.call, color: Color(0xFF4CAF50)), // Softer green
+                  icon: const Icon(Icons.call,
+                      color: Color(0xFF4CAF50)), // Softer green
                   onPressed: () {
-                    int? phoneNumber = model.admin?.telephone ?? model.joueur?.telephone;
+                    int? phoneNumber =
+                        model.admin?.telephone ?? model.joueur?.telephone;
                     if (phoneNumber != null) {
                       _makePhoneCall(phoneNumber.toString());
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
+                        const SnackBar(
                           content: Text("No telephone number available."),
                         ),
                       );
                     }
                   },
                 ),
-
               ],
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             child: Text(
               model.description ?? '', // Display the description
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 16, // Slightly larger font for readability
                 color: Colors.black54, // Softer text color
               ),
@@ -419,8 +441,8 @@ class _AnnonceState extends State<Annonce> {
           actions: [
             TextButton(
               onPressed: () {
-                AnnonceJoueurCubit.get(context).deleteAnnonceJoueur(id: model.id!);
-
+                AnnonceJoueurCubit.get(context)
+                    .deleteAnnonceJoueur(id: model.id!);
               },
               child: const Text('Yes'),
             ),
@@ -436,8 +458,6 @@ class _AnnonceState extends State<Annonce> {
     );
   }
 
-
-
   Future<void> _makePhoneCall(String phoneNumber) async {
     print(phoneNumber.runtimeType);
     print(phoneNumber);
@@ -449,15 +469,9 @@ class _AnnonceState extends State<Annonce> {
     if (await Permission.phone.isGranted) {
       final Uri launchUri = Uri(scheme: 'tel', path: phoneNumber);
 
-        await launchUrl(launchUri);
-
-
-
+      await launchUrl(launchUri);
     } else {
       print('Permission denied');
     }
   }
-
-
-
 }

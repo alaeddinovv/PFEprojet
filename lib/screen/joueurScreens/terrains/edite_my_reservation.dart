@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pfeprojet/Model/reservation_model.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/const.dart';
-import 'package:pfeprojet/component/search_my_equipe.dart';
+import 'package:pfeprojet/component/search_equipe.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/cubit/terrain_cubit.dart';
 import 'package:pfeprojet/component/searchJoueur.dart';
 
