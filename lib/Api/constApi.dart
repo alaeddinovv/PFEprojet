@@ -3,8 +3,10 @@
 
 
 
+
 // const URLHTTP = '192.168.1.20:3000'; //IP houssem
 const URLHTTP = '192.168.1.20:3000'; //IP ala
+
 
 // const URLHTTP = '10.0.2.2:3000';
 
@@ -51,6 +53,7 @@ const DELETEANNONCE = '/api/annonce/';
 const GETMYANNONCEJOUEUR = '/api/myannonces/joueur/';
 const GETMYANNONCEADMIN = '/api/myannonces/admin/';
 const UPDATEANNONCE = '/api/annonce/';
+const GETANNONCEBYID = '/api/annonce/';
 const RECOVERPASSWORD = '/api/joueur/recoverpassword';
 const RECOVERPASSWORDADMIN = '/api/admin/recoverpassword';
 const RESETPASSWORD = '/api/joueur/resetpassword';

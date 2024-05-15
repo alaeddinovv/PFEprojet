@@ -207,6 +207,7 @@ class TerrainCubit extends Cubit<TerrainState> {
             convert.jsonDecode(value.body) as Map<String, dynamic>;
         emit(GetMyReserveStateGood(
             reservations: ReservationModel.fromJson(jsonResponse)));
+        print(jsonResponse);
       } else {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
