@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pfeprojet/Model/annonce_model.dart';
 import 'package:pfeprojet/component/components.dart';
-import 'package:pfeprojet/screen/joueurScreens/annonce/test1.dart';
+import 'package:pfeprojet/screen/joueurScreens/annonce/detailsAnnonce/search_joueur_details.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -299,7 +299,7 @@ class _AnnonceState extends State<Annonce> {
             onTap: () {
               navigatAndReturn(
                 context: context,
-                page: MatchDetailsPage(
+                page: AnnonceSearchJoueurDetails(
                   id: model.id!,
                 ),
               );
@@ -377,7 +377,7 @@ class _AnnonceState extends State<Annonce> {
             onTap: () {
               navigatAndReturn(
                 context: context,
-                page: MatchDetailsPage(
+                page: AnnonceSearchJoueurDetails(
                   id: model.id!,
                 ),
               );

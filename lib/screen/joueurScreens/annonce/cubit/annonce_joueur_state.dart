@@ -50,3 +50,15 @@ final class GetAnnonceByIDStateGood extends AnnonceJoueurState {
 }
 
 final class GetAnnonceByIDStateBad extends AnnonceJoueurState {}
+
+final class GetSearchTerrainLoading extends AnnonceJoueurState {}
+
+final class GetSearchTerrainStateGood extends AnnonceJoueurState {}
+
+final class GetSearchTerrainStateBad extends AnnonceJoueurState {}
+
+final class ErrorStateSerchTerrain extends AnnonceJoueurState {
+  final ErrorModel errorModel;
+
+  ErrorStateSerchTerrain({required this.errorModel});
+}

@@ -7,6 +7,7 @@ import 'package:pfeprojet/Api/constApi.dart';
 import 'package:pfeprojet/Api/httplaravel.dart';
 import 'package:pfeprojet/Model/annonce_model.dart';
 import 'package:pfeprojet/Model/annonce_search_model.dart';
+import 'package:pfeprojet/Model/terrain_pagination_model.dart';
 
 import '../../../../Model/annonce_admin_model.dart';
 import '../../../../Model/error_model.dart';
@@ -170,6 +171,7 @@ class AnnonceJoueurCubit extends Cubit<AnnonceJoueurState> {
       if (value.statusCode == 200) {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
+        print(jsonResponse);
         AnnonceSearchJoueurModel annonce =
             AnnonceSearchJoueurModel.fromJson(jsonResponse);
         emit(GetAnnonceByIDStateGood(annonceSearchJoueurModel: annonce));
@@ -181,6 +183,53 @@ class AnnonceJoueurCubit extends Cubit<AnnonceJoueurState> {
     }).catchError((e) {
       print(e.toString());
       emit(GetAnnonceByIDStateBad());
+    });
+  }
+
+  List<TarrainPaginationData> terrainSearch = [];
+  String cursorIdTerrain = "";
+
+  Future<void> searchTerrain(
+      {String cursor = '', String? nomTerrain, required bool isOnlyMy}) async {
+    emit(GetSearchTerrainLoading());
+    if (nomTerrain == '') {
+      terrainSearch = [];
+      cursorIdTerrain = "";
+      return;
+    }
+    String pathSearch;
+    if (isOnlyMy) {
+      pathSearch = SEARCHMYTERRAIN;
+    } else {
+      pathSearch = SEARCHTERRAIN;
+    }
+    await Httplar.httpget(
+        path: pathSearch,
+        query: {'cursor': cursor, 'nom': nomTerrain}).then((value) {
+      if (value.statusCode == 200) {
+        if (cursor == "") {
+          terrainSearch = [];
+          cursorIdTerrain = "";
+        }
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        TerrainPaginationModel model =
+            TerrainPaginationModel.fromJson(jsonResponse);
+        terrainSearch.addAll(model.data);
+        print(terrainSearch.length);
+        cursorIdTerrain = model.nextCursor;
+        print(cursorIdTerrain);
+
+        emit(GetSearchTerrainStateGood()); // Pass the list here
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(ErrorStateSerchTerrain(
+            errorModel: ErrorModel.fromJson(jsonResponse)));
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(GetSearchTerrainStateBad());
     });
   }
 }

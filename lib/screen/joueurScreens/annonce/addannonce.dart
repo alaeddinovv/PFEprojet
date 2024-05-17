@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:pfeprojet/Model/houssem/equipe_model.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/drop_down_wilaya.dart';
+import 'package:pfeprojet/component/search_terrain.dart';
 import 'package:pfeprojet/screen/JoueurScreens/home/home.dart';
 import 'package:pfeprojet/screen/joueurScreens/annonce/cubit/annonce_joueur_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/cubit/terrain_cubit.dart';
@@ -26,6 +27,7 @@ class _AddAnnonceState extends State<AddAnnonce> {
   final _formKey = GlobalKey<FormState>();
   String? _selectedType;
   int? _numeroJoueurs;
+  String? terrainName;
   final List<String> _positions = [
     'attaquant',
     'defenseur',
@@ -36,7 +38,6 @@ class _AddAnnonceState extends State<AddAnnonce> {
   String? _errorMessage;
   @override
   void initState() {
-    idTerrainController.text = '663e34f963281e6569d72b9a';
     super.initState();
   }
 
@@ -62,11 +63,8 @@ class _AddAnnonceState extends State<AddAnnonce> {
         ),
         body: LayoutBuilder(
           builder: (context, constraints) {
-            // Get the width of the screen
             double width = constraints.maxWidth;
-            // Adjust padding based on screen width
             double padding = width > 600 ? 32.0 : 16.0;
-            // Set a fixed width for larger screens
             double fieldWidth = width > 600 ? 500.0 : double.infinity;
 
             return Center(
@@ -77,7 +75,6 @@ class _AddAnnonceState extends State<AddAnnonce> {
                   key: _formKey,
                   child: ListView(
                     children: [
-                      // Dropdown field for selecting the type of annonce
                       buildDropdownField(
                         label: 'Type',
                         value: _selectedType,
@@ -91,21 +88,22 @@ class _AddAnnonceState extends State<AddAnnonce> {
                       ),
                       const SizedBox(height: 16),
                       if (_selectedType == 'search joueur') ...[
-                        // text field for entering the idTerrain
-
-                        const SizedBox(height: 16),
-                        // text field for entering the idTerrain
-                        buildTextField(
-                          controller: idTerrainController,
-                          label: 'Terrain ID',
-                          keyboardType: TextInputType.text,
-                          onChanged: (value) {
+                        SearchTerrain(
+                          terrainIdController: idTerrainController,
+                          isOnlyMy: false,
+                          onTerrainSelected: (p0) {
                             setState(() {
-                              idTerrainController.text = value!;
+                              idTerrainController.text = p0.id;
+                              terrainName = p0.nom;
                             });
                           },
-                          icon: Icons.sports_soccer,
                         ),
+                        if (idTerrainController.text.isNotEmpty)
+                          Text('Terrain Name: $terrainName',
+                              style: const TextStyle(
+                                color: Colors.green,
+                                fontWeight: FontWeight.bold,
+                              )),
                         const SizedBox(height: 16),
                         Row(
                           children: [
@@ -113,7 +111,6 @@ class _AddAnnonceState extends State<AddAnnonce> {
                               child: _buildTimePickerField(
                                   context, hourController, 'Start Time'),
                             ),
-                            // date picker
                             Expanded(
                               child: Container(
                                 decoration: BoxDecoration(
@@ -150,17 +147,14 @@ class _AddAnnonceState extends State<AddAnnonce> {
                             ),
                           ],
                         ),
-
                         const SizedBox(height: 16),
-
                         if (selectedEquipe != null)
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
                                 'Selected Equipe: ${selectedEquipe!.nom}',
-                                // ignore: prefer_const_constructors
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.green,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -175,9 +169,6 @@ class _AddAnnonceState extends State<AddAnnonce> {
                                   icon: const Icon(Icons.clear))
                             ],
                           ),
-
-                        // Text(),
-                        // Text field for entering the number of players
                         buildTextField(
                           label: 'Number of Players',
                           keyboardType: TextInputType.number,
@@ -199,7 +190,6 @@ class _AddAnnonceState extends State<AddAnnonce> {
                           },
                           icon: Icons.people,
                         ),
-                        // Display error message if number of players exceeds 5
                         if (_errorMessage != null)
                           Padding(
                             padding: const EdgeInsets.only(top: 8.0),
@@ -208,7 +198,6 @@ class _AddAnnonceState extends State<AddAnnonce> {
                               style: const TextStyle(color: Colors.red),
                             ),
                           ),
-                        // Dropdown fields for selecting positions for each player
                         for (int i = 0; i < (_numeroJoueurs ?? 0); i++)
                           Padding(
                             padding: const EdgeInsets.only(top: 16.0),
@@ -226,13 +215,10 @@ class _AddAnnonceState extends State<AddAnnonce> {
                           ),
                       ],
                       const SizedBox(height: 16),
-// add wilaya and commune
                       DropdownScreen(
                         selectedDaira: communeController,
                         selectedWilaya: wilayaController,
                       ),
-
-                      // Text field for entering the description
                       buildTextField(
                         label: 'Description',
                         maxLines: 3,
@@ -240,7 +226,6 @@ class _AddAnnonceState extends State<AddAnnonce> {
                         controller: descriptionController,
                       ),
                       const SizedBox(height: 20),
-                      // Submit button
                       BlocListener<TerrainCubit, TerrainState>(
                         listener: (context, state) {
                           if (state is GetMyReserveStateGood) {
@@ -248,7 +233,6 @@ class _AddAnnonceState extends State<AddAnnonce> {
                               "type": _selectedType,
                               "description": descriptionController.text,
                               "terrain_id": state.reservations.terrainId,
-                              "equipe_id": state.reservations.equipe1!.id,
                               "reservation_id": state.reservations.id,
                               "numero_joueurs": _numeroJoueurs,
                               'wilaya': wilayaController.text,
@@ -259,6 +243,7 @@ class _AddAnnonceState extends State<AddAnnonce> {
                                 };
                               }).toList(),
                             };
+
                             AnnonceJoueurCubit.get(context)
                                 .creerAnnonceJoueur(model: _model);
                           }
@@ -302,10 +287,25 @@ class _AddAnnonceState extends State<AddAnnonce> {
                             return defaultSubmit2(
                                 text: 'Add Annonce',
                                 onPressed: () {
-                                  TerrainCubit.get(context).getMyreserve(
-                                      terrainId: idTerrainController.text,
-                                      date: dateTime,
-                                      heure_debut_temps: hourController.text);
+                                  if (_selectedType == 'search joueur' &&
+                                      (idTerrainController.text.isEmpty ||
+                                          hourController.text.isEmpty ||
+                                          dateTime == null ||
+                                          _numeroJoueurs == null ||
+                                          _numeroJoueurs! > 5 ||
+                                          _selectedPositions.contains(null) ||
+                                          wilayaController.text.isEmpty ||
+                                          communeController.text.isEmpty ||
+                                          descriptionController.text.isEmpty)) {
+                                    showToast(
+                                        msg: "Please fill all required fields",
+                                        state: ToastStates.error);
+                                  } else {
+                                    TerrainCubit.get(context).getMyreserve(
+                                        terrainId: idTerrainController.text,
+                                        date: dateTime,
+                                        heure_debut_temps: hourController.text);
+                                  }
                                 });
                           },
                         ),
@@ -373,19 +373,17 @@ class _AddAnnonceState extends State<AddAnnonce> {
         });
 
     if (pickedTime != null) {
-      // Format the TimeOfDay to a 24-hour format string
       String formattedTime = _formatTimeOfDay(pickedTime);
       controller.text = formattedTime;
       print(controller.text);
     }
   }
 
-// Helper function to format TimeOfDay to a "HH:mm" string
   String _formatTimeOfDay(TimeOfDay timeOfDay) {
     final now = DateTime.now();
     final dt = DateTime(
         now.year, now.month, now.day, timeOfDay.hour, timeOfDay.minute);
-    final format = DateFormat("HH:mm"); // Using 24-hour format
+    final format = DateFormat("HH:mm");
     return format.format(dt);
   }
 
@@ -400,13 +398,11 @@ class _AddAnnonceState extends State<AddAnnonce> {
     if (pickedDate != null && pickedDate != dateTime) {
       setState(() {
         this.dateTime = pickedDate;
-        // print(formatDate(this.dateTime));
       });
     }
   }
 }
 
-// Helper method to build a dropdown field with an icon
 Widget buildDropdownField({
   required String label,
   String? value,
@@ -447,7 +443,6 @@ Widget buildDropdownField({
     ),
   );
 }
-// Helper method to build a text field with an icon
 
 Widget buildTextField({
   required String label,

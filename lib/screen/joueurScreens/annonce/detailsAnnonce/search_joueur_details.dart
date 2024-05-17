@@ -6,19 +6,21 @@ import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/screen/joueurScreens/annonce/cubit/annonce_joueur_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/location/terrain_location.dart';
 
-class MatchDetailsPage extends StatefulWidget {
+class AnnonceSearchJoueurDetails extends StatefulWidget {
   final String id;
 
-  const MatchDetailsPage({
+  const AnnonceSearchJoueurDetails({
     Key? key,
     required this.id,
   }) : super(key: key);
 
   @override
-  State<MatchDetailsPage> createState() => _MatchDetailsPageState();
+  State<AnnonceSearchJoueurDetails> createState() =>
+      _AnnonceSearchJoueurDetailsState();
 }
 
-class _MatchDetailsPageState extends State<MatchDetailsPage> {
+class _AnnonceSearchJoueurDetailsState
+    extends State<AnnonceSearchJoueurDetails> {
   late final AnnonceJoueurCubit cubit;
   late final AnnonceSearchJoueurModel annonceDetails;
 
@@ -53,11 +55,11 @@ class _MatchDetailsPageState extends State<MatchDetailsPage> {
                 children: [
                   _buildDetailCard('Type', annonceDetails.type,
                       Icons.sports_soccer, Colors.orange),
-                  _buildDetailCard('Date', annonceDetails.reservationId.jour,
+                  _buildDetailCard('Date', annonceDetails.reservationId!.jour!,
                       Icons.calendar_today, Colors.green),
                   _buildDetailCard(
                       'Start Time',
-                      annonceDetails.reservationId.heureDebutTemps,
+                      annonceDetails.reservationId!.heureDebutTemps!,
                       Icons.access_time,
                       Colors.blue),
                   _buildDetailCardWithNavigation(
@@ -85,16 +87,20 @@ class _MatchDetailsPageState extends State<MatchDetailsPage> {
                       Icons.search, Colors.teal),
                   _buildDetailCard(
                       'Duration',
-                      '${annonceDetails.reservationId.duree} hours',
+                      '${annonceDetails.reservationId!.duree} hours',
                       Icons.timer,
                       Colors.brown),
                   _buildTeamExpansionTile(
                       'Team 1',
-                      annonceDetails.reservationId.equipeId1.joueurs,
+                      annonceDetails.reservationId?.equipeId1 != null
+                          ? annonceDetails.reservationId!.equipeId1!.joueurs
+                          : [],
                       Colors.blue),
                   _buildTeamExpansionTile(
                       'Team 2',
-                      annonceDetails.reservationId.equipeId2.joueurs,
+                      annonceDetails.reservationId!.equipeId2 != null
+                          ? annonceDetails.reservationId!.equipeId2!.joueurs
+                          : [],
                       Colors.red),
                   _buildDetailCard('Description', annonceDetails.description,
                       Icons.description, Colors.grey),

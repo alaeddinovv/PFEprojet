@@ -290,6 +290,35 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
           ),
           Row(
             children: [
+              const Icon(Icons.sports_soccer_rounded),
+              const SizedBox(
+                width: 8,
+              ),
+              RichText(
+                text: TextSpan(
+                  // Default style for all spans
+                  style: DefaultTextStyle.of(context).style,
+                  children: <TextSpan>[
+                    const TextSpan(
+                      text: 'Nom: ',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextSpan(
+                      text: widget.terrainModel.nom!,
+                      style: const TextStyle(fontStyle: FontStyle.italic),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+          const SizedBox(
+            height: 8,
+          ),
+          Row(
+            children: [
               const Icon(Icons.location_on),
               const SizedBox(
                 width: 8,
