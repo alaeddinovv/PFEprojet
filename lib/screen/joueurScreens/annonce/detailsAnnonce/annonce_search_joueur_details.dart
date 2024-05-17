@@ -27,13 +27,28 @@ class AnnonceSearchJoueurDetails extends StatefulWidget {
 class _AnnonceSearchJoueurDetailsState
     extends State<AnnonceSearchJoueurDetails> {
   late final AnnonceJoueurCubit cubit;
-  late final AnnonceSearchJoueurModel annonceDetails;
+
+  late AnnonceSearchJoueurModel annonceDetails;
+  bool isEditingPost = false;
+  bool isEditingDescription = false;
 
   @override
   void initState() {
     cubit = AnnonceJoueurCubit.get(context);
     cubit.getAnnonceByID(id: widget.id);
     super.initState();
+  }
+
+  void _toggleEditing({required String title}) {
+    if (title == 'Description') {
+      setState(() {
+        isEditingDescription = !isEditingDescription;
+      });
+    } else if (title == 'Post Wanted') {
+      setState(() {
+        isEditingPost = !isEditingPost;
+      });
+    }
   }
 
   @override
@@ -88,7 +103,7 @@ class _AnnonceSearchJoueurDetailsState
                   ),
                   _buildDetailCard(
                       'Number of Players',
-                      annonceDetails.numeroJoueurs.toString(),
+                      annonceDetails.postWant.length.toString(),
                       Icons.people,
                       Colors.purple),
                   _buildExpansionTile('Post Wanted', annonceDetails.postWant,
@@ -110,14 +125,17 @@ class _AnnonceSearchJoueurDetailsState
                           ? annonceDetails.reservationId.equipeId2!.joueurs
                           : [],
                       Colors.red),
-                  _buildDetailCard('Description', annonceDetails.description,
-                      Icons.description, Colors.grey),
+                  _buildDetailCardDescription(
+                      'Description',
+                      annonceDetails.description,
+                      Icons.description,
+                      Colors.grey),
                   const SizedBox(height: 20),
                   Center(
                     child: widget.isMyAnnonce
                         ? ElevatedButton(
                             onPressed: () {},
-                            child: const Text('Edit Annonce'),
+                            child: const Text('Update Annonce'),
                           )
                         : ElevatedButton(
                             onPressed: () {
@@ -212,7 +230,50 @@ class _AnnonceSearchJoueurDetailsState
           title,
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
-        subtitle: Text(subtitle),
+        subtitle: isEditingDescription && title == 'Description'
+            ? TextFormField(
+                initialValue: subtitle,
+                onChanged: (value) {
+                  setState(() {
+                    subtitle = value;
+                  });
+                },
+              )
+            : Text(subtitle),
+      ),
+    );
+  }
+
+  Widget _buildDetailCardDescription(
+      String title, String subtitle, IconData icon, Color iconColor) {
+    return Card(
+      margin: const EdgeInsets.symmetric(vertical: 8.0),
+      child: ListTile(
+        leading: Icon(icon, color: iconColor),
+        title: Row(
+          children: [
+            Text(
+              title,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(width: 8.0),
+            IconButton(
+                onPressed: () {
+                  _toggleEditing(title: title);
+                },
+                icon: Icon(isEditingDescription ? Icons.done : Icons.edit))
+          ],
+        ),
+        subtitle: isEditingDescription && title == 'Description'
+            ? TextFormField(
+                initialValue: subtitle,
+                onChanged: (value) {
+                  setState(() {
+                    annonceDetails.description = value;
+                  });
+                },
+              )
+            : Text(subtitle),
       ),
     );
   }
@@ -223,20 +284,73 @@ class _AnnonceSearchJoueurDetailsState
       margin: const EdgeInsets.symmetric(vertical: 8.0),
       child: ExpansionTile(
         leading: Icon(icon, color: iconColor),
-        title: Text(
-          title,
-          style: const TextStyle(fontWeight: FontWeight.bold),
-        ),
-        children: items.map<Widget>((item) {
-          return ListTile(
-            leading: Icon(item.find ? Icons.done : Icons.hourglass_empty,
-                color: item.find ? Colors.green : Colors.orange),
-            title: Text(
-              item.post,
-              style: const TextStyle(fontWeight: FontWeight.w400),
+        title: Row(
+          children: [
+            Text(
+              title,
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
-          );
-        }).toList(),
+            const SizedBox(width: 8.0),
+            IconButton(
+                onPressed: () {
+                  _toggleEditing(title: 'Post Wanted');
+                },
+                icon: Icon(isEditingPost ? Icons.done : Icons.edit))
+          ],
+        ),
+        children: isEditingPost
+            ? [
+                ...items.map<Widget>((item) {
+                  return ListTile(
+                    leading: Checkbox(
+                      value: item.find,
+                      onChanged: (value) {
+                        setState(() {
+                          item.find = value!;
+                        });
+                      },
+                    ),
+                    title: DropdownButtonFormField<String>(
+                      value: item.post,
+                      items: ['attaquant', 'defenseur', 'gardia', 'milieu']
+                          .map((String value) {
+                        return DropdownMenuItem<String>(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                      onChanged: (value) {
+                        setState(() {
+                          item.post = value!;
+                        });
+                      },
+                    ),
+                  );
+                }).toList(),
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      items.add(PostWant(
+                        post: 'attaquant',
+                        find: false,
+                      ));
+                    });
+                  },
+                  child: const Text('Add Post Want'),
+                ),
+              ]
+            : items.map<Widget>((item) {
+                return ListTile(
+                  leading: Icon(
+                    item.find ? Icons.done : Icons.hourglass_empty,
+                    color: item.find ? Colors.green : Colors.orange,
+                  ),
+                  title: Text(
+                    item.post,
+                    style: const TextStyle(fontWeight: FontWeight.w400),
+                  ),
+                );
+              }).toList(),
       ),
     );
   }

@@ -1,17 +1,17 @@
 class AnnonceSearchJoueurModel {
-  final String id;
-  final String type;
-  final int numeroJoueurs;
-  final List<PostWant> postWant;
-  final String description;
-  final String wilaya;
-  final String commune;
-  final ReservationId reservationId;
-  final TerrainId terrainId;
-  final JoueurId joueurId;
-  final DateTime createdAt;
-  final DateTime updatedAt;
-  final int v;
+  String id;
+  String type;
+  int numeroJoueurs;
+  List<PostWant> postWant;
+  String description;
+  String wilaya;
+  String commune;
+  ReservationId reservationId;
+  TerrainId terrainId;
+  JoueurId joueurId;
+  DateTime createdAt;
+  DateTime updatedAt;
+  int v;
 
   AnnonceSearchJoueurModel({
     required this.id,
@@ -52,32 +52,29 @@ class AnnonceSearchJoueurModel {
 }
 
 class PostWant {
-  final String post;
-  final bool find;
-  final String id;
+  String post;
+  bool find;
 
   PostWant({
     required this.post,
     required this.find,
-    required this.id,
   });
 
   factory PostWant.fromJson(Map<String, dynamic> json) {
     return PostWant(
       post: json['post'] as String,
       find: json['find'] as bool,
-      id: json['_id'] as String,
     );
   }
 }
 
 class ReservationId {
-  final String id;
-  final DateTime jour;
-  final String heureDebutTemps;
-  final int duree;
-  final Equipe? equipeId1;
-  final Equipe? equipeId2;
+  String id;
+  DateTime jour;
+  String heureDebutTemps;
+  int duree;
+  Equipe? equipeId1;
+  Equipe? equipeId2;
 
   ReservationId({
     required this.id,
@@ -105,9 +102,9 @@ class ReservationId {
 }
 
 class Equipe {
-  final String id;
-  final String nom;
-  final List<Joueur> joueurs;
+  String id;
+  String nom;
+  List<Joueur> joueurs;
 
   Equipe({
     required this.id,
@@ -127,10 +124,10 @@ class Equipe {
 }
 
 class Joueur {
-  final String id;
-  final String nom;
-  final String prenom;
-  final int telephone;
+  String id;
+  String nom;
+  String prenom;
+  int telephone;
 
   Joueur({
     required this.id,
@@ -150,10 +147,10 @@ class Joueur {
 }
 
 class TerrainId {
-  final Coordonnee coordonnee;
-  final String id;
-  final String nom;
-  final String adresse;
+  Coordonnee coordonnee;
+  String id;
+  String nom;
+  String adresse;
 
   TerrainId({
     required this.coordonnee,
@@ -174,8 +171,8 @@ class TerrainId {
 }
 
 class Coordonnee {
-  final double latitude;
-  final double longitude;
+  double latitude;
+  double longitude;
 
   Coordonnee({
     required this.latitude,
@@ -191,9 +188,9 @@ class Coordonnee {
 }
 
 class JoueurId {
-  final String id;
-  final String username;
-  final int telephone;
+  String id;
+  String username;
+  int telephone;
 
   JoueurId({
     required this.id,

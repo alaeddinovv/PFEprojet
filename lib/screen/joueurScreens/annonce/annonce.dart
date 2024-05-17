@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pfeprojet/Model/annonce/annonce_model.dart';
 import 'package:pfeprojet/component/components.dart';
-import 'package:pfeprojet/screen/joueurScreens/annonce/detailsAnnonce/annonce_search_joueur_details.dart';
 import 'package:pfeprojet/screen/joueurScreens/annonce/detailsAnnonce/details.dart';
 import 'package:pfeprojet/screen/joueurScreens/home/cubit/home_joueur_cubit.dart';
 import 'package:url_launcher/url_launcher.dart';

@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 import 'package:pfeprojet/Api/constApi.dart';
 import 'package:pfeprojet/Api/httplaravel.dart';
-// import 'package:pfeprojet/Model/equipe_model.dart';
 import 'package:pfeprojet/Model/error_model.dart';
 import 'package:pfeprojet/Model/houssem/equipe_model.dart';
 import 'package:pfeprojet/Model/reservation_model.dart';
