@@ -44,9 +44,9 @@ final class GetAllAnnonceStateBad extends AnnonceJoueurState {}
 final class GetAnnonceByIDLoading extends AnnonceJoueurState {}
 
 final class GetAnnonceByIDStateGood extends AnnonceJoueurState {
-  final AnnonceSearchJoueurModel annonceSearchJoueurModel;
+  final dynamic annonceModel;
 
-  GetAnnonceByIDStateGood({required this.annonceSearchJoueurModel});
+  GetAnnonceByIDStateGood({required this.annonceModel});
 }
 
 final class GetAnnonceByIDStateBad extends AnnonceJoueurState {}

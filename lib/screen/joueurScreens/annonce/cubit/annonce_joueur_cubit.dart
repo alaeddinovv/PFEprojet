@@ -5,11 +5,12 @@ import 'dart:convert' as convert;
 
 import 'package:pfeprojet/Api/constApi.dart';
 import 'package:pfeprojet/Api/httplaravel.dart';
-import 'package:pfeprojet/Model/annonce_model.dart';
-import 'package:pfeprojet/Model/annonce_search_model.dart';
+import 'package:pfeprojet/Model/annonce/annonce_model.dart';
+import 'package:pfeprojet/Model/annonce/pulier/annonce_other_model.dart';
+import 'package:pfeprojet/Model/annonce/pulier/annonce_search_model.dart';
 import 'package:pfeprojet/Model/terrain_pagination_model.dart';
 
-import '../../../../Model/annonce_admin_model.dart';
+import '../../../../Model/annonce/annonce_admin_model.dart';
 import '../../../../Model/error_model.dart';
 
 part 'annonce_joueur_state.dart';
@@ -131,7 +132,7 @@ class AnnonceJoueurCubit extends Cubit<AnnonceJoueurState> {
   List<AnnonceData> annonces = [];
   // cusrsorid mdeclari lfug
   String cursorid = "";
-  Future<void> getAllAnnonce({String cursor = ''}) async {
+  Future<void> getAllAnnonce({String cursor = '', String? owner}) async {
     emit(GetAllAnnonceLoading());
     print('1');
     await Httplar.httpget(path: GETALLANNONCE, query: {'cursor': cursor})
@@ -142,13 +143,16 @@ class AnnonceJoueurCubit extends Cubit<AnnonceJoueurState> {
           cursorid = "";
         }
 
-        print('1');
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
 
-        print('1');
         AnnonceModel model = AnnonceModel.fromJson(jsonResponse);
-        annonces.addAll(model.data!);
+        model.data!.forEach((element) {
+          if (element.joueur!.id != owner) {
+            annonces.add(element);
+          }
+        });
+        // annonces.addAll(model.data!);
         cursorid = model.nextCursor!;
 
         print(annonces);
@@ -165,16 +169,24 @@ class AnnonceJoueurCubit extends Cubit<AnnonceJoueurState> {
     });
   }
 
-  Future<void> getAnnonceByID({required String id}) async {
+  Future<void> getAnnonceByID({
+    required String id,
+  }) async {
     emit(GetAnnonceByIDLoading());
     await Httplar.httpget(path: GETANNONCEBYID + id).then((value) {
       if (value.statusCode == 200) {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
+        print(jsonResponse['type']);
         print(jsonResponse);
-        AnnonceSearchJoueurModel annonce =
-            AnnonceSearchJoueurModel.fromJson(jsonResponse);
-        emit(GetAnnonceByIDStateGood(annonceSearchJoueurModel: annonce));
+        if (jsonResponse['type'] == 'search joueur') {
+          AnnonceSearchJoueurModel annonce =
+              AnnonceSearchJoueurModel.fromJson(jsonResponse);
+          emit(GetAnnonceByIDStateGood(annonceModel: annonce));
+        } else {
+          AnnounceOter annonce2 = AnnounceOter.fromJson(jsonResponse);
+          emit(GetAnnonceByIDStateGood(annonceModel: annonce2));
+        }
       } else {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;

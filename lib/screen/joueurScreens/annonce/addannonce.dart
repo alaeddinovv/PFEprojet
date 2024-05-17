@@ -7,6 +7,7 @@ import 'package:pfeprojet/component/drop_down_wilaya.dart';
 import 'package:pfeprojet/component/search_terrain.dart';
 import 'package:pfeprojet/screen/JoueurScreens/home/home.dart';
 import 'package:pfeprojet/screen/joueurScreens/annonce/cubit/annonce_joueur_cubit.dart';
+import 'package:pfeprojet/screen/joueurScreens/annonce/detailsAnnonce/annonce_other.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/cubit/terrain_cubit.dart';
 
 class AddAnnonce extends StatefulWidget {
@@ -56,7 +57,9 @@ class _AddAnnonceState extends State<AddAnnonce> {
       },
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
-          onPressed: () {},
+          onPressed: () {
+            // navigatAndReturn(context: context, page: AnnouncementPage());
+          },
         ),
         appBar: AppBar(
           title: const Text('Add Annonce'),
@@ -246,6 +249,10 @@ class _AddAnnonceState extends State<AddAnnonce> {
 
                             AnnonceJoueurCubit.get(context)
                                 .creerAnnonceJoueur(model: _model);
+                          } else if (state is ErrorState) {
+                            showToast(
+                                msg: state.errorModel.message!,
+                                state: ToastStates.error);
                           }
                         },
                         child: BlocConsumer<AnnonceJoueurCubit,
@@ -290,7 +297,7 @@ class _AddAnnonceState extends State<AddAnnonce> {
                                   if (_selectedType == 'search joueur' &&
                                       (idTerrainController.text.isEmpty ||
                                           hourController.text.isEmpty ||
-                                          dateTime == null ||
+                                          // dateTime == null ||
                                           _numeroJoueurs == null ||
                                           _numeroJoueurs! > 5 ||
                                           _selectedPositions.contains(null) ||
@@ -300,11 +307,20 @@ class _AddAnnonceState extends State<AddAnnonce> {
                                     showToast(
                                         msg: "Please fill all required fields",
                                         state: ToastStates.error);
-                                  } else {
+                                  } else if (_selectedType == 'search joueur') {
                                     TerrainCubit.get(context).getMyreserve(
                                         terrainId: idTerrainController.text,
                                         date: dateTime,
                                         heure_debut_temps: hourController.text);
+                                  } else if (_selectedType == 'other') {
+                                    Map<String, dynamic> _model = {
+                                      "type": _selectedType,
+                                      "description": descriptionController.text,
+                                      "wilaya": wilayaController.text,
+                                      "commune": communeController.text
+                                    };
+                                    AnnonceJoueurCubit.get(context)
+                                        .creerAnnonceJoueur(model: _model);
                                   }
                                 });
                           },

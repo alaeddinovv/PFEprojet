@@ -6,7 +6,7 @@ import 'dart:convert' as convert;
 import 'package:pfeprojet/Api/constApi.dart';
 import 'package:pfeprojet/Api/httplaravel.dart';
 
-import '../../../../Model/annonce_admin_model.dart';
+import '../../../../Model/annonce/annonce_admin_model.dart';
 import '../../../../Model/error_model.dart';
 
 part 'annonce_state.dart';

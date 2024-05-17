@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:pfeprojet/Model/annonce_model.dart';
+import 'package:pfeprojet/Model/annonce/annonce_model.dart';
 import 'package:pfeprojet/component/components.dart';
-import 'package:pfeprojet/screen/joueurScreens/annonce/detailsAnnonce/search_joueur_details.dart';
+import 'package:pfeprojet/screen/joueurScreens/annonce/detailsAnnonce/annonce_search_joueur_details.dart';
+import 'package:pfeprojet/screen/joueurScreens/annonce/detailsAnnonce/details.dart';
+import 'package:pfeprojet/screen/joueurScreens/home/cubit/home_joueur_cubit.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'package:pfeprojet/screen/joueurScreens/annonce/addannonce.dart';
 import 'package:pfeprojet/screen/joueurScreens/annonce/cubit/annonce_joueur_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/annonce/update_annonce.dart';
-import '../../../Model/annonce_admin_model.dart';
+import '../../../Model/annonce/annonce_admin_model.dart';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -40,7 +42,8 @@ class _AnnonceState extends State<Annonce> {
           } else {
             if (AnnonceJoueurCubit.get(context).cursorid != "") {
               AnnonceJoueurCubit.get(context).getAllAnnonce(
-                  cursor: AnnonceJoueurCubit.get(context).cursorid);
+                  cursor: AnnonceJoueurCubit.get(context).cursorid,
+                  owner: HomeJoueurCubit.get(context).joueurModel!.id);
               print('ggggg');
 
               print(AnnonceJoueurCubit.get(context).cursorid);
@@ -70,8 +73,10 @@ class _AnnonceState extends State<Annonce> {
                 setState(() {
                   _showList = index == 0;
                   if (!_showList) {
-                    AnnonceJoueurCubit.get(context)
-                        .getAllAnnonce(); // Call getAllAnnonce when "All annonces" is selected
+                    AnnonceJoueurCubit.get(context).getAllAnnonce(
+                        owner: HomeJoueurCubit.get(context)
+                            .joueurModel!
+                            .id); // Call getAllAnnonce  owner: HomeJoueurCubit.get(context).joueurModel!.idwhen "All annonces" is selected
                   } else {
                     AnnonceJoueurCubit.get(context)
                         .getMyAnnonceJoueur(); // Optional: Refresh "My annonces" when switching back
@@ -134,12 +139,9 @@ class _AnnonceState extends State<Annonce> {
                           shrinkWrap: true, // to prevent infinite height error
                         );
                         //
-                        return const SizedBox();
                       },
                     ),
                   )
-
-                //       SizedBox()
                 : Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 20),
@@ -147,7 +149,10 @@ class _AnnonceState extends State<Annonce> {
                       listener: (context, state) {
                         if (state is DeleteAnnonceJoueurStateGood) {
                           AnnonceJoueurCubit.get(context)
-                              .getAllAnnonce()
+                              .getAllAnnonce(
+                                  owner: HomeJoueurCubit.get(context)
+                                      .joueurModel!
+                                      .id)
                               .then((value) => Navigator.pop(context));
                         }
                       },
@@ -239,7 +244,8 @@ class _AnnonceState extends State<Annonce> {
           listener: (context, state) {
             if (state is DeleteAnnonceJoueurStateGood) {
               AnnonceJoueurCubit.get(context)
-                  .getAllAnnonce()
+                  .getAllAnnonce(
+                      owner: HomeJoueurCubit.get(context).joueurModel!.id)
                   .then((value) => Navigator.pop(context));
             }
           },
@@ -299,7 +305,9 @@ class _AnnonceState extends State<Annonce> {
             onTap: () {
               navigatAndReturn(
                 context: context,
-                page: AnnonceSearchJoueurDetails(
+                page: DetailsAnnonceChoose(
+                  path: model.type!,
+                  isMy: true,
                   id: model.id!,
                 ),
               );
@@ -377,7 +385,9 @@ class _AnnonceState extends State<Annonce> {
             onTap: () {
               navigatAndReturn(
                 context: context,
-                page: AnnonceSearchJoueurDetails(
+                page: DetailsAnnonceChoose(
+                  path: model.type!,
+                  isMy: false,
                   id: model.id!,
                 ),
               );

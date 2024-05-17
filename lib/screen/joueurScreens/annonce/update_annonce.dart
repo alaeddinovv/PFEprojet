@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pfeprojet/Model/annonce_admin_model.dart';
+import 'package:pfeprojet/Model/annonce/annonce_admin_model.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/drop_down_wilaya.dart';
 

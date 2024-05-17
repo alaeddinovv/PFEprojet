@@ -1,17 +1,22 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:pfeprojet/Model/annonce_search_model.dart';
+
+import 'package:pfeprojet/Model/annonce/pulier/annonce_search_model.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/screen/joueurScreens/annonce/cubit/annonce_joueur_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/location/terrain_location.dart';
 
 class AnnonceSearchJoueurDetails extends StatefulWidget {
   final String id;
+  final bool isMyAnnonce;
 
   const AnnonceSearchJoueurDetails({
     Key? key,
     required this.id,
+    required this.isMyAnnonce,
   }) : super(key: key);
 
   @override
@@ -40,7 +45,7 @@ class _AnnonceSearchJoueurDetailsState
       body: BlocConsumer<AnnonceJoueurCubit, AnnonceJoueurState>(
         listener: (context, state) {
           if (state is GetAnnonceByIDStateGood) {
-            annonceDetails = state.annonceSearchJoueurModel;
+            annonceDetails = state.annonceModel;
           }
         },
         builder: (context, state) {
@@ -55,11 +60,14 @@ class _AnnonceSearchJoueurDetailsState
                 children: [
                   _buildDetailCard('Type', annonceDetails.type,
                       Icons.sports_soccer, Colors.orange),
-                  _buildDetailCard('Date', annonceDetails.reservationId!.jour!,
-                      Icons.calendar_today, Colors.green),
+                  _buildDetailCard(
+                      'Date',
+                      annonceDetails.reservationId.jour.toIso8601String(),
+                      Icons.calendar_today,
+                      Colors.green),
                   _buildDetailCard(
                       'Start Time',
-                      annonceDetails.reservationId!.heureDebutTemps!,
+                      annonceDetails.reservationId.heureDebutTemps,
                       Icons.access_time,
                       Colors.blue),
                   _buildDetailCardWithNavigation(
@@ -87,29 +95,36 @@ class _AnnonceSearchJoueurDetailsState
                       Icons.search, Colors.teal),
                   _buildDetailCard(
                       'Duration',
-                      '${annonceDetails.reservationId!.duree} hours',
+                      '${annonceDetails.reservationId.duree} hours',
                       Icons.timer,
                       Colors.brown),
                   _buildTeamExpansionTile(
                       'Team 1',
-                      annonceDetails.reservationId?.equipeId1 != null
-                          ? annonceDetails.reservationId!.equipeId1!.joueurs
+                      annonceDetails.reservationId.equipeId1 != null
+                          ? annonceDetails.reservationId.equipeId1!.joueurs
                           : [],
                       Colors.blue),
                   _buildTeamExpansionTile(
                       'Team 2',
-                      annonceDetails.reservationId!.equipeId2 != null
-                          ? annonceDetails.reservationId!.equipeId2!.joueurs
+                      annonceDetails.reservationId.equipeId2 != null
+                          ? annonceDetails.reservationId.equipeId2!.joueurs
                           : [],
                       Colors.red),
                   _buildDetailCard('Description', annonceDetails.description,
                       Icons.description, Colors.grey),
                   const SizedBox(height: 20),
                   Center(
-                    child: ElevatedButton(
-                      onPressed: () => _showJoinRequestDialog(context),
-                      child: const Text('Request to Join Team'),
-                    ),
+                    child: widget.isMyAnnonce
+                        ? ElevatedButton(
+                            onPressed: () {},
+                            child: const Text('Edit Annonce'),
+                          )
+                        : ElevatedButton(
+                            onPressed: () {
+                              _showJoinRequestDialog(context);
+                            },
+                            child: const Text('Request to Join Team'),
+                          ),
                   ),
                 ],
               ),
@@ -227,7 +242,7 @@ class _AnnonceSearchJoueurDetailsState
   }
 
   Widget _buildTeamExpansionTile(
-      String teamName, List<Joueurs> players, Color teamColor) {
+      String teamName, List<Joueur> players, Color teamColor) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8.0),
       child: ExpansionTile(
