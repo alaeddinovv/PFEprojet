@@ -100,20 +100,10 @@ class AnnonceJoueurCubit extends Cubit<AnnonceJoueurState> {
   //update annonce  -----------------------------------------------------------------------
 
   Future<void> updateAnnonceJoueur(
-      {required String id,
-      required String type,
-      required String description,
-      String? wilaya,
-      String? commune}) async {
+      {required Map<String, dynamic> model, required String id}) async {
     emit(UpdateAnnonceJoueurLoadingState());
 
-    Map<String, dynamic> _model = {
-      "type": type,
-      "description": description,
-      "wilaya": wilaya,
-      "commune": commune
-    };
-    await Httplar.httpPut(path: UPDATEANNONCE + id, data: _model).then((value) {
+    await Httplar.httpPut(path: UPDATEANNONCE + id, data: model).then((value) {
       if (value.statusCode == 200) {
         emit(UpdateAnnonceJoueurStateGood());
       } else {

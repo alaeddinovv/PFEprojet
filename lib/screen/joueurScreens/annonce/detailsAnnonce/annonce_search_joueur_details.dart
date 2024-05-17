@@ -62,6 +62,11 @@ class _AnnonceSearchJoueurDetailsState
           if (state is GetAnnonceByIDStateGood) {
             annonceDetails = state.annonceModel;
           }
+          if (state is UpdateAnnonceJoueurStateGood) {
+            showToast(
+                msg: 'Update Annonce Success', state: ToastStates.success);
+            Navigator.pop(context);
+          }
         },
         builder: (context, state) {
           if (state is GetAnnonceByIDLoading) {
@@ -133,10 +138,27 @@ class _AnnonceSearchJoueurDetailsState
                   const SizedBox(height: 20),
                   Center(
                     child: widget.isMyAnnonce
-                        ? ElevatedButton(
-                            onPressed: () {},
-                            child: const Text('Update Annonce'),
-                          )
+                        ? state is UpdateAnnonceJoueurLoadingState
+                            ? const CircularProgressIndicator()
+                            : defaultSubmit2(
+                                text: 'Update Annonce',
+                                onPressed: () {
+                                  List<Map<String, dynamic>> postWantList =
+                                      annonceDetails.postWant
+                                          .map((postWant) => postWant.toJson())
+                                          .toList();
+                                  Map<String, dynamic> model = {
+                                    'description': annonceDetails.description,
+                                    'post_want': postWantList,
+                                    'numero_joueurs':
+                                        annonceDetails.postWant.length,
+                                    'wilaya': annonceDetails.wilaya,
+                                    'commune': annonceDetails.commune,
+                                  };
+                                  AnnonceJoueurCubit.get(context)
+                                      .updateAnnonceJoueur(
+                                          model: model, id: annonceDetails.id);
+                                })
                         : ElevatedButton(
                             onPressed: () {
                               _showJoinRequestDialog(context);
@@ -230,16 +252,7 @@ class _AnnonceSearchJoueurDetailsState
           title,
           style: const TextStyle(fontWeight: FontWeight.bold),
         ),
-        subtitle: isEditingDescription && title == 'Description'
-            ? TextFormField(
-                initialValue: subtitle,
-                onChanged: (value) {
-                  setState(() {
-                    subtitle = value;
-                  });
-                },
-              )
-            : Text(subtitle),
+        subtitle: Text(subtitle),
       ),
     );
   }
@@ -266,6 +279,7 @@ class _AnnonceSearchJoueurDetailsState
         ),
         subtitle: isEditingDescription && title == 'Description'
             ? TextFormField(
+                maxLines: 5,
                 initialValue: subtitle,
                 onChanged: (value) {
                   setState(() {

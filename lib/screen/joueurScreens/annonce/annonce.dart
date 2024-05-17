@@ -111,6 +111,8 @@ class _AnnonceState extends State<Annonce> {
                           AnnonceJoueurCubit.get(context)
                               .getMyAnnonceJoueur()
                               .then((value) => Navigator.pop(context));
+                        } else if (state is UpdateAnnonceJoueurStateGood) {
+                          AnnonceJoueurCubit.get(context).getMyAnnonceJoueur();
                         }
                       },
                       builder: (context, state) {
@@ -153,6 +155,10 @@ class _AnnonceState extends State<Annonce> {
                                       .joueurModel!
                                       .id)
                               .then((value) => Navigator.pop(context));
+                        } else if (state is UpdateAnnonceJoueurStateGood) {
+                          AnnonceJoueurCubit.get(context).getAllAnnonce(
+                              owner:
+                                  HomeJoueurCubit.get(context).joueurModel!.id);
                         }
                       },
                       builder: (context, state) {
@@ -205,6 +211,8 @@ class _AnnonceState extends State<Annonce> {
               AnnonceJoueurCubit.get(context)
                   .getMyAnnonceJoueur()
                   .then((value) => Navigator.pop(context));
+            } else if (state is UpdateAnnonceJoueurStateGood) {
+              AnnonceJoueurCubit.get(context).getMyAnnonceJoueur();
             }
           },
           builder: (context, state) {
@@ -246,6 +254,9 @@ class _AnnonceState extends State<Annonce> {
                   .getAllAnnonce(
                       owner: HomeJoueurCubit.get(context).joueurModel!.id)
                   .then((value) => Navigator.pop(context));
+            } else if (state is UpdateAnnonceJoueurStateGood) {
+              AnnonceJoueurCubit.get(context).getAllAnnonce(
+                  owner: HomeJoueurCubit.get(context).joueurModel!.id);
             }
           },
           builder: (context, state) {
@@ -319,28 +330,13 @@ class _AnnonceState extends State<Annonce> {
                 fontSize: 18,
               ),
             ),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min, // Ensures compactness
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.edit,
-                      color: Color(0xFF4CAF50)), // Softer green
-                  onPressed: () {
-                    navigatAndReturn(
-                        context: context,
-                        page: EditAnnoncePage(annonceModel: model));
-                    // Your code to handle edit action
-                  },
-                ),
-                IconButton(
-                  icon: const Icon(Icons.delete,
-                      color: Color(0xFFBDBDBD)), // Softer grey
-                  onPressed: () {
-                    dialogDelete(context, model);
-                    // Your code to handle delete action
-                  },
-                ),
-              ],
+            trailing: IconButton(
+              icon: const Icon(Icons.delete,
+                  color: Color(0xFFBDBDBD)), // Softer grey
+              onPressed: () {
+                dialogDelete(context, model);
+                // Your code to handle delete action
+              },
             ),
           ),
           Padding(

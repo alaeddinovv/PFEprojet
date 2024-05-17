@@ -66,6 +66,12 @@ class PostWant {
       find: json['find'] as bool,
     );
   }
+  Map<String, dynamic> toJson() {
+    return {
+      'post': post,
+      'find': find,
+    };
+  }
 }
 
 class ReservationId {
