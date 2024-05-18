@@ -176,6 +176,13 @@ class _AnnonceSearchJoueurDetailsState
   }
 
   void _showJoinRequestDialog(BuildContext context) {
+    List<PostWant> availablePositions =
+        annonceDetails.postWant.where((postWant) => !postWant.find).toList();
+
+    // Create a set to store unique positions
+    Set<String> uniquePositions =
+        availablePositions.map((postWant) => postWant.post).toSet();
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -183,10 +190,10 @@ class _AnnonceSearchJoueurDetailsState
         return AlertDialog(
           title: const Text('Select Position'),
           content: DropdownButtonFormField<String>(
-            items: annonceDetails.postWant.map((postWant) {
+            items: uniquePositions.map((position) {
               return DropdownMenuItem<String>(
-                value: postWant.post,
-                child: Text(postWant.post),
+                value: position,
+                child: Text(position),
               );
             }).toList(),
             onChanged: (value) {
@@ -222,6 +229,8 @@ class _AnnonceSearchJoueurDetailsState
   void _sendJoinRequest(String position) {
     // Implement the logic to send the join request
     print('Request to join as $position sent.');
+    AnnonceJoueurCubit.get(context).demanderRejoindreEquipe(
+        equipeId: annonceDetails.reservationId.equipeId1!.id, post: position);
   }
 
   Widget _buildDetailCardWithNavigation(String title, String subtitle,
@@ -270,11 +279,12 @@ class _AnnonceSearchJoueurDetailsState
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(width: 8.0),
-            IconButton(
-                onPressed: () {
-                  _toggleEditing(title: title);
-                },
-                icon: Icon(isEditingDescription ? Icons.done : Icons.edit))
+            if (widget.isMyAnnonce)
+              IconButton(
+                  onPressed: () {
+                    _toggleEditing(title: title);
+                  },
+                  icon: Icon(isEditingDescription ? Icons.done : Icons.edit))
           ],
         ),
         subtitle: isEditingDescription && title == 'Description'
@@ -305,11 +315,12 @@ class _AnnonceSearchJoueurDetailsState
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(width: 8.0),
-            IconButton(
-                onPressed: () {
-                  _toggleEditing(title: 'Post Wanted');
-                },
-                icon: Icon(isEditingPost ? Icons.done : Icons.edit))
+            if (widget.isMyAnnonce)
+              IconButton(
+                  onPressed: () {
+                    _toggleEditing(title: 'Post Wanted');
+                  },
+                  icon: Icon(isEditingPost ? Icons.done : Icons.edit))
           ],
         ),
         children: isEditingPost
@@ -336,6 +347,14 @@ class _AnnonceSearchJoueurDetailsState
                       onChanged: (value) {
                         setState(() {
                           item.post = value!;
+                        });
+                      },
+                    ),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.delete),
+                      onPressed: () {
+                        setState(() {
+                          items.remove(item);
                         });
                       },
                     ),

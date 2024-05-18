@@ -62,3 +62,15 @@ final class ErrorStateSerchTerrain extends AnnonceJoueurState {
 
   ErrorStateSerchTerrain({required this.errorModel});
 }
+
+final class ErrorStateDemanderRejoinderEquipe extends AnnonceJoueurState {
+  final ErrorModel errorModel;
+
+  ErrorStateDemanderRejoinderEquipe({required this.errorModel});
+}
+
+final class DemandeRejoindreEquipeLoadingState extends AnnonceJoueurState {}
+
+final class DemandeRejoindreEquipeStateGood extends AnnonceJoueurState {}
+
+final class DemandeRejoindreEquipeInvStateBad extends AnnonceJoueurState {}

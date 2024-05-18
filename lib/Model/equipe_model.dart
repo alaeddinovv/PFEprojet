@@ -193,7 +193,7 @@ class AttenteJoueursDemande {
 
   AttenteJoueursDemande.fromJson(Map<String, dynamic> json) {
     joueur = Joueur.fromJson(json['joueur']);
-    post = json['post'];
+    post = json['post'] ?? '';
     id = json['_id'];
   }
 

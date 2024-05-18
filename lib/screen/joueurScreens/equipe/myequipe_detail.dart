@@ -1,14 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pfeprojet/Model/equipe_model.dart';
-import 'package:pfeprojet/Model/user_model.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/const.dart';
 import 'package:pfeprojet/screen/joueurScreens/equipe/cubit/equipe_cubit.dart';
-import 'package:pfeprojet/screen/joueurScreens/home/cubit/home_joueur_cubit.dart';
 import 'package:url_launcher/url_launcher.dart'; // Ensure this path is correct
 
 class MyEquipeDetailsScreen extends StatefulWidget {
@@ -184,7 +180,7 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                           state: ToastStates.success);
                       setState(() {
                         widget.equipeData.attenteJoueursDemande.removeWhere(
-                            (element) => element.id == state.idJoueur);
+                            (element) => element.joueur.id == state.idJoueur);
                       });
 
                       EquipeCubit.get(context).getMyEquipe();
@@ -209,7 +205,7 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
 
                         widget.equipeData.attenteJoueursDemande.removeWhere(
                           (element) =>
-                              element.id ==
+                              element.joueur.id ==
                               EquipeCubit.get(context).joueuraccepted.id!,
                         );
                       });
@@ -243,7 +239,7 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                             widget.equipeData.attenteJoueursDemande[index];
                         return _buildDemandeItem(
                             index,
-                            joueurattente.id,
+                            joueurattente.joueur.id,
                             widget.equipeData.id,
                             widget.equipeData.nom,
                             joueurattente.joueur.username,
@@ -531,56 +527,59 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
             ),
           ],
         ),
-        child: Row(
-          children: [
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
-              // Internal padding for text and icons
-              child: Text('$username : $post ',
-                  style: const TextStyle(
-                      fontSize: 16)), // Increased font size for readability
-            ),
-            const Spacer(),
-            TextButton(
-              onPressed: () {
-                // capitaineAceeptJoueur
-                EquipeCubit.get(context).capitaineAceeptJoueur(
-                    equipeId: equipeId,
-                    joueurId: joueurId,
-                    equipename: equipename);
-                // Handle accept action
-                print("Accepting $username");
-              },
-              child: const Text('Accepter'),
-            ),
-            IconButton(
-              onPressed: () {
-                int? phoneNumber = telephone;
-                if (phoneNumber != null) {
-                  _makePhoneCall(phoneNumber.toString());
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text("No telephone number available."),
-                    ),
-                  );
-                }
-              },
-              icon: const Icon(Icons.call),
-              color: Colors
-                  .green, // Green color to signify calling is a positive action
-            ),
-            IconButton(
-              onPressed: () {
-                EquipeCubit.get(context).capitaineRefuseJoueur(
-                    equipeId: equipeId, joueurId: joueurId);
-                // indexjoueur = index;
-              },
-              icon: const Icon(Icons.cancel),
-              color: Colors.red,
-            ),
-          ],
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+                // Internal padding for text and icons
+                child: Text('$username : $post ',
+                    style: const TextStyle(
+                        fontSize: 16)), // Increased font size for readability
+              ),
+              TextButton(
+                onPressed: () {
+                  // capitaineAceeptJoueur
+                  EquipeCubit.get(context).capitaineAceeptJoueur(
+                      equipeId: equipeId,
+                      joueurId: joueurId,
+                      equipename: equipename);
+                  // Handle accept action
+                  print("Accepting $username");
+                },
+                child: const Text('Accepter'),
+              ),
+              IconButton(
+                onPressed: () {
+                  int? phoneNumber = telephone;
+                  if (phoneNumber != null) {
+                    _makePhoneCall(phoneNumber.toString());
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("No telephone number available."),
+                      ),
+                    );
+                  }
+                },
+                icon: const Icon(Icons.call),
+                color: Colors
+                    .green, // Green color to signify calling is a positive action
+              ),
+              IconButton(
+                onPressed: () {
+                  EquipeCubit.get(context).capitaineRefuseJoueur(
+                      equipeId: equipeId, joueurId: joueurId);
+                  // indexjoueur = index;
+                },
+                icon: const Icon(Icons.cancel),
+                color: Colors.red,
+              ),
+            ],
+          ),
         ),
       ),
     );

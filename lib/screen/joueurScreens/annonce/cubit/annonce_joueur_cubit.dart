@@ -234,4 +234,25 @@ class AnnonceJoueurCubit extends Cubit<AnnonceJoueurState> {
       emit(GetSearchTerrainStateBad());
     });
   }
+
+  Future<void> demanderRejoindreEquipe(
+      {required String equipeId, required String post}) async {
+    emit(DemandeRejoindreEquipeLoadingState());
+    print(equipeId);
+    await Httplar.httpPost(path: DEMANDERREJOINDREEQUIPE + equipeId, data: {
+      "post": post,
+    }).then((value) {
+      if (value.statusCode == 200) {
+        emit(DemandeRejoindreEquipeStateGood());
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(ErrorStateDemanderRejoinderEquipe(
+            errorModel: ErrorModel.fromJson(jsonResponse)));
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(DemandeRejoindreEquipeInvStateBad());
+    });
+  }
 }
