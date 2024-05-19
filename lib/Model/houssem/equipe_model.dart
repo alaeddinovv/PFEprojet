@@ -27,6 +27,7 @@ class EquipeModel {
 class EquipeModelData {
   String? id;
   String? nom;
+  bool? vertial;
   int? numeroJoueurs;
   List<DataJoueurModel>? joueurs;
   List<dynamic>? attenteJoueurs;
@@ -42,6 +43,7 @@ class EquipeModelData {
   EquipeModelData({
     this.id,
     this.nom,
+    this.vertial,
     this.numeroJoueurs,
     this.joueurs,
     this.attenteJoueurs,
@@ -58,18 +60,19 @@ class EquipeModelData {
   EquipeModelData.fromJson(Map<String, dynamic> json) {
     id = json['_id'] as String?;
     nom = json['nom'] as String?;
+    vertial = json['vertial'] as bool?;
     numeroJoueurs = json['numero_joueurs'] as int?;
     joueurs = (json['joueurs'] as List<dynamic>?)
         ?.map((e) => DataJoueurModel.fromJson(e as Map<String, dynamic>))
         .toList();
-    attenteJoueurs = json['attente_joueurs'] as List<dynamic>? ?? [];
+    attenteJoueurs = json['attente_joueurs'] as List<dynamic>?;
     attenteJoueursDemande = (json['attente_joueurs_demande'] as List<dynamic>?)
         ?.map((e) => AttenteJoueursDemande.fromJson(e as Map<String, dynamic>))
         .toList();
     capitaineId = json['capitaine_id'] != null
         ? CapitaineId.fromJson(json['capitaine_id'] as Map<String, dynamic>)
         : null;
-    tournois = json['tournois'] as List<dynamic>? ?? [];
+    tournois = json['tournois'] as List<dynamic>?;
     wilaya = json['wilaya'] as String?;
     commune = json['commune'] as String?;
     createdAt = json['createdAt'] as String?;
@@ -81,6 +84,7 @@ class EquipeModelData {
     final data = <String, dynamic>{};
     data['_id'] = id;
     data['nom'] = nom;
+    data['vertial'] = vertial;
     data['numero_joueurs'] = numeroJoueurs;
     data['joueurs'] = joueurs?.map((e) => e.toJson()).toList();
     data['attente_joueurs'] = attenteJoueurs;
@@ -123,25 +127,27 @@ class CapitaineId {
 }
 
 class AttenteJoueursDemande {
+  Joueur? joueur;
+  String? post;
+  String? id;
+
   AttenteJoueursDemande({
-    required this.joueur,
-    required this.post,
-    required this.id,
+    this.joueur,
+    this.post,
+    this.id,
   });
 
-  late final Joueur joueur;
-  late final String post;
-  late final String id;
-
   AttenteJoueursDemande.fromJson(Map<String, dynamic> json) {
-    joueur = Joueur.fromJson(json['joueur'] as Map<String, dynamic>);
-    post = json['post'] as String;
-    id = json['_id'] as String;
+    joueur = json['joueur'] != null
+        ? Joueur.fromJson(json['joueur'] as Map<String, dynamic>)
+        : null;
+    post = json['post'] as String?;
+    id = json['_id'] as String?;
   }
 
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
-    data['joueur'] = joueur.toJson();
+    data['joueur'] = joueur?.toJson();
     data['post'] = post;
     data['_id'] = id;
     return data;
@@ -149,23 +155,23 @@ class AttenteJoueursDemande {
 }
 
 class Joueur {
+  String? id;
+  String? username;
+  String? nom;
+  int? telephone;
+
   Joueur({
-    required this.id,
-    required this.username,
-    required this.nom,
-    required this.telephone,
+    this.id,
+    this.username,
+    this.nom,
+    this.telephone,
   });
 
-  late final String id;
-  late final String username;
-  late final String nom;
-  late final int telephone;
-
   Joueur.fromJson(Map<String, dynamic> json) {
-    id = json['_id'] as String;
-    username = json['username'] as String;
-    nom = json['nom'] as String;
-    telephone = json['telephone'] as int;
+    id = json['_id'] as String?;
+    username = json['username'] as String?;
+    nom = json['nom'] as String?;
+    telephone = json['telephone'] as int?;
   }
 
   Map<String, dynamic> toJson() {

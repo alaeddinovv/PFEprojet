@@ -73,9 +73,9 @@ class TerrainCubit extends Cubit<TerrainState> {
     String sTemps,
     String eTemps,
   ) {
-    DateTime startTime = DateFormat("HH:mm")
+    DateTime startTime = DateFormat("HH:mm", 'en_US')
         .parse(sTemps); // time format from server is HH:mm string
-    DateTime endTime = DateFormat("HH")
+    DateTime endTime = DateFormat("HH", 'en_US')
         .parse(eTemps); // time format from server is HH:mm string
     List<String> timeSlots = [];
 

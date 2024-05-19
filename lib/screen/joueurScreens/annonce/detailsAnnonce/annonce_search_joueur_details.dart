@@ -67,6 +67,9 @@ class _AnnonceSearchJoueurDetailsState
                 msg: 'Update Annonce Success', state: ToastStates.success);
             Navigator.pop(context);
           }
+          if (state is DemandeRejoindreEquipeStateGood) {
+            showToast(msg: 'Request to join sent', state: ToastStates.success);
+          }
         },
         builder: (context, state) {
           if (state is GetAnnonceByIDLoading) {

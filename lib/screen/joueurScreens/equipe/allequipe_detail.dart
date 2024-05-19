@@ -23,8 +23,8 @@ class _AllEquipeDetailsScreenState extends State<AllEquipeDetailsScreen> {
   void initState() {
     super.initState();
     // Check if the player ID is in the attenteJoueursDemande list
-    isRequestSent = widget.equipes.attenteJoueursDemande.any(
-        (joueur) => joueur.id == HomeJoueurCubit.get(context).joueurModel!.id);
+    isRequestSent = widget.equipes.attenteJoueursDemande.any((element) =>
+        element.joueur.id == HomeJoueurCubit.get(context).joueurModel!.id);
   }
 
   @override

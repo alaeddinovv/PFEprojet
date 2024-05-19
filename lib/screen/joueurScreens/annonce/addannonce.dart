@@ -5,9 +5,9 @@ import 'package:pfeprojet/Model/houssem/equipe_model.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/drop_down_wilaya.dart';
 import 'package:pfeprojet/component/search_terrain.dart';
+import 'package:pfeprojet/generated/l10n.dart'; // Import localization
 import 'package:pfeprojet/screen/JoueurScreens/home/home.dart';
 import 'package:pfeprojet/screen/joueurScreens/annonce/cubit/annonce_joueur_cubit.dart';
-import 'package:pfeprojet/screen/joueurScreens/annonce/detailsAnnonce/annonce_other.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/cubit/terrain_cubit.dart';
 
 class AddAnnonce extends StatefulWidget {
@@ -62,7 +62,7 @@ class _AddAnnonceState extends State<AddAnnonce> {
           },
         ),
         appBar: AppBar(
-          title: const Text('Add Annonce'),
+          title: Text(S.of(context).add_annonce), // Localized string
         ),
         body: LayoutBuilder(
           builder: (context, constraints) {
@@ -79,9 +79,14 @@ class _AddAnnonceState extends State<AddAnnonce> {
                   child: ListView(
                     children: [
                       buildDropdownField(
-                        label: 'Type',
+                        context: context,
+                        label: S.of(context).type, // Localized string
                         value: _selectedType,
-                        items: ['search joueur', 'search join equipe', 'other'],
+                        items: [
+                          S.of(context).search_joueur,
+                          S.of(context).search_join_equipe,
+                          S.of(context).other
+                        ],
                         onChanged: (value) {
                           setState(() {
                             _selectedType = value;
@@ -102,7 +107,7 @@ class _AddAnnonceState extends State<AddAnnonce> {
                           },
                         ),
                         if (idTerrainController.text.isNotEmpty)
-                          Text('Terrain Name: $terrainName',
+                          Text('${S.of(context).terrain_name}: $terrainName',
                               style: const TextStyle(
                                 color: Colors.green,
                                 fontWeight: FontWeight.bold,
@@ -112,7 +117,9 @@ class _AddAnnonceState extends State<AddAnnonce> {
                           children: [
                             Expanded(
                               child: _buildTimePickerField(
-                                  context, hourController, 'Start Time'),
+                                  context,
+                                  hourController,
+                                  S.of(context).start_time), // Localized string
                             ),
                             Expanded(
                               child: Container(
@@ -133,7 +140,7 @@ class _AddAnnonceState extends State<AddAnnonce> {
                                   children: [
                                     Expanded(
                                       child: Text(
-                                        'Date: ${DateFormat('dd/MM/yyyy').format(dateTime)}',
+                                        '${S.of(context).date}: ${DateFormat('dd/MM/yyyy').format(dateTime)}',
                                         style: const TextStyle(
                                           fontSize: 16,
                                         ),
@@ -156,7 +163,7 @@ class _AddAnnonceState extends State<AddAnnonce> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(
-                                'Selected Equipe: ${selectedEquipe!.nom}',
+                                '${S.of(context).selected_equipe}: ${selectedEquipe!.nom}',
                                 style: const TextStyle(
                                   color: Colors.green,
                                   fontWeight: FontWeight.bold,
@@ -173,7 +180,10 @@ class _AddAnnonceState extends State<AddAnnonce> {
                             ],
                           ),
                         buildTextField(
-                          label: 'Number of Players',
+                          context: context,
+                          label: S
+                              .of(context)
+                              .number_of_players, // Localized string
                           keyboardType: TextInputType.number,
                           onChanged: (value) {
                             setState(() {
@@ -186,8 +196,9 @@ class _AddAnnonceState extends State<AddAnnonce> {
                               } else {
                                 _numeroJoueurs = null;
                                 _selectedPositions = [];
-                                _errorMessage =
-                                    'Number of players cannot exceed 5';
+                                _errorMessage = S
+                                    .of(context)
+                                    .number_of_players_error; // Localized string
                               }
                             });
                           },
@@ -205,7 +216,9 @@ class _AddAnnonceState extends State<AddAnnonce> {
                           Padding(
                             padding: const EdgeInsets.only(top: 16.0),
                             child: buildDropdownField(
-                              label: 'Position for Player ${i + 1}',
+                              context: context,
+                              label:
+                                  '${S.of(context).position_for_player} ${i + 1}', // Localized string
                               value: _selectedPositions[i],
                               items: _positions,
                               onChanged: (value) {
@@ -223,7 +236,8 @@ class _AddAnnonceState extends State<AddAnnonce> {
                         selectedWilaya: wilayaController,
                       ),
                       buildTextField(
-                        label: 'Description',
+                        context: context,
+                        label: S.of(context).description, // Localized string
                         maxLines: 3,
                         icon: Icons.description,
                         controller: descriptionController,
@@ -265,7 +279,9 @@ class _AddAnnonceState extends State<AddAnnonce> {
                             }
                             if (state is CreerAnnonceJoueurStateGood) {
                               showToast(
-                                  msg: "annonce publier avec succes",
+                                  msg: S
+                                      .of(context)
+                                      .annonce_published_success, // Localized string
                                   state: ToastStates.success);
                               AnnonceJoueurCubit.get(context)
                                   .getMyAnnonceJoueur(cursor: "")
@@ -279,7 +295,9 @@ class _AddAnnonceState extends State<AddAnnonce> {
                               });
                             } else if (state is CreerAnnonceJoueurStateBad) {
                               showToast(
-                                  msg: "server crashed",
+                                  msg: S
+                                      .of(context)
+                                      .server_crashed, // Localized string
                                   state: ToastStates.error);
                             } else if (state is ErrorStateAnnonce) {
                               String errorMessage = state.errorModel.message!;
@@ -292,7 +310,9 @@ class _AddAnnonceState extends State<AddAnnonce> {
                               return const CircularProgressIndicator();
                             }
                             return defaultSubmit2(
-                                text: 'Add Annonce',
+                                text: S
+                                    .of(context)
+                                    .add_annonce, // Localized string
                                 onPressed: () {
                                   if (_selectedType == 'search joueur' &&
                                       (idTerrainController.text.isEmpty ||
@@ -305,7 +325,9 @@ class _AddAnnonceState extends State<AddAnnonce> {
                                           communeController.text.isEmpty ||
                                           descriptionController.text.isEmpty)) {
                                     showToast(
-                                        msg: "Please fill all required fields",
+                                        msg: S
+                                            .of(context)
+                                            .fill_all_fields, // Localized string
                                         state: ToastStates.error);
                                   } else if (_selectedType == 'search joueur') {
                                     TerrainCubit.get(context).getMyreserve(
@@ -367,7 +389,7 @@ class _AddAnnonceState extends State<AddAnnonce> {
               readOnly: true,
               onTap: () => _selectTime(context, controller),
               validator: (value) => value == null || value.isEmpty
-                  ? 'Please select a time'
+                  ? S.of(context).select_time_error // Localized string
                   : null,
             ),
           ),
@@ -420,6 +442,7 @@ class _AddAnnonceState extends State<AddAnnonce> {
 }
 
 Widget buildDropdownField({
+  required BuildContext context,
   required String label,
   String? value,
   required List<String> items,
@@ -455,7 +478,9 @@ Widget buildDropdownField({
               ))
           .toList(),
       onChanged: onChanged,
-      validator: (value) => value == null ? 'Please select a $label' : null,
+      validator: (value) => value == null
+          ? '${S.of(context).select} $label'
+          : null, // Localized string
     ),
   );
 }
@@ -468,6 +493,7 @@ Widget buildTextField({
   FormFieldValidator<String>? validator,
   required IconData icon,
   TextEditingController? controller,
+  required BuildContext context,
 }) {
   return Container(
     decoration: BoxDecoration(
@@ -497,7 +523,7 @@ Widget buildTextField({
       validator: validator ??
           (value) {
             if (value == null || value.isEmpty) {
-              return 'Please enter a $label';
+              return '${S.of(context!).enter} $label'; // Localized string
             }
             return null;
           },

@@ -92,7 +92,7 @@ class _SearchTerrainState extends State<SearchTerrain> {
               controller: searchController,
               onChanged: _onSearchChanged,
               decoration: InputDecoration(
-                hintText: 'Search equipes...',
+                hintText: 'Search Terrain...',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15.0),
                 ),
