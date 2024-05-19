@@ -18,6 +18,16 @@ part 'annonce_joueur_state.dart';
 class AnnonceJoueurCubit extends Cubit<AnnonceJoueurState> {
   AnnonceJoueurCubit() : super(AnnonceJoueurInitial());
 
+  void resetValue() {
+    annonceData = [];
+    cursorId = "";
+    annonces = [];
+    cursorid = "";
+    terrainSearch = [];
+    cursorIdTerrain = "";
+    emit(ResetAnnonceJoueurState());
+  }
+
   static AnnonceJoueurCubit get(context) =>
       BlocProvider.of<AnnonceJoueurCubit>(context);
 

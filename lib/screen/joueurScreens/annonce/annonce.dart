@@ -21,10 +21,12 @@ class Annonce extends StatefulWidget {
 class _AnnonceState extends State<Annonce> {
   late ScrollController _controller;
   bool _showList = true; // State to control which view to show
-
+  late final AnnonceJoueurCubit cubit;
   @override
   void initState() {
     super.initState();
+    cubit = AnnonceJoueurCubit.get(context);
+    cubit.getMyAnnonceJoueur();
     _controller = ScrollController();
     _controller = ScrollController()
       ..addListener(() {

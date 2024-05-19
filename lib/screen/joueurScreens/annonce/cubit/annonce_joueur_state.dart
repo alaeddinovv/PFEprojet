@@ -7,6 +7,8 @@ class AnnonceJoueurInitial extends AnnonceJoueurState {}
 
 final class CreerAnnonceJoueurLoadingState extends AnnonceJoueurState {}
 
+final class ResetAnnonceJoueurState extends AnnonceJoueurState {}
+
 final class CreerAnnonceJoueurStateGood extends AnnonceJoueurState {}
 
 final class CreerAnnonceJoueurStateBad extends AnnonceJoueurState {}

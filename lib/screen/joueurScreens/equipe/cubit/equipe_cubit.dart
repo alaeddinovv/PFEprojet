@@ -15,8 +15,22 @@ part 'equipe_state.dart';
 
 class EquipeCubit extends Cubit<EquipeState> {
   EquipeCubit() : super(EquipeInitial());
-
   static EquipeCubit get(context) => BlocProvider.of<EquipeCubit>(context);
+
+  void resetValue() {
+    equipeData = [];
+    cursorId = "";
+    equipes = [];
+    cursorid = "";
+    equipeImInData = [];
+    cursorId1 = "";
+    equipeInviteData = [];
+    cursorId2 = "";
+    joueuraccepted = DataJoueurModel();
+    joueur = DataJoueurModel();
+    emit(ResetEquipeState());
+  }
+
 //------------------ equipe creer---------------------
   Future<void> creerEquipe(
       {required String nom,

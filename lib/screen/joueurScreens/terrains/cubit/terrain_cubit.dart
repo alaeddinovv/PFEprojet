@@ -22,6 +22,20 @@ class TerrainCubit extends Cubit<TerrainState> {
 
   static TerrainCubit get(context) => BlocProvider.of<TerrainCubit>(context);
 
+  void resetValue() {
+    terrains = [];
+    selectedDate = DateTime.now();
+
+    indexSlide = 0;
+    showStadiumDetails = false;
+    reservationList = [];
+    equipeSearch = [];
+    cursorIdEqeuipe = "";
+    idEquipe1Vertial = null;
+    idEquipe2Vertial = null;
+    emit(ResetTerrainState());
+  }
+
   List<TerrainModel> terrains = [];
   Future<void> getMyTerrains() async {
     emit(GetMyTerrainsLoading());

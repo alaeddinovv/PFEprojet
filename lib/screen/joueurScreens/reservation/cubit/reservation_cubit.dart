@@ -12,6 +12,11 @@ class ReservationJoueurCubit extends Cubit<ReservationJoueurState> {
   ReservationJoueurCubit() : super(ReservationInitial());
   static ReservationJoueurCubit get(context) =>
       BlocProvider.of<ReservationJoueurCubit>(context);
+  void resetValue() {
+    equipesdemander = [];
+    cursorid = "";
+    emit(ResetReservationJoueurState());
+  }
 
   List<EquipeModelData> equipesdemander = [];
   String cursorid = "";

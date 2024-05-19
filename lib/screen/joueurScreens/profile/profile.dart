@@ -6,11 +6,15 @@ import 'package:pfeprojet/cubit/main_cubit.dart';
 import 'package:pfeprojet/generated/l10n.dart';
 import 'package:pfeprojet/helper/cachhelper.dart';
 import 'package:pfeprojet/screen/Auth/login.dart';
+import 'package:pfeprojet/screen/joueurScreens/annonce/cubit/annonce_joueur_cubit.dart';
+import 'package:pfeprojet/screen/joueurScreens/equipe/cubit/equipe_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/home/cubit/home_joueur_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/profile/cubit/profile_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/profile/update_form.dart';
 import 'package:pfeprojet/screen/joueurScreens/profile/update_mdp.dart';
 import 'package:flutter/services.dart';
+import 'package:pfeprojet/screen/joueurScreens/reservation/cubit/reservation_cubit.dart';
+import 'package:pfeprojet/screen/joueurScreens/terrains/cubit/terrain_cubit.dart';
 
 import '../../../Model/user_model.dart';
 
@@ -45,6 +49,13 @@ class ProfileJoueur extends StatelessWidget {
                         msg: S.of(context).disconnect,
                         state: ToastStates.error);
                   });
+
+                  HomeJoueurCubit.get(context).resetValue();
+                  TerrainCubit.get(context).resetValue();
+                  AnnonceJoueurCubit.get(context).resetValue();
+                  ProfileJoueurCubit.get(context).resetValue();
+                  EquipeCubit.get(context).resetValue();
+                  ReservationJoueurCubit.get(context).resetValue();
                 },
                 child: Text(
                   S.of(context).disconnect,

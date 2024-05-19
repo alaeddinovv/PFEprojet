@@ -16,6 +16,13 @@ class Terrain extends StatefulWidget {
 
 class _TerrainState extends State<Terrain> {
   bool _showList = true; // State to control which view to show
+  late final TerrainCubit cubit;
+  @override
+  void initState() {
+    cubit = TerrainCubit.get(context);
+    cubit.getMyTerrains();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

@@ -5,6 +5,8 @@ sealed class HomeJoueurState {}
 
 final class HomeJoueurInitial extends HomeJoueurState {}
 
+final class ResetHomeState extends HomeJoueurState {}
+
 final class ChangeIndexNavBarState extends HomeJoueurState {}
 
 final class UpdateJoueurModelVariable extends HomeJoueurState {}

@@ -89,16 +89,16 @@ class MyApp extends StatelessWidget {
           create: ((context) => AnnonceCubit()..getMyAnnonce()),
         ),
         BlocProvider(
-          create: ((context) => EquipeCubit()..getMyEquipe()),
+          create: ((context) => EquipeCubit()),
         ),
         BlocProvider(
-          create: ((context) => AnnonceJoueurCubit()..getMyAnnonceJoueur()),
+          create: ((context) => AnnonceJoueurCubit()),
         ),
         BlocProvider(
           create: ((context) => HomeAdminCubit()..getMyInfo()),
         ),
         BlocProvider(
-          create: ((context) => HomeJoueurCubit()..getMyInfo()),
+          create: ((context) => HomeJoueurCubit()),
         ),
         BlocProvider(
           create: ((context) => ProfileAdminCubit()),
@@ -107,7 +107,7 @@ class MyApp extends StatelessWidget {
           create: ((context) => ProfileJoueurCubit()),
         ),
         BlocProvider(
-          create: ((context) => terrainjoueur.TerrainCubit()..getMyTerrains()),
+          create: ((context) => terrainjoueur.TerrainCubit()),
         ),
         BlocProvider(
           create: ((context) => ReservationCubit()..fetchReservations()),
