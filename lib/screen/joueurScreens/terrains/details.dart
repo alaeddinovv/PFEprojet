@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
+import 'package:pfeprojet/Api/color.dart';
 import 'package:pfeprojet/Model/terrain_model.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/const.dart';
@@ -99,46 +100,65 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
       double screenHeight, TerrainCubit terrainCubit, BuildContext context) {
     return Column(
       children: [
-        SizedBox(
-          height: screenHeight * 0.035,
-        ),
-        SizedBox(
-          height: screenHeight * 0.08,
+        SizedBox(height: 16),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 18),
           child: SizedBox(
             height: screenHeight * 0.08,
             child: ListView(
               scrollDirection: Axis.horizontal,
               children: [
-                for (var i = 0;
-                    i < 7;
-                    i++) // Display 7 days and allow user to select a date in the last index
+                for (var i = 0; i < 7; i++)
                   GestureDetector(
                     onTap: () {
                       DateTime selectedDate =
                           DateTime.now().add(Duration(days: i));
                       terrainCubit.selectDate(selectedDate);
                       terrainCubit.fetchReservations(
-                          terrainId: widget.terrainModel.id!,
-                          date: terrainCubit.selectedDate);
+                        terrainId: widget.terrainModel.id!,
+                        date: terrainCubit.selectedDate,
+                      );
                     },
                     child: Container(
-                      width: 60,
-                      height: 60,
+                      width: 50,
+                      height: 50,
                       margin: const EdgeInsets.symmetric(horizontal: 4),
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      alignment: Alignment.center,
-                      child: Text(
-                        textAlign: TextAlign.center,
-                        DateFormat('EEE, MMM d')
-                            .format(DateTime.now().add(Duration(days: i))),
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
-                          color: terrainCubit.selectedDate.day ==
-                                  DateTime.now().add(Duration(days: i)).day
-                              ? Colors.blue
-                              : Colors.black,
-                        ),
+                      decoration: BoxDecoration(
+                        color: terrainCubit.selectedDate.day ==
+                                DateTime.now().add(Duration(days: i)).day
+                            ? Colors.blue
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            DateFormat('EEE')
+                                .format(DateTime.now().add(Duration(days: i))),
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.bold,
+                              color: terrainCubit.selectedDate.day ==
+                                      DateTime.now().add(Duration(days: i)).day
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            DateFormat('d')
+                                .format(DateTime.now().add(Duration(days: i))),
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: terrainCubit.selectedDate.day ==
+                                      DateTime.now().add(Duration(days: i)).day
+                                  ? Colors.white
+                                  : Colors.black,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
@@ -147,14 +167,16 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                   onPressed: () async {
                     await dateTimePicker(context, terrainCubit);
                     terrainCubit.fetchReservations(
-                        terrainId: widget.terrainModel.id!,
-                        date: terrainCubit.selectedDate);
+                      terrainId: widget.terrainModel.id!,
+                      date: terrainCubit.selectedDate,
+                    );
                   },
                 ),
               ],
             ),
           ),
         ),
+        SizedBox(height: 16),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 18),
           child: BlocBuilder<TerrainCubit, TerrainState>(
@@ -205,71 +227,78 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                   }
                 }
 
-                return GridView.builder(
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 5,
-                    childAspectRatio: 1,
-                    crossAxisSpacing: 8,
-                    mainAxisSpacing: 15,
-                  ),
-                  itemCount: timeSlots.length,
-                  itemBuilder: (context, index) {
-                    bool isCharge =
-                        hourPaymentsWithOtherPlayer.contains(timeSlots[index]);
-                    bool isMyReservationPaying =
-                        hourMyReservationPaying.contains(timeSlots[index]);
-                    bool isMyReservation =
-                        hourMyReservationWaiting.contains(timeSlots[index]);
-                    bool isReservable =
-                        !nonReservableHours.contains(timeSlots[index]) &&
-                            !isCharge &&
-                            !isMyReservation &&
-                            !isMyReservationPaying;
-                    return GestureDetector(
-                      onTap: () {
-                        print('Selected time slot: ${timeSlots[index]}');
-                        if (isReservable) {
-                          String hour = timeSlots[index];
-                          print(timeSlots[index]);
-                          navigatAndReturn(
-                              context: context,
-                              page: Reserve(
-                                  date: terrainCubit.selectedDate,
-                                  hour: hour,
-                                  idTerrain: widget.terrainModel.id!));
-                        } else if (isCharge) {
-                          showToast(
-                              msg: "This slot is already booked",
-                              state: ToastStates.warning);
-                        } else if (isMyReservationPaying) {
-                          // showToast(
-                          //     msg: "You have already booked this slot",
-                          //     state: ToastStates.warning);
+                return Column(
+                  children: [
+                    GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 5,
+                        childAspectRatio: 1,
+                        crossAxisSpacing: 8,
+                        mainAxisSpacing: 15,
+                      ),
+                      itemCount: timeSlots.length,
+                      itemBuilder: (context, index) {
+                        bool isCharge = hourPaymentsWithOtherPlayer
+                            .contains(timeSlots[index]);
+                        bool isMyReservationPaying =
+                            hourMyReservationPaying.contains(timeSlots[index]);
+                        bool isMyReservation =
+                            hourMyReservationWaiting.contains(timeSlots[index]);
+                        bool isReservable =
+                            !nonReservableHours.contains(timeSlots[index]) &&
+                                !isCharge &&
+                                !isMyReservation &&
+                                !isMyReservationPaying;
+                        return GestureDetector(
+                          onTap: () {
+                            print('Selected time slot: ${timeSlots[index]}');
+                            if (isReservable) {
+                              String hour = timeSlots[index];
+                              print(timeSlots[index]);
+                              navigatAndReturn(
+                                  context: context,
+                                  page: Reserve(
+                                      date: terrainCubit.selectedDate,
+                                      hour: hour,
+                                      idTerrain: widget.terrainModel.id!));
+                            } else if (isCharge) {
+                              showToast(
+                                  msg: "This slot is already booked",
+                                  state: ToastStates.warning);
+                            } else if (isMyReservationPaying) {
+                              // showToast(
+                              //     msg: "You have already booked this slot",
+                              //     state: ToastStates.warning);
 
-                          navigatAndReturn(
-                              context: context,
-                              page: DetailMyReserve(
-                                jour: terrainCubit.selectedDate,
-                                heure: timeSlots[index],
-                                terrainId: widget.terrainModel.id!,
-                              ));
-                        } else if (isMyReservation) {
-                          showToast(
-                              msg: "you are waiting for accepte from admin",
-                              state: ToastStates.warning);
-                        }
+                              navigatAndReturn(
+                                  context: context,
+                                  page: DetailMyReserve(
+                                    jour: terrainCubit.selectedDate,
+                                    heure: timeSlots[index],
+                                    terrainId: widget.terrainModel.id!,
+                                  ));
+                            } else if (isMyReservation) {
+                              showToast(
+                                  msg: "you are waiting for accepte from admin",
+                                  state: ToastStates.warning);
+                            }
+                          },
+                          child: itemGridViewReservation(
+                              nonReservableHours,
+                              hourPaymentsWithOtherPlayer,
+                              hourMyReservationWaiting,
+                              hourMyReservationPaying,
+                              timeSlots,
+                              index),
+                        );
                       },
-                      child: itemGridViewReservation(
-                          nonReservableHours,
-                          hourPaymentsWithOtherPlayer,
-                          hourMyReservationWaiting,
-                          hourMyReservationPaying,
-                          timeSlots,
-                          index),
-                    );
-                  },
+                    ),
+                    SizedBox(height: 16),
+                    _buildColorIndex(),
+                  ],
                 );
               }
             },
@@ -464,6 +493,12 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
         !terrainCubit.showStadiumDetails,
         terrainCubit.showStadiumDetails,
       ],
+      // borderRadius: BorderRadius.circular(8),
+      //       borderColor: Colors.blue,
+      //       selectedBorderColor: Colors.blueAccent,
+      //       selectedColor: Colors.white,
+      //       fillColor: Colors.lightBlueAccent.withOpacity(0.5),
+      //       constraints: const BoxConstraints(minHeight: 40.0),
       constraints: BoxConstraints(
           minWidth: MediaQuery.of(context).size.width / 2 - 10, minHeight: 40),
       children: const [
@@ -495,17 +530,8 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
               ? [
                   Builder(
                     builder: (BuildContext context) {
-                      return Container(
-                        width: double.infinity,
-                        margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                        decoration: const BoxDecoration(
-                          color: Colors.grey,
-                        ),
-                        child: const Icon(
-                          Icons.image_not_supported,
-                          size: 100,
-                        ),
-                      );
+                      return Image.asset('assets/images/terr.jpg',
+                          fit: BoxFit.fill, width: double.infinity);
                     },
                   ),
                 ]
@@ -544,7 +570,7 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                     const EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
                 decoration: BoxDecoration(
                   color: terrainCubit.indexSlide == index
-                      ? Colors.blue
+                      ? blueConst.withOpacity(0.5)
                       : Colors.grey,
                   borderRadius: BorderRadius.circular(4.0),
                 ),
@@ -564,8 +590,7 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
     List<String> timeSlots,
     int index,
   ) {
-    Color backgroundColor =
-        Colors.green[500]!; // Default to green for available slots
+    Color backgroundColor = greenConst; // Default to green for available slots
 
     // If the slot is not reservable (blocked), it gets a red color
     if (isReservable.contains(timeSlots[index])) {
@@ -609,4 +634,52 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
       terrainCubit.selectDate(picked);
     }
   }
+}
+
+Widget _buildColorIndex() {
+  return Card(
+    elevation: 2,
+    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+    child: Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Color Index:',
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          SizedBox(height: 8),
+          _buildColorItem(greenConst, 'Available for booking'),
+          _buildColorItem(Colors.red[300]!, 'Blocked by stadium owner'),
+          _buildColorItem(Colors.grey[300]!, 'Booked by other players'),
+          _buildColorItem(Colors.blue[300]!, 'Your approved booking'),
+          _buildColorItem(Colors.yellow[300]!, 'Your pending booking'),
+        ],
+      ),
+    ),
+  );
+}
+
+Widget _buildColorItem(Color color, String label) {
+  return Padding(
+    padding: const EdgeInsets.symmetric(vertical: 4.0),
+    child: Row(
+      children: [
+        Container(
+          width: 20,
+          height: 20,
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(4),
+          ),
+        ),
+        SizedBox(width: 8),
+        Text(label),
+      ],
+    ),
+  );
 }

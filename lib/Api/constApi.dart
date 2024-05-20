@@ -32,6 +32,8 @@ const FILTERRESERVATIONPagination = '/api/reservationspagination/filter';
 const MYRESERVATIONWITHOTHER = '/api/myreservationswithother/';
 const ADDTERRAIN = '/api/terrain';
 const DELETETERRAIN = '/api/terrain/';
+const DELETETERRAINPHOTO =
+    '/api/terrain/'; // rani fl function nkml /terrain/:id/photo/
 const UPDATETERRAIN = '/api/terrain/';
 
 const GETMYTERRAINS = '/api/myterrains';

@@ -22,7 +22,7 @@ class HomeJoueurCubit extends Cubit<HomeJoueurState> {
 
   void resetValue() {
     selectedIndex = 0;
-    joueurModel = null;
+    joueurModel = DataJoueurModel();
     emit(ResetHomeState());
   }
 

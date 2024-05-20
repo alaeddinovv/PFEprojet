@@ -298,15 +298,39 @@ class TerrainCubit extends Cubit<TerrainState> {
     });
   }
 
-  Future<void> deleteImageFromFirebaseStorage(String fileUrl) async {
-    try {
-      firebase_storage.Reference ref =
-          firebase_storage.FirebaseStorage.instance.refFromURL(fileUrl);
-      await ref.delete();
-      print("Deleted image: $fileUrl");
-    } catch (e) {
-      print("Failed to delete image: $e");
-    }
+  Future<void> deleteImageFromFirebaseStorage(
+      String fileUrl, String terrainId) async {
+    await firebase_storage.FirebaseStorage.instance
+        .refFromURL(fileUrl)
+        .delete()
+        .then((_) async {
+      print('Old image deleted successfully');
+      await deleteTerrainImage(id: terrainId, img: fileUrl);
+    }).catchError((error) {
+      print('Failed to delete old image: $error');
+    });
+  }
+
+  Future<void> deleteTerrainImage(
+      {required String id, required String img}) async {
+    // emit(DeleteTerrainImageLoadingState());
+    await Httplar.httpPost(
+        path: DELETETERRAINPHOTO + id + '/photo/',
+        data: {'photo': img}).then((value) {
+      if (value.statusCode == 200) {
+        print(id);
+        print(img);
+        print('ffffffffffff');
+        // emit(DeleteTerrainImageStateGood());
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
+      }
+    }).catchError((e) {
+      print(e.toString());
+      // emit(DeleteTerrainImageStateBad());
+    });
   }
 
   Future<void> creerTarrain({
@@ -365,7 +389,7 @@ class TerrainCubit extends Cubit<TerrainState> {
       if (value.statusCode == 200) {
         if (imagesToDelete.isNotEmpty) {
           for (var oldIamge in imagesToDelete) {
-            await deleteImageFromFirebaseStorage(oldIamge);
+            await deleteImageFromFirebaseStorage(oldIamge, id);
           }
         }
         var jsonResponse =

@@ -517,6 +517,158 @@ class S {
       args: [],
     );
   }
+
+  // skipped getter for the 'UpdateProfile.dart.dart(joueur)' key
+
+  /// `Mettre à jour`
+  String get update {
+    return Intl.message(
+      'Mettre à jour',
+      name: 'update',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Le nom d'utilisateur ne doit pas être vide`
+  String get usernameMustNotBeEmpty {
+    return Intl.message(
+      'Le nom d\'utilisateur ne doit pas être vide',
+      name: 'usernameMustNotBeEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nom`
+  String get name {
+    return Intl.message(
+      'Nom',
+      name: 'name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Le nom ne doit pas être vide`
+  String get nameMustNotBeEmpty {
+    return Intl.message(
+      'Le nom ne doit pas être vide',
+      name: 'nameMustNotBeEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Le prénom ne doit pas être vide`
+  String get prenomMustNotBeEmpty {
+    return Intl.message(
+      'Le prénom ne doit pas être vide',
+      name: 'prenomMustNotBeEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Téléphone`
+  String get telephone {
+    return Intl.message(
+      'Téléphone',
+      name: 'telephone',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Le téléphone ne doit pas être vide`
+  String get phoneMustNotBeEmpty {
+    return Intl.message(
+      'Le téléphone ne doit pas être vide',
+      name: 'phoneMustNotBeEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Âge`
+  String get age {
+    return Intl.message(
+      'Âge',
+      name: 'age',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `L'âge ne doit pas être vide`
+  String get ageMustNotBeEmpty {
+    return Intl.message(
+      'L\'âge ne doit pas être vide',
+      name: 'ageMustNotBeEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Poste`
+  String get poste {
+    return Intl.message(
+      'Poste',
+      name: 'poste',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Le poste ne doit pas être vide`
+  String get posteMustNotBeEmpty {
+    return Intl.message(
+      'Le poste ne doit pas être vide',
+      name: 'posteMustNotBeEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Succès`
+  String get success {
+    return Intl.message(
+      'Succès',
+      name: 'success',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choisissez la source :`
+  String get chooseSource {
+    return Intl.message(
+      'Choisissez la source :',
+      name: 'chooseSource',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Caméra`
+  String get camera {
+    return Intl.message(
+      'Caméra',
+      name: 'camera',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Galerie`
+  String get gallery {
+    return Intl.message(
+      'Galerie',
+      name: 'gallery',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
