@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:pfeprojet/Model/annonce_model.dart';
+import 'package:pfeprojet/Model/annonce/annonce_model.dart';
 import 'package:pfeprojet/component/components.dart';
-import 'package:pfeprojet/screen/joueurScreens/annonce/test1.dart';
+import 'package:pfeprojet/generated/l10n.dart';
+import 'package:pfeprojet/screen/joueurScreens/annonce/detailsAnnonce/details.dart';
+import 'package:pfeprojet/screen/joueurScreens/home/cubit/home_joueur_cubit.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:permission_handler/permission_handler.dart';
-
 import 'package:pfeprojet/screen/joueurScreens/annonce/addannonce.dart';
 import 'package:pfeprojet/screen/joueurScreens/annonce/cubit/annonce_joueur_cubit.dart';
-import 'package:pfeprojet/screen/joueurScreens/annonce/update_annonce.dart';
-import '../../../Model/annonce_admin_model.dart';
-
+import '../../../Model/annonce/annonce_admin_model.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Annonce extends StatefulWidget {
@@ -22,10 +21,12 @@ class Annonce extends StatefulWidget {
 class _AnnonceState extends State<Annonce> {
   late ScrollController _controller;
   bool _showList = true; // State to control which view to show
-
+  late final AnnonceJoueurCubit cubit;
   @override
   void initState() {
     super.initState();
+    cubit = AnnonceJoueurCubit.get(context);
+    cubit.getMyAnnonceJoueur();
     _controller = ScrollController();
     _controller = ScrollController()
       ..addListener(() {
@@ -40,7 +41,8 @@ class _AnnonceState extends State<Annonce> {
           } else {
             if (AnnonceJoueurCubit.get(context).cursorid != "") {
               AnnonceJoueurCubit.get(context).getAllAnnonce(
-                  cursor: AnnonceJoueurCubit.get(context).cursorid);
+                  cursor: AnnonceJoueurCubit.get(context).cursorid,
+                  myId: HomeJoueurCubit.get(context).joueurModel!.id);
               print('ggggg');
 
               print(AnnonceJoueurCubit.get(context).cursorid);
@@ -70,8 +72,10 @@ class _AnnonceState extends State<Annonce> {
                 setState(() {
                   _showList = index == 0;
                   if (!_showList) {
-                    AnnonceJoueurCubit.get(context)
-                        .getAllAnnonce(); // Call getAllAnnonce when "All annonces" is selected
+                    AnnonceJoueurCubit.get(context).getAllAnnonce(
+                        myId: HomeJoueurCubit.get(context)
+                            .joueurModel!
+                            .id); // Call getAllAnnonce  owner: HomeJoueurCubit.get(context).joueurModel!.idwhen "All annonces" is selected
                   } else {
                     AnnonceJoueurCubit.get(context)
                         .getMyAnnonceJoueur(); // Optional: Refresh "My annonces" when switching back
@@ -84,14 +88,14 @@ class _AnnonceState extends State<Annonce> {
               selectedColor: Colors.white,
               fillColor: Colors.lightBlueAccent.withOpacity(0.5),
               constraints: const BoxConstraints(minHeight: 40.0),
-              children: const <Widget>[
+              children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Text('My annonces'),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(S.of(context).my_annonces),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Text('All annonces'),
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(S.of(context).all_annonces),
                 ),
               ],
             ),
@@ -107,6 +111,8 @@ class _AnnonceState extends State<Annonce> {
                           AnnonceJoueurCubit.get(context)
                               .getMyAnnonceJoueur()
                               .then((value) => Navigator.pop(context));
+                        } else if (state is UpdateAnnonceJoueurStateGood) {
+                          AnnonceJoueurCubit.get(context).getMyAnnonceJoueur();
                         }
                       },
                       builder: (context, state) {
@@ -134,12 +140,9 @@ class _AnnonceState extends State<Annonce> {
                           shrinkWrap: true, // to prevent infinite height error
                         );
                         //
-                        return const SizedBox();
                       },
                     ),
                   )
-
-                //       SizedBox()
                 : Padding(
                     padding: const EdgeInsets.symmetric(
                         horizontal: 20, vertical: 20),
@@ -147,8 +150,15 @@ class _AnnonceState extends State<Annonce> {
                       listener: (context, state) {
                         if (state is DeleteAnnonceJoueurStateGood) {
                           AnnonceJoueurCubit.get(context)
-                              .getAllAnnonce()
+                              .getAllAnnonce(
+                                  myId: HomeJoueurCubit.get(context)
+                                      .joueurModel!
+                                      .id)
                               .then((value) => Navigator.pop(context));
+                        } else if (state is UpdateAnnonceJoueurStateGood) {
+                          AnnonceJoueurCubit.get(context).getAllAnnonce(
+                              myId:
+                                  HomeJoueurCubit.get(context).joueurModel!.id);
                         }
                       },
                       builder: (context, state) {
@@ -201,6 +211,8 @@ class _AnnonceState extends State<Annonce> {
               AnnonceJoueurCubit.get(context)
                   .getMyAnnonceJoueur()
                   .then((value) => Navigator.pop(context));
+            } else if (state is UpdateAnnonceJoueurStateGood) {
+              AnnonceJoueurCubit.get(context).getMyAnnonceJoueur();
             }
           },
           builder: (context, state) {
@@ -239,13 +251,17 @@ class _AnnonceState extends State<Annonce> {
           listener: (context, state) {
             if (state is DeleteAnnonceJoueurStateGood) {
               AnnonceJoueurCubit.get(context)
-                  .getAllAnnonce()
+                  .getAllAnnonce(
+                      myId: HomeJoueurCubit.get(context).joueurModel!.id)
                   .then((value) => Navigator.pop(context));
+            } else if (state is UpdateAnnonceJoueurStateGood) {
+              AnnonceJoueurCubit.get(context).getAllAnnonce(
+                  myId: HomeJoueurCubit.get(context).joueurModel!.id);
             }
           },
           builder: (context, state) {
             if (state is GetAllAnnonceStateBad) {
-              return const Text('Failed to fetch data');
+              return Text(S.of(context).failed_to_fetch_data);
             }
 
             if (state is GetAllAnnonceLoading &&
@@ -299,7 +315,9 @@ class _AnnonceState extends State<Annonce> {
             onTap: () {
               navigatAndReturn(
                 context: context,
-                page: MatchDetailsPage(
+                page: DetailsAnnonceChoose(
+                  path: model.type!,
+                  isMy: true,
                   id: model.id!,
                 ),
               );
@@ -312,28 +330,13 @@ class _AnnonceState extends State<Annonce> {
                 fontSize: 18,
               ),
             ),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min, // Ensures compactness
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.edit,
-                      color: Color(0xFF4CAF50)), // Softer green
-                  onPressed: () {
-                    navigatAndReturn(
-                        context: context,
-                        page: EditAnnoncePage(annonceModel: model));
-                    // Your code to handle edit action
-                  },
-                ),
-                IconButton(
-                  icon: const Icon(Icons.delete,
-                      color: Color(0xFFBDBDBD)), // Softer grey
-                  onPressed: () {
-                    dialogDelete(context, model);
-                    // Your code to handle delete action
-                  },
-                ),
-              ],
+            trailing: IconButton(
+              icon: const Icon(Icons.delete,
+                  color: Color(0xFFBDBDBD)), // Softer grey
+              onPressed: () {
+                dialogDelete(context, model);
+                // Your code to handle delete action
+              },
             ),
           ),
           Padding(
@@ -377,7 +380,9 @@ class _AnnonceState extends State<Annonce> {
             onTap: () {
               navigatAndReturn(
                 context: context,
-                page: MatchDetailsPage(
+                page: DetailsAnnonceChoose(
+                  path: model.type!,
+                  isMy: false,
                   id: model.id!,
                 ),
               );
@@ -403,8 +408,9 @@ class _AnnonceState extends State<Annonce> {
                       _makePhoneCall(phoneNumber.toString());
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text("No telephone number available."),
+                        SnackBar(
+                          content:
+                              Text(S.of(context).no_telephone_number_available),
                         ),
                       );
                     }
@@ -436,21 +442,22 @@ class _AnnonceState extends State<Annonce> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Delete Annonce'),
-          content: const Text('Are you sure you want to delete this annonce?'),
+          title: Text(S.of(context).delete_annonce),
+          content:
+              Text(S.of(context).are_you_sure_you_want_to_delete_this_annonce),
           actions: [
             TextButton(
               onPressed: () {
                 AnnonceJoueurCubit.get(context)
                     .deleteAnnonceJoueur(id: model.id!);
               },
-              child: const Text('Yes'),
+              child: Text(S.of(context).yes),
             ),
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text('No'),
+              child: Text(S.of(context).no),
             ),
           ],
         );

@@ -5,6 +5,8 @@ sealed class ProfileJoueurState {}
 
 final class ProfileJoueurInitial extends ProfileJoueurState {}
 
+final class ResetProfileJoueurState extends ProfileJoueurState {}
+
 final class UpdateJoueurLoadingState extends ProfileJoueurState {}
 
 final class UpdateJoueurStateGood extends ProfileJoueurState {
@@ -25,7 +27,8 @@ final class ImagePickerProfileJoueurStateGood extends ProfileJoueurState {}
 
 final class ImagePickerProfileJoueurStateBad extends ProfileJoueurState {}
 
-final class UploadProfileJoueurImgAndGetUrlStateBad extends ProfileJoueurState {}
+final class UploadProfileJoueurImgAndGetUrlStateBad
+    extends ProfileJoueurState {}
 
 //----------------------mdp----------------------
 

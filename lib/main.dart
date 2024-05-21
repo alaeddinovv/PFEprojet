@@ -25,6 +25,7 @@ import 'package:pfeprojet/screen/joueurScreens/home/cubit/home_joueur_cubit.dart
 import 'package:pfeprojet/screen/joueurScreens/home/home.dart';
 import 'package:pfeprojet/screen/joueurScreens/profile/cubit/profile_cubit.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:pfeprojet/screen/joueurScreens/reservation/cubit/reservation_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/cubit/terrain_cubit.dart'
     as terrainjoueur;
 
@@ -88,16 +89,16 @@ class MyApp extends StatelessWidget {
           create: ((context) => AnnonceCubit()..getMyAnnonce()),
         ),
         BlocProvider(
-          create: ((context) => EquipeCubit()..getMyEquipe()),
+          create: ((context) => EquipeCubit()),
         ),
         BlocProvider(
-          create: ((context) => AnnonceJoueurCubit()..getMyAnnonceJoueur()),
+          create: ((context) => AnnonceJoueurCubit()),
         ),
         BlocProvider(
           create: ((context) => HomeAdminCubit()..getMyInfo()),
         ),
         BlocProvider(
-          create: ((context) => HomeJoueurCubit()..getMyInfo()),
+          create: ((context) => HomeJoueurCubit()),
         ),
         BlocProvider(
           create: ((context) => ProfileAdminCubit()),
@@ -106,10 +107,13 @@ class MyApp extends StatelessWidget {
           create: ((context) => ProfileJoueurCubit()),
         ),
         BlocProvider(
-          create: ((context) => terrainjoueur.TerrainCubit()..getMyTerrains()),
+          create: ((context) => terrainjoueur.TerrainCubit()),
         ),
         BlocProvider(
           create: ((context) => ReservationCubit()..fetchReservations()),
+        ),
+        BlocProvider(
+          create: ((context) => ReservationJoueurCubit()),
         ),
       ],
       child: BlocConsumer<MainCubit, MainState>(

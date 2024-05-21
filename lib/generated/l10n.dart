@@ -69,6 +69,606 @@ class S {
       args: [],
     );
   }
+
+  // skipped getter for the 'annonce.dart' key
+
+  /// `Mes annonces`
+  String get my_annonces {
+    return Intl.message(
+      'Mes annonces',
+      name: 'my_annonces',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Toutes les annonces`
+  String get all_annonces {
+    return Intl.message(
+      'Toutes les annonces',
+      name: 'all_annonces',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Échec de la récupération des données`
+  String get failed_to_fetch_data {
+    return Intl.message(
+      'Échec de la récupération des données',
+      name: 'failed_to_fetch_data',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Aucun numéro de téléphone disponible.`
+  String get no_telephone_number_available {
+    return Intl.message(
+      'Aucun numéro de téléphone disponible.',
+      name: 'no_telephone_number_available',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Supprimer l'annonce`
+  String get delete_annonce {
+    return Intl.message(
+      'Supprimer l\'annonce',
+      name: 'delete_annonce',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Êtes-vous sûr de vouloir supprimer cette annonce?`
+  String get are_you_sure_you_want_to_delete_this_annonce {
+    return Intl.message(
+      'Êtes-vous sûr de vouloir supprimer cette annonce?',
+      name: 'are_you_sure_you_want_to_delete_this_annonce',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Oui`
+  String get yes {
+    return Intl.message(
+      'Oui',
+      name: 'yes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Non`
+  String get no {
+    return Intl.message(
+      'Non',
+      name: 'no',
+      desc: '',
+      args: [],
+    );
+  }
+
+  // skipped getter for the 'addAnnonce.dart' key
+
+  /// `Ajouter une Annonce`
+  String get add_annonce {
+    return Intl.message(
+      'Ajouter une Annonce',
+      name: 'add_annonce',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Type`
+  String get type {
+    return Intl.message(
+      'Type',
+      name: 'type',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `search joueur`
+  String get search_joueur {
+    return Intl.message(
+      'search joueur',
+      name: 'search_joueur',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `search join equipe`
+  String get search_join_equipe {
+    return Intl.message(
+      'search join equipe',
+      name: 'search_join_equipe',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `other`
+  String get other {
+    return Intl.message(
+      'other',
+      name: 'other',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nom du terrain`
+  String get terrain_name {
+    return Intl.message(
+      'Nom du terrain',
+      name: 'terrain_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Heure de début`
+  String get start_time {
+    return Intl.message(
+      'Heure de début',
+      name: 'start_time',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Date`
+  String get date {
+    return Intl.message(
+      'Date',
+      name: 'date',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Équipe sélectionnée`
+  String get selected_equipe {
+    return Intl.message(
+      'Équipe sélectionnée',
+      name: 'selected_equipe',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nombre de joueurs`
+  String get number_of_players {
+    return Intl.message(
+      'Nombre de joueurs',
+      name: 'number_of_players',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Le nombre de joueurs ne peut pas dépasser 5`
+  String get number_of_players_error {
+    return Intl.message(
+      'Le nombre de joueurs ne peut pas dépasser 5',
+      name: 'number_of_players_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Poste pour le joueur`
+  String get position_for_player {
+    return Intl.message(
+      'Poste pour le joueur',
+      name: 'position_for_player',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Description`
+  String get description {
+    return Intl.message(
+      'Description',
+      name: 'description',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Annonce publiée avec succès`
+  String get annonce_published_success {
+    return Intl.message(
+      'Annonce publiée avec succès',
+      name: 'annonce_published_success',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Le serveur a planté`
+  String get server_crashed {
+    return Intl.message(
+      'Le serveur a planté',
+      name: 'server_crashed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Veuillez remplir tous les champs requis`
+  String get fill_all_fields {
+    return Intl.message(
+      'Veuillez remplir tous les champs requis',
+      name: 'fill_all_fields',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Veuillez sélectionner une heure`
+  String get select_time_error {
+    return Intl.message(
+      'Veuillez sélectionner une heure',
+      name: 'select_time_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Veuillez sélectionner`
+  String get select {
+    return Intl.message(
+      'Veuillez sélectionner',
+      name: 'select',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Veuillez entrer`
+  String get enter {
+    return Intl.message(
+      'Veuillez entrer',
+      name: 'enter',
+      desc: '',
+      args: [],
+    );
+  }
+
+  // skipped getter for the 'profile.dart.dart(joueur)' key
+
+  /// `Profil`
+  String get profile {
+    return Intl.message(
+      'Profil',
+      name: 'profile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nom d'utilisateur`
+  String get username {
+    return Intl.message(
+      'Nom d\'utilisateur',
+      name: 'username',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nom`
+  String get nom {
+    return Intl.message(
+      'Nom',
+      name: 'nom',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Prénom`
+  String get prenom {
+    return Intl.message(
+      'Prénom',
+      name: 'prenom',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Wilaya`
+  String get wilaya {
+    return Intl.message(
+      'Wilaya',
+      name: 'wilaya',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email`
+  String get email {
+    return Intl.message(
+      'Email',
+      name: 'email',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Téléphone`
+  String get phone {
+    return Intl.message(
+      'Téléphone',
+      name: 'phone',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Déconnexion`
+  String get disconnect {
+    return Intl.message(
+      'Déconnexion',
+      name: 'disconnect',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Changer la langue`
+  String get change_language {
+    return Intl.message(
+      'Changer la langue',
+      name: 'change_language',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nom d'utilisateur copié avec succès`
+  String get copy_username_success {
+    return Intl.message(
+      'Nom d\'utilisateur copié avec succès',
+      name: 'copy_username_success',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Modifier le profil`
+  String get modify_profile {
+    return Intl.message(
+      'Modifier le profil',
+      name: 'modify_profile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Modifier le mot de passe`
+  String get modify_password {
+    return Intl.message(
+      'Modifier le mot de passe',
+      name: 'modify_password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  // skipped getter for the 'deatilsTerrian.dart.dart(joueur)' key
+
+  /// `Réservation`
+  String get reservation {
+    return Intl.message(
+      'Réservation',
+      name: 'reservation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nombre de joueurs`
+  String get player_count {
+    return Intl.message(
+      'Nombre de joueurs',
+      name: 'player_count',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `joueurs`
+  String get players {
+    return Intl.message(
+      'joueurs',
+      name: 'players',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `État du terrain`
+  String get terrain_state {
+    return Intl.message(
+      'État du terrain',
+      name: 'terrain_state',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Plus`
+  String get more {
+    return Intl.message(
+      'Plus',
+      name: 'more',
+      desc: '',
+      args: [],
+    );
+  }
+
+  // skipped getter for the 'UpdateProfile.dart.dart(joueur)' key
+
+  /// `Mettre à jour`
+  String get update {
+    return Intl.message(
+      'Mettre à jour',
+      name: 'update',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Le nom d'utilisateur ne doit pas être vide`
+  String get usernameMustNotBeEmpty {
+    return Intl.message(
+      'Le nom d\'utilisateur ne doit pas être vide',
+      name: 'usernameMustNotBeEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nom`
+  String get name {
+    return Intl.message(
+      'Nom',
+      name: 'name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Le nom ne doit pas être vide`
+  String get nameMustNotBeEmpty {
+    return Intl.message(
+      'Le nom ne doit pas être vide',
+      name: 'nameMustNotBeEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Le prénom ne doit pas être vide`
+  String get prenomMustNotBeEmpty {
+    return Intl.message(
+      'Le prénom ne doit pas être vide',
+      name: 'prenomMustNotBeEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Téléphone`
+  String get telephone {
+    return Intl.message(
+      'Téléphone',
+      name: 'telephone',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Le téléphone ne doit pas être vide`
+  String get phoneMustNotBeEmpty {
+    return Intl.message(
+      'Le téléphone ne doit pas être vide',
+      name: 'phoneMustNotBeEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Âge`
+  String get age {
+    return Intl.message(
+      'Âge',
+      name: 'age',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `L'âge ne doit pas être vide`
+  String get ageMustNotBeEmpty {
+    return Intl.message(
+      'L\'âge ne doit pas être vide',
+      name: 'ageMustNotBeEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Poste`
+  String get poste {
+    return Intl.message(
+      'Poste',
+      name: 'poste',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Le poste ne doit pas être vide`
+  String get posteMustNotBeEmpty {
+    return Intl.message(
+      'Le poste ne doit pas être vide',
+      name: 'posteMustNotBeEmpty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Succès`
+  String get success {
+    return Intl.message(
+      'Succès',
+      name: 'success',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choisissez la source :`
+  String get chooseSource {
+    return Intl.message(
+      'Choisissez la source :',
+      name: 'chooseSource',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Caméra`
+  String get camera {
+    return Intl.message(
+      'Caméra',
+      name: 'camera',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Galerie`
+  String get gallery {
+    return Intl.message(
+      'Galerie',
+      name: 'gallery',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

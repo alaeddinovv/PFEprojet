@@ -1,12 +1,8 @@
 // const URLHTTP = '192.168.1.23:3000';
 // const URLHTTP = '192.168.1.2:3000';
 
-
-
-
 // const URLHTTP = '192.168.1.20:3000'; //IP houssem
-const URLHTTP = '192.168.1.20:3000'; //IP ala
-
+const URLHTTP = '192.168.1.27:3000'; //IP ala
 
 // const URLHTTP = '10.0.2.2:3000';
 
@@ -36,9 +32,13 @@ const FILTERRESERVATIONPagination = '/api/reservationspagination/filter';
 const MYRESERVATIONWITHOTHER = '/api/myreservationswithother/';
 const ADDTERRAIN = '/api/terrain';
 const DELETETERRAIN = '/api/terrain/';
+const DELETETERRAINPHOTO =
+    '/api/terrain/'; // rani fl function nkml /terrain/:id/photo/
 const UPDATETERRAIN = '/api/terrain/';
 
 const GETMYTERRAINS = '/api/myterrains';
+const SEARCHTERRAIN = '/api/search/terrain';
+const SEARCHMYTERRAIN = '/api/search/myterrain';
 const GETAllTerrain = '/api//terrains';
 const Loginjoueur = '/api/loginjoueur';
 const REGISTERJOUER = '/api/joueur';
@@ -63,6 +63,7 @@ const VERIFYADMINCODE = '/api/admins/verifytoken';
 const GETALLANNONCE = '/api/annonce';
 //------------equipe
 const ADDEQUIPE = '/api/equipe';
+const GETALLEQUIPEDEMEANDER = '/api/joueur/demandes';
 const UPDATEEQUIPE = '/api/equipe/';
 const DELETEEQUIPE = '/api/equipe/';
 const GETALLEQUIPE = '/api/equipe';

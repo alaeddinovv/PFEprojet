@@ -23,7 +23,8 @@ class _AllEquipeDetailsScreenState extends State<AllEquipeDetailsScreen> {
   void initState() {
     super.initState();
     // Check if the player ID is in the attenteJoueursDemande list
-    isRequestSent = widget.equipes.attenteJoueursDemande.any((joueur) => joueur.id == HomeJoueurCubit.get(context).joueurModel!.id);
+    isRequestSent = widget.equipes.attenteJoueursDemande.any((element) =>
+        element.joueur.id == HomeJoueurCubit.get(context).joueurModel!.id);
   }
 
   @override
@@ -33,15 +34,16 @@ class _AllEquipeDetailsScreenState extends State<AllEquipeDetailsScreen> {
       canPop: false,
       onPopInvoked: (didPop) async {
         if (!didPop) {
-          if (canPop == true)  {
-            await EquipeCubit.get(context).getAllEquipe(capitanId: HomeJoueurCubit.get(context).joueurModel!.id!);
+          if (canPop == true) {
+            await EquipeCubit.get(context).getAllEquipe(
+                capitanId: HomeJoueurCubit.get(context).joueurModel!.id!);
             Navigator.pop(context);
           }
         }
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Détail de l\'équipe'), // Display team name
+          title: const Text('Détail de l\'équipe'), // Display team name
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -50,9 +52,10 @@ class _AllEquipeDetailsScreenState extends State<AllEquipeDetailsScreen> {
             children: [
               Text(
                 'Equipe : ${widget.equipes.nom}', // Display team name at the top of the page
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
               ),
-              SizedBox(height: 10),
+              const SizedBox(height: 10),
               Container(
                 width: double.infinity, // Match the width of the ListView
                 decoration: BoxDecoration(
@@ -63,27 +66,29 @@ class _AllEquipeDetailsScreenState extends State<AllEquipeDetailsScreen> {
                       color: Colors.grey.withOpacity(0.2),
                       spreadRadius: 1,
                       blurRadius: 3,
-                      offset: Offset(0, 1),
+                      offset: const Offset(0, 1),
                     ),
                   ],
                 ),
-                padding: EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: [
                     Expanded(
                       child: Text(
                         'Capitaine : ${widget.equipes.capitaineId.username}',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                     ),
                     IconButton(
-                      icon: Icon(Icons.call, color: Colors.green),
+                      icon: const Icon(Icons.call, color: Colors.green),
                       onPressed: () {
                         if (widget.equipes.capitaineId.telephone != null) {
-                          _makePhoneCall(widget.equipes.capitaineId.telephone.toString());
+                          _makePhoneCall(
+                              widget.equipes.capitaineId.telephone.toString());
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
+                            const SnackBar(
                               content: Text("No telephone number available."),
                             ),
                           );
@@ -93,38 +98,46 @@ class _AllEquipeDetailsScreenState extends State<AllEquipeDetailsScreen> {
                   ],
                 ),
               ),
-              SizedBox(height: 20),
-              Text('Players:', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 20),
+              const Text('Players:',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               Expanded(
                 child: ListView.builder(
                   itemCount: widget.equipes.joueurs.length,
                   itemBuilder: (context, index) {
                     Joueurs joueur = widget.equipes.joueurs[index];
-                    return _buildJoueurItem(index, joueur.username, joueur.telephone);
+                    return _buildJoueurItem(
+                        index, joueur.username, joueur.telephone);
                   },
                 ),
               ),
               const SizedBox(height: 20),
               BlocConsumer<EquipeCubit, EquipeState>(
                 listener: (context, state) {
-                  if (state is DemandeRejoindreEquipeStateGood || state is AnnulerRejoindreEquipeStateGood) {
+                  if (state is DemandeRejoindreEquipeStateGood ||
+                      state is AnnulerRejoindreEquipeStateGood) {
                     setState(() {
                       isRequestSent = !isRequestSent; // Toggle request state
                     });
                   } else if (state is ErrorState) {
                     showToast(
-                        msg: state.errorModel.message!, state: ToastStates.error);
+                        msg: state.errorModel.message!,
+                        state: ToastStates.error);
                   }
                 },
                 builder: (context, state) {
                   return defaultSubmit2(
-                    text: isRequestSent ? 'Annuler demande' : 'Demander rejoindre équipe',
+                    text: isRequestSent
+                        ? 'Annuler demande'
+                        : 'Demander rejoindre équipe',
                     background: Colors.blueAccent,
                     onPressed: () {
                       if (!isRequestSent) {
-                        EquipeCubit.get(context).demanderRejoindreEquipe(id: widget.equipes.id);
+                        EquipeCubit.get(context)
+                            .demanderRejoindreEquipe(id: widget.equipes.id);
                       } else {
-                        EquipeCubit.get(context).annulerRejoindreEquipe(id: widget.equipes.id);
+                        EquipeCubit.get(context)
+                            .annulerRejoindreEquipe(id: widget.equipes.id);
                       }
                     },
                   );
@@ -150,17 +163,18 @@ class _AllEquipeDetailsScreenState extends State<AllEquipeDetailsScreen> {
               color: Colors.grey.withOpacity(0.2),
               spreadRadius: 1,
               blurRadius: 3,
-              offset: Offset(0, 1),
+              offset: const Offset(0, 1),
             ),
           ],
         ),
         child: Row(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
-              child: Text(username, style: TextStyle(fontSize: 16)),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+              child: Text(username, style: const TextStyle(fontSize: 16)),
             ),
-            Spacer(),
+            const Spacer(),
           ],
         ),
       ),

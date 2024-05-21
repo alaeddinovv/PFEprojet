@@ -101,6 +101,12 @@ class PickImageState extends TerrainState {}
 
 class RemoveImageState extends TerrainState {}
 
+class DeleteTerrainImageLoadingState extends TerrainState {}
+
+class DeleteTerrainImageStateGood extends TerrainState {}
+
+class DeleteTerrainImageStateBad extends TerrainState {}
+
 class SelectedDayChangedState extends TerrainState {
   final String? selctedDay;
 

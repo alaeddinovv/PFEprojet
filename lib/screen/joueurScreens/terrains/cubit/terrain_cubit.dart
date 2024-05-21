@@ -5,7 +5,6 @@ import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 import 'package:pfeprojet/Api/constApi.dart';
 import 'package:pfeprojet/Api/httplaravel.dart';
-// import 'package:pfeprojet/Model/equipe_model.dart';
 import 'package:pfeprojet/Model/error_model.dart';
 import 'package:pfeprojet/Model/houssem/equipe_model.dart';
 import 'package:pfeprojet/Model/reservation_model.dart';
@@ -22,6 +21,20 @@ class TerrainCubit extends Cubit<TerrainState> {
 //?---------------------------------------- TerrainHomeScreen-----------------------------------------------------------------
 
   static TerrainCubit get(context) => BlocProvider.of<TerrainCubit>(context);
+
+  void resetValue() {
+    terrains = [];
+    selectedDate = DateTime.now();
+
+    indexSlide = 0;
+    showStadiumDetails = false;
+    reservationList = [];
+    equipeSearch = [];
+    cursorIdEqeuipe = "";
+    idEquipe1Vertial = null;
+    idEquipe2Vertial = null;
+    emit(ResetTerrainState());
+  }
 
   List<TerrainModel> terrains = [];
   Future<void> getMyTerrains() async {
@@ -74,9 +87,9 @@ class TerrainCubit extends Cubit<TerrainState> {
     String sTemps,
     String eTemps,
   ) {
-    DateTime startTime = DateFormat("HH:mm")
+    DateTime startTime = DateFormat("HH:mm", 'en_US')
         .parse(sTemps); // time format from server is HH:mm string
-    DateTime endTime = DateFormat("HH")
+    DateTime endTime = DateFormat("HH", 'en_US')
         .parse(eTemps); // time format from server is HH:mm string
     List<String> timeSlots = [];
 
@@ -207,7 +220,6 @@ class TerrainCubit extends Cubit<TerrainState> {
             convert.jsonDecode(value.body) as Map<String, dynamic>;
         emit(GetMyReserveStateGood(
             reservations: ReservationModel.fromJson(jsonResponse)));
-        print(jsonResponse);
       } else {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
