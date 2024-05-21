@@ -1,12 +1,12 @@
 class Joueur {
-  final String id;
-  final String username;
-  final int telephone;
+  final String? id;
+  final String? username;
+  final int? telephone;
 
   Joueur({
-    required this.id,
-    required this.username,
-    required this.telephone,
+    this.id,
+    this.username,
+    this.telephone,
   });
 
   factory Joueur.fromJson(Map<String, dynamic> json) {
@@ -18,39 +18,68 @@ class Joueur {
   }
 }
 
+class Admin {
+  final String? id;
+  final String? nom;
+  final int? telephone;
+
+  Admin({
+    this.id,
+    this.nom,
+    this.telephone,
+  });
+
+  factory Admin.fromJson(Map<String, dynamic> json) {
+    return Admin(
+      id: json['_id'],
+      nom: json['nom'],
+      telephone: json['telephone'],
+    );
+  }
+}
+
 class AnnounceOter {
-  final String id;
-  final String type;
-  final String description;
-  final String wilaya;
-  final String commune;
-  final Joueur joueur;
-  final DateTime createdAt;
-  final DateTime updatedAt;
-  final int version;
+  final String? id;
+  final String? type;
+  final String? description;
+  final String? wilaya;
+  final String? commune;
+  final dynamic user;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  final int? version;
 
   AnnounceOter({
-    required this.id,
-    required this.type,
-    required this.description,
-    required this.wilaya,
-    required this.commune,
-    required this.joueur,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.version,
+    this.id,
+    this.type,
+    this.description,
+    this.wilaya,
+    this.commune,
+    this.user,
+    this.createdAt,
+    this.updatedAt,
+    this.version,
   });
 
   factory AnnounceOter.fromJson(Map<String, dynamic> json) {
+    dynamic user;
+    if (json['joueur_id'] != null) {
+      user = Joueur.fromJson(json['joueur_id']);
+    } else if (json['admin_id'] != null) {
+      user = Admin.fromJson(json['admin_id']);
+    }
+
     return AnnounceOter(
       id: json['_id'],
       type: json['type'],
       description: json['description'],
       wilaya: json['wilaya'],
       commune: json['commune'],
-      joueur: Joueur.fromJson(json['joueur_id']),
-      createdAt: DateTime.parse(json['createdAt']),
-      updatedAt: DateTime.parse(json['updatedAt']),
+      user: user,
+      createdAt:
+          json['createdAt'] != null ? DateTime.parse(json['createdAt']) : null,
+      updatedAt:
+          json['updatedAt'] != null ? DateTime.parse(json['updatedAt']) : null,
       version: json['__v'],
     );
   }

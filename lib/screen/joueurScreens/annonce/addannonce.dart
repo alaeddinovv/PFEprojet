@@ -334,7 +334,8 @@ class _AddAnnonceState extends State<AddAnnonce> {
                                         terrainId: idTerrainController.text,
                                         date: dateTime,
                                         heure_debut_temps: hourController.text);
-                                  } else if (_selectedType == 'other') {
+                                  } else if (_selectedType == 'other' ||
+                                      _selectedType == 'search join equipe') {
                                     Map<String, dynamic> _model = {
                                       "type": _selectedType,
                                       "description": descriptionController.text,
@@ -523,7 +524,7 @@ Widget buildTextField({
       validator: validator ??
           (value) {
             if (value == null || value.isEmpty) {
-              return '${S.of(context!).enter} $label'; // Localized string
+              return '${S.of(context).enter} $label'; // Localized string
             }
             return null;
           },

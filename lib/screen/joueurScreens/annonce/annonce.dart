@@ -42,7 +42,7 @@ class _AnnonceState extends State<Annonce> {
             if (AnnonceJoueurCubit.get(context).cursorid != "") {
               AnnonceJoueurCubit.get(context).getAllAnnonce(
                   cursor: AnnonceJoueurCubit.get(context).cursorid,
-                  owner: HomeJoueurCubit.get(context).joueurModel!.id);
+                  myId: HomeJoueurCubit.get(context).joueurModel!.id);
               print('ggggg');
 
               print(AnnonceJoueurCubit.get(context).cursorid);
@@ -73,7 +73,7 @@ class _AnnonceState extends State<Annonce> {
                   _showList = index == 0;
                   if (!_showList) {
                     AnnonceJoueurCubit.get(context).getAllAnnonce(
-                        owner: HomeJoueurCubit.get(context)
+                        myId: HomeJoueurCubit.get(context)
                             .joueurModel!
                             .id); // Call getAllAnnonce  owner: HomeJoueurCubit.get(context).joueurModel!.idwhen "All annonces" is selected
                   } else {
@@ -151,13 +151,13 @@ class _AnnonceState extends State<Annonce> {
                         if (state is DeleteAnnonceJoueurStateGood) {
                           AnnonceJoueurCubit.get(context)
                               .getAllAnnonce(
-                                  owner: HomeJoueurCubit.get(context)
+                                  myId: HomeJoueurCubit.get(context)
                                       .joueurModel!
                                       .id)
                               .then((value) => Navigator.pop(context));
                         } else if (state is UpdateAnnonceJoueurStateGood) {
                           AnnonceJoueurCubit.get(context).getAllAnnonce(
-                              owner:
+                              myId:
                                   HomeJoueurCubit.get(context).joueurModel!.id);
                         }
                       },
@@ -252,11 +252,11 @@ class _AnnonceState extends State<Annonce> {
             if (state is DeleteAnnonceJoueurStateGood) {
               AnnonceJoueurCubit.get(context)
                   .getAllAnnonce(
-                      owner: HomeJoueurCubit.get(context).joueurModel!.id)
+                      myId: HomeJoueurCubit.get(context).joueurModel!.id)
                   .then((value) => Navigator.pop(context));
             } else if (state is UpdateAnnonceJoueurStateGood) {
               AnnonceJoueurCubit.get(context).getAllAnnonce(
-                  owner: HomeJoueurCubit.get(context).joueurModel!.id);
+                  myId: HomeJoueurCubit.get(context).joueurModel!.id);
             }
           },
           builder: (context, state) {

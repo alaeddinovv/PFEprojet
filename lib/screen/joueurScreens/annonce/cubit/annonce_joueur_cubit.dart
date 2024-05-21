@@ -132,7 +132,7 @@ class AnnonceJoueurCubit extends Cubit<AnnonceJoueurState> {
   List<AnnonceData> annonces = [];
   // cusrsorid mdeclari lfug
   String cursorid = "";
-  Future<void> getAllAnnonce({String cursor = '', String? owner}) async {
+  Future<void> getAllAnnonce({String cursor = '', String? myId}) async {
     emit(GetAllAnnonceLoading());
     print('1');
     await Httplar.httpget(path: GETALLANNONCE, query: {'cursor': cursor})
@@ -148,7 +148,9 @@ class AnnonceJoueurCubit extends Cubit<AnnonceJoueurState> {
 
         AnnonceModel model = AnnonceModel.fromJson(jsonResponse);
         model.data!.forEach((element) {
-          if (element.joueur!.id != owner) {
+          print(element.description);
+          // print(element.joueur!.id);
+          if (element.joueur?.id != myId) {
             annonces.add(element);
           }
         });
@@ -184,6 +186,7 @@ class AnnonceJoueurCubit extends Cubit<AnnonceJoueurState> {
               AnnonceSearchJoueurModel.fromJson(jsonResponse);
           emit(GetAnnonceByIDStateGood(annonceModel: annonce));
         } else {
+          print(jsonResponse);
           AnnounceOter annonce2 = AnnounceOter.fromJson(jsonResponse);
           emit(GetAnnonceByIDStateGood(annonceModel: annonce2));
         }

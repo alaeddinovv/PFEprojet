@@ -65,11 +65,13 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                             ),
                           ),
                           const SizedBox(height: 16),
-                          buildDetailRow('Type:', annonceDetails.type),
+                          buildDetailRow('Type:', annonceDetails.type!),
                           buildDetailRow(
-                              'Description:', annonceDetails.description),
-                          buildDetailRow('Wilaya:', annonceDetails.wilaya),
-                          buildDetailRow('Commune:', annonceDetails.commune),
+                              'Description:', annonceDetails.description ?? ""),
+                          buildDetailRow(
+                              'Wilaya:', annonceDetails.wilaya ?? ""),
+                          buildDetailRow(
+                              'Commune:', annonceDetails.commune ?? ""),
                         ],
                       ),
                     ),
@@ -94,11 +96,17 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                             ),
                           ),
                           const SizedBox(height: 16),
-                          buildDetailRow(
-                              'Username:', annonceDetails.joueur.username),
+                          if (annonceDetails.user is Admin)
+                            buildDetailRow(
+                              'Nom:',
+                              annonceDetails.user?.nom ?? "",
+                            ),
+                          if (annonceDetails.user is Joueur)
+                            buildDetailRow('Username:',
+                                annonceDetails.user?.username ?? ""),
                           buildDetailRow(
                             'Telephone:',
-                            annonceDetails.joueur.telephone.toString(),
+                            annonceDetails.user?.telephone.toString() ?? "",
                           ),
                         ],
                       ),
@@ -126,11 +134,11 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                           const SizedBox(height: 16),
                           buildDetailRow(
                             'Created At:',
-                            annonceDetails.createdAt.toLocal().toString(),
+                            annonceDetails.createdAt!.toLocal().toString(),
                           ),
                           buildDetailRow(
                             'Last Update:',
-                            annonceDetails.updatedAt.toLocal().toString(),
+                            annonceDetails.updatedAt!.toLocal().toString(),
                           ),
                         ],
                       ),
