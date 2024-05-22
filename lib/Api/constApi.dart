@@ -9,6 +9,7 @@ const URLHTTP = '192.168.95.68:3000'; //IP ala
 const CREATEEQUIPEVERTIAL = '/api/equipe/vertial';
 const CONFIRMCONNECTEQUIPE = '/api/reservation/connequipe';
 const GETMYRESERVE = '/api/reservation/myreservation';
+const DELETEDEMANDERESERVATION = '/api/reservation/demander/';
 
 const SENDNOTIFICATIONTOADMIN = '/api/notification/admin/';
 const SENDNOTIFICATIONTOJOUEUR = '/api/notification/joueur/';

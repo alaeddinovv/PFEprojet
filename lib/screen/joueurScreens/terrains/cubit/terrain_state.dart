@@ -95,3 +95,9 @@ class CreateEquipeVertialStateGood extends TerrainState {
 }
 
 class CreateEquipeVertialStateBad extends TerrainState {}
+
+class DeleteDemandeReservationLoading extends TerrainState {}
+
+class DeleteDemandeReservationStateGood extends TerrainState {}
+
+class DeleteDemandeReservationStateBad extends TerrainState {}

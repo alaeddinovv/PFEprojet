@@ -181,6 +181,22 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 18),
           child: BlocBuilder<TerrainCubit, TerrainState>(
             builder: (context, state) {
+              if (state is DeleteDemandeReservationLoading) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (state is DeleteDemandeReservationStateGood) {
+                TerrainCubit.get(context).fetchReservations(
+                    terrainId: widget.terrainModel.id!,
+                    date: TerrainCubit.get(context).selectedDate);
+                showToast(
+                    msg: 'delete demande reservation success',
+                    state: ToastStates.success);
+              } else if (state is DeleteDemandeReservationStateBad) {
+                showToast(
+                    msg: 'delete demande reservation failed',
+                    state: ToastStates.error);
+              }
               if (state is GetReservationLoadingState) {
                 return const Center(
                   child: Center(child: CircularProgressIndicator()),
@@ -281,9 +297,36 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                                     terrainId: widget.terrainModel.id!,
                                   ));
                             } else if (isMyReservation) {
-                              showToast(
-                                  msg: "you are waiting for accepte from admin",
-                                  state: ToastStates.warning);
+                              // i want when long press show dialog to delete reservation
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => AlertDialog(
+                                        title: const Text('Delete Reservation'),
+                                        content: const Text(
+                                            'Are you sure you want to delete this reservation?'),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Text('Cancel'),
+                                          ),
+                                          TextButton(
+                                            onPressed: () {
+                                              terrainCubit.deleteDemandeReservation(
+                                                  ReservationId: terrainCubit
+                                                      .reservationList
+                                                      .firstWhere((element) =>
+                                                          element
+                                                              .heureDebutTemps ==
+                                                          timeSlots[index])
+                                                      .id!);
+                                              Navigator.pop(context);
+                                            },
+                                            child: const Text('Delete'),
+                                          ),
+                                        ],
+                                      ));
                             }
                           },
                           child: itemGridViewReservation(
