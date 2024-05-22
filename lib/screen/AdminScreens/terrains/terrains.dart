@@ -7,8 +7,21 @@ import 'package:pfeprojet/screen/AdminScreens/terrains/add_terrain.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/cubit/terrain_cubit.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/details.dart';
 
-class Terrains extends StatelessWidget {
+class Terrains extends StatefulWidget {
   const Terrains({super.key});
+
+  @override
+  State<Terrains> createState() => _TerrainsState();
+}
+
+class _TerrainsState extends State<Terrains> {
+  late final TerrainCubit cubit;
+  @override
+  void initState() {
+    cubit = TerrainCubit.get(context);
+    cubit.getMyTerrains();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {

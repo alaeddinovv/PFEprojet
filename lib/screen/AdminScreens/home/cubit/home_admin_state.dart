@@ -5,6 +5,8 @@ sealed class HomeAdminState {}
 
 final class HomeAdminInitial extends HomeAdminState {}
 
+final class ResetValueHomeState extends HomeAdminState {}
+
 final class ChangeIndexNavBarState extends HomeAdminState {}
 
 final class UpdateAdminModelVariable extends HomeAdminState {}

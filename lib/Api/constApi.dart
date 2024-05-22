@@ -2,7 +2,7 @@
 // const URLHTTP = '192.168.1.2:3000';
 
 // const URLHTTP = '192.168.1.20:3000'; //IP houssem
-const URLHTTP = '192.168.1.27:3000'; //IP ala
+const URLHTTP = '192.168.95.68:3000'; //IP ala
 
 // const URLHTTP = '10.0.2.2:3000';
 

@@ -25,6 +25,13 @@ class HomeAdminCubit extends Cubit<HomeAdminState> {
   ];
   final List<String> title = ["Terrains", "Reservation", "Annonce", "Tournoi"];
 
+  void resetValue() {
+    selectedIndex = 0;
+    adminModel = DataAdminModel();
+
+    emit(ResetValueHomeState());
+  }
+
   int selectedIndex = 0;
   void changeIndexNavBar(int index) {
     selectedIndex = index;

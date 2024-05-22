@@ -22,10 +22,13 @@ class Reservation extends StatefulWidget {
 
 class _ReservationState extends State<Reservation> {
   late ScrollController _controller;
+  late final ReservationCubit cubit;
 
   @override
   void initState() {
     super.initState();
+    cubit = ReservationCubit.get(context);
+    cubit.fetchReservations();
     _controller = ScrollController()
       ..addListener(() {
         if (_controller.offset >= _controller.position.maxScrollExtent &&

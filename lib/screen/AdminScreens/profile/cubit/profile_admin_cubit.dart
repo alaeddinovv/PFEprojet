@@ -21,11 +21,22 @@ class ProfileAdminCubit extends Cubit<ProfileAdminState> {
 
   static ProfileAdminCubit get(context) => BlocProvider.of(context);
 
+  void resetValue() {
+    imageCompress = null;
+    linkProfileImg = null;
+    isHidden = {
+      "pass": true,
+      "pass1": true,
+      "pass2": true,
+    };
+    emit(ResetValueProfileAdminState());
+  }
+
   Future<void> updateAdmin(
       {required String nom,
       required String prenom,
       required String telephone,
-       String? wilaya,
+      String? wilaya,
       String? deleteOldImage}) async {
     emit(UpdateAdminLoadingState());
 
@@ -150,6 +161,7 @@ class ProfileAdminCubit extends Cubit<ProfileAdminState> {
     "pass1": true,
     "pass2": true,
   };
+
   void togglePasswordVisibility(String fieldKey) {
     isHidden[fieldKey] = !isHidden[fieldKey]!;
     emit(PasswordVisibilityChanged());

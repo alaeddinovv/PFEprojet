@@ -7,6 +7,8 @@ class AnnonceInitial extends AnnonceState {}
 
 final class CreerAnnonceLoadingState extends AnnonceState {}
 
+final class ResetValueAnnonceState extends AnnonceState {}
+
 final class CreerAnnonceStateGood extends AnnonceState {}
 
 final class CreerAnnonceStateBad extends AnnonceState {}

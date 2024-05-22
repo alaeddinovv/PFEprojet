@@ -16,10 +16,13 @@ class Annonce extends StatefulWidget {
 }
 
 class _AnnonceState extends State<Annonce> {
+  late final AnnonceCubit cubit;
   late ScrollController _controller;
   @override
   void initState() {
     super.initState();
+    cubit = AnnonceCubit.get(context);
+    cubit.getMyAnnonce();
     _controller = ScrollController()
       ..addListener(() {
         if (_controller.offset >= _controller.position.maxScrollExtent &&
