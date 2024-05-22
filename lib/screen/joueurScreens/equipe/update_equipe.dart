@@ -9,8 +9,9 @@ import 'package:pfeprojet/screen/joueurScreens/equipe/cubit/equipe_cubit.dart';
 
 class EditEquipe extends StatefulWidget {
   final EquipeData equipeModel; // Assuming AnnonceModel is your data model
-
-  const EditEquipe({Key? key, required this.equipeModel}) : super(key: key);
+  final bool vertial;
+  const EditEquipe({Key? key, required this.equipeModel, required this.vertial})
+      : super(key: key);
 
   @override
   _EditEquipeState createState() => _EditEquipeState();
@@ -126,7 +127,7 @@ class _EditEquipeState extends State<EditEquipe> {
                         // Handle success
                         showToast(msg: "Succes", state: ToastStates.success);
                         EquipeCubit.get(context)
-                            .getMyEquipe(cursor: "")
+                            .getMyEquipe(cursor: "", vertial: widget.vertial)
                             .then((value) {
                           Navigator.pop(context);
                         });

@@ -186,7 +186,8 @@ class _EquipeState extends State<Equipe> {
                                       EquipeCubit.get(context)
                                           .equipeData[index],
                                       index,
-                                      context);
+                                      context,
+                                      vertial);
                                 },
                                 separatorBuilder: (context, int index) =>
                                     const SizedBox(height: 16),
@@ -322,13 +323,17 @@ class _EquipeState extends State<Equipe> {
   }
 
 //---------------------------- my team----------------------------------------------------------
-  Widget _buildEquipeItem(EquipeData model, int index, BuildContext context) {
+  Widget _buildEquipeItem(
+      EquipeData model, int index, BuildContext context, bool vertial) {
     return InkWell(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => MyEquipeDetailsScreen(equipeData: model)),
+              builder: (context) => MyEquipeDetailsScreen(
+                    equipeData: model,
+                    vartial: vertial,
+                  )),
         );
       },
       splashColor: Colors.transparent, // Prevents ripple effect on tap
@@ -367,7 +372,8 @@ class _EquipeState extends State<Equipe> {
                 icon: Icon(Icons.edit, color: Color(0xFF4CAF50)),
                 onPressed: () {
                   navigatAndReturn(
-                      context: context, page: EditEquipe(equipeModel: model));
+                      context: context,
+                      page: EditEquipe(equipeModel: model, vertial: vertial));
                   // Your code to handle edit action
                 },
               ),

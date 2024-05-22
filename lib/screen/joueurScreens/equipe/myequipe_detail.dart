@@ -9,7 +9,9 @@ import 'package:url_launcher/url_launcher.dart'; // Ensure this path is correct
 
 class MyEquipeDetailsScreen extends StatefulWidget {
   EquipeData equipeData;
-  MyEquipeDetailsScreen({super.key, required this.equipeData});
+  final bool vartial;
+  MyEquipeDetailsScreen(
+      {super.key, required this.equipeData, required this.vartial});
 
   @override
   State<MyEquipeDetailsScreen> createState() => _MyEquipeDetailsScreenState();
@@ -31,7 +33,7 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
       onPopInvoked: (didPop) async {
         if (!didPop) {
           if (canPop == true) {
-            await EquipeCubit.get(context).getMyEquipe();
+            await EquipeCubit.get(context).getMyEquipe(vertial: widget.vartial);
             Navigator.pop(context);
           }
         }
@@ -70,7 +72,8 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                             (element) => element.id == state.idJoueur);
                       });
 
-                      EquipeCubit.get(context).getMyEquipe();
+                      EquipeCubit.get(context)
+                          .getMyEquipe(vertial: widget.vartial);
 
                       // This should re-fetch the equipe data
                     } else if (state
@@ -83,7 +86,8 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                             (element) => element.id == state.idJoueur);
                       });
 
-                      EquipeCubit.get(context).getMyEquipe();
+                      EquipeCubit.get(context)
+                          .getMyEquipe(vertial: widget.vartial);
                     } else if (state is CapitaineInviteJoueurStateGood) {
                       bool alreadyExists = widget.equipeData.attenteJoueurs.any(
                         (joueur) =>
@@ -183,7 +187,8 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                             (element) => element.joueur.id == state.idJoueur);
                       });
 
-                      EquipeCubit.get(context).getMyEquipe();
+                      EquipeCubit.get(context)
+                          .getMyEquipe(vertial: widget.vartial);
 
                       // This should re-fetch the equipe data
                     } else if (state is CapitaineAceeptJoueurStateGood) {
