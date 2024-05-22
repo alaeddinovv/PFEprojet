@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pfeprojet/Model/equipe_model.dart';
-import 'package:pfeprojet/Model/user_model.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/const.dart';
 import 'package:pfeprojet/screen/joueurScreens/equipe/addequipe.dart';
@@ -23,6 +22,7 @@ class Equipe extends StatefulWidget {
 
 class _EquipeState extends State<Equipe> {
   late ScrollController _controller;
+  bool vertial = false;
   List<bool> isSelected = [
     true,
     false,
@@ -42,8 +42,8 @@ class _EquipeState extends State<Equipe> {
             !_controller.position.outOfRange) {
           if (isSelected[0]) {
             if (EquipeCubit.get(context).cursorId != "") {
-              EquipeCubit.get(context)
-                  .getMyEquipe(cursor: EquipeCubit.get(context).cursorId);
+              EquipeCubit.get(context).getMyEquipe(
+                  cursor: EquipeCubit.get(context).cursorId, vertial: vertial);
             }
           } else if (isSelected[1]) {
             if (EquipeCubit.get(context).cursorid != "") {
@@ -95,8 +95,8 @@ class _EquipeState extends State<Equipe> {
                       isSelected[buttonIndex] = buttonIndex == index;
                     }
                     if (index == 0) {
-                      EquipeCubit.get(context)
-                          .getMyEquipe(); // Fetch data for "My Equipes"
+                      EquipeCubit.get(context).getMyEquipe(
+                          vertial: vertial); // Fetch data for "My Equipes"
                     } else if (index == 1) {
                       EquipeCubit.get(context).getAllEquipe(
                           capitanId: HomeJoueurCubit.get(context)
@@ -145,7 +145,7 @@ class _EquipeState extends State<Equipe> {
                         listener: (context, state) {
                           if (state is DeleteEquipeStateGood) {
                             EquipeCubit.get(context)
-                                .getMyEquipe()
+                                .getMyEquipe(vertial: vertial)
                                 .then((value) => Navigator.pop(context));
                           }
                         },
@@ -156,21 +156,46 @@ class _EquipeState extends State<Equipe> {
                                 child: CircularProgressIndicator());
                           }
 
-                          return ListView.separated(
-                            controller: _controller,
-                            physics: const BouncingScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              return _buildEquipeItem(
-                                  EquipeCubit.get(context).equipeData[index],
-                                  index,
-                                  context);
-                            },
-                            separatorBuilder: (context, int index) =>
-                                const SizedBox(height: 16),
-                            itemCount:
-                                EquipeCubit.get(context).equipeData.length,
-                            shrinkWrap:
-                                true, // to prevent infinite height error
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  const Text(
+                                    'Vertial equipe :',
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Checkbox(
+                                      value: vertial,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          vertial = value!;
+                                          EquipeCubit.get(context)
+                                              .getMyEquipe(vertial: vertial);
+                                        });
+                                      }),
+                                ],
+                              ),
+                              ListView.separated(
+                                controller: _controller,
+                                physics: const BouncingScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  return _buildEquipeItem(
+                                      EquipeCubit.get(context)
+                                          .equipeData[index],
+                                      index,
+                                      context);
+                                },
+                                separatorBuilder: (context, int index) =>
+                                    const SizedBox(height: 16),
+                                itemCount:
+                                    EquipeCubit.get(context).equipeData.length,
+                                shrinkWrap:
+                                    true, // to prevent infinite height error
+                              ),
+                            ],
                           );
                         },
                       ),

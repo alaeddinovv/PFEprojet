@@ -6,7 +6,6 @@ import 'dart:convert' as convert;
 import 'package:pfeprojet/Api/constApi.dart';
 import 'package:pfeprojet/Api/httplaravel.dart';
 import 'package:pfeprojet/Model/equipe_model.dart';
-import 'package:pfeprojet/Model/oneequipe_model.dart';
 import 'package:pfeprojet/Model/user_model.dart';
 
 import '../../../../Model/error_model.dart';
@@ -63,11 +62,12 @@ class EquipeCubit extends Cubit<EquipeState> {
   //----------------- get my terrain--------------------
   List<EquipeData> equipeData = [];
   String cursorId = "";
-  Future<void> getMyEquipe({String cursor = ''}) async {
+  Future<void> getMyEquipe({String cursor = '', bool? vertial}) async {
     emit(GetMyEquipeLoading());
 
-    await Httplar.httpget(path: GETMYEQUIPE, query: {'cursor': cursor})
-        .then((value) {
+    await Httplar.httpget(
+        path: GETMYEQUIPE,
+        query: {'cursor': cursor, 'vertial': vertial.toString()}).then((value) {
       if (value.statusCode == 200) {
         if (cursor == "") {
           equipeData = [];
@@ -76,8 +76,8 @@ class EquipeCubit extends Cubit<EquipeState> {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
         EquipeModel model = EquipeModel.fromJson(jsonResponse);
-        equipeData.addAll(model.data!);
-        cursorId = model.nextCursor!;
+        equipeData.addAll(model.data);
+        cursorId = model.nextCursor;
         print(jsonResponse['nom']);
         emit(GetMyEquipeStateGood());
       } else {
@@ -193,8 +193,8 @@ class EquipeCubit extends Cubit<EquipeState> {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
         EquipeModel model = EquipeModel.fromJson(jsonResponse);
-        equipeImInData.addAll(model.data!);
-        cursorId1 = model.nextCursor!;
+        equipeImInData.addAll(model.data);
+        cursorId1 = model.nextCursor;
 
         emit(GetEquipeImInStateGood());
       } else {
@@ -223,8 +223,8 @@ class EquipeCubit extends Cubit<EquipeState> {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
         EquipeModel model = EquipeModel.fromJson(jsonResponse);
-        equipeInviteData.addAll(model.data!);
-        cursorId2 = model.nextCursor!;
+        equipeInviteData.addAll(model.data);
+        cursorId2 = model.nextCursor;
 
         emit(GetEquipeInviteStateGood());
       } else {

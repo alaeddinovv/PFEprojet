@@ -122,11 +122,11 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                     child: Container(
                       width: 50,
                       height: 50,
-                      margin: const EdgeInsets.symmetric(horizontal: 4),
+                      margin: EdgeInsets.symmetric(horizontal: 4),
                       decoration: BoxDecoration(
                         color: terrainCubit.selectedDate.day ==
                                 DateTime.now().add(Duration(days: i)).day
-                            ? Colors.blue
+                            ? Colors.blue[300]
                             : Colors.transparent,
                         borderRadius: BorderRadius.circular(10),
                       ),
