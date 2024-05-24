@@ -92,10 +92,7 @@ class Reserve extends StatelessWidget {
                 const SizedBox(
                   height: 16,
                 ),
-                const Text('Prix: 0.0', style: TextStyle(fontSize: 20)),
-                const SizedBox(
-                  height: 16,
-                ),
+
                 // Row(
                 //   mainAxisAlignment: MainAxisAlignment.start,
                 //   children: [
