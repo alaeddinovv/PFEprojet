@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/const.dart';
 import 'package:pfeprojet/cubit/main_cubit.dart';
@@ -17,7 +18,6 @@ import 'package:pfeprojet/screen/joueurScreens/reservation/cubit/reservation_cub
 import 'package:pfeprojet/screen/joueurScreens/terrains/cubit/terrain_cubit.dart';
 
 import '../../../Model/user_model.dart';
-
 import '../home/home.dart';
 
 class ProfileJoueur extends StatelessWidget {
@@ -29,225 +29,231 @@ class ProfileJoueur extends StatelessWidget {
         HomeJoueurCubit.get(context).joueurModel!;
 
     return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
+      appBar: AppBar(
+        leading: Builder(
+          builder: (context) {
+            return IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+            );
+          },
+        ),
+        title: Text(S.of(context).profile,
+            style:
+                GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.bold)),
+      ),
+      drawer: _buildDrawer(context, joueurModel),
+      body: BlocConsumer<ProfileJoueurCubit, ProfileJoueurState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          return PopScope(
+            canPop: false,
+            onPopInvoked: (didPop) {
+              if (!didPop) {
+                navigatAndFinish(context: context, page: const HomeJoueur());
+              }
+            },
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 20),
+                  CircleAvatar(
+                    radius: 50,
+                    backgroundImage: joueurModel.photo != null
+                        ? NetworkImage(joueurModel.photo!)
+                        : const AssetImage('assets/images/user.png')
+                            as ImageProvider<Object>,
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    joueurModel.username!,
+                    style: GoogleFonts.poppins(
+                        fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 20),
+                  _buildProfileCard(context, joueurModel),
+                  const SizedBox(height: 30),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildProfileCard(BuildContext context, DataJoueurModel joueurModel) {
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+      elevation: 5,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            _buildListTile(
+              context,
+              icon: Icons.person_outline,
+              title: S.of(context).username,
+              subtitle: joueurModel.username!,
+              trailing: IconButton(
+                icon: const Icon(Icons.copy),
+                onPressed: () {
+                  Clipboard.setData(ClipboardData(text: joueurModel.username!))
+                      .then((_) {
+                    showToast(
+                      msg: S.of(context).copy_username_success,
+                      state: ToastStates.error,
+                    );
+                  });
+                },
+              ),
+            ),
+            _buildListTile(context,
+                icon: Icons.person,
+                title: S.of(context).nom,
+                subtitle: joueurModel.nom!),
+            _buildListTile(context,
+                icon: Icons.person,
+                title: S.of(context).prenom,
+                subtitle: joueurModel.prenom!),
+            _buildListTile(context,
+                icon: Icons.location_city,
+                title: S.of(context).wilaya,
+                subtitle: joueurModel.wilaya!),
+            _buildListTile(context,
+                icon: Icons.email_outlined,
+                title: S.of(context).email,
+                subtitle: joueurModel.email!),
+            _buildListTile(context,
+                icon: Icons.phone,
+                title: S.of(context).phone,
+                subtitle: joueurModel.telephone!.toString()),
+          ],
+        ),
+      ),
+    );
+  }
+
+  ListTile _buildListTile(BuildContext context,
+      {required IconData icon,
+      required String title,
+      required String subtitle,
+      Widget? trailing}) {
+    return ListTile(
+      leading: Icon(icon),
+      title:
+          Text(title, style: GoogleFonts.poppins(fontWeight: FontWeight.bold)),
+      subtitle: Text(subtitle, style: GoogleFonts.poppins()),
+      trailing: trailing,
+      onTap: () {},
+    );
+  }
+
+  Drawer _buildDrawer(BuildContext context, DataJoueurModel joueurModel) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          DrawerHeader(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CircleAvatar(
+                  radius: 40,
+                  backgroundImage: joueurModel.photo != null
+                      ? NetworkImage(joueurModel.photo!)
+                      : const AssetImage('assets/images/user.png')
+                          as ImageProvider<Object>,
+                ),
+              ],
+            ),
+          ),
+          ListTile(
+            leading: Icon(Icons.home),
+            title: Text('Home', style: GoogleFonts.poppins()),
+            onTap: () {
               navigatAndFinish(context: context, page: const HomeJoueur());
             },
           ),
-          title: Text(S.of(context).profile),
-          actions: [
-            TextButton(
-                onPressed: () async {
-                  removeFCMTokenJoueur(
-                          device: await CachHelper.getData(key: 'deviceInfo'))
-                      .then((value) {
-                    navigatAndFinish(context: context, page: Login());
-                    CachHelper.removdata(key: "TOKEN");
-                    showToast(
-                        msg: S.of(context).disconnect,
-                        state: ToastStates.error);
-                  });
-
-                  HomeJoueurCubit.get(context).resetValue();
-                  TerrainCubit.get(context).resetValue();
-                  AnnonceJoueurCubit.get(context).resetValue();
-                  ProfileJoueurCubit.get(context).resetValue();
-                  EquipeCubit.get(context).resetValue();
-                  ReservationJoueurCubit.get(context).resetValue();
-                },
-                child: Text(
-                  S.of(context).disconnect,
-                  style: TextStyle(color: Colors.red),
-                )),
-            IconButton(
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) => AlertDialog(
-                            title: Text(S.of(context).change_language),
-                            content: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                ListTile(
-                                  title: Text('French'),
-                                  onTap: () {
-                                    MainCubit.get(context)
-                                        .changeLanguage(const Locale('en'));
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                                ListTile(
-                                  title: Text('Arabic'),
-                                  onTap: () {
-                                    MainCubit.get(context)
-                                        .changeLanguage(const Locale('ar'));
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                              ],
-                            ),
-                          ));
-                },
-                icon: const Icon(Icons.translate))
-          ],
-        ),
-        body: BlocConsumer<ProfileJoueurCubit, ProfileJoueurState>(
-          listener: (context, state) {},
-          builder: (context, state) {
-            // if (state is GetMyInformationLoading) {
-            //   return const Center(child: CircularProgressIndicator());
-            // }
-            return PopScope(
-              canPop: false,
-              onPopInvoked: (didPop) {
-                if (!didPop) {
-                  navigatAndFinish(context: context, page: const HomeJoueur());
-                }
-              },
-              child: SingleChildScrollView(
-                child: Column(
-                  // mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    CircleAvatar(
-                      radius: 60,
-                      backgroundImage: joueurModel.photo != null
-                          ? NetworkImage(joueurModel.photo!)
-                          : const AssetImage('assets/images/user.png')
-                              as ImageProvider<Object>,
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.person),
-                      title: Text(S.of(context).username),
-                      subtitle: Text(joueurModel.username!),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.copy),
-                        onPressed: () {
-                          Clipboard.setData(
-                                  ClipboardData(text: joueurModel.username!))
-                              .then((_) {
-                            showToast(
-                                msg: S.of(context).copy_username_success,
-                                state: ToastStates.error);
-                          });
+          ListTile(
+            leading: Icon(Icons.edit),
+            title: Text(S.of(context).modify_profile,
+                style: GoogleFonts.poppins()),
+            onTap: () {
+              navigatAndReturn(
+                  context: context, page: const UpdateJoueurForm());
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.lock),
+            title: Text(S.of(context).modify_password,
+                style: GoogleFonts.poppins()),
+            onTap: () {
+              navigatAndReturn(context: context, page: UpdateMdpForm());
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.translate),
+            title: Text('Change Language', style: GoogleFonts.poppins()),
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: Text(S.of(context).change_language,
+                      style: GoogleFonts.poppins()),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ListTile(
+                        title: Text('French', style: GoogleFonts.poppins()),
+                        onTap: () {
+                          MainCubit.get(context)
+                              .changeLanguage(const Locale('en'));
+                          Navigator.pop(context);
                         },
                       ),
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.person),
-                      title: Text(S.of(context).nom),
-                      subtitle: Text(
-                        joueurModel.nom!,
+                      ListTile(
+                        title: Text('Arabic', style: GoogleFonts.poppins()),
+                        onTap: () {
+                          MainCubit.get(context)
+                              .changeLanguage(const Locale('ar'));
+                          Navigator.pop(context);
+                        },
                       ),
-                      onTap: () {},
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.person),
-                      title: Text(S.of(context).prenom),
-                      subtitle: Text(
-                        joueurModel.prenom!,
-                      ),
-                      onTap: () {},
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.location_city),
-                      title: Text(S.of(context).wilaya),
-                      subtitle: Text(
-                        joueurModel.wilaya!,
-                      ),
-                      onTap: () {},
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.email),
-                      title: Text(S.of(context).email),
-                      subtitle: Text(
-                        joueurModel.email!,
-                      ),
-                      onTap: () {},
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.phone),
-                      title: Text(S.of(context).phone),
-                      subtitle: Text(
-                        joueurModel.telephone!.toString(),
-                      ),
-                      onTap: () {},
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Container(
-                              height: 55,
-                              color: Colors.blueAccent,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(5))),
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 15),
-                                    // textStyle: const TextStyle(fontSize: 19),
-                                    backgroundColor: Colors.blueAccent),
-                                onPressed: () {
-                                  navigatAndReturn(
-                                    context: context,
-                                    page: const UpdateJoueurForm(),
-                                  );
-                                },
-                                child: Text(
-                                  S.of(context).modify_profile,
-                                  style: const TextStyle(
-                                      color: Colors.white, fontSize: 16),
-                                ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 10),
-                          Expanded(
-                            child: Container(
-                              height: 55,
-                              color: Colors.blueAccent,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(5))),
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 15),
-                                    // textStyle: const TextStyle(fontSize: 19),
-                                    backgroundColor: Colors.blueAccent),
-                                onPressed: () {
-                                  navigatAndReturn(
-                                    context: context,
-                                    page: UpdateMdpForm(),
-                                  );
-                                },
-                                child: Text(
-                                  S.of(context).modify_password,
-                                  style: const TextStyle(
-                                      color: Colors.white, fontSize: 16),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            );
-          },
-        ));
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.exit_to_app),
+            title: Text('Logout', style: GoogleFonts.poppins()),
+            onTap: () async {
+              await removeFCMTokenJoueur(
+                  device: await CachHelper.getData(key: 'deviceInfo'));
+              await CachHelper.removdata(key: "TOKEN");
+              showToast(
+                  msg: S.of(context).disconnect, state: ToastStates.error);
+              Navigator.pushReplacement(
+                  context, MaterialPageRoute(builder: (context) => Login()));
+
+              // Reset all Cubits
+              HomeJoueurCubit.get(context).resetValue();
+              TerrainCubit.get(context).resetValue();
+              AnnonceJoueurCubit.get(context).resetValue();
+              ProfileJoueurCubit.get(context).resetValue();
+              EquipeCubit.get(context).resetValue();
+              ReservationJoueurCubit.get(context).resetValue();
+            },
+          ),
+        ],
+      ),
+    );
   }
 }
