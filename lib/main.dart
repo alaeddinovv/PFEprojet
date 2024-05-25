@@ -137,6 +137,20 @@ class MyApp extends StatelessWidget {
                 // Onbording(),
 
                 onbordingmain ? startwidget : const Onbording(),
+            theme: ThemeData(
+              scaffoldBackgroundColor: Colors.white,
+              appBarTheme: const AppBarTheme(
+                backgroundColor: Colors.white,
+              ),
+              bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+                backgroundColor: Colors.white,
+                elevation: 0,
+              ),
+              navigationBarTheme: const NavigationBarThemeData(
+                backgroundColor: Colors.white,
+                elevation: 0,
+              ),
+            ),
           );
         },
       ),

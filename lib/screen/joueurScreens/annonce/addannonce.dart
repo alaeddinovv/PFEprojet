@@ -56,11 +56,6 @@ class _AddAnnonceState extends State<AddAnnonce> {
         }
       },
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            // navigatAndReturn(context: context, page: AnnouncementPage());
-          },
-        ),
         appBar: AppBar(
           title: Text(S.of(context).add_annonce), // Localized string
         ),
@@ -126,13 +121,6 @@ class _AddAnnonceState extends State<AddAnnonce> {
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(10),
-                                  boxShadow: const [
-                                    BoxShadow(
-                                      color: Colors.black12,
-                                      blurRadius: 6,
-                                      offset: Offset(0, 3),
-                                    ),
-                                  ],
                                 ),
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 16, vertical: 8),
@@ -235,6 +223,7 @@ class _AddAnnonceState extends State<AddAnnonce> {
                         selectedDaira: communeController,
                         selectedWilaya: wilayaController,
                       ),
+                      const SizedBox(height: 16),
                       buildTextField(
                         context: context,
                         label: S.of(context).description, // Localized string
@@ -366,33 +355,23 @@ class _AddAnnonceState extends State<AddAnnonce> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(10),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 6,
-            offset: Offset(0, 3),
-          ),
-        ],
       ),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Row(
         children: [
           Expanded(
-            child: TextFormField(
-              controller: controller,
-              decoration: InputDecoration(
-                labelText: labelText,
-                prefixIcon: const Icon(Icons.access_time),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
+            child: Text(
+              controller.text.isNotEmpty
+                  ? '$labelText: ${controller.text}'
+                  : labelText,
+              style: const TextStyle(
+                fontSize: 16,
               ),
-              readOnly: true,
-              onTap: () => _selectTime(context, controller),
-              validator: (value) => value == null || value.isEmpty
-                  ? S.of(context).select_time_error // Localized string
-                  : null,
             ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.access_time),
+            onPressed: () => _selectTime(context, controller),
           ),
         ],
       ),
@@ -450,39 +429,34 @@ Widget buildDropdownField({
   required ValueChanged<String?> onChanged,
   required IconData icon,
 }) {
-  return Container(
-    decoration: BoxDecoration(
-      color: Colors.white,
-      borderRadius: BorderRadius.circular(10),
-      boxShadow: const [
-        BoxShadow(
-          color: Colors.black12,
-          blurRadius: 6,
-          offset: Offset(0, 3),
-        ),
-      ],
-    ),
-    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-    child: DropdownButtonFormField<String>(
-      decoration: InputDecoration(
-        labelText: label,
-        prefixIcon: Icon(icon),
-        border: OutlineInputBorder(
+  return DropdownButtonFormField<String>(
+    decoration: InputDecoration(
+      // labelText: label,
+      hintText: label,
+      prefixIcon: Icon(icon),
+      border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
-        ),
+          borderSide: BorderSide(color: Colors.grey)),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: Colors.grey), // Simple grey border
       ),
-      value: value,
-      items: items
-          .map((item) => DropdownMenuItem(
-                value: item,
-                child: Text(item),
-              ))
-          .toList(),
-      onChanged: onChanged,
-      validator: (value) => value == null
-          ? '${S.of(context).select} $label'
-          : null, // Localized string
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12),
+        borderSide: BorderSide(color: Colors.grey), // Simple grey border
+      ),
     ),
+    value: value,
+    items: items
+        .map((item) => DropdownMenuItem(
+              value: item,
+              child: Text(item),
+            ))
+        .toList(),
+    onChanged: onChanged,
+    validator: (value) => value == null
+        ? '${S.of(context).select} $label'
+        : null, // Localized string
   );
 }
 
@@ -500,15 +474,7 @@ Widget buildTextField({
     decoration: BoxDecoration(
       color: Colors.white,
       borderRadius: BorderRadius.circular(10),
-      boxShadow: const [
-        BoxShadow(
-          color: Colors.black12,
-          blurRadius: 6,
-          offset: Offset(0, 3),
-        ),
-      ],
     ),
-    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
     child: TextFormField(
       controller: controller,
       decoration: InputDecoration(
