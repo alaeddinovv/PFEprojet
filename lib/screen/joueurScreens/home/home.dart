@@ -73,6 +73,7 @@ class _HomeJoueurState extends State<HomeJoueur> {
           ),
         ),
         child: NavigationBar(
+          // backgroundColor: Colors.white,
           height: 70,
           selectedIndex: HomeJoueurCubit.get(context).selectedIndex,
           onDestinationSelected: (index) =>

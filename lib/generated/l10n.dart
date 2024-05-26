@@ -669,6 +669,188 @@ class S {
       args: [],
     );
   }
+
+  // skipped getter for the 'EditeReserve.dart(joueur)' key
+
+  /// `Modifier la réservation`
+  String get appBarTitle {
+    return Intl.message(
+      'Modifier la réservation',
+      name: 'appBarTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Détails de la réservation`
+  String get reservationDetails {
+    return Intl.message(
+      'Détails de la réservation',
+      name: 'reservationDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Heure`
+  String get time {
+    return Intl.message(
+      'Heure',
+      name: 'time',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `semaines`
+  String get weeks {
+    return Intl.message(
+      'semaines',
+      name: 'weeks',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Votre équipe`
+  String get yourTeam {
+    return Intl.message(
+      'Votre équipe',
+      name: 'yourTeam',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pas d'équipe`
+  String get noTeam {
+    return Intl.message(
+      'Pas d\'équipe',
+      name: 'noTeam',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `changer l'équipe`
+  String get changeTeam {
+    return Intl.message(
+      'changer l\'équipe',
+      name: 'changeTeam',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `pour toutes les réservations`
+  String get forAllReservations {
+    return Intl.message(
+      'pour toutes les réservations',
+      name: 'forAllReservations',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `pour cette réservation uniquement`
+  String get forThisReservationOnly {
+    return Intl.message(
+      'pour cette réservation uniquement',
+      name: 'forThisReservationOnly',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `retirer l'équipe`
+  String get removeTeam {
+    return Intl.message(
+      'retirer l\'équipe',
+      name: 'removeTeam',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Êtes-vous sûr de vouloir retirer votre équipe de cette réservation ?`
+  String get removeTeamConfirmation {
+    return Intl.message(
+      'Êtes-vous sûr de vouloir retirer votre équipe de cette réservation ?',
+      name: 'removeTeamConfirmation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `vous n'avez pas encore d'équipe`
+  String get youDontHaveTeamYet {
+    return Intl.message(
+      'vous n\'avez pas encore d\'équipe',
+      name: 'youDontHaveTeamYet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pas encore assigné`
+  String get notAssignedYet {
+    return Intl.message(
+      'Pas encore assigné',
+      name: 'notAssignedYet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Équipe adverse`
+  String get opponentsTeam {
+    return Intl.message(
+      'Équipe adverse',
+      name: 'opponentsTeam',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `choisir :`
+  String get choose {
+    return Intl.message(
+      'choisir :',
+      name: 'choose',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Pas encore d'équipe adverse`
+  String get noOpponentTeamYet {
+    return Intl.message(
+      'Pas encore d\'équipe adverse',
+      name: 'noOpponentTeamYet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirmer la connexion`
+  String get confirmConnection {
+    return Intl.message(
+      'Confirmer la connexion',
+      name: 'confirmConnection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `aucun changement détecté`
+  String get noChangesDetected {
+    return Intl.message(
+      'aucun changement détecté',
+      name: 'noChangesDetected',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

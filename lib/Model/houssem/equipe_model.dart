@@ -30,7 +30,9 @@ class EquipeModelData {
   bool? vertial;
   int? numeroJoueurs;
   List<DataJoueurModel>? joueurs;
-  List<dynamic>? attenteJoueurs;
+  List<DataJoueurModel>? attenteJoueurs;
+  // List<dynamic>? attenteJoueurs;
+
   List<AttenteJoueursDemande>? attenteJoueursDemande;
   CapitaineId? capitaineId;
   List<dynamic>? tournois;
@@ -65,7 +67,11 @@ class EquipeModelData {
     joueurs = (json['joueurs'] as List<dynamic>?)
         ?.map((e) => DataJoueurModel.fromJson(e as Map<String, dynamic>))
         .toList();
-    attenteJoueurs = json['attente_joueurs'] as List<dynamic>?;
+    attenteJoueurs = (json['attente_joueurs'] as List<dynamic>?)
+        ?.map((e) => DataJoueurModel.fromJson(e as Map<String, dynamic>))
+        .toList();
+    // attenteJoueurs = json['attente_joueurs'] as List<dynamic>?;
+
     attenteJoueursDemande = (json['attente_joueurs_demande'] as List<dynamic>?)
         ?.map((e) => AttenteJoueursDemande.fromJson(e as Map<String, dynamic>))
         .toList();

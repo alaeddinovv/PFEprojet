@@ -363,6 +363,7 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
         child: Container(
           padding: const EdgeInsets.all(16.0),
           decoration: BoxDecoration(
+            // color: Colors.grey[50],
             border: Border.all(color: Colors.grey.shade300),
             borderRadius: BorderRadius.circular(10.0),
           ),
@@ -488,14 +489,14 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                     );
                   },
                   icon: const Icon(Icons.location_on_outlined,
-                      color: Colors.blue),
+                      color: Colors.white),
                   label: const Text(
                     'Voir sur la carte',
-                    style: TextStyle(color: Colors.blue),
+                    style: TextStyle(color: Colors.white),
                   ),
                   style: TextButton.styleFrom(
                     padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-                    backgroundColor: Colors.blue.shade50,
+                    backgroundColor: greenConst,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0),
                     ),
@@ -519,12 +520,14 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
         !terrainCubit.showStadiumDetails,
         terrainCubit.showStadiumDetails,
       ],
-      // borderRadius: BorderRadius.circular(8),
-      //       borderColor: Colors.blue,
-      //       selectedBorderColor: Colors.blueAccent,
-      //       selectedColor: Colors.white,
-      //       fillColor: Colors.lightBlueAccent.withOpacity(0.5),
-      //       constraints: const BoxConstraints(minHeight: 40.0),
+      borderRadius: BorderRadius.circular(8),
+      // borderColor: Colors.grey[50],
+      // color: Colors.grey[50],
+      // selectedBorderColor: Colors.blueAccent,
+      selectedColor: Colors.black,
+      fillColor: Colors.grey[200],
+      // fillColor: Colors.lightBlueAccent.withOpacity(0.5),
+      // constraints: const BoxConstraints(minHeight: 40.0),
       constraints: BoxConstraints(
           minWidth: MediaQuery.of(context).size.width / 2 - 10, minHeight: 40),
       children: const [
@@ -664,6 +667,7 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
 
 Widget _buildColorIndex() {
   return Card(
+    color: Colors.grey[50],
     elevation: 2,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
     child: Padding(

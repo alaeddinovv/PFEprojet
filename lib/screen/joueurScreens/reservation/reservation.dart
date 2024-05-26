@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pfeprojet/component/tpggleButtons.dart';
 import 'package:pfeprojet/screen/joueurScreens/reservation/cubit/reservation_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/reservation/equipe_reserve_details.dart';
 
@@ -44,33 +45,48 @@ class _ReservationState extends State<Reservation> {
           const SizedBox(height: 20),
           Align(
             alignment: Alignment.topCenter,
-            child: ToggleButtons(
-              isSelected: [_showList, !_showList],
-              onPressed: (int index) {
+            child:
+                //  ToggleButtons(
+                //   isSelected: [_showList, !_showList],
+                //   onPressed: (int index) {
+                //     setState(() {
+                //       _showList = index == 0;
+                //       if (!_showList) {
+                //         ReservationJoueurCubit.get(context).getEquipesDemander(
+                //             cursor: ReservationJoueurCubit.get(context).cursorid);
+                //       } else {}
+                //     });
+                //   },
+                //   borderRadius: BorderRadius.circular(8),
+                //   borderColor: Colors.blue,
+                //   selectedBorderColor: Colors.blueAccent,
+                //   selectedColor: Colors.white,
+                //   fillColor: Colors.lightBlueAccent.withOpacity(0.5),
+                //   constraints: const BoxConstraints(minHeight: 40.0),
+                //   children: const <Widget>[
+                //     Padding(
+                //       padding: EdgeInsets.symmetric(horizontal: 16),
+                //       child: Text('Reservations Terrain'),
+                //     ),
+                //     Padding(
+                //       padding: EdgeInsets.symmetric(horizontal: 16),
+                //       child: Text('Demander equipe'),
+                //     ),
+                //   ],
+                // ),
+                ToggleButtonsWidget(
+              text1: 'Reservations Terrain',
+              text2: 'Demander equipe',
+              showList: _showList,
+              onToggle: (value) {
                 setState(() {
-                  _showList = index == 0;
+                  _showList = value;
                   if (!_showList) {
                     ReservationJoueurCubit.get(context).getEquipesDemander(
                         cursor: ReservationJoueurCubit.get(context).cursorid);
                   } else {}
                 });
               },
-              borderRadius: BorderRadius.circular(8),
-              borderColor: Colors.blue,
-              selectedBorderColor: Colors.blueAccent,
-              selectedColor: Colors.white,
-              fillColor: Colors.lightBlueAccent.withOpacity(0.5),
-              constraints: const BoxConstraints(minHeight: 40.0),
-              children: const <Widget>[
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Text('Reservations Terrain'),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Text('Demander equipe'),
-                ),
-              ],
             ),
           ),
           const SizedBox(height: 20),

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:pfeprojet/Api/color.dart';
 import 'package:pfeprojet/Model/terrain_model.dart';
 import 'package:pfeprojet/component/components.dart';
+import 'package:pfeprojet/component/tpggleButtons.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/cubit/terrain_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/details.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/location/all_terrain_location.dart';
@@ -28,39 +30,49 @@ class _TerrainState extends State<Terrain> {
   @override
   Widget build(BuildContext context) {
     TerrainCubit terrainCubit = TerrainCubit.get(context);
-    final primaryColor = Colors.blue;
+    // final primaryColor = Colors.blue;
     final secondaryColor = Colors.lightBlueAccent;
 
     return Scaffold(
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: ToggleButtons(
-              isSelected: [_showList, !_showList],
-              onPressed: (int index) {
-                setState(() {
-                  _showList = index == 0;
-                });
-              },
-              borderRadius: BorderRadius.circular(8),
-              borderColor: primaryColor,
-              selectedBorderColor: secondaryColor,
-              selectedColor: Colors.white,
-              fillColor: secondaryColor.withOpacity(0.5),
-              constraints: const BoxConstraints(minHeight: 40.0),
-              children: const <Widget>[
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Text('List Terrain'),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Text('Map Terrain'),
-                ),
-              ],
-            ),
-          ),
+              padding: const EdgeInsets.all(8.0),
+              child:
+                  // ToggleButtons(
+                  //   isSelected: [_showList, !_showList],
+                  //   onPressed: (int index) {
+                  //     setState(() {
+                  //       _showList = index == 0;
+                  //     });
+                  //   },
+                  //   borderRadius: BorderRadius.circular(8),
+                  //   selectedColor: Colors.black,
+                  //   fillColor: Colors.grey[200],
+                  //   constraints: BoxConstraints(
+                  //       minWidth: MediaQuery.of(context).size.width / 2 - 10,
+                  //       minHeight: 40),
+                  //   // borderRadius: BorderRadius.circular(8),
+                  //   // // borderColor: Colors.red,
+                  //   // selectedBorderColor: secondaryColor,
+                  //   // selectedColor: Colors.white,
+                  //   // fillColor: secondaryColor.withOpacity(0.5),
+                  //   // constraints: const BoxConstraints(minHeight: 40.0),
+                  //   children: const <Widget>[
+                  //     Text('List Terrain'),
+                  //     Text('Map Terrain'),
+                  //   ],
+                  // ),
+                  ToggleButtonsWidget(
+                text1: 'List Terrain',
+                text2: 'Map Terrain',
+                showList: _showList,
+                onToggle: (value) {
+                  setState(() {
+                    _showList = value;
+                  });
+                },
+              )),
           Expanded(
             child: _showList
                 ? BlocBuilder<TerrainCubit, TerrainState>(
@@ -149,8 +161,10 @@ class _TerrainState extends State<Terrain> {
                   const SizedBox(height: 8),
                   Row(
                     children: [
-                      const Icon(Icons.location_on_outlined,
-                          color: Colors.blue),
+                      const Icon(
+                        Icons.location_on_outlined,
+                        // color: Colors.blue
+                      ),
                       const SizedBox(width: 5),
                       Expanded(
                         child: Text(
@@ -164,7 +178,7 @@ class _TerrainState extends State<Terrain> {
                         ),
                       ),
                       const Spacer(),
-                      const Icon(Icons.groups, color: Colors.blue),
+                      Icon(Icons.groups, color: greenConst),
                       const SizedBox(width: 5),
                       Text(
                         terrainModel.capacite.toString(),

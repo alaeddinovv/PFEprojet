@@ -10,14 +10,12 @@ class SearchEquipe extends StatefulWidget {
   final TextEditingController equipeIdController;
   final Function(EquipeModelData)? onEquipeSelected;
   final bool isOnlyMy;
-  // final Function(String) onSelectedJoueur; // Add this line
 
   const SearchEquipe({
     Key? key,
     required this.equipeIdController,
     this.onEquipeSelected,
     required this.isOnlyMy,
-    // required this.onSelectedJoueur, // Add this line
   }) : super(key: key);
 
   @override
@@ -50,12 +48,12 @@ class _SearchEquipeState extends State<SearchEquipe> {
       });
   }
 
-  void _selectJoueur(EquipeModelData equipe) {
+  void _selectEquipe(EquipeModelData equipe) {
     setState(() {
       selectedEquipe = equipe;
       showResults = false;
-      widget.equipeIdController.text =
-          equipe.id!; // Update the parent's TextEditingController
+      widget.equipeIdController.text = equipe.id!;
+      searchController.text = equipe.nom!;
     });
     if (widget.onEquipeSelected != null) {
       widget.onEquipeSelected!(equipe);
@@ -65,7 +63,7 @@ class _SearchEquipeState extends State<SearchEquipe> {
 
   @override
   void dispose() {
-    _debounce?.cancel(); // Cancel the timer when the widget is disposed
+    _debounce?.cancel();
     searchController.dispose();
     cubit.cursorIdEqeuipe = '';
     cubit.equipeSearch = [];
@@ -84,97 +82,103 @@ class _SearchEquipeState extends State<SearchEquipe> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: SingleChildScrollView(
-        child: Stack(
-          children: [
-            TextFormField(
-              controller: searchController,
-              onChanged: _onSearchChanged,
-              decoration: InputDecoration(
-                hintText: 'Search equipes...',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15.0),
-                ),
-                prefixIcon: const Icon(Icons.search, color: Colors.deepPurple),
-                filled: true,
-                fillColor: Colors.white,
-                labelStyle: const TextStyle(color: Colors.deepPurple),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.deepPurple),
-                  borderRadius: BorderRadius.circular(15.0),
-                ),
+    return SingleChildScrollView(
+      child: Stack(
+        children: [
+          TextFormField(
+            controller: searchController,
+            onChanged: _onSearchChanged,
+            decoration: InputDecoration(
+              hintText: 'Search Equipes...',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+              prefixIcon: const Icon(Icons.search, color: Colors.deepPurple),
+              filled: true,
+              fillColor: Colors.white,
+              labelStyle: const TextStyle(color: Colors.deepPurple),
+              focusedBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.deepPurple),
+                borderRadius: BorderRadius.circular(15.0),
               ),
             ),
-            BlocConsumer<TerrainCubit, TerrainState>(
-              listener: (context, state) {},
-              builder: (context, state) {
-                bool hasResults = cubit.equipeSearch.isNotEmpty;
-                bool isLoading = state is GetSearchEquipeLoading;
-                bool isSearchTextEmpty = searchController.text.isEmpty;
-                bool shouldShowResults =
-                    hasResults || (isLoading && !isSearchTextEmpty);
-                if (!showResults) {
-                  return const SizedBox();
-                } else {
-                  return Container(
-                    margin: const EdgeInsets.only(top: 60),
-                    child: Visibility(
-                      visible: shouldShowResults,
-                      child: SizedBox(
-                        height: 250,
-                        child: Column(
-                          children: [
-                            Expanded(
-                              child: ListView.separated(
-                                physics: const AlwaysScrollableScrollPhysics(),
-                                controller: _controller,
-                                itemBuilder: (context, index) {
-                                  var joueur = cubit.equipeSearch[index];
-                                  return Card(
-                                    color:
-                                        Colors.green.shade50.withOpacity(0.8),
-                                    margin:
-                                        const EdgeInsets.symmetric(vertical: 4),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
+          ),
+          BlocConsumer<TerrainCubit, TerrainState>(
+            listener: (context, state) {},
+            builder: (context, state) {
+              bool hasResults = cubit.equipeSearch.isNotEmpty;
+              bool isLoading = state is GetSearchEquipeLoading;
+              bool isSearchTextEmpty = searchController.text.isEmpty;
+              bool shouldShowResults =
+                  hasResults || (isLoading && !isSearchTextEmpty);
+              if (!showResults) {
+                return const SizedBox();
+              } else {
+                return Container(
+                  margin: const EdgeInsets.only(top: 60),
+                  child: Visibility(
+                    visible: shouldShowResults,
+                    child: SizedBox(
+                      height: 200,
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: ListView.separated(
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              controller: _controller,
+                              itemBuilder: (context, index) {
+                                var equipe = cubit.equipeSearch[index];
+                                return ListTile(
+                                  tileColor: index % 2 == 0
+                                      ? Colors.grey.shade100
+                                      : Colors.white,
+                                  title: Text(
+                                    equipe.nom!,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16,
                                     ),
-                                    elevation: 4,
-                                    child: ListTile(
-                                      title: Text(joueur.nom!),
-                                      subtitle: Text(
-                                          'Age: ${joueur.capitaineId!.nom} - Position: ${joueur.id}'),
-                                      onTap: () {
-                                        print(joueur.id);
-                                        _selectJoueur(joueur);
-                                        widget.equipeIdController.text =
-                                            joueur.id!;
-                                        // widget.onSelectedJoueur(joueur.id!);
-                                      },
-                                    ),
-                                  );
-                                },
-                                itemCount: cubit.equipeSearch.length,
-                                separatorBuilder:
-                                    (BuildContext context, int index) =>
-                                        const Divider(),
-                              ),
+                                  ),
+                                  subtitle: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Capitaine: ${equipe.capitaineId!.nom}',
+                                        style: const TextStyle(fontSize: 14),
+                                      ),
+                                    ],
+                                  ),
+                                  onTap: () {
+                                    print(equipe.id);
+                                    _selectEquipe(equipe);
+                                    widget.equipeIdController.text = equipe.id!;
+                                  },
+                                  trailing: const Icon(
+                                    Icons.arrow_forward_ios,
+                                    color: Colors.deepPurple,
+                                  ),
+                                );
+                              },
+                              itemCount: cubit.equipeSearch.length,
+                              separatorBuilder:
+                                  (BuildContext context, int index) =>
+                                      const Divider(),
                             ),
-                            if (isLoading &&
-                                !isSearchTextEmpty &&
-                                cubit.cursorIdEqeuipe != '')
-                              const CircularProgressIndicator(),
-                          ],
-                        ),
+                          ),
+                          if (isLoading &&
+                              !isSearchTextEmpty &&
+                              cubit.cursorIdEqeuipe != '')
+                            const CircularProgressIndicator(),
+                        ],
                       ),
                     ),
-                  );
-                }
-              },
-            ),
-          ],
-        ),
+                  ),
+                );
+              }
+            },
+          ),
+        ],
       ),
     );
   }
