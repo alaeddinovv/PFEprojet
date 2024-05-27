@@ -3,13 +3,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/const.dart';
 import 'package:pfeprojet/cubit/main_cubit.dart';
+import 'package:pfeprojet/generated/l10n.dart';
 import 'package:pfeprojet/helper/cachhelper.dart';
 import 'package:pfeprojet/screen/Auth/login.dart';
+import 'package:pfeprojet/screen/joueurScreens/annonce/cubit/annonce_joueur_cubit.dart';
+import 'package:pfeprojet/screen/joueurScreens/equipe/cubit/equipe_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/home/cubit/home_joueur_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/profile/cubit/profile_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/profile/update_form.dart';
 import 'package:pfeprojet/screen/joueurScreens/profile/update_mdp.dart';
 import 'package:flutter/services.dart';
+import 'package:pfeprojet/screen/joueurScreens/reservation/cubit/reservation_cubit.dart';
+import 'package:pfeprojet/screen/joueurScreens/terrains/cubit/terrain_cubit.dart';
 
 import '../../../Model/user_model.dart';
 
@@ -31,7 +36,7 @@ class ProfileJoueur extends StatelessWidget {
               navigatAndFinish(context: context, page: const HomeJoueur());
             },
           ),
-          title: const Text('Profile'),
+          title: Text(S.of(context).profile),
           actions: [
             TextButton(
                 onPressed: () async {
@@ -40,11 +45,20 @@ class ProfileJoueur extends StatelessWidget {
                       .then((value) {
                     navigatAndFinish(context: context, page: Login());
                     CachHelper.removdata(key: "TOKEN");
-                    showToast(msg: "Disconnect", state: ToastStates.error);
+                    showToast(
+                        msg: S.of(context).disconnect,
+                        state: ToastStates.error);
                   });
+
+                  HomeJoueurCubit.get(context).resetValue();
+                  TerrainCubit.get(context).resetValue();
+                  AnnonceJoueurCubit.get(context).resetValue();
+                  ProfileJoueurCubit.get(context).resetValue();
+                  EquipeCubit.get(context).resetValue();
+                  ReservationJoueurCubit.get(context).resetValue();
                 },
-                child: const Text(
-                  "Disconnect",
+                child: Text(
+                  S.of(context).disconnect,
                   style: TextStyle(color: Colors.red),
                 )),
             IconButton(
@@ -52,12 +66,12 @@ class ProfileJoueur extends StatelessWidget {
                   showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
-                            title: const Text('Change Language'),
+                            title: Text(S.of(context).change_language),
                             content: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 ListTile(
-                                  title: const Text('English'),
+                                  title: Text('French'),
                                   onTap: () {
                                     MainCubit.get(context)
                                         .changeLanguage(const Locale('en'));
@@ -65,7 +79,7 @@ class ProfileJoueur extends StatelessWidget {
                                   },
                                 ),
                                 ListTile(
-                                  title: const Text('Arabic'),
+                                  title: Text('Arabic'),
                                   onTap: () {
                                     MainCubit.get(context)
                                         .changeLanguage(const Locale('ar'));
@@ -109,7 +123,7 @@ class ProfileJoueur extends StatelessWidget {
                     ),
                     ListTile(
                       leading: const Icon(Icons.person),
-                      title: const Text('Username'),
+                      title: Text(S.of(context).username),
                       subtitle: Text(joueurModel.username!),
                       trailing: IconButton(
                         icon: const Icon(Icons.copy),
@@ -118,7 +132,7 @@ class ProfileJoueur extends StatelessWidget {
                                   ClipboardData(text: joueurModel.username!))
                               .then((_) {
                             showToast(
-                                msg: "username copied successfully",
+                                msg: S.of(context).copy_username_success,
                                 state: ToastStates.error);
                           });
                         },
@@ -126,7 +140,7 @@ class ProfileJoueur extends StatelessWidget {
                     ),
                     ListTile(
                       leading: const Icon(Icons.person),
-                      title: const Text('Nom'),
+                      title: Text(S.of(context).nom),
                       subtitle: Text(
                         joueurModel.nom!,
                       ),
@@ -134,7 +148,7 @@ class ProfileJoueur extends StatelessWidget {
                     ),
                     ListTile(
                       leading: const Icon(Icons.person),
-                      title: const Text('Prenom'),
+                      title: Text(S.of(context).prenom),
                       subtitle: Text(
                         joueurModel.prenom!,
                       ),
@@ -142,7 +156,7 @@ class ProfileJoueur extends StatelessWidget {
                     ),
                     ListTile(
                       leading: const Icon(Icons.location_city),
-                      title: const Text('Wilaya'),
+                      title: Text(S.of(context).wilaya),
                       subtitle: Text(
                         joueurModel.wilaya!,
                       ),
@@ -150,7 +164,7 @@ class ProfileJoueur extends StatelessWidget {
                     ),
                     ListTile(
                       leading: const Icon(Icons.email),
-                      title: const Text('Email'),
+                      title: Text(S.of(context).email),
                       subtitle: Text(
                         joueurModel.email!,
                       ),
@@ -158,7 +172,7 @@ class ProfileJoueur extends StatelessWidget {
                     ),
                     ListTile(
                       leading: const Icon(Icons.phone),
-                      title: const Text('Phone'),
+                      title: Text(S.of(context).phone),
                       subtitle: Text(
                         joueurModel.telephone!.toString(),
                       ),
@@ -190,9 +204,9 @@ class ProfileJoueur extends StatelessWidget {
                                     page: const UpdateJoueurForm(),
                                   );
                                 },
-                                child: const Text(
-                                  "Modifier profile",
-                                  style: TextStyle(
+                                child: Text(
+                                  S.of(context).modify_profile,
+                                  style: const TextStyle(
                                       color: Colors.white, fontSize: 16),
                                 ),
                               ),
@@ -218,9 +232,9 @@ class ProfileJoueur extends StatelessWidget {
                                     page: UpdateMdpForm(),
                                   );
                                 },
-                                child: const Text(
-                                  "Modifier mdp",
-                                  style: TextStyle(
+                                child: Text(
+                                  S.of(context).modify_password,
+                                  style: const TextStyle(
                                       color: Colors.white, fontSize: 16),
                                 ),
                               ),

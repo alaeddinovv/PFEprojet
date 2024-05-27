@@ -11,168 +11,83 @@ class ReservationModel {
   String? joueurId;
   String? terrainId;
   EquipeModelData? equipe1;
-  String?
-      equipeId1; //! equipe w equipeId n9der ndirhom 7aja wahda bs7 fragthom bh nmadlhom type wymdli i9tirahat(ya tkon kayna equipe wla equipeId)
+  String? equipeId1;
   EquipeModelData? equipe2;
   String? equipeId2;
-  int? V;
+  int? v;
+
+  ReservationModel({
+    this.id,
+    this.jour,
+    this.heureDebutTemps,
+    this.duree,
+    this.etat,
+    this.reservationGroupId,
+    this.payment,
+    this.joueurId,
+    this.terrainId,
+    this.equipe1,
+    this.equipeId1,
+    this.equipe2,
+    this.equipeId2,
+    this.v,
+  });
 
   ReservationModel.fromJson(Map<String, dynamic> json) {
-    id = json['_id'];
-    jour = DateTime.parse(json['jour']);
-    heureDebutTemps = json['heure_debut_temps'];
-    duree = json['duree'];
-    etat = json['etat'];
-    reservationGroupId = json['reservation_group_id'];
-    payment = json['payment'];
-    joueurId = json['joueur_id'];
-    terrainId = json['terrain_id'];
+    id = json['_id'] as String?;
+    jour = json['jour'] != null ? DateTime.parse(json['jour']) : null;
+    heureDebutTemps = json['heure_debut_temps'] as String?;
+    duree = json['duree'] as int?;
+    etat = json['etat'] as String?;
+    reservationGroupId = json['reservation_group_id'] as String?;
+    payment = json['payment'] as bool?;
+    joueurId = json['joueur_id'] as String?;
+    terrainId = json['terrain_id'] as String?;
     if (json['equipe_id1'] != null) {
       if (json['equipe_id1'] is String) {
-        equipeId1 = json['equipe_id1'];
+        equipeId1 = json['equipe_id1'] as String?;
       } else {
-        equipe1 = EquipeModelData.fromJson(json['equipe_id1']);
+        equipe1 = EquipeModelData.fromJson(
+            json['equipe_id1'] as Map<String, dynamic>);
       }
     }
     if (json['equipe_id2'] != null) {
       if (json['equipe_id2'] is String) {
-        equipeId2 = json['equipe_id2'];
+        equipeId2 = json['equipe_id2'] as String?;
       } else {
-        equipe2 = EquipeModelData.fromJson(json['equipe_id2']);
+        equipe2 = EquipeModelData.fromJson(
+            json['equipe_id2'] as Map<String, dynamic>);
       }
     }
-    V = json['__v'];
+    v = json['__v'] as int?;
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['_id'] = id;
-    _data['jour'] = jour;
-    _data['heure_debut_temps'] = heureDebutTemps;
-    _data['duree'] = duree;
-    _data['etat'] = etat;
-    _data['reservation_group_id'] = reservationGroupId;
-    _data['payment'] = payment;
-    _data['terrain_id'] = terrainId;
-    _data['joueur_id'] = joueurId;
+    final data = <String, dynamic>{};
+    data['_id'] = id;
+    data['jour'] = jour?.toIso8601String();
+    data['heure_debut_temps'] = heureDebutTemps;
+    data['duree'] = duree;
+    data['etat'] = etat;
+    data['reservation_group_id'] = reservationGroupId;
+    data['payment'] = payment;
+    data['terrain_id'] = terrainId;
+    data['joueur_id'] = joueurId;
     if (equipe1 != null) {
       if (equipe1 is String) {
-        _data['equipe_id1'] = equipeId1;
+        data['equipe_id1'] = equipeId1;
       } else {
-        _data['equipe_id1'] = equipe1!.toJson();
+        data['equipe_id1'] = equipe1!.toJson();
       }
     }
     if (equipe2 != null) {
       if (equipe2 is String) {
-        _data['equipe_id2'] = equipeId2;
+        data['equipe_id2'] = equipeId2;
       } else {
-        _data['equipe_id2'] = equipe2!.toJson();
+        data['equipe_id2'] = equipe2!.toJson();
       }
     }
-
-    _data['__v'] = V;
-    return _data;
+    data['__v'] = v;
+    return data;
   }
 }
-
-// class EquipeeModel {
-//   String? id;
-//   String? nom;
-//   int? numeroJoueurs;
-//   List<Joueurs>? joueurs;
-//   List<dynamic>? attenteJoueurs;
-//   List<dynamic>? attenteJoueursDemande;
-//   CapitaineId? capitaineId;
-//   List<dynamic>? tournois;
-//   String? wilaya;
-//   String? commune;
-//   String? createdAt;
-//   String? updatedAt;
-//   int? V;
-
-//   EquipeeModel.fromJson(Map<String, dynamic> json) {
-//     id = json['_id'];
-//     nom = json['nom'];
-//     numeroJoueurs = json['numero_joueurs'];
-//     joueurs =
-//         List.from(json['joueurs']).map((e) => Joueurs.fromJson(e)).toList();
-//     attenteJoueurs =
-//         List.castFrom<dynamic, dynamic>(json['attente_joueurs'] ?? []);
-//     attenteJoueursDemande =
-//         List.castFrom<dynamic, dynamic>(json['attente_joueurs_demande'] ?? []);
-//     capitaineId = CapitaineId.fromJson(json['capitaine_id'] ?? []);
-//     tournois = List.castFrom<dynamic, dynamic>(json['tournois'] ?? []);
-//     wilaya = json['wilaya'];
-//     commune = json['commune'];
-//     createdAt = json['createdAt'];
-//     updatedAt = json['updatedAt'];
-//     V = json['__v'];
-//   }
-
-//   Map<String, dynamic> toJson() {
-//     final _data = <String, dynamic>{};
-//     _data['_id'] = id;
-//     _data['nom'] = nom;
-//     _data['numero_joueurs'] = numeroJoueurs;
-//     _data['joueurs'] = joueurs!.map((e) => e.toJson()).toList();
-//     _data['attente_joueurs'] = attenteJoueurs;
-//     _data['attente_joueurs_demande'] = attenteJoueursDemande;
-//     _data['capitaine_id'] = capitaineId!.toJson();
-//     _data['tournois'] = tournois;
-//     _data['wilaya'] = wilaya;
-//     _data['commune'] = commune;
-//     _data['createdAt'] = createdAt;
-//     _data['updatedAt'] = updatedAt;
-//     _data['__v'] = V;
-//     return _data;
-//   }
-// }
-
-// class Joueurs {
-//   String? id;
-//   String? username;
-//   String? nom;
-//   String? poste;
-//   int? telephone;
-
-//   Joueurs.fromJson(Map<String, dynamic> json) {
-//     id = json['_id'];
-//     username = json['username'];
-//     nom = json['nom'];
-//     poste = json['poste'];
-//     telephone = json['telephone'];
-//   }
-
-//   Map<String, dynamic> toJson() {
-//     final _data = <String, dynamic>{};
-//     _data['_id'] = id;
-//     _data['username'] = username;
-//     _data['nom'] = nom;
-//     _data['poste'] = poste;
-//     _data['telephone'] = telephone;
-//     return _data;
-//   }
-// }
-
-// class CapitaineId {
-//   String? id;
-//   String? username;
-//   String? nom;
-//   int? telephone;
-
-//   CapitaineId.fromJson(Map<String, dynamic> json) {
-//     id = json['_id'];
-//     username = json['username'];
-//     nom = json['nom'];
-//     telephone = json['telephone'];
-//   }
-
-//   Map<String, dynamic> toJson() {
-//     final _data = <String, dynamic>{};
-//     _data['_id'] = id;
-//     _data['username'] = username;
-//     _data['nom'] = nom;
-//     _data['telephone'] = telephone;
-//     return _data;
-//   }
-// }

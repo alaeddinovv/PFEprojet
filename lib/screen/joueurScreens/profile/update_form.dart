@@ -2,13 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pfeprojet/Model/user_model.dart';
-
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/drop_down_wilaya.dart';
 import 'package:pfeprojet/screen/JoueurScreens/profile/profile.dart';
 import 'package:pfeprojet/screen/joueurScreens/home/cubit/home_joueur_cubit.dart';
-
 import 'cubit/profile_cubit.dart';
+import 'package:pfeprojet/generated/l10n.dart'; // Import the localization file
 
 class UpdateJoueurForm extends StatefulWidget {
   const UpdateJoueurForm({super.key});
@@ -72,7 +71,7 @@ class _UpdateJoueurFormState extends State<UpdateJoueurForm> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Update"),
+          title: Text(S.of(context).update), // Localized string
         ),
         body: Padding(
           padding: const EdgeInsets.all(10.0),
@@ -135,11 +134,13 @@ class _UpdateJoueurFormState extends State<UpdateJoueurForm> {
                 defaultForm2(
                     controller: _usernameController,
                     textInputAction: TextInputAction.next,
-                    label: 'Nom',
+                    label: S.of(context).username, // Localized string
                     prefixIcon: const Icon(Icons.person),
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return "username Must Be Not Empty";
+                        return S
+                            .of(context)
+                            .usernameMustNotBeEmpty; // Localized string
                       }
                     }),
                 const SizedBox(
@@ -148,11 +149,13 @@ class _UpdateJoueurFormState extends State<UpdateJoueurForm> {
                 defaultForm2(
                     controller: _nomController,
                     textInputAction: TextInputAction.next,
-                    label: 'Nom',
+                    label: S.of(context).name, // Localized string
                     prefixIcon: const Icon(Icons.person),
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return "Name Must Be Not Empty";
+                        return S
+                            .of(context)
+                            .nameMustNotBeEmpty; // Localized string
                       }
                     }),
                 const SizedBox(
@@ -161,7 +164,7 @@ class _UpdateJoueurFormState extends State<UpdateJoueurForm> {
                 defaultForm2(
                     controller: _prenomController,
                     textInputAction: TextInputAction.next,
-                    label: 'Prenom',
+                    label: S.of(context).prenom, // Localized string
                     prefixIcon: const Icon(
                       Icons.person,
                       color: Colors.transparent,
@@ -169,7 +172,9 @@ class _UpdateJoueurFormState extends State<UpdateJoueurForm> {
                     type: TextInputType.text,
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return "Prenom Must Be Not Empty";
+                        return S
+                            .of(context)
+                            .prenomMustNotBeEmpty; // Localized string
                       }
                     }),
                 const SizedBox(
@@ -185,12 +190,14 @@ class _UpdateJoueurFormState extends State<UpdateJoueurForm> {
                 defaultForm2(
                     controller: _telephoneController,
                     textInputAction: TextInputAction.next,
-                    label: 'Telephone',
+                    label: S.of(context).telephone, // Localized string
                     prefixIcon: const Icon(Icons.phone),
                     type: TextInputType.phone,
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return "Phone Must Be Not Empty";
+                        return S
+                            .of(context)
+                            .phoneMustNotBeEmpty; // Localized string
                       }
                     }),
                 const SizedBox(
@@ -199,12 +206,14 @@ class _UpdateJoueurFormState extends State<UpdateJoueurForm> {
                 defaultForm2(
                     controller: _ageController,
                     textInputAction: TextInputAction.next,
-                    label: 'age',
+                    label: S.of(context).age, // Localized string
                     prefixIcon: const Icon(Icons.numbers),
                     type: TextInputType.phone,
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return "age Must Be Not Empty";
+                        return S
+                            .of(context)
+                            .ageMustNotBeEmpty; // Localized string
                       }
                     }),
                 const SizedBox(
@@ -213,7 +222,7 @@ class _UpdateJoueurFormState extends State<UpdateJoueurForm> {
                 defaultForm2(
                     controller: _posteController,
                     textInputAction: TextInputAction.next,
-                    label: 'poste',
+                    label: S.of(context).poste, // Localized string
                     prefixIcon: const Icon(
                       Icons.my_location_rounded,
                       color: Colors.transparent,
@@ -221,7 +230,9 @@ class _UpdateJoueurFormState extends State<UpdateJoueurForm> {
                     type: TextInputType.text,
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return "Prenom Must Be Not Empty";
+                        return S
+                            .of(context)
+                            .posteMustNotBeEmpty; // Localized string
                       }
                     }),
                 const SizedBox(
@@ -238,7 +249,9 @@ class _UpdateJoueurFormState extends State<UpdateJoueurForm> {
                       }
 
                       if (state is UpdateJoueurStateGood) {
-                        showToast(msg: "Succes", state: ToastStates.success);
+                        showToast(
+                            msg: S.of(context).success,
+                            state: ToastStates.success); // Localized string
                         HomeJoueurCubit.get(context).getMyInfo().then((value) {
                           Navigator.pushAndRemoveUntil(
                             context,
@@ -251,13 +264,10 @@ class _UpdateJoueurFormState extends State<UpdateJoueurForm> {
                     },
                     builder: (context, state) {
                       return defaultSubmit2(
-                          text: 'Update',
+                          text: S.of(context).update, // Localized string
                           background: Colors.blueAccent,
                           onPressed: () {
                             if (formkey.currentState!.validate()) {
-                              // if (state is LodinUpdateResponsableState) {
-                              //   return null;
-                              // }
                               ProfileJoueurCubit.get(context).updateJoueur(
                                   username: _usernameController.text,
                                   nom: _nomController.text,
@@ -290,7 +300,7 @@ class SelectPhotoAlert extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text("Choose the source :"),
+      title: Text(S.of(context).chooseSource), // Localized string
       actions: [
         TextButton(
             onPressed: () async {
@@ -298,14 +308,14 @@ class SelectPhotoAlert extends StatelessWidget {
               await ProfileJoueurCubit.get(context)
                   .imagePickerProfile(ImageSource.camera);
             },
-            child: const Text("Camera")),
+            child: Text(S.of(context).camera)), // Localized string
         TextButton(
             onPressed: () async {
               Navigator.pop(context);
               await ProfileJoueurCubit.get(context)
                   .imagePickerProfile(ImageSource.gallery);
             },
-            child: const Text("Gallery"))
+            child: Text(S.of(context).gallery)) // Localized string
       ],
     );
   }

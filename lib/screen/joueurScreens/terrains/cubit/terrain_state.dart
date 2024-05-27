@@ -5,6 +5,8 @@ sealed class TerrainState {}
 
 final class TerrainInitial extends TerrainState {}
 
+final class ResetTerrainState extends TerrainState {}
+
 final class ErrorState extends TerrainState {
   final ErrorModel errorModel;
 

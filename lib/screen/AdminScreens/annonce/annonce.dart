@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/screen/AdminScreens/annonce/update_annonce.dart';
-import '../../../Model/annonce_admin_model.dart';
+import '../../../Model/annonce/annonce_admin_model.dart';
 
 import 'addannonce.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

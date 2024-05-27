@@ -183,6 +183,31 @@ class CapitaineId {
 
 class AttenteJoueursDemande {
   AttenteJoueursDemande({
+    required this.joueur,
+    required this.post,
+    required this.id,
+  });
+  late final Joueur joueur;
+  late final String post;
+  late final String id;
+
+  AttenteJoueursDemande.fromJson(Map<String, dynamic> json) {
+    joueur = Joueur.fromJson(json['joueur']);
+    post = json['post'] ?? '';
+    id = json['_id'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final _data = <String, dynamic>{};
+    _data['joueur'] = joueur.toJson();
+    _data['post'] = post;
+    _data['_id'] = id;
+    return _data;
+  }
+}
+
+class Joueur {
+  Joueur({
     required this.id,
     required this.username,
     required this.nom,
@@ -193,7 +218,7 @@ class AttenteJoueursDemande {
   late final String nom;
   late final int telephone;
 
-  AttenteJoueursDemande.fromJson(Map<String, dynamic> json) {
+  Joueur.fromJson(Map<String, dynamic> json) {
     id = json['_id'];
     username = json['username'];
     nom = json['nom'];

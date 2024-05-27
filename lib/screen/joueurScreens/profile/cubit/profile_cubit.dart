@@ -21,6 +21,17 @@ class ProfileJoueurCubit extends Cubit<ProfileJoueurState> {
 
   static ProfileJoueurCubit get(context) => BlocProvider.of(context);
 
+  void resetValue() {
+    imageCompress = null;
+    linkProfileImg = null;
+    isHidden = {
+      "pass": true,
+      "pass1": true,
+      "pass2": true,
+    };
+    emit(ResetProfileJoueurState());
+  }
+
   Future<void> updateJoueur(
       {required String username,
       required String nom,
@@ -158,6 +169,7 @@ class ProfileJoueurCubit extends Cubit<ProfileJoueurState> {
     "pass1": true,
     "pass2": true,
   };
+
   void togglePasswordVisibility(String fieldKey) {
     isHidden[fieldKey] = !isHidden[fieldKey]!;
     emit(PasswordVisibilityChanged());

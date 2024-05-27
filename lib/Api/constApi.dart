@@ -1,10 +1,10 @@
 // const URLHTTP = '192.168.1.23:3000';
 // const URLHTTP = '192.168.1.2:3000';
 
-
-
 // const URLHTTP = '192.168.1.20:3000'; //IP houssem
+
 const URLHTTP = '192.168.227.142:3000'; //IP ala
+
 
 // const URLHTTP = '10.0.2.2:3000';
 
@@ -33,9 +33,16 @@ const FILTERRESERVATIONPagination = '/api/reservations/pagination/filter';
 const MYRESERVATIONWITHOTHER = '/api/reservations/with/other/';
 const ADDTERRAIN = '/api/terrain';
 const DELETETERRAIN = '/api/terrain/';
+const DELETETERRAINPHOTO =
+    '/api/terrain/'; // rani fl function nkml /terrain/:id/photo/
 const UPDATETERRAIN = '/api/terrain/';
 
+
 const GETMYTERRAINS = '/api/terrains/my';
+
+const SEARCHTERRAIN = '/api/search/terrain';
+const SEARCHMYTERRAIN = '/api/search/myterrain';
+
 const GETAllTerrain = '/api//terrains';
 const Loginjoueur = '/api/joueur/login';
 const REGISTERJOUER = '/api/joueur';
@@ -50,6 +57,7 @@ const DELETEANNONCE = '/api/annonce/';
 const GETMYANNONCEJOUEUR = '/api/annonces/my/joueur/';
 const GETMYANNONCEADMIN = '/api/annonces/my/admin/';
 const UPDATEANNONCE = '/api/annonce/';
+const GETANNONCEBYID = '/api/annonce/';
 const RECOVERPASSWORD = '/api/joueur/recoverpassword';
 const RECOVERPASSWORDADMIN = '/api/admin/recoverpassword';
 const RESETPASSWORD = '/api/joueur/resetpassword';
@@ -59,6 +67,7 @@ const VERIFYADMINCODE = '/api/admins/verifytoken';
 const GETALLANNONCE = '/api/annonce';
 //------------equipe
 const ADDEQUIPE = '/api/equipe';
+const GETALLEQUIPEDEMEANDER = '/api/joueur/demandes';
 const UPDATEEQUIPE = '/api/equipe/';
 const DELETEEQUIPE = '/api/equipe/';
 const GETALLEQUIPE = '/api/equipe';

@@ -7,14 +7,16 @@ class AnnonceJoueurInitial extends AnnonceJoueurState {}
 
 final class CreerAnnonceJoueurLoadingState extends AnnonceJoueurState {}
 
+final class ResetAnnonceJoueurState extends AnnonceJoueurState {}
+
 final class CreerAnnonceJoueurStateGood extends AnnonceJoueurState {}
 
 final class CreerAnnonceJoueurStateBad extends AnnonceJoueurState {}
 
-final class ErrorState extends AnnonceJoueurState {
+final class ErrorStateAnnonce extends AnnonceJoueurState {
   final ErrorModel errorModel;
 
-  ErrorState({required this.errorModel});
+  ErrorStateAnnonce({required this.errorModel});
 }
 
 final class DeleteAnnonceJoueurLoadingState extends AnnonceJoueurState {}
@@ -40,3 +42,37 @@ final class GetAllAnnonceLoading extends AnnonceJoueurState {}
 final class GetAllAnnonceStateGood extends AnnonceJoueurState {}
 
 final class GetAllAnnonceStateBad extends AnnonceJoueurState {}
+
+final class GetAnnonceByIDLoading extends AnnonceJoueurState {}
+
+final class GetAnnonceByIDStateGood extends AnnonceJoueurState {
+  final dynamic annonceModel;
+
+  GetAnnonceByIDStateGood({required this.annonceModel});
+}
+
+final class GetAnnonceByIDStateBad extends AnnonceJoueurState {}
+
+final class GetSearchTerrainLoading extends AnnonceJoueurState {}
+
+final class GetSearchTerrainStateGood extends AnnonceJoueurState {}
+
+final class GetSearchTerrainStateBad extends AnnonceJoueurState {}
+
+final class ErrorStateSerchTerrain extends AnnonceJoueurState {
+  final ErrorModel errorModel;
+
+  ErrorStateSerchTerrain({required this.errorModel});
+}
+
+final class ErrorStateDemanderRejoinderEquipe extends AnnonceJoueurState {
+  final ErrorModel errorModel;
+
+  ErrorStateDemanderRejoinderEquipe({required this.errorModel});
+}
+
+final class DemandeRejoindreEquipeLoadingState extends AnnonceJoueurState {}
+
+final class DemandeRejoindreEquipeStateGood extends AnnonceJoueurState {}
+
+final class DemandeRejoindreEquipeInvStateBad extends AnnonceJoueurState {}

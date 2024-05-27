@@ -18,6 +18,7 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
   final formKey = GlobalKey<FormState>();
   late final TerrainCubit terrainCubit;
 
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _adresseController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _latitudeController = TextEditingController();
@@ -43,6 +44,7 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
   @override
   void dispose() {
     _adresseController.dispose();
+    _nameController.dispose();
     _descriptionController.dispose();
     _latitudeController.dispose();
     _longitudeController.dispose();
@@ -97,6 +99,16 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
               children: <Widget>[
                 buildTimeRow(context, _sTempsController, _eTempsController),
                 const SizedBox(height: 10),
+                defaultForm3(
+                  // ! hta nrigl duree yrje3 form HH:MM
+                  // enabled: false,
+                  controller: _nameController,
+                  labelText: 'nom',
+                  type: TextInputType.text,
+                  context: context,
+                  valid: (String value) {},
+                ),
+                SizedBox(height: 10),
                 defaultForm3(
                   // ! hta nrigl duree yrje3 form HH:MM
                   // enabled: false,
@@ -455,6 +467,7 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                               }
 
                               Map<String, dynamic>? model = {
+                                "nom": _nameController.text,
                                 "adresse": _adresseController.text,
                                 "description": _descriptionController.text,
                                 "coordonnee": {
