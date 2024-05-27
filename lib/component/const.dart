@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pfeprojet/Api/constApi.dart';
 import 'package:pfeprojet/Api/httplaravel.dart';
+import 'package:pfeprojet/Model/user_model.dart';
 import 'package:pfeprojet/helper/cachhelper.dart';
 import 'package:collection/collection.dart';
 
@@ -114,4 +115,18 @@ Future<void> sendNotificationToJoueur(
   }).catchError((e) {
     print(e.toString());
   });
+}
+
+Map<String, List<String>> findChangedJoueurs(
+    List<String>? equipeJoueurs, List<String>? reservationJoueurs) {
+  Set<String> set1 = equipeJoueurs?.toSet() ?? {};
+  Set<String> set2 = reservationJoueurs?.toSet() ?? {};
+
+  Set<String> deletedJoueurIds = set1.difference(set2);
+  Set<String> addedJoueurIds = set2.difference(set1);
+
+  return {
+    'deleted': deletedJoueurIds.toList(),
+    'added': addedJoueurIds.toList(),
+  };
 }

@@ -719,6 +719,50 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                       : defaultSubmit2(
                           text: S.of(context).confirmConnection,
                           onPressed: () async {
+                            // if (deletedJoueurs1.isNotEmpty) {
+                            //   print(
+                            //       'The following joueurs have been deleted from Equipe 1:');
+                            //   deletedJoueurs1.forEach((joueurId) {
+                            //     print('- $joueurId');
+                            //   });
+                            // } else {
+                            //   print(
+                            //       'No joueurs have been deleted from Equipe 1.');
+                            // }
+
+                            // if (addedJoueurs1.isNotEmpty) {
+                            //   print(
+                            //       'The following joueurs have been added to Equipe 1:');
+                            //   addedJoueurs1.forEach((joueurId) {
+                            //     print('- $joueurId');
+                            //   });
+                            // } else {
+                            //   print(
+                            //       'No new joueurs have been added to Equipe 1.');
+                            // }
+
+                            // if (deletedJoueurs2.isNotEmpty) {
+                            //   print(
+                            //       'The following joueurs have been deleted from Equipe 2:');
+                            //   deletedJoueurs2.forEach((joueurId) {
+                            //     print('- $joueurId');
+                            //   });
+                            // } else {
+                            //   print(
+                            //       'No joueurs have been deleted from Equipe 2.');
+                            // }
+
+                            // if (addedJoueurs2.isNotEmpty) {
+                            //   print(
+                            //       'The following joueurs have been added to Equipe 2:');
+                            //   addedJoueurs2.forEach((joueurId) {
+                            //     print('- $joueurId');
+                            //   });
+                            // } else {
+                            //   print(
+                            //       'No new joueurs have been added to Equipe 2.');
+                            // }
+
                             bool isEquialEquipe1 = eq(
                                 equipe1Joueurs,
                                 reservation?.equipe1?.joueurs!
@@ -733,6 +777,7 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                             print(isEquialEquipe2);
                             if (isEquialEquipe1 && isEquialEquipe2) {
                               if (!isSomthingChanged) {
+                                //this bool for change equipe button
                                 showToast(
                                     msg: S.of(context).noChangesDetected,
                                     state: ToastStates.error);
@@ -747,6 +792,27 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                                 equipe2: reservation?.equipe2?.id,
                               );
                             } else {
+                              Map<String, List<String>> changedJoueurs1 =
+                                  findChangedJoueurs(
+                                      equipe1Joueurs,
+                                      reservation?.equipe1?.joueurs!
+                                          .map((e) => e.id!)
+                                          .toList());
+                              Map<String, List<String>> changedJoueurs2 =
+                                  findChangedJoueurs(
+                                      equipe2Joueurs,
+                                      reservation?.equipe2?.joueurs!
+                                          .map((e) => e.id!)
+                                          .toList());
+
+                              List<String> deletedJoueurs1 =
+                                  changedJoueurs1['deleted'] ?? [];
+                              List<String> addedJoueurs1 =
+                                  changedJoueurs1['added'] ?? [];
+                              List<String> deletedJoueurs2 =
+                                  changedJoueurs2['deleted'] ?? [];
+                              List<String> addedJoueurs2 =
+                                  changedJoueurs2['added'] ?? [];
                               Map<String, dynamic> model1 = {
                                 "nom": reservation?.equipe1?.nom,
                                 "numero_joueurs":
