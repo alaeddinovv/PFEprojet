@@ -145,3 +145,9 @@ class CheckUserByUsernameStateGood extends EquipeState {
 }
 
 class CheckUserByUsernameStateBad extends EquipeState {}
+
+class UpdateJoueursEquipeLoadingState extends EquipeState {}
+
+class UpdateJoueursEquipeStateGood extends EquipeState {}
+
+class UpdateJoueursEquipeStateBad extends EquipeState {}

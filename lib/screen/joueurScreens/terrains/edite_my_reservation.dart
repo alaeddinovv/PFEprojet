@@ -6,6 +6,7 @@ import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/const.dart';
 import 'package:pfeprojet/component/search_equipe.dart';
 import 'package:pfeprojet/generated/l10n.dart';
+import 'package:pfeprojet/screen/joueurScreens/equipe/cubit/equipe_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/cubit/terrain_cubit.dart';
 import 'package:pfeprojet/component/searchJoueur.dart';
 
@@ -27,7 +28,6 @@ class DetailMyReserve extends StatefulWidget {
 
 class _DetailMyReserveState extends State<DetailMyReserve> {
   bool isEditeEquipe1 = false;
-  bool isEditeEquipe2 = false;
   bool isSomthingChanged = false;
   late final TerrainCubit cubit;
 
@@ -35,7 +35,7 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
 
   ReservationModel? reservation;
   List<String>? equipe1Joueurs = [];
-  List<String>? equipe2Joueurs = [];
+  List<String>? equipe1JoueursAttend = [];
   bool updateAllWeeks = true;
   @override
   void initState() {
@@ -62,7 +62,7 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
               equipe1Joueurs = state.reservations.equipe1?.joueurs!
                   .map((e) => e.id!)
                   .toList();
-              equipe2Joueurs = state.reservations.equipe2?.joueurs!
+              equipe1JoueursAttend = state.reservations.equipe1?.attenteJoueurs!
                   .map((e) => e.id!)
                   .toList();
             }
@@ -348,47 +348,79 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                                               ),
                                             ],
                                           )
-                                        : Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              IconButton(
-                                                icon: Icon(Icons.add,
-                                                    color: greenConst),
-                                                onPressed: () {
-                                                  showDialog(
-                                                      context: context,
-                                                      builder: (BuildContext
-                                                          context) {
-                                                        return Container(
-                                                          height: 300,
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Dialog(
-                                                            child: SearchJoueur(
-                                                              userIdController:
-                                                                  widget
-                                                                      .userIdController,
-                                                              onEquipeSelected:
-                                                                  (joueur) {
-                                                                setState(() {
-                                                                  reservation!
-                                                                      .equipe1!
-                                                                      .joueurs!
-                                                                      .add(
-                                                                          joueur);
-                                                                  isSomthingChanged =
-                                                                      true;
-                                                                });
-                                                              },
-                                                            ),
-                                                          ),
-                                                        );
+                                        : index <
+                                                reservation!.equipe1!.joueurs!
+                                                        .length +
+                                                    reservation!.equipe1!
+                                                        .attenteJoueurs!.length
+                                            ?
+                                            // remove from attente
+                                            Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  IconButton(
+                                                    icon: const Icon(
+                                                        Icons.clear,
+                                                        color: Colors.red),
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        reservation!.equipe1!
+                                                            .attenteJoueurs!
+                                                            .removeAt(index -
+                                                                reservation!
+                                                                    .equipe1!
+                                                                    .joueurs!
+                                                                    .length);
+                                                        isSomthingChanged =
+                                                            true;
                                                       });
-                                                },
-                                              ),
-                                            ],
-                                          )
+                                                    },
+                                                  ),
+                                                ],
+                                              )
+                                            : Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  IconButton(
+                                                    icon: Icon(Icons.add,
+                                                        color: greenConst),
+                                                    onPressed: () {
+                                                      showDialog(
+                                                          context: context,
+                                                          builder: (BuildContext
+                                                              context) {
+                                                            return Container(
+                                                              height: 300,
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child: Dialog(
+                                                                child:
+                                                                    SearchJoueur(
+                                                                  userIdController:
+                                                                      widget
+                                                                          .userIdController,
+                                                                  onEquipeSelected:
+                                                                      (joueur) {
+                                                                    setState(
+                                                                        () {
+                                                                      reservation!
+                                                                          .equipe1!
+                                                                          .attenteJoueurs!
+                                                                          .add(
+                                                                              joueur);
+                                                                      isSomthingChanged =
+                                                                          true;
+                                                                    });
+                                                                  },
+                                                                ),
+                                                              ),
+                                                            );
+                                                          });
+                                                    },
+                                                  ),
+                                                ],
+                                              )
                                     : const SizedBox(),
                                 title: index <
                                         reservation!.equipe1!.joueurs!.length
@@ -407,13 +439,9 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                                                       reservation!.equipe1!
                                                           .joueurs!.length]
                                                   .username!),
-                                              Spacer(),
-                                              Icon(
-                                                Icons.hourglass_empty,
-                                                color: Colors
-                                                    .blue, // Blue color to signify ongoing progress
-                                                size: 24,
-                                              )
+                                              const SizedBox(width: 10.0),
+                                              Icon(Icons.hourglass_empty,
+                                                  color: greenConst),
                                             ],
                                           )
                                         : Text(
@@ -438,17 +466,6 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                               style: const TextStyle(
                                   fontSize: 20.0, fontWeight: FontWeight.bold),
                             ),
-                            IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    isEditeEquipe2 = !isEditeEquipe2;
-                                    isSomthingChanged = true;
-                                  });
-                                },
-                                icon: Icon(
-                                  isEditeEquipe2 ? Icons.done : (Icons.edit),
-                                  color: greenConst,
-                                )),
                           ],
                         ),
                         TextButton(
@@ -487,12 +504,7 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                                                               reservation!
                                                                       .equipe2 =
                                                                   equipe;
-                                                              equipe2Joueurs =
-                                                                  equipe
-                                                                      .joueurs!
-                                                                      .map((e) =>
-                                                                          e.id!)
-                                                                      .toList();
+
                                                               isSomthingChanged =
                                                                   true;
                                                             });
@@ -528,12 +540,6 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                                                               reservation!
                                                                       .equipe2 =
                                                                   equipe;
-                                                              equipe2Joueurs =
-                                                                  equipe
-                                                                      .joueurs!
-                                                                      .map((e) =>
-                                                                          e.id!)
-                                                                      .toList();
                                                             });
                                                             isSomthingChanged =
                                                                 true;
@@ -601,104 +607,6 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                               return ListTile(
                                 leading:
                                     const Icon(Icons.person, color: Colors.red),
-                                trailing: isEditeEquipe2
-                                    ? index <
-                                            reservation!
-                                                .equipe2!.joueurs!.length
-                                        ? Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              IconButton(
-                                                icon: Icon(Icons.edit,
-                                                    color: greenConst),
-                                                onPressed: () {
-                                                  showDialog(
-                                                      context: context,
-                                                      builder: (BuildContext
-                                                          context) {
-                                                        return Container(
-                                                          height: 300,
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Dialog(
-                                                            child: SearchJoueur(
-                                                              userIdController:
-                                                                  widget
-                                                                      .userIdController,
-                                                              onEquipeSelected:
-                                                                  (joueur) {
-                                                                setState(() {
-                                                                  reservation!
-                                                                          .equipe2!
-                                                                          .joueurs![
-                                                                      index] = joueur;
-                                                                  isSomthingChanged =
-                                                                      true;
-                                                                });
-                                                              },
-                                                            ),
-                                                          ),
-                                                        );
-                                                      });
-                                                },
-                                              ),
-                                              IconButton(
-                                                icon: const Icon(Icons.clear,
-                                                    color: Colors.red),
-                                                onPressed: () {
-                                                  setState(() {
-                                                    reservation!
-                                                        .equipe2!.joueurs!
-                                                        .removeAt(index);
-                                                    isSomthingChanged = true;
-                                                  });
-                                                },
-                                              ),
-                                            ],
-                                          )
-                                        : Row(
-                                            mainAxisSize: MainAxisSize.min,
-                                            children: [
-                                              IconButton(
-                                                icon: Icon(Icons.add,
-                                                    color: greenConst),
-                                                onPressed: () {
-                                                  showDialog(
-                                                      context: context,
-                                                      builder: (BuildContext
-                                                          context) {
-                                                        return Container(
-                                                          height: 300,
-                                                          padding:
-                                                              const EdgeInsets
-                                                                  .all(8.0),
-                                                          child: Dialog(
-                                                            child: SearchJoueur(
-                                                              userIdController:
-                                                                  widget
-                                                                      .userIdController,
-                                                              onEquipeSelected:
-                                                                  (joueur) {
-                                                                setState(() {
-                                                                  reservation!
-                                                                      .equipe2!
-                                                                      .joueurs!
-                                                                      .add(
-                                                                          joueur);
-                                                                  isSomthingChanged =
-                                                                      true;
-                                                                });
-                                                              },
-                                                            ),
-                                                          ),
-                                                        );
-                                                      });
-                                                },
-                                              ),
-                                            ],
-                                          )
-                                    : const SizedBox(),
                                 title: index <
                                         reservation!.equipe2!.joueurs!.length
                                     ? Text(reservation!
@@ -719,65 +627,21 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                       : defaultSubmit2(
                           text: S.of(context).confirmConnection,
                           onPressed: () async {
-                            // if (deletedJoueurs1.isNotEmpty) {
-                            //   print(
-                            //       'The following joueurs have been deleted from Equipe 1:');
-                            //   deletedJoueurs1.forEach((joueurId) {
-                            //     print('- $joueurId');
-                            //   });
-                            // } else {
-                            //   print(
-                            //       'No joueurs have been deleted from Equipe 1.');
-                            // }
-
-                            // if (addedJoueurs1.isNotEmpty) {
-                            //   print(
-                            //       'The following joueurs have been added to Equipe 1:');
-                            //   addedJoueurs1.forEach((joueurId) {
-                            //     print('- $joueurId');
-                            //   });
-                            // } else {
-                            //   print(
-                            //       'No new joueurs have been added to Equipe 1.');
-                            // }
-
-                            // if (deletedJoueurs2.isNotEmpty) {
-                            //   print(
-                            //       'The following joueurs have been deleted from Equipe 2:');
-                            //   deletedJoueurs2.forEach((joueurId) {
-                            //     print('- $joueurId');
-                            //   });
-                            // } else {
-                            //   print(
-                            //       'No joueurs have been deleted from Equipe 2.');
-                            // }
-
-                            // if (addedJoueurs2.isNotEmpty) {
-                            //   print(
-                            //       'The following joueurs have been added to Equipe 2:');
-                            //   addedJoueurs2.forEach((joueurId) {
-                            //     print('- $joueurId');
-                            //   });
-                            // } else {
-                            //   print(
-                            //       'No new joueurs have been added to Equipe 2.');
-                            // }
-
                             bool isEquialEquipe1 = eq(
-                                equipe1Joueurs,
-                                reservation?.equipe1?.joueurs!
-                                    .map((e) => e.id!)
-                                    .toList());
-                            bool isEquialEquipe2 = eq(
-                                equipe2Joueurs,
-                                reservation?.equipe2?.joueurs!
-                                    .map((e) => e.id!)
-                                    .toList());
+                                    equipe1Joueurs,
+                                    reservation?.equipe1?.joueurs!
+                                        .map((e) => e.id!)
+                                        .toList()) &&
+                                eq(
+                                    equipe1JoueursAttend,
+                                    reservation?.equipe1?.attenteJoueurs!
+                                        .map((e) => e.id!)
+                                        .toList());
+
                             print(isEquialEquipe1);
-                            print(isEquialEquipe2);
-                            if (isEquialEquipe1 && isEquialEquipe2) {
+
+                            if (isEquialEquipe1) {
                               if (!isSomthingChanged) {
-                                //this bool for change equipe button
                                 showToast(
                                     msg: S.of(context).noChangesDetected,
                                     state: ToastStates.error);
@@ -792,27 +656,21 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                                 equipe2: reservation?.equipe2?.id,
                               );
                             } else {
+                              print("!isEquialEquipe1");
                               Map<String, List<String>> changedJoueurs1 =
                                   findChangedJoueurs(
-                                      equipe1Joueurs,
-                                      reservation?.equipe1?.joueurs!
-                                          .map((e) => e.id!)
-                                          .toList());
-                              Map<String, List<String>> changedJoueurs2 =
-                                  findChangedJoueurs(
-                                      equipe2Joueurs,
-                                      reservation?.equipe2?.joueurs!
+                                      equipe1JoueursAttend,
+                                      reservation?.equipe1?.attenteJoueurs!
                                           .map((e) => e.id!)
                                           .toList());
 
-                              List<String> deletedJoueurs1 =
-                                  changedJoueurs1['deleted'] ?? [];
+                              // List<String> deletedJoueurs1 =
+                              //     changedJoueurs1['deleted'] ?? [];
                               List<String> addedJoueurs1 =
                                   changedJoueurs1['added'] ?? [];
-                              List<String> deletedJoueurs2 =
-                                  changedJoueurs2['deleted'] ?? [];
-                              List<String> addedJoueurs2 =
-                                  changedJoueurs2['added'] ?? [];
+                              print(reservation?.equipe1?.attenteJoueurs!
+                                  .map((e) => e.id!)
+                                  .toList());
                               Map<String, dynamic> model1 = {
                                 "nom": reservation?.equipe1?.nom,
                                 "numero_joueurs":
@@ -821,68 +679,74 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                                 "joueurs": reservation?.equipe1?.joueurs!
                                     .map((e) => e.id!)
                                     .toList(),
+                                "attente_joueurs":
+                                    reservation?.equipe1?.attenteJoueurs!,
                                 "commune": reservation?.equipe1?.commune,
                               };
-                              Map<String, dynamic> model2 = {
-                                "nom": reservation?.equipe2?.nom,
-                                "numero_joueurs":
-                                    reservation?.equipe2?.numeroJoueurs,
-                                "wilaya": reservation?.equipe2?.wilaya,
-                                "joueurs": reservation?.equipe2?.joueurs!
-                                    .map((e) => e.id!)
-                                    .toList(),
-                                "commune": reservation?.equipe2?.commune,
-                              };
+
                               print(model1);
-                              print(model2);
-                              if (!isEquialEquipe1 && !isEquialEquipe2) {
+
+                              if (reservation!.equipe1!.vertial == false) {
                                 cubit
                                     .createEquipeVertial(
                                         model: model1, isMyEquipe: true)
                                     .then((value) {
                                   cubit
-                                      .createEquipeVertial(
-                                          model: model2, isMyEquipe: false)
-                                      .then((value) {
-                                    cubit.confirmConnectEquipe(
-                                      updateAllWeeks: false,
-                                      reservationId: reservation!.id,
-                                      equipe1: cubit.idEquipe1Vertial ??
-                                          reservation?.equipe1?.id,
-                                      equipe2: cubit.idEquipe2Vertial ??
-                                          reservation?.equipe2?.id,
-                                    );
-                                  });
-                                });
-                              } else if (!isEquialEquipe1) {
-                                print("!isEquialEquipe1");
-                                cubit
-                                    .createEquipeVertial(
-                                        model: model1, isMyEquipe: true)
-                                    .then((value) {
-                                  cubit.confirmConnectEquipe(
+                                      .confirmConnectEquipe(
                                     updateAllWeeks: false,
                                     reservationId: reservation!.id,
                                     equipe1: cubit.idEquipe1Vertial ??
                                         reservation?.equipe1?.id,
                                     equipe2: reservation?.equipe2?.id,
-                                  );
+                                  )
+                                      .then((value) {
+                                    addedJoueurs1.forEach((joueurId) async {
+                                      String title =
+                                          'invitation to join ${reservation?.equipe1?.nom}';
+                                      String body =
+                                          'You have been added to reservation ${formatDate(reservation?.jour)} at ${reservation?.heureDebutTemps} with equipe ${reservation?.equipe1?.nom} vs ${reservation?.equipe2?.nom}';
+                                      String id = joueurId;
+                                      await sendNotificationToJoueur(
+                                          title: title,
+                                          body: body,
+                                          joueurId: id);
+                                    });
+                                  });
                                 });
-                              } else if (!isEquialEquipe2) {
-                                cubit
-                                    .createEquipeVertial(
-                                        model: model2, isMyEquipe: false)
+                              } else {
+                                print(reservation!.equipe1?.vertial);
+                                print('gggggggggggggggggggggggggg');
+
+                                EquipeCubit.get(context)
+                                    .updateJoueursEquipe(
+                                        equipeId: reservation!.equipe1!.id!,
+                                        joueursId: reservation!
+                                            .equipe1!.joueurs!
+                                            .map((e) => e.id!)
+                                            .toList(),
+                                        attente_joueursID: reservation!
+                                            .equipe1!.attenteJoueurs!
+                                            .map((e) => e.id!)
+                                            .toList())
                                     .then((value) {
                                   cubit.confirmConnectEquipe(
-                                    updateAllWeeks: false,
-                                    reservationId: reservation!.id,
-                                    equipe1: reservation?.equipe1?.id,
-                                    equipe2: cubit.idEquipe2Vertial ??
-                                        reservation?.equipe2?.id,
-                                  );
+                                      updateAllWeeks: updateAllWeeks,
+                                      reservationId: reservation?.id,
+                                      equipe1: reservation?.equipe1?.id,
+                                      equipe2: reservation?.equipe2?.id);
+                                }).then((value) {
+                                  addedJoueurs1.forEach((joueurId) async {
+                                    print(joueurId);
+                                    String title =
+                                        'invitation to join ${reservation?.equipe1?.nom}';
+                                    String body =
+                                        'You have been added to reservation ${formatDate(reservation?.jour)} at ${reservation?.heureDebutTemps} with equipe ${reservation?.equipe1?.nom} vs ${reservation?.equipe2?.nom}';
+                                    String id = joueurId;
+                                    await sendNotificationToJoueur(
+                                        title: title, body: body, joueurId: id);
+                                  });
                                 });
                               }
-                              // cubit.createEquipeVertial()
                             }
                           },
                           background: greenConst),

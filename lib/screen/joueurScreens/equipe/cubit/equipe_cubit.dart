@@ -138,6 +138,29 @@ class EquipeCubit extends Cubit<EquipeState> {
     });
   }
 
+  Future<void> updateJoueursEquipe(
+      {required List<String?> joueursId,
+      required List<String?> attente_joueursID,
+      required String equipeId}) async {
+    emit(UpdateJoueursEquipeLoadingState());
+    print(joueursId);
+    await Httplar.httpPut(path: UPDATEJOUEURSEQUIPE + equipeId, data: {
+      'joueurs': joueursId,
+      'attente_joueurs': attente_joueursID,
+    }).then((value) {
+      if (value.statusCode == 200) {
+        emit(UpdateJoueursEquipeStateGood());
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(UpdateJoueursEquipeStateBad());
+    });
+  }
+
   //-------------------- get all equipes ----------------------------
   List<EquipeData> equipes = [];
   // cusrsorid mdeclari lfug

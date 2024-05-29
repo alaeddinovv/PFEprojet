@@ -178,23 +178,26 @@ class _EquipeState extends State<Equipe> {
                                       }),
                                 ],
                               ),
-                              ListView.separated(
-                                controller: _controller,
-                                physics: const BouncingScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  return _buildEquipeItem(
-                                      EquipeCubit.get(context)
-                                          .equipeData[index],
-                                      index,
-                                      context,
-                                      vertial);
-                                },
-                                separatorBuilder: (context, int index) =>
-                                    const SizedBox(height: 16),
-                                itemCount:
-                                    EquipeCubit.get(context).equipeData.length,
-                                shrinkWrap:
-                                    true, // to prevent infinite height error
+                              Expanded(
+                                child: ListView.separated(
+                                  controller: _controller,
+                                  physics: const BouncingScrollPhysics(),
+                                  itemBuilder: (context, index) {
+                                    return _buildEquipeItem(
+                                        EquipeCubit.get(context)
+                                            .equipeData[index],
+                                        index,
+                                        context,
+                                        vertial);
+                                  },
+                                  separatorBuilder: (context, int index) =>
+                                      const SizedBox(height: 16),
+                                  itemCount: EquipeCubit.get(context)
+                                      .equipeData
+                                      .length,
+                                  shrinkWrap:
+                                      true, // to prevent infinite height error
+                                ),
                               ),
                             ],
                           );
