@@ -147,7 +147,11 @@ class _DetailOtherReserveState extends State<DetailOtherReserve> {
                                                       username: reservation!
                                                           .equipe1!
                                                           .attenteJoueurs![
-                                                              index]
+                                                              index -
+                                                                  reservation!
+                                                                      .equipe1!
+                                                                      .joueurs!
+                                                                      .length]
                                                           .username!);
                                                 },
                                                 child: Text(reservation!
