@@ -63,6 +63,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "forThisReservationOnly": MessageLookupByLibrary.simpleMessage(
             "pour cette réservation uniquement"),
         "gallery": MessageLookupByLibrary.simpleMessage("Galerie"),
+        "joueurDetails":
+            MessageLookupByLibrary.simpleMessage("Détails du joueur"),
         "modify_password":
             MessageLookupByLibrary.simpleMessage("Modifier le mot de passe"),
         "modify_profile":

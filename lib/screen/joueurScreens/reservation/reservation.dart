@@ -75,6 +75,8 @@ class _ReservationState extends State<Reservation> {
                 //   ],
                 // ),
                 ToggleButtonsWidget(
+              icon1: Icons.list_outlined,
+              icon2: Icons.list_outlined,
               text1: 'Reservations Terrain',
               text2: 'Demander equipe',
               showList: _showList,

@@ -7,6 +7,7 @@ import 'package:pfeprojet/component/const.dart';
 import 'package:pfeprojet/component/search_equipe.dart';
 import 'package:pfeprojet/generated/l10n.dart';
 import 'package:pfeprojet/screen/joueurScreens/equipe/cubit/equipe_cubit.dart';
+import 'package:pfeprojet/screen/joueurScreens/profile/profile_other.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/cubit/terrain_cubit.dart';
 import 'package:pfeprojet/component/searchJoueur.dart';
 
@@ -57,6 +58,11 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
       body: SingleChildScrollView(
         child: BlocConsumer<TerrainCubit, TerrainState>(
           listener: (context, state) {
+            if (state is GetJouerByUsernameStateGood) {
+              navigatAndReturn(
+                  context: context,
+                  page: OtherJoueurDetails(joueurModel: state.dataJoueurModel));
+            }
             if (state is GetMyReserveStateGood) {
               reservation = state.reservations;
               equipe1Joueurs = state.reservations.equipe1?.joueurs!
@@ -424,8 +430,15 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                                     : const SizedBox(),
                                 title: index <
                                         reservation!.equipe1!.joueurs!.length
-                                    ? Text(reservation!
-                                        .equipe1!.joueurs![index].username!)
+                                    ? InkWell(
+                                        onTap: () {
+                                          cubit.getJouerbyName(
+                                              username: reservation!.equipe1!
+                                                  .joueurs![index].username!);
+                                        },
+                                        child: Text(reservation!.equipe1!
+                                            .joueurs![index].username!),
+                                      )
                                     : index <
                                             reservation!
                                                     .equipe1!.joueurs!.length +
@@ -433,12 +446,26 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                                                     .attenteJoueurs!.length
                                         ? Row(
                                             children: [
-                                              Text(reservation!
-                                                  .equipe1!
-                                                  .attenteJoueurs![index -
-                                                      reservation!.equipe1!
-                                                          .joueurs!.length]
-                                                  .username!),
+                                              InkWell(
+                                                onTap: () {
+                                                  cubit.getJouerbyName(
+                                                      username: reservation!
+                                                          .equipe1!
+                                                          .attenteJoueurs![
+                                                              index -
+                                                                  reservation!
+                                                                      .equipe1!
+                                                                      .joueurs!
+                                                                      .length]
+                                                          .username!);
+                                                },
+                                                child: Text(reservation!
+                                                    .equipe1!
+                                                    .attenteJoueurs![index -
+                                                        reservation!.equipe1!
+                                                            .joueurs!.length]
+                                                    .username!),
+                                              ),
                                               const SizedBox(width: 10.0),
                                               Icon(Icons.hourglass_empty,
                                                   color: greenConst),
@@ -609,8 +636,15 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                                     const Icon(Icons.person, color: Colors.red),
                                 title: index <
                                         reservation!.equipe2!.joueurs!.length
-                                    ? Text(reservation!
-                                        .equipe2!.joueurs![index].username!)
+                                    ? InkWell(
+                                        onTap: () {
+                                          cubit.getJouerbyName(
+                                              username: reservation!.equipe2!
+                                                  .joueurs![index].username!);
+                                        },
+                                        child: Text(reservation!.equipe2!
+                                            .joueurs![index].username!),
+                                      )
                                     : Text(
                                         S.of(context).notAssignedYet,
                                         style: TextStyle(color: Colors.red),

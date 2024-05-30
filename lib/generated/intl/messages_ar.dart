@@ -57,6 +57,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "forThisReservationOnly":
             MessageLookupByLibrary.simpleMessage("لهذا الحجز فقط"),
         "gallery": MessageLookupByLibrary.simpleMessage("المعرض"),
+        "joueurDetails": MessageLookupByLibrary.simpleMessage("تفاصيل اللاعب"),
         "modify_password":
             MessageLookupByLibrary.simpleMessage("تعديل كلمة المرور"),
         "modify_profile":

@@ -102,6 +102,8 @@ class _AnnonceState extends State<Annonce> {
                 //   ],
                 // ),
                 ToggleButtonsWidget(
+              icon1: Icons.list_outlined,
+              icon2: Icons.location_on_outlined,
               text1: S.of(context).my_annonces,
               text2: S.of(context).all_annonces,
               showList: _showList,

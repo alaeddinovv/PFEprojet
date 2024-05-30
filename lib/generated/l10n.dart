@@ -851,6 +851,16 @@ class S {
       args: [],
     );
   }
+
+  /// `Détails du joueur`
+  String get joueurDetails {
+    return Intl.message(
+      'Détails du joueur',
+      name: 'joueurDetails',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

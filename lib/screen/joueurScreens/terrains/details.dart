@@ -14,6 +14,7 @@ import 'package:pfeprojet/screen/joueurScreens/home/cubit/home_joueur_cubit.dart
 import 'package:pfeprojet/screen/joueurScreens/terrains/cubit/terrain_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/edite_my_reservation.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/location/terrain_location.dart';
+import 'package:pfeprojet/screen/joueurScreens/terrains/other_reserve.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/reserve.dart';
 
 // ignore: must_be_immutable
@@ -282,14 +283,14 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                                       hour: hour,
                                       idTerrain: widget.terrainModel.id!));
                             } else if (isCharge) {
-                              showToast(
-                                  msg: "This slot is already booked",
-                                  state: ToastStates.warning);
+                              navigatAndReturn(
+                                  context: context,
+                                  page: DetailOtherReserve(
+                                    jour: terrainCubit.selectedDate,
+                                    heure: timeSlots[index],
+                                    terrainId: widget.terrainModel.id!,
+                                  ));
                             } else if (isMyReservationPaying) {
-                              // showToast(
-                              //     msg: "You have already booked this slot",
-                              //     state: ToastStates.warning);
-
                               navigatAndReturn(
                                   context: context,
                                   page: DetailMyReserve(

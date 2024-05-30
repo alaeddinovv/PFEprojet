@@ -89,5 +89,6 @@
     "choose": "choisir :",
     "noOpponentTeamYet": "Pas encore d'équipe adverse",
     "confirmConnection": "Confirmer la connexion",
-    "noChangesDetected": "aucun changement détecté"
+    "noChangesDetected": "aucun changement détecté",
+    "joueurDetails": "Détails du joueur"
 }

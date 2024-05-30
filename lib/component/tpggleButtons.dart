@@ -5,6 +5,8 @@ class ToggleButtonsWidget extends StatefulWidget {
   final Function(bool) onToggle;
   final String text1;
   final String text2;
+  final IconData icon1;
+  final IconData icon2;
 
   ToggleButtonsWidget({
     Key? key,
@@ -12,6 +14,8 @@ class ToggleButtonsWidget extends StatefulWidget {
     required this.onToggle,
     required this.text1,
     required this.text2,
+    required this.icon1,
+    required this.icon2,
   }) : super(key: key);
 
   @override
@@ -34,8 +38,26 @@ class _ToggleButtonsWidgetState extends State<ToggleButtonsWidget> {
       constraints: BoxConstraints(
           minWidth: MediaQuery.of(context).size.width / 2 - 10, minHeight: 40),
       children: <Widget>[
-        Text(widget.text1),
-        Text(widget.text2),
+        Row(
+          children: [
+            Icon(
+              widget.icon1,
+              color: Colors.grey[500],
+            ),
+            SizedBox(width: 5),
+            Text(widget.text1),
+          ],
+        ),
+        Row(
+          children: [
+            Icon(
+              widget.icon2,
+              color: Colors.grey[500],
+            ),
+            SizedBox(width: 5),
+            Text(widget.text2),
+          ],
+        ),
       ],
     );
   }

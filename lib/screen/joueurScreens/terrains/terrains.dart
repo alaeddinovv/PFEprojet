@@ -64,6 +64,8 @@ class _TerrainState extends State<Terrain> {
                   //   ],
                   // ),
                   ToggleButtonsWidget(
+                icon1: Icons.list_outlined,
+                icon2: Icons.location_on_outlined,
                 text1: 'List Terrain',
                 text2: 'Map Terrain',
                 showList: _showList,

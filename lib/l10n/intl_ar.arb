@@ -89,5 +89,6 @@
     "choose": "اختر:",
     "noOpponentTeamYet": "لا يوجد فريق خصم بعد",
     "confirmConnection": "تأكيد الاتصال",
-    "noChangesDetected": "لم يتم الكشف عن أي تغييرات"
+    "noChangesDetected": "لم يتم الكشف عن أي تغييرات",
+    "joueurDetails": "تفاصيل اللاعب"
 }
