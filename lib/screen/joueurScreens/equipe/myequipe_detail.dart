@@ -89,41 +89,24 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                       EquipeCubit.get(context)
                           .getMyEquipe(vertial: widget.vartial);
                     } else if (state is CapitaineInviteJoueurStateGood) {
-                      bool alreadyExists = (widget.equipeData.attenteJoueurs
-                              .any(
-                            (joueur) =>
-                                joueur.id == EquipeCubit.get(context).joueur.id,
-                          ) ||
-                          widget.equipeData.joueurs.any(
-                            (joueur) =>
-                                joueur.id == EquipeCubit.get(context).joueur.id,
-                          ));
-
                       print(state.joueurId);
 
-                      if (!alreadyExists) {
-                        setState(() {
-                          widget.equipeData.attenteJoueurs.add(AttenteJoueurs(
-                            id: EquipeCubit.get(context).joueur.id!,
-                            username: EquipeCubit.get(context).joueur.username!,
-                            nom: EquipeCubit.get(context).joueur.nom!,
-                            telephone:
-                                EquipeCubit.get(context).joueur.telephone!,
-                          ));
-                          showToast(
-                              msg: "Player successfully invited.",
-                              state: ToastStates.success);
-                        });
-                        await sendNotificationToJoueur(
-                          joueurId: state.joueurId,
-                          body: 'une equipe vous a envoyer une invitation',
-                          title: 'invitation from ${state.equipename}',
-                        );
-                      } else {
+                      setState(() {
+                        widget.equipeData.attenteJoueurs.add(AttenteJoueurs(
+                          id: EquipeCubit.get(context).joueur.id!,
+                          username: EquipeCubit.get(context).joueur.username!,
+                          nom: EquipeCubit.get(context).joueur.nom!,
+                          telephone: EquipeCubit.get(context).joueur.telephone!,
+                        ));
                         showToast(
-                            msg: "Player already in the waiting list.",
-                            state: ToastStates.error);
-                      }
+                            msg: "Player successfully invited.",
+                            state: ToastStates.success);
+                      });
+                      await sendNotificationToJoueur(
+                        joueurId: state.joueurId,
+                        body: 'une equipe vous a envoyer une invitation',
+                        title: 'invitation from ${state.equipename}',
+                      );
                     } else if (state is QuiterEquipeStateBad ||
                         state is CapitaineAnnuleInvitationJoueurStateBad) {
                       showToast(
@@ -489,12 +472,26 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                       ElevatedButton(
                         onPressed: () {
                           if (joueurId != null) {
-                            EquipeCubit.get(context).capitaineInviteJoueur(
-                                equipeId: equipeId,
-                                joueurId: joueurId!,
-                                equipename: equipename);
-                            Navigator.of(context)
-                                .pop(); // Close the dialog after inviting
+                            bool alreadyExists =
+                                (widget.equipeData.attenteJoueurs.any(
+                                      (joueur) => joueur.id == joueurId,
+                                    ) ||
+                                    widget.equipeData.joueurs.any(
+                                      (joueur) => joueur.id == joueurId,
+                                    ));
+                            if (!alreadyExists) {
+                              EquipeCubit.get(context).capitaineInviteJoueur(
+                                  equipeId: equipeId,
+                                  joueurId: joueurId!,
+                                  equipename: equipename);
+                              Navigator.of(context)
+                                  .pop(); // Close the dialog after inviting
+                            } else {
+                              Navigator.of(context).pop();
+                              showToast(
+                                  msg: "Player already in the waiting list.",
+                                  state: ToastStates.error);
+                            }
                           }
                         },
                         child: const Text("Invite"),
