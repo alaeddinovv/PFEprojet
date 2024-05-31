@@ -89,10 +89,16 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                       EquipeCubit.get(context)
                           .getMyEquipe(vertial: widget.vartial);
                     } else if (state is CapitaineInviteJoueurStateGood) {
-                      bool alreadyExists = widget.equipeData.attenteJoueurs.any(
-                        (joueur) =>
-                            joueur.id == EquipeCubit.get(context).joueur.id,
-                      );
+                      bool alreadyExists = (widget.equipeData.attenteJoueurs
+                              .any(
+                            (joueur) =>
+                                joueur.id == EquipeCubit.get(context).joueur.id,
+                          ) ||
+                          widget.equipeData.joueurs.any(
+                            (joueur) =>
+                                joueur.id == EquipeCubit.get(context).joueur.id,
+                          ));
+
                       print(state.joueurId);
 
                       if (!alreadyExists) {
@@ -109,9 +115,10 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                               state: ToastStates.success);
                         });
                         await sendNotificationToJoueur(
-                            joueurId: state.joueurId,
-                            body: 'une equipe vous a envoyer une invitation',
-                            title: 'invitation from ${state.equipename}');
+                          joueurId: state.joueurId,
+                          body: 'une equipe vous a envoyer une invitation',
+                          title: 'invitation from ${state.equipename}',
+                        );
                       } else {
                         showToast(
                             msg: "Player already in the waiting list.",

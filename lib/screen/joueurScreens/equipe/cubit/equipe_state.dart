@@ -5,6 +5,8 @@ abstract class EquipeState {}
 
 class EquipeInitial extends EquipeState {}
 
+final class ChangeIndexNavBarState extends EquipeState {}
+
 final class CreerEquipeLoadingState extends EquipeState {}
 
 final class ResetEquipeState extends EquipeState {}

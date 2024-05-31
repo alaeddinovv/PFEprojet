@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:pfeprojet/component/const.dart';
 import 'package:pfeprojet/main.dart';
-import 'package:pfeprojet/screen/joueurScreens/profile/profile.dart';
+import 'package:pfeprojet/screen/JoueurScreens/home/home.dart';
+import 'package:pfeprojet/screen/joueurScreens/equipe/cubit/equipe_cubit.dart';
+import 'package:pfeprojet/screen/joueurScreens/home/cubit/home_joueur_cubit.dart';
 
 Future<void> handleBackgroudMessage(RemoteMessage message) async {
   print("Title: ${message.notification?.title}");
@@ -25,10 +27,31 @@ class FirebaseApi {
   void handleMessage(RemoteMessage? message) {
     if (message == null) {
       return;
-    } else if (message.notification!.title == 'equipe') {
-      navigatorKey.currentState?.push(
-          MaterialPageRoute(builder: (context) => const ProfileJoueur()));
+    } else {
+      final data = message.data;
+      final screenName = data['screen'];
+
+      switch (screenName) {
+        case 'test':
+          EquipeCubit.get(navigatorKey.currentContext)
+              .getEquipeInvite()
+              .then((value) {
+            HomeJoueurCubit.get(navigatorKey.currentContext)
+                .changeIndexNavBar(3);
+            EquipeCubit.get(navigatorKey.currentContext).changeTogelButton(3);
+            navigatorKey.currentState?.pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => HomeJoueur()),
+                (route) => false);
+          });
+
+          break;
+      }
     }
+
+    //  else if (message.notification!.title == 'equipe') {
+    //   navigatorKey.currentState?.push(
+    //       MaterialPageRoute(builder: (context) => const ProfileJoueur()));
+    // }
   }
 
   Future initPushNotifications() async {

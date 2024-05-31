@@ -30,7 +30,7 @@ class HomeJoueurCubit extends Cubit<HomeJoueurState> {
     const Terrain(),
     const Reservation(),
     const Annonce(),
-    const Equipe()
+    Equipe()
   ];
 
   int selectedIndex = 0;
@@ -40,11 +40,6 @@ class HomeJoueurCubit extends Cubit<HomeJoueurState> {
   }
 
   DataJoueurModel? joueurModel;
-
-  setJoueurModel(DataJoueurModel joueurModel) {
-    this.joueurModel = joueurModel;
-    emit(UpdateJoueurModelVariable());
-  }
 
   Future<void> getMyInfo() async {
     emit(GetMyInformationLoading());

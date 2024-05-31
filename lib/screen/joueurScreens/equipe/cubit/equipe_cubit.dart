@@ -25,9 +25,19 @@ class EquipeCubit extends Cubit<EquipeState> {
     cursorId1 = "";
     equipeInviteData = [];
     cursorId2 = "";
+    isSelected = [true, false, false, false];
     joueuraccepted = DataJoueurModel();
     joueur = DataJoueurModel();
     emit(ResetEquipeState());
+  }
+
+  List<bool> isSelected = [true, false, false, false];
+  void changeTogelButton(int index) {
+    for (int i = 0; i < isSelected.length; i++) {
+      isSelected[i] = false;
+    }
+    isSelected[index] = true;
+    emit(ChangeIndexNavBarState());
   }
 
 //------------------ equipe creer---------------------
