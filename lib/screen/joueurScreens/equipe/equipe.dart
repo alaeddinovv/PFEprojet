@@ -466,7 +466,10 @@ class _EquipeState extends State<Equipe> {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => AllEquipeDetailsScreen(equipes: model)),
+              builder: (context) => AllEquipeDetailsScreen(
+                    equipes: model,
+                    vertial: vertial,
+                  )),
         );
       },
       splashColor: Colors.transparent, // Prevents ripple effect on tap

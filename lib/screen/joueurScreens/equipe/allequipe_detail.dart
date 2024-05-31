@@ -9,8 +9,10 @@ import 'package:url_launcher/url_launcher.dart';
 
 class AllEquipeDetailsScreen extends StatefulWidget {
   final EquipeData equipes;
+  final bool vertial;
 
-  AllEquipeDetailsScreen({super.key, required this.equipes});
+  AllEquipeDetailsScreen(
+      {super.key, required this.equipes, required this.vertial});
 
   @override
   State<AllEquipeDetailsScreen> createState() => _AllEquipeDetailsScreenState();
@@ -36,7 +38,8 @@ class _AllEquipeDetailsScreenState extends State<AllEquipeDetailsScreen> {
         if (!didPop) {
           if (canPop == true) {
             await EquipeCubit.get(context).getAllEquipe(
-                capitanId: HomeJoueurCubit.get(context).joueurModel!.id!);
+                capitanId: HomeJoueurCubit.get(context).joueurModel!.id!,
+                vertial: widget.vertial);
             Navigator.pop(context);
           }
         }

@@ -31,7 +31,7 @@ class _TerrainState extends State<Terrain> {
   Widget build(BuildContext context) {
     TerrainCubit terrainCubit = TerrainCubit.get(context);
     // final primaryColor = Colors.blue;
-    final secondaryColor = Colors.lightBlueAccent;
+    // final secondaryColor = Colors.lightBlueAccent;
 
     return Scaffold(
       body: Column(
