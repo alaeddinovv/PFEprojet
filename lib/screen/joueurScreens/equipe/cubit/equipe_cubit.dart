@@ -165,10 +165,12 @@ class EquipeCubit extends Cubit<EquipeState> {
   List<EquipeData> equipes = [];
   // cusrsorid mdeclari lfug
   String cursorid = "";
-  Future<void> getAllEquipe({String cursor = '', String capitanId = ''}) async {
+  Future<void> getAllEquipe(
+      {String cursor = '', String capitanId = '', bool? vertial}) async {
     emit(GetAllEquipeLoading());
-    await Httplar.httpget(path: GETALLEQUIPE, query: {'cursor': cursor})
-        .then((value) {
+    await Httplar.httpget(
+        path: GETALLEQUIPE,
+        query: {'cursor': cursor, 'vertial': vertial.toString()}).then((value) {
       if (value.statusCode == 200) {
         if (cursor == "") {
           equipes = [];
@@ -203,11 +205,12 @@ class EquipeCubit extends Cubit<EquipeState> {
   //------------------ equipes im in
   List<EquipeData> equipeImInData = [];
   String cursorId1 = "";
-  Future<void> getEquipeImIn({String cursor = ''}) async {
+  Future<void> getEquipeImIn({String cursor = '', bool? vertial}) async {
     emit(GetEquipeImInLoading());
 
-    await Httplar.httpget(path: GETEQUIPEIMIN, query: {'cursor': cursor})
-        .then((value) {
+    await Httplar.httpget(
+        path: GETEQUIPEIMIN,
+        query: {'cursor': cursor, 'vertial': vertial.toString()}).then((value) {
       if (value.statusCode == 200) {
         if (cursor == "") {
           equipeImInData = [];

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
 import 'package:pfeprojet/Model/terrain_model.dart';
+import 'package:pfeprojet/component/components.dart';
+import 'package:pfeprojet/screen/joueurScreens/terrains/details.dart';
 
 class TestMap extends StatefulWidget {
   final List<TerrainModel> terrains;
@@ -112,6 +114,11 @@ class _TestMapState extends State<TestMap> {
         position: LatLng(
             terrain.coordonnee!.latitude!, terrain.coordonnee!.longitude!),
         infoWindow: InfoWindow(
+          onTap: () {
+            navigatAndReturn(
+                context: context,
+                page: TerrainDetailsScreen(terrainModel: terrain));
+          },
           title: terrain.adresse,
           snippet: terrain.description,
         ),

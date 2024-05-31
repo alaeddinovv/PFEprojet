@@ -49,13 +49,14 @@ class _EquipeState extends State<Equipe> {
             if (EquipeCubit.get(context).cursorid != "") {
               EquipeCubit.get(context).getAllEquipe(
                   cursor: EquipeCubit.get(context).cursorid,
-                  capitanId: HomeJoueurCubit.get(context).joueurModel!.id!);
+                  capitanId: HomeJoueurCubit.get(context).joueurModel!.id!,
+                  vertial: vertial);
               print('ggggg');
             }
           } else if (isSelected[2]) {
             if (EquipeCubit.get(context).cursorId1 != "") {
-              EquipeCubit.get(context)
-                  .getEquipeImIn(cursor: EquipeCubit.get(context).cursorId1);
+              EquipeCubit.get(context).getEquipeImIn(
+                  cursor: EquipeCubit.get(context).cursorId1, vertial: vertial);
               print('ggggg');
             }
           } else if (isSelected[3]) {
@@ -99,11 +100,11 @@ class _EquipeState extends State<Equipe> {
                           vertial: vertial); // Fetch data for "My Equipes"
                     } else if (index == 1) {
                       EquipeCubit.get(context).getAllEquipe(
-                          capitanId: HomeJoueurCubit.get(context)
-                              .joueurModel!
-                              .id!); // Fetch data for "All Equipes"
+                          capitanId:
+                              HomeJoueurCubit.get(context).joueurModel!.id!,
+                          vertial: vertial); // Fetch data for "All Equipes"
                     } else if (index == 2) {
-                      EquipeCubit.get(context).getEquipeImIn();
+                      EquipeCubit.get(context).getEquipeImIn(vertial: vertial);
                     } else if (index == 3) {
                       EquipeCubit.get(context).getEquipeInvite();
                     }
@@ -216,21 +217,55 @@ class _EquipeState extends State<Equipe> {
                                 return const Center(
                                     child: CircularProgressIndicator());
                               }
-                              return ListView.separated(
-                                controller: _controller,
-                                physics: const BouncingScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  return _buildAllEquipeItem(
-                                      EquipeCubit.get(context).equipes[index],
-                                      index,
-                                      context);
-                                },
-                                separatorBuilder: (context, int index) =>
-                                    const SizedBox(height: 16),
-                                itemCount:
-                                    EquipeCubit.get(context).equipes.length,
-                                shrinkWrap:
-                                    true, // to prevent infinite height error
+                              return Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      const Text(
+                                        'Vertial equipe :',
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Checkbox(
+                                          value: vertial,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              vertial = value!;
+                                              EquipeCubit.get(context)
+                                                  .getAllEquipe(
+                                                      capitanId:
+                                                          HomeJoueurCubit.get(
+                                                                  context)
+                                                              .joueurModel!
+                                                              .id!,
+                                                      vertial: vertial);
+                                            });
+                                          }),
+                                    ],
+                                  ),
+                                  Expanded(
+                                    child: ListView.separated(
+                                      controller: _controller,
+                                      physics: const BouncingScrollPhysics(),
+                                      itemBuilder: (context, index) {
+                                        return _buildAllEquipeItem(
+                                          EquipeCubit.get(context)
+                                              .equipes[index],
+                                          index,
+                                          context,
+                                        );
+                                      },
+                                      separatorBuilder: (context, int index) =>
+                                          const SizedBox(height: 16),
+                                      itemCount: EquipeCubit.get(context)
+                                          .equipes
+                                          .length,
+                                      shrinkWrap:
+                                          true, // to prevent infinite height error
+                                    ),
+                                  ),
+                                ],
                               );
                             },
                           ),
@@ -249,23 +284,51 @@ class _EquipeState extends State<Equipe> {
                                         child: CircularProgressIndicator());
                                   }
 
-                                  return ListView.separated(
-                                    controller: _controller,
-                                    physics: const BouncingScrollPhysics(),
-                                    itemBuilder: (context, index) {
-                                      return _buildEquipeImInItem(
-                                          EquipeCubit.get(context)
-                                              .equipeImInData[index],
-                                          index,
-                                          context);
-                                    },
-                                    separatorBuilder: (context, int index) =>
-                                        const SizedBox(height: 16),
-                                    itemCount: EquipeCubit.get(context)
-                                        .equipeImInData
-                                        .length,
-                                    shrinkWrap:
-                                        true, // to prevent infinite height error
+                                  return Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          const Text(
+                                            'Vertial equipe :',
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Checkbox(
+                                              value: vertial,
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  vertial = value!;
+                                                  EquipeCubit.get(context)
+                                                      .getEquipeImIn(
+                                                          vertial: vertial);
+                                                });
+                                              }),
+                                        ],
+                                      ),
+                                      Expanded(
+                                        child: ListView.separated(
+                                          controller: _controller,
+                                          physics:
+                                              const BouncingScrollPhysics(),
+                                          itemBuilder: (context, index) {
+                                            return _buildEquipeImInItem(
+                                                EquipeCubit.get(context)
+                                                    .equipeImInData[index],
+                                                index,
+                                                context);
+                                          },
+                                          separatorBuilder:
+                                              (context, int index) =>
+                                                  const SizedBox(height: 16),
+                                          itemCount: EquipeCubit.get(context)
+                                              .equipeImInData
+                                              .length,
+                                          shrinkWrap:
+                                              true, // to prevent infinite height error
+                                        ),
+                                      ),
+                                    ],
                                   );
                                 },
                               ),
