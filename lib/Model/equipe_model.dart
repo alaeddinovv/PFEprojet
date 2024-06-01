@@ -95,22 +95,24 @@ class EquipeData {
 }
 
 class Joueurs {
-  Joueurs({
-    required this.id,
-    required this.username,
-    required this.nom,
-    required this.telephone,
-  });
+  Joueurs(
+      {required this.id,
+      required this.username,
+      required this.nom,
+      required this.telephone,
+      this.photo});
   late final String id;
   late final String username;
   late final String nom;
   late final int telephone;
+  String? photo;
 
   Joueurs.fromJson(Map<String, dynamic> json) {
     id = json['_id'];
     username = json['username'];
     nom = json['nom'];
     telephone = json['telephone'];
+    photo = json['photo'];
   }
 
   Map<String, dynamic> toJson() {
@@ -119,27 +121,30 @@ class Joueurs {
     _data['username'] = username;
     _data['nom'] = nom;
     _data['telephone'] = telephone;
+    _data['photo'] = photo;
     return _data;
   }
 }
 
 class AttenteJoueurs {
-  AttenteJoueurs({
-    required this.id,
-    required this.username,
-    required this.nom,
-    required this.telephone,
-  });
+  AttenteJoueurs(
+      {required this.id,
+      required this.username,
+      required this.nom,
+      required this.telephone,
+      this.photo});
   late final String id;
   late final String username;
   late final String nom;
   late final int telephone;
+  String? photo;
 
   AttenteJoueurs.fromJson(Map<String, dynamic> json) {
     id = json['_id'];
     username = json['username'];
     nom = json['nom'];
     telephone = json['telephone'];
+    photo = json['photo'];
   }
 
   Map<String, dynamic> toJson() {
@@ -148,6 +153,7 @@ class AttenteJoueurs {
     _data['username'] = username;
     _data['nom'] = nom;
     _data['telephone'] = telephone;
+    _data['photo'] = photo;
     return _data;
   }
 }
@@ -182,19 +188,17 @@ class CapitaineId {
 }
 
 class AttenteJoueursDemande {
-  AttenteJoueursDemande({
-    required this.joueur,
-    required this.post,
-    required this.id,
-  });
+  AttenteJoueursDemande(
+      {required this.joueur, required this.post, required this.id, this.photo});
   late final Joueur joueur;
   late final String post;
   late final String id;
-
+  String? photo;
   AttenteJoueursDemande.fromJson(Map<String, dynamic> json) {
     joueur = Joueur.fromJson(json['joueur']);
     post = json['post'] ?? '';
     id = json['_id'];
+    photo = json['photo'];
   }
 
   Map<String, dynamic> toJson() {
@@ -202,6 +206,7 @@ class AttenteJoueursDemande {
     _data['joueur'] = joueur.toJson();
     _data['post'] = post;
     _data['_id'] = id;
+    _data['photo'] = photo;
     return _data;
   }
 }
@@ -212,17 +217,20 @@ class Joueur {
     required this.username,
     required this.nom,
     required this.telephone,
+    this.photo,
   });
   late final String id;
   late final String username;
   late final String nom;
   late final int telephone;
+  String? photo;
 
   Joueur.fromJson(Map<String, dynamic> json) {
     id = json['_id'];
     username = json['username'];
     nom = json['nom'];
     telephone = json['telephone'];
+    photo = json['photo'];
   }
 
   Map<String, dynamic> toJson() {
@@ -231,6 +239,7 @@ class Joueur {
     _data['username'] = username;
     _data['nom'] = nom;
     _data['telephone'] = telephone;
+    _data['photo'] = photo;
     return _data;
   }
 }

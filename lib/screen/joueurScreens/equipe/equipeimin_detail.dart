@@ -14,7 +14,8 @@ class EquipeImInDetailsScreen extends StatefulWidget {
   EquipeImInDetailsScreen({super.key, required this.equipeImInData});
 
   @override
-  State<EquipeImInDetailsScreen> createState() => _EquipeImInDetailsScreenState();
+  State<EquipeImInDetailsScreen> createState() =>
+      _EquipeImInDetailsScreenState();
 }
 
 class _EquipeImInDetailsScreenState extends State<EquipeImInDetailsScreen> {
@@ -35,7 +36,7 @@ class _EquipeImInDetailsScreenState extends State<EquipeImInDetailsScreen> {
       canPop: false,
       onPopInvoked: (didPop) async {
         if (!didPop) {
-          if (canPop == true)  {
+          if (canPop == true) {
             // await EquipeCubit.get(context).getAllEquipe();
             Navigator.pop(context);
           }
@@ -75,14 +76,18 @@ class _EquipeImInDetailsScreenState extends State<EquipeImInDetailsScreen> {
                     Expanded(
                       child: Text(
                         'Capitaine : ${widget.equipeImInData.capitaineId.username}',
-                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
                       ),
                     ),
                     IconButton(
                       icon: Icon(Icons.call, color: Colors.green),
                       onPressed: () {
-                        if (widget.equipeImInData.capitaineId.telephone != null) {
-                          _makePhoneCall(widget.equipeImInData.capitaineId.telephone.toString());
+                        if (widget.equipeImInData.capitaineId.telephone !=
+                            null) {
+                          _makePhoneCall(widget
+                              .equipeImInData.capitaineId.telephone
+                              .toString());
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
@@ -96,13 +101,15 @@ class _EquipeImInDetailsScreenState extends State<EquipeImInDetailsScreen> {
                 ),
               ),
               SizedBox(height: 20),
-              Text('Players:', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              Text('Players:',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               Expanded(
                 child: ListView.builder(
                   itemCount: widget.equipeImInData.joueurs.length,
                   itemBuilder: (context, index) {
                     Joueurs joueur = widget.equipeImInData.joueurs[index];
-                    return _buildJoueurItem(index, joueur.username, joueur.telephone);
+                    return _buildJoueurItem(
+                        index, joueur.username, joueur.telephone);
                   },
                 ),
               ),
@@ -119,37 +126,39 @@ class _EquipeImInDetailsScreenState extends State<EquipeImInDetailsScreen> {
                         msg: "equipe quiter avec succes",
                         state: ToastStates.success);
                     EquipeCubit.get(context)
-                        .getAllEquipe(cursor: "" , capitanId: HomeJoueurCubit.get(context).joueurModel!.id!)
+                        .getAllEquipe(
+                            cursor: "",
+                            capitanId:
+                                HomeJoueurCubit.get(context).joueurModel!.id!)
                         .then((value) {
                       Navigator.pushAndRemoveUntil(
                         context,
                         MaterialPageRoute(
                             builder: (context) => const HomeJoueur()),
-                            (route) => false,
+                        (route) => false,
                       );
                     });
                   } else if (state is QuiterEquipeStateBad) {
-                    showToast(
-                        msg: "ressayer", state: ToastStates.error);
+                    showToast(msg: "ressayer", state: ToastStates.error);
                   } else if (state is ErrorState) {
                     String errorMessage = state.errorModel.message!;
-                    showToast(
-                        msg: errorMessage, state: ToastStates.error);
+                    showToast(msg: errorMessage, state: ToastStates.error);
                   }
                 },
                 builder: (context, state) {
                   return defaultSubmit2(
-                    text:  'Quitter equipe' ,
+                    text: 'Quitter equipe',
                     background: Colors.blueAccent,
                     onPressed: () {
                       // EquipeCubit.get(context).quiterEquipe(id: widget.equipeImInData.id, joueurId: joueurId);
-                      if (joueurId != null) { // Check if joueurId is not null
-                        EquipeCubit.get(context).quiterEquipe(equipeId: widget.equipeImInData.id, joueurId: joueurId);
+                      if (joueurId != null) {
+                        // Check if joueurId is not null
+                        EquipeCubit.get(context).quiterEquipe(
+                            equipeId: widget.equipeImInData.id,
+                            joueurId: joueurId);
                       } else {
                         // Handle the error state here if joueurId is null
-                        showToast(
-                            msg: "ressayer", state: ToastStates.error);
-
+                        showToast(msg: "ressayer", state: ToastStates.error);
                       }
                     },
                   );
@@ -182,7 +191,8 @@ class _EquipeImInDetailsScreenState extends State<EquipeImInDetailsScreen> {
         child: Row(
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+              padding:
+                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
               child: Text(username, style: TextStyle(fontSize: 16)),
             ),
             Spacer(),

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:pfeprojet/Api/color.dart';
 import 'package:pfeprojet/Model/equipe_model.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/const.dart';
 import 'package:pfeprojet/screen/joueurScreens/equipe/cubit/equipe_cubit.dart';
 import 'package:url_launcher/url_launcher.dart'; // Ensure this path is correct
 
+// ignore: must_be_immutable
 class MyEquipeDetailsScreen extends StatefulWidget {
   EquipeData equipeData;
   final bool vartial;
@@ -48,19 +50,26 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Equipe :${widget.equipeData.nom}',
-                  // Display team name at the top of the page
-                  style: const TextStyle(
-                      fontSize: 24, fontWeight: FontWeight.bold),
+                Center(
+                  child: Text(
+                    '${widget.equipeData.nom}',
+                    // Display team name at the top of the page
+                    style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: greenConst),
+                  ),
                 ),
                 const SizedBox(height: 10),
-                Text(
-                  'Capitaine : ${widget.equipeData.capitaineId.username}',
-                  style: const TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: Text(
+                    'Capitaine : ${widget.equipeData.capitaineId.username}',
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 15),
                 BlocConsumer<EquipeCubit, EquipeState>(
                   listener: (context, state) async {
                     if (state is QuiterEquipeStateGood) {
@@ -131,12 +140,15 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                       itemBuilder: (context, index) {
                         if (index < joueurCount) {
                           Joueurs joueur = widget.equipeData.joueurs[index];
+                          print(joueur.photo);
                           return _buildJoueurItem(
-                              index,
-                              joueur.id,
-                              widget.equipeData.id,
-                              joueur.username,
-                              joueur.telephone);
+                            index,
+                            joueur.id,
+                            widget.equipeData.id,
+                            joueur.username,
+                            joueur.photo,
+                            joueur.telephone,
+                          );
                         } else if (index < joueurCount + attenteJoueursCount) {
                           // AttenteJoueurs attentejoueur = widget.equipeData.attenteJoueurs[index - widget.equipeData.joueurs.length];
                           return _buildProgressItem(
@@ -147,6 +159,11 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                                       index - widget.equipeData.joueurs.length]
                                   .id,
                               widget.equipeData.id,
+                              widget
+                                  .equipeData
+                                  .attenteJoueurs[
+                                      index - widget.equipeData.joueurs.length]
+                                  .photo,
                               widget
                                   .equipeData
                                   .attenteJoueurs[
@@ -163,9 +180,12 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                 const SizedBox(
                   height: 10,
                 ),
-                const Text('Les demandes',
-                    style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  child: const Text('Les demandes',
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                ),
                 BlocConsumer<EquipeCubit, EquipeState>(
                   listener: (context, state) async {
                     if (state is CapitaineRefuseJoueurStateGood) {
@@ -232,6 +252,7 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                       itemBuilder: (context, index) {
                         AttenteJoueursDemande joueurattente =
                             widget.equipeData.attenteJoueursDemande[index];
+
                         return _buildDemandeItem(
                             index,
                             joueurattente.joueur.id,
@@ -239,8 +260,9 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                             widget.equipeData.nom,
                             joueurattente.joueur.username,
                             joueurattente.joueur.telephone,
-                            joueurattente
-                                .post); // This function will be defined to create each item
+                            joueurattente.post,
+                            joueurattente.joueur.photo);
+                        // This function will be defined to create each item
                       },
                     );
                   },
@@ -257,49 +279,46 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
   }
 
   //-------------------- attente---------------------------------------------
-  Widget _buildProgressItem(
-      int index, String joueurId, String equipeId, String username) {
+  Widget _buildProgressItem(int index, String joueurId, String equipeId,
+      String? photo, String username) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Container(
-        height: 50,
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
-              spreadRadius: 1,
-              blurRadius: 3,
-              offset: const Offset(0, 1),
+              color: Colors.grey.withOpacity(0.3),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: const Offset(0, 2),
             ),
           ],
         ),
-        child: Row(
-          children: [
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
-              child: Text(username, style: const TextStyle(fontSize: 16)),
-            ),
-            const Spacer(),
-            const Icon(
-              Icons.hourglass_empty, // Simple icon, no interaction
-              color: Colors.blue, // Blue color to signify ongoing progress
-              size: 24, // Icon size for visual balance
-            ),
-            const SizedBox(
-              width: 12,
-            ),
-            IconButton(
-              onPressed: () {
+        child: ListTile(
+          leading: CircleAvatar(
+            backgroundImage: photo != null
+                ? NetworkImage(photo)
+                : const AssetImage(
+                    'assets/images/football.png',
+                  ) as ImageProvider<Object>,
+          ),
+          title: Row(
+            children: [
+              Text(username,
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold)),
+              Icon(Icons.hourglass_empty, color: Colors.orange, size: 20),
+            ],
+          ),
+          subtitle: const Text('En attente'),
+          trailing: InkWell(
+              onTap: () {
                 EquipeCubit.get(context).capitaineAnnuleInvitationJoueur(
                     equipeId: equipeId, joueurId: joueurId);
               },
-              icon: const Icon(Icons.cancel),
-              color: Colors.red,
-            ),
-          ],
+              child: const Icon(Icons.cancel, color: Colors.red)),
         ),
       ),
     );
@@ -307,70 +326,68 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
 
 //-------------------------------------------------joueur --------------------------
   Widget _buildJoueurItem(int index, String joueurId, String equipeId,
-      String username, int? telephone) {
+      String username, String? photo, int? telephone) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      // Added padding to the entire row for better spacing
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Container(
-        height: 50,
         decoration: BoxDecoration(
           color: Colors.white,
-          // Adds a background color to the container
-          borderRadius: BorderRadius.circular(8),
-          // Rounded corners for a smoother look
+          borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.2), // Soft shadow for depth
-              spreadRadius: 1,
-              blurRadius: 3,
-              offset: const Offset(0, 1), // Slight vertical shadow
+              color: Colors.grey.withOpacity(0.3),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: const Offset(0, 2),
             ),
           ],
         ),
-        child: Row(
-          children: [
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
-              // Internal padding for text and icons
-              child: Text(username,
-                  style: const TextStyle(
-                      fontSize: 16)), // Increased font size for readability
-            ),
-            const Spacer(),
-            Visibility(
-              visible: index != 0,
-              child: IconButton(
-                onPressed: () {
-                  int? phoneNumber = telephone;
-                  if (phoneNumber != null) {
-                    _makePhoneCall(phoneNumber.toString());
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text("No telephone number available."),
-                      ),
-                    );
-                  }
-                },
-                icon: const Icon(Icons.call),
-                color: Colors
-                    .green, // Green color to signify calling is a positive action
+        child: ListTile(
+          leading: CircleAvatar(
+            backgroundImage: photo != null
+                ? NetworkImage(photo)
+                : const AssetImage(
+                    'assets/images/football.png',
+                  ) as ImageProvider<Object>,
+          ),
+          title: Text(
+            username,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          subtitle: Text('Joueur'),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Visibility(
+                visible: index != 0,
+                child: IconButton(
+                  onPressed: () {
+                    int? phoneNumber = telephone;
+                    if (phoneNumber != null) {
+                      _makePhoneCall(phoneNumber.toString());
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("No telephone number available."),
+                        ),
+                      );
+                    }
+                  },
+                  icon: const Icon(Icons.call, color: Colors.green),
+                ),
               ),
-            ),
-            Visibility(
-              visible: index != 0,
-              child: IconButton(
-                onPressed: () {
-                  EquipeCubit.get(context)
-                      .quiterEquipe(equipeId: equipeId, joueurId: joueurId);
-                  // indexjoueur = index;
-                },
-                icon: const Icon(Icons.cancel),
-                color: Colors.red,
+              const SizedBox(width: 8),
+              Visibility(
+                visible: index != 0,
+                child: InkWell(
+                    onTap: () {
+                      EquipeCubit.get(context)
+                          .quiterEquipe(equipeId: equipeId, joueurId: joueurId);
+                    },
+                    child: Icon(Icons.cancel, color: Colors.red)),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -379,28 +396,28 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
 //-------------------------------------------------------- add --------------------------------------
   Widget _buildAddItem(int index, String id, String equipename) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: InkWell(
         onTap: () {
-          // Add action
           _showAddDialog(context, id, equipename);
         },
         child: Container(
-          height: 50,
-          alignment: Alignment.center,
+          height: 60,
           decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.withOpacity(0.2),
-                spreadRadius: 1,
-                blurRadius: 3,
-                offset: const Offset(0, 1),
+                color: Colors.grey.withOpacity(0.3),
+                spreadRadius: 2,
+                blurRadius: 5,
+                offset: const Offset(0, 2),
               ),
             ],
           ),
-          child: const Icon(Icons.add, color: Colors.green, size: 24),
+          child: const Center(
+            child: Icon(Icons.add, color: Colors.green, size: 32),
+          ),
         ),
       ),
     );
@@ -515,78 +532,79 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
 
   //------------------------ les demande ----------------------------------
 
-  Widget _buildDemandeItem(int index, String joueurId, String equipeId,
-      String equipename, String username, int? telephone, String? post) {
+  Widget _buildDemandeItem(
+      int index,
+      String joueurId,
+      String equipeId,
+      String equipename,
+      String username,
+      int? telephone,
+      String? post,
+      String? photo) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      // Added padding to the entire row for better spacing
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Container(
-        height: 50,
         decoration: BoxDecoration(
           color: Colors.white,
-          // Adds a background color to the container
-          borderRadius: BorderRadius.circular(8),
-          // Rounded corners for a smoother look
+          borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.2), // Soft shadow for depth
-              spreadRadius: 1,
-              blurRadius: 3,
-              offset: const Offset(0, 1), // Slight vertical shadow
+              color: Colors.grey.withOpacity(0.3),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: const Offset(0, 2),
             ),
           ],
         ),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: ListTile(
+          leading: CircleAvatar(
+            backgroundImage: photo != null
+                ? NetworkImage(photo)
+                : const AssetImage(
+                    'assets/images/football.png',
+                  ) as ImageProvider<Object>,
+          ),
+          title: Text(
+            username,
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          ),
+          subtitle: Text(post!.isEmpty ? "accept" : post),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
-                // Internal padding for text and icons
-                child: Text('$username : $post ',
-                    style: const TextStyle(
-                        fontSize: 16)), // Increased font size for readability
-              ),
-              TextButton(
-                onPressed: () {
-                  // capitaineAceeptJoueur
-                  EquipeCubit.get(context).capitaineAceeptJoueur(
+              InkWell(
+                  onTap: () {
+                    int? phoneNumber = telephone;
+                    if (phoneNumber != null) {
+                      _makePhoneCall(phoneNumber.toString());
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text("No telephone number available."),
+                        ),
+                      );
+                    }
+                  },
+                  child: const Icon(Icons.call, color: Colors.green)),
+              const SizedBox(width: 15),
+              InkWell(
+                  onTap: () {
+                    EquipeCubit.get(context).capitaineAceeptJoueur(
                       equipeId: equipeId,
                       joueurId: joueurId,
-                      equipename: equipename);
-                  // Handle accept action
-                  print("Accepting $username");
-                },
-                child: const Text('Accepter'),
-              ),
-              IconButton(
-                onPressed: () {
-                  int? phoneNumber = telephone;
-                  if (phoneNumber != null) {
-                    _makePhoneCall(phoneNumber.toString());
-                  } else {
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(
-                        content: Text("No telephone number available."),
-                      ),
+                      equipename: equipename,
                     );
-                  }
-                },
-                icon: const Icon(Icons.call),
-                color: Colors
-                    .green, // Green color to signify calling is a positive action
-              ),
-              IconButton(
-                onPressed: () {
-                  EquipeCubit.get(context).capitaineRefuseJoueur(
-                      equipeId: equipeId, joueurId: joueurId);
-                  // indexjoueur = index;
-                },
-                icon: const Icon(Icons.cancel),
-                color: Colors.red,
-              ),
+                  },
+                  child: const Icon(Icons.check, color: Colors.green)),
+              const SizedBox(width: 15),
+              InkWell(
+                  onTap: () {
+                    EquipeCubit.get(context).capitaineRefuseJoueur(
+                      equipeId: equipeId,
+                      joueurId: joueurId,
+                    );
+                  },
+                  child: const Icon(Icons.cancel, color: Colors.red)),
             ],
           ),
         ),

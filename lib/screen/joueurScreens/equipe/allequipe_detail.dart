@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:pfeprojet/Api/color.dart';
 import 'package:pfeprojet/Model/equipe_model.dart';
+import 'package:pfeprojet/Model/user_model.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/screen/joueurScreens/equipe/cubit/equipe_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/home/cubit/home_joueur_cubit.dart';
@@ -53,37 +55,45 @@ class _AllEquipeDetailsScreenState extends State<AllEquipeDetailsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Equipe : ${widget.equipes.nom}', // Display team name at the top of the page
-                style:
-                    const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              Center(
+                child: Text(
+                  '${widget.equipes.nom}',
+                  // Display team name at the top of the page
+                  style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: greenConst),
+                ),
               ),
               const SizedBox(height: 10),
-              Container(
-                width: double.infinity, // Match the width of the ListView
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.2),
-                      spreadRadius: 1,
-                      blurRadius: 3,
-                      offset: const Offset(0, 1),
-                    ),
-                  ],
-                ),
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: Text(
-                        'Capitaine : ${widget.equipes.capitaineId.username}',
-                        style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.3),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: const Offset(0, 2),
                       ),
+                    ],
+                  ),
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      backgroundColor: greenConst,
+                      child: Icon(Icons.person, color: Colors.white),
                     ),
-                    IconButton(
+                    title: Text(
+                      widget.equipes.capitaineId.username,
+                      style: const TextStyle(
+                          fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                    subtitle: const Text('Capitaine'),
+                    trailing: IconButton(
                       icon: const Icon(Icons.call, color: Colors.green),
                       onPressed: () {
                         if (widget.equipes.capitaineId.telephone != null) {
@@ -98,7 +108,7 @@ class _AllEquipeDetailsScreenState extends State<AllEquipeDetailsScreen> {
                         }
                       },
                     ),
-                  ],
+                  ),
                 ),
               ),
               const SizedBox(height: 20),
@@ -129,12 +139,29 @@ class _AllEquipeDetailsScreenState extends State<AllEquipeDetailsScreen> {
                   }
                 },
                 builder: (context, state) {
+                  bool alreadyExists = widget.equipes.attenteJoueurs.any(
+                        (joueur) =>
+                            joueur.id ==
+                            HomeJoueurCubit.get(context).joueurModel!.id,
+                      ) ||
+                      widget.equipes.joueurs.any(
+                        (joueur) =>
+                            joueur.id ==
+                            HomeJoueurCubit.get(context).joueurModel!.id,
+                      );
+
                   return defaultSubmit2(
                     text: isRequestSent
                         ? 'Annuler demande'
                         : 'Demander rejoindre équipe',
                     background: Colors.blueAccent,
                     onPressed: () {
+                      if (alreadyExists) {
+                        showToast(
+                            msg: 'Vous êtes déjà dans cette équipe',
+                            state: ToastStates.error);
+                        return;
+                      }
                       if (!isRequestSent) {
                         EquipeCubit.get(context)
                             .demanderRejoindreEquipe(id: widget.equipes.id);
@@ -155,33 +182,46 @@ class _AllEquipeDetailsScreenState extends State<AllEquipeDetailsScreen> {
 
   Widget _buildJoueurItem(int index, String username, int? telephone) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-      child: Container(
-        height: 50,
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(8),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
-              spreadRadius: 1,
-              blurRadius: 3,
-              offset: const Offset(0, 1),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(12),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.3),
+                spreadRadius: 2,
+                blurRadius: 5,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: ListTile(
+            leading: CircleAvatar(
+              backgroundColor: greenConst,
+              child: Icon(Icons.person, color: Colors.white),
             ),
-          ],
-        ),
-        child: Row(
-          children: [
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
-              child: Text(username, style: const TextStyle(fontSize: 16)),
+            title: Text(
+              username,
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            const Spacer(),
-          ],
-        ),
-      ),
-    );
+            subtitle: const Text('Joueur'),
+            trailing: IconButton(
+              icon: const Icon(Icons.call, color: Colors.green),
+              onPressed: () {
+                if (telephone != null) {
+                  _makePhoneCall(telephone.toString());
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text("No telephone number available."),
+                    ),
+                  );
+                }
+              },
+            ),
+          ),
+        ));
   }
 
   Future<void> _makePhoneCall(String phoneNumber) async {
