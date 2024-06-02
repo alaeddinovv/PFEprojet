@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:pfeprojet/Api/color.dart';
 import 'package:pfeprojet/Api/socket_io.dart';
 import 'package:pfeprojet/component/const.dart';
 import 'package:pfeprojet/cubit/main_cubit.dart';
@@ -83,10 +84,10 @@ class MyApp extends StatelessWidget {
           create: ((context) => AuthCubit()),
         ),
         BlocProvider(
-          create: ((context) => TerrainCubit()..getMyTerrains()),
+          create: ((context) => TerrainCubit()),
         ),
         BlocProvider(
-          create: ((context) => AnnonceCubit()..getMyAnnonce()),
+          create: ((context) => AnnonceCubit()),
         ),
         BlocProvider(
           create: ((context) => EquipeCubit()),
@@ -95,7 +96,7 @@ class MyApp extends StatelessWidget {
           create: ((context) => AnnonceJoueurCubit()),
         ),
         BlocProvider(
-          create: ((context) => HomeAdminCubit()..getMyInfo()),
+          create: ((context) => HomeAdminCubit()),
         ),
         BlocProvider(
           create: ((context) => HomeJoueurCubit()),
@@ -110,7 +111,7 @@ class MyApp extends StatelessWidget {
           create: ((context) => terrainjoueur.TerrainCubit()),
         ),
         BlocProvider(
-          create: ((context) => ReservationCubit()..fetchReservations()),
+          create: ((context) => ReservationCubit()),
         ),
         BlocProvider(
           create: ((context) => ReservationJoueurCubit()),
@@ -137,6 +138,28 @@ class MyApp extends StatelessWidget {
                 // Onbording(),
 
                 onbordingmain ? startwidget : const Onbording(),
+            theme: ThemeData(
+              // primaryColor: Colors.red,
+              colorScheme: ColorScheme.light(
+                primary: greenConst,
+                // secondary: greenConst,
+              ),
+              // accentColor: Colors.grey,
+              cardColor: Colors.white,
+              // scaffoldBackgroundColor: Colors.grey,
+              scaffoldBackgroundColor: Colors.white,
+              appBarTheme: const AppBarTheme(
+                backgroundColor: Colors.white,
+              ),
+              bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+                backgroundColor: Colors.white,
+                elevation: 0,
+              ),
+              navigationBarTheme: const NavigationBarThemeData(
+                backgroundColor: Colors.white,
+                elevation: 0,
+              ),
+            ),
           );
         },
       ),

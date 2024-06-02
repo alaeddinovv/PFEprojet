@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pfeprojet/Api/color.dart';
 import 'package:pfeprojet/Model/houssem/equipe_model.dart';
+import 'package:pfeprojet/component/components.dart';
+import 'package:pfeprojet/screen/joueurScreens/equipe/cubit/equipe_cubit.dart';
 
 class EquipeReserveDetials extends StatelessWidget {
   final EquipeModelData equipe;
@@ -10,38 +14,113 @@ class EquipeReserveDetials extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Equipe Details')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      appBar: AppBar(
+        title: const Text('Equipe Details'),
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(15.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            const SizedBox(height: 20.0),
             Text(
-              'Name: ${equipe.nom}',
-              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              'Equipe Name: ${equipe.nom ?? 'Unknown Team'}',
+              style: const TextStyle(
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            const SizedBox(height: 10),
-            Text('Vertical: ${equipe.vertial}'),
-            const SizedBox(height: 10),
-            Text('Number of Players: ${equipe.numeroJoueurs}'),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10.0),
+            Card(
+              child: ListTile(
+                leading: Icon(Icons.people, color: greenConst),
+                title: Text('Number of players: ${equipe.numeroJoueurs}'),
+                subtitle: const Text('Team Size'),
+              ),
+            ),
+            const SizedBox(height: 20.0),
             const Text(
-              'Players:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              'Captain',
+              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 10),
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: equipe.joueurs?.length ?? 0,
-              itemBuilder: (context, index) {
-                final joueur = equipe.joueurs![index];
-                return ListTile(
-                  leading: const Icon(Icons.person),
-                  title: Text(joueur.nom ?? ''),
-                  subtitle: Text('Username: ${joueur.username}'),
+            const SizedBox(height: 10.0),
+            Card(
+              child: ListTile(
+                leading: Icon(Icons.star, color: greenConst),
+                title: Text(equipe.capitaineId!.username!),
+              ),
+            ),
+            const SizedBox(height: 20.0),
+            const Text(
+              'Players',
+              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10.0),
+            Card(
+              child: Column(
+                children: equipe.joueurs!.map((joueur) {
+                  return ListTile(
+                    leading: Icon(Icons.person, color: greenConst),
+                    title: Text(joueur.username!),
+                  );
+                }).toList(),
+              ),
+            ),
+            if (equipe.attenteJoueurs!.isNotEmpty) ...[
+              const SizedBox(height: 20.0),
+              const Text(
+                'Pending Players',
+                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 10.0),
+              Card(
+                child: Column(
+                  children: equipe.attenteJoueurs!.map((joueur) {
+                    return ListTile(
+                      leading: Icon(Icons.person, color: greenConst),
+                      title: Text(joueur.username!),
+                      trailing: const Icon(Icons.hourglass_empty),
+                    );
+                  }).toList(),
+                ),
+              ),
+            ],
+            const SizedBox(height: 20.0),
+            Card(
+              child: ListTile(
+                leading: Icon(Icons.location_on, color: greenConst),
+                title: Text('${equipe.wilaya}, ${equipe.commune}'),
+                subtitle: const Text('Location'),
+              ),
+            ),
+            SizedBox(
+              height: 50,
+            ),
+            BlocConsumer<EquipeCubit, EquipeState>(
+              listener: (context, state) {
+                if (state is AnnulerRejoindreEquipeStateGood) {
+                  Navigator.pop(context);
+                }
+                if (state is ErrorState) {
+                  showToast(
+                      msg: state.errorModel.message!, state: ToastStates.error);
+                }
+              },
+              builder: (context, state) {
+                if (state is AnnulerRejoindreEquipeLoadingState) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                return defaultSubmit2(
+                  text: 'Annuler demande',
+                  onPressed: () {
+                    EquipeCubit.get(context)
+                        .annulerRejoindreEquipe(id: equipe.id!);
+                  },
                 );
               },
-            ),
+            )
           ],
         ),
       ),

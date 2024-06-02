@@ -5,6 +5,8 @@ abstract class EquipeState {}
 
 class EquipeInitial extends EquipeState {}
 
+final class ChangeIndexNavBarState extends EquipeState {}
+
 final class CreerEquipeLoadingState extends EquipeState {}
 
 final class ResetEquipeState extends EquipeState {}
@@ -145,3 +147,9 @@ class CheckUserByUsernameStateGood extends EquipeState {
 }
 
 class CheckUserByUsernameStateBad extends EquipeState {}
+
+class UpdateJoueursEquipeLoadingState extends EquipeState {}
+
+class UpdateJoueursEquipeStateGood extends EquipeState {}
+
+class UpdateJoueursEquipeStateBad extends EquipeState {}

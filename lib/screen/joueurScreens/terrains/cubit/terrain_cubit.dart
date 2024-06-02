@@ -231,6 +231,37 @@ class TerrainCubit extends Cubit<TerrainState> {
     });
   }
 
+  Future<void> getOtherreserve({
+    required String terrainId,
+    required DateTime date,
+    required String heure_debut_temps,
+  }) async {
+    emit(GetOtherReserveLoading());
+    String formattedDate = DateFormat('yyyy-MM-dd').format(date);
+    print(formattedDate);
+    Httplar.httpget(path: GETOTHERRESERVE, query: {
+      'terrain_id': terrainId,
+      'jour': formattedDate,
+      'heure_debut_temps': heure_debut_temps,
+      'payment': 'true',
+    }).then((value) {
+      if (value.statusCode == 200) {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        print(jsonResponse);
+        emit(GetOtherReserveStateGood(
+            reservations: ReservationModel.fromJson(jsonResponse)));
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(GetOtherReserveStateBad());
+    });
+  }
+
   Future<void> confirmConnectEquipe(
       {required bool updateAllWeeks,
       String? reservationGroupId,
@@ -283,6 +314,42 @@ class TerrainCubit extends Cubit<TerrainState> {
     }).catchError((e) {
       print(e.toString());
       emit(CreateEquipeVertialStateBad());
+    });
+  }
+
+  Future<void> deleteDemandeReservation({required String ReservationId}) async {
+    emit(DeleteDemandeReservationLoading());
+    await Httplar.httpdelete(path: DELETEDEMANDERESERVATION + ReservationId)
+        .then((value) {
+      if (value.statusCode == 204) {
+        emit(DeleteDemandeReservationStateGood());
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(DeleteDemandeReservationStateBad());
+    });
+  }
+
+  Future<void> getJouerbyName({required String username}) async {
+    emit(GetJouerByUsernameLoading());
+    await Httplar.httpget(path: getJouerByUsername + username).then((value) {
+      if (value.statusCode == 200) {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        DataJoueurModel model = DataJoueurModel.fromJson(jsonResponse);
+        emit(GetJouerByUsernameStateGood(dataJoueurModel: model));
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(GetJouerByUsernameStateBad());
     });
   }
 }

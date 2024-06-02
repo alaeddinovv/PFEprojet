@@ -73,6 +73,17 @@ final class ErrorStateDemanderRejoinderEquipe extends AnnonceJoueurState {
 
 final class DemandeRejoindreEquipeLoadingState extends AnnonceJoueurState {}
 
-final class DemandeRejoindreEquipeStateGood extends AnnonceJoueurState {}
+final class DemandeRejoindreEquipeStateGood extends AnnonceJoueurState {
+  final String userName;
+  final String equipeName;
+  final String joueurId;
+  final String post;
+
+  DemandeRejoindreEquipeStateGood(
+      {required this.userName,
+      required this.equipeName,
+      required this.joueurId,
+      required this.post});
+}
 
 final class DemandeRejoindreEquipeInvStateBad extends AnnonceJoueurState {}

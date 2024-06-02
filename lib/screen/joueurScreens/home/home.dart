@@ -47,7 +47,7 @@ class _HomeJoueurState extends State<HomeJoueur> {
                                 ? NetworkImage(HomeJoueurCubit.get(context)
                                     .joueurModel!
                                     .photo!)
-                                : const AssetImage('assets/images/user.png')
+                                : const AssetImage('assets/images/football.png')
                                     as ImageProvider<Object>,
                       ),
                     ),
@@ -73,6 +73,7 @@ class _HomeJoueurState extends State<HomeJoueur> {
           ),
         ),
         child: NavigationBar(
+          // backgroundColor: Colors.white,
           height: 70,
           selectedIndex: HomeJoueurCubit.get(context).selectedIndex,
           onDestinationSelected: (index) =>

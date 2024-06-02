@@ -80,6 +80,15 @@ class GetMyReserveStateGood extends TerrainState {
 
 class GetMyReserveStateBad extends TerrainState {}
 
+class GetOtherReserveLoading extends TerrainState {}
+
+class GetOtherReserveStateGood extends TerrainState {
+  final ReservationModel reservations;
+  GetOtherReserveStateGood({required this.reservations});
+}
+
+class GetOtherReserveStateBad extends TerrainState {}
+
 class ConfirmConnectEquipeLoading extends TerrainState {}
 
 class ConfirmConnectEquipeStateGood extends TerrainState {}
@@ -95,3 +104,19 @@ class CreateEquipeVertialStateGood extends TerrainState {
 }
 
 class CreateEquipeVertialStateBad extends TerrainState {}
+
+class DeleteDemandeReservationLoading extends TerrainState {}
+
+class DeleteDemandeReservationStateGood extends TerrainState {}
+
+class DeleteDemandeReservationStateBad extends TerrainState {}
+
+class GetJouerByUsernameLoading extends TerrainState {}
+
+class GetJouerByUsernameStateGood extends TerrainState {
+  final DataJoueurModel dataJoueurModel;
+
+  GetJouerByUsernameStateGood({required this.dataJoueurModel});
+}
+
+class GetJouerByUsernameStateBad extends TerrainState {}

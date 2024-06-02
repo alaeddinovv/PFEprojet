@@ -3,14 +3,24 @@
 
 // const URLHTTP = '192.168.1.20:3000'; //IP houssem
 
+
+
 const URLHTTP = '192.168.227.142:3000'; //IP ala
 
 
 // const URLHTTP = '10.0.2.2:3000';
 
 const CREATEEQUIPEVERTIAL = '/api/equipe/vertial';
+
+//const CONFIRMCONNECTEQUIPE = '/api/reservation/connequipe';
+//const GETMYRESERVE = '/api/reservation/myreservation';
+const GETOTHERRESERVE = '/api/reservation/other';
+
+const DELETEDEMANDERESERVATION = '/api/reservation/demander/';
+
 const CONFIRMCONNECTEQUIPE = '/api/reservation/connected/equipe';
 const GETMYRESERVE = '/api/reservation/my';
+
 
 const SENDNOTIFICATIONTOADMIN = '/api/notification/admin/';
 const SENDNOTIFICATIONTOJOUEUR = '/api/notification/joueur/';
@@ -69,6 +79,7 @@ const GETALLANNONCE = '/api/annonce';
 const ADDEQUIPE = '/api/equipe';
 const GETALLEQUIPEDEMEANDER = '/api/joueur/demandes';
 const UPDATEEQUIPE = '/api/equipe/';
+const UPDATEJOUEURSEQUIPE = '/api/equipe/joueurs/';
 const DELETEEQUIPE = '/api/equipe/';
 const GETALLEQUIPE = '/api/equipe';
 const GETMYEQUIPE = '/api/equipe/my';

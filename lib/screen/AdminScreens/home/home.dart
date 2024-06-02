@@ -4,8 +4,22 @@ import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
 import 'package:pfeprojet/screen/AdminScreens/profile/profile.dart';
 
-class HomeAdmin extends StatelessWidget {
+class HomeAdmin extends StatefulWidget {
   const HomeAdmin({super.key});
+
+  @override
+  State<HomeAdmin> createState() => _HomeAdminState();
+}
+
+class _HomeAdminState extends State<HomeAdmin> {
+  late final HomeAdminCubit cubit;
+  @override
+  void initState() {
+    // TODO: implement initState
+    cubit = HomeAdminCubit.get(context);
+    cubit.getMyInfo();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +45,7 @@ class HomeAdmin extends StatelessWidget {
                                 null
                             ? NetworkImage(
                                 HomeAdminCubit.get(context).adminModel!.photo!)
-                            : const AssetImage('assets/images/user.png')
+                            : const AssetImage('assets/images/football.png')
                                 as ImageProvider<Object>,
                       ),
                     ),

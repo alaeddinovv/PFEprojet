@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pfeprojet/Model/annonce/annonce_model.dart';
 import 'package:pfeprojet/component/components.dart';
+import 'package:pfeprojet/component/tpggleButtons.dart';
 import 'package:pfeprojet/generated/l10n.dart';
 import 'package:pfeprojet/screen/joueurScreens/annonce/detailsAnnonce/details.dart';
 import 'package:pfeprojet/screen/joueurScreens/home/cubit/home_joueur_cubit.dart';
@@ -66,11 +67,49 @@ class _AnnonceState extends State<Annonce> {
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child: ToggleButtons(
-              isSelected: [_showList, !_showList],
-              onPressed: (int index) {
+            child:
+                // ToggleButtons(
+                //   isSelected: [_showList, !_showList],
+                //   onPressed: (int index) {
+                //     setState(() {
+                //       _showList = index == 0;
+                //       if (!_showList) {
+                //         AnnonceJoueurCubit.get(context).getAllAnnonce(
+                //             myId: HomeJoueurCubit.get(context)
+                //                 .joueurModel!
+                //                 .id); // Call getAllAnnonce  owner: HomeJoueurCubit.get(context).joueurModel!.idwhen "All annonces" is selected
+                //       } else {
+                //         AnnonceJoueurCubit.get(context)
+                //             .getMyAnnonceJoueur(); // Optional: Refresh "My annonces" when switching back
+                //       }
+                //     });
+                //   },
+                //   borderRadius: BorderRadius.circular(8),
+                //   borderColor: Colors.blue,
+                //   selectedBorderColor: Colors.blueAccent,
+                //   selectedColor: Colors.white,
+                //   fillColor: Colors.lightBlueAccent.withOpacity(0.5),
+                //   constraints: const BoxConstraints(minHeight: 40.0),
+                //   children: <Widget>[
+                //     Padding(
+                //       padding: const EdgeInsets.symmetric(horizontal: 16),
+                //       child: Text(S.of(context).my_annonces),
+                //     ),
+                //     Padding(
+                //       padding: const EdgeInsets.symmetric(horizontal: 16),
+                //       child: Text(S.of(context).all_annonces),
+                //     ),
+                //   ],
+                // ),
+                ToggleButtonsWidget(
+              icon1: Icons.list_outlined,
+              icon2: Icons.list_outlined,
+              text1: S.of(context).my_annonces,
+              text2: S.of(context).all_annonces,
+              showList: _showList,
+              onToggle: (value) {
                 setState(() {
-                  _showList = index == 0;
+                  _showList = value;
                   if (!_showList) {
                     AnnonceJoueurCubit.get(context).getAllAnnonce(
                         myId: HomeJoueurCubit.get(context)
@@ -82,22 +121,6 @@ class _AnnonceState extends State<Annonce> {
                   }
                 });
               },
-              borderRadius: BorderRadius.circular(8),
-              borderColor: Colors.blue,
-              selectedBorderColor: Colors.blueAccent,
-              selectedColor: Colors.white,
-              fillColor: Colors.lightBlueAccent.withOpacity(0.5),
-              constraints: const BoxConstraints(minHeight: 40.0),
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(S.of(context).my_annonces),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(S.of(context).all_annonces),
-                ),
-              ],
             ),
           ),
           Expanded(

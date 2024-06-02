@@ -40,11 +40,10 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
     final parsed = json.decode(wilayasJson) as Map<String, dynamic>;
     setState(() {
       wilayas = parsed['Wilayas'];
-      selectedWilaya = homeAdminCubit.wilaya ?? (wilayas.isNotEmpty ? wilayas[0]['name'] : null);
+      selectedWilaya = homeAdminCubit.wilaya ??
+          (wilayas.isNotEmpty ? wilayas[0]['name'] : null);
       // updateCommunes(selectedWilaya);
     });
-
-
   }
 
   @override
@@ -102,7 +101,8 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
                                   ProfileAdminCubit.get(context).imageCompress!)
                               : homeAdminCubit.photo != null
                                   ? NetworkImage(homeAdminCubit.photo!)
-                                  : const AssetImage('assets/images/user.png')
+                                  : const AssetImage(
+                                          'assets/images/football.png')
                                       as ImageProvider<Object>,
                           radius: 60,
                         );
@@ -170,14 +170,14 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
                       selectedWilaya = newValue;
                     });
                   },
-                  items: wilayas.map<DropdownMenuItem<String>>((dynamic wilaya) {
+                  items:
+                      wilayas.map<DropdownMenuItem<String>>((dynamic wilaya) {
                     return DropdownMenuItem<String>(
                       value: wilaya['name'],
                       child: Text(wilaya['name']),
                     );
                   }).toList(),
                 ),
-
 
                 const SizedBox(
                   height: 20,

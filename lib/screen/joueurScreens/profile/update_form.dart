@@ -98,15 +98,16 @@ class _UpdateJoueurFormState extends State<UpdateJoueurForm> {
                       builder: (context, state) {
                         return CircleAvatar(
                           backgroundColor: Colors.transparent,
-                          backgroundImage: ProfileJoueurCubit.get(context)
-                                      .imageCompress !=
-                                  null
-                              ? FileImage(ProfileJoueurCubit.get(context)
-                                  .imageCompress!)
-                              : homeJoueurCubit.photo != null
-                                  ? NetworkImage(homeJoueurCubit.photo!)
-                                  : const AssetImage('assets/images/user.png')
-                                      as ImageProvider<Object>,
+                          backgroundImage:
+                              ProfileJoueurCubit.get(context).imageCompress !=
+                                      null
+                                  ? FileImage(ProfileJoueurCubit.get(context)
+                                      .imageCompress!)
+                                  : homeJoueurCubit.photo != null
+                                      ? NetworkImage(homeJoueurCubit.photo!)
+                                      : const AssetImage(
+                                              'assets/images/football.png')
+                                          as ImageProvider<Object>,
                           radius: 60,
                         );
                       },

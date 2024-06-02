@@ -5,6 +5,8 @@ sealed class ProfileAdminState {}
 
 final class ProfileAdminInitial extends ProfileAdminState {}
 
+final class ResetValueProfileAdminState extends ProfileAdminState {}
+
 final class UpdateAdminLoadingState extends ProfileAdminState {}
 
 final class UpdateAdminStateGood extends ProfileAdminState {

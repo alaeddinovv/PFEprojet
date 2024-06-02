@@ -5,6 +5,8 @@ sealed class ReservationState {}
 
 final class ReservationInitial extends ReservationState {}
 
+final class ResetValueReservationState extends ReservationState {}
+
 final class ErrorState extends ReservationState {
   final ErrorModel errorModel;
 

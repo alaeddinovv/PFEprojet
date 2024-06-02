@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:pfeprojet/Api/color.dart';
+import 'package:pfeprojet/Model/reservation_model.dart';
 import 'package:pfeprojet/Model/terrain_model.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/const.dart';
@@ -13,6 +14,7 @@ import 'package:pfeprojet/screen/joueurScreens/home/cubit/home_joueur_cubit.dart
 import 'package:pfeprojet/screen/joueurScreens/terrains/cubit/terrain_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/edite_my_reservation.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/location/terrain_location.dart';
+import 'package:pfeprojet/screen/joueurScreens/terrains/other_reserve.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/reserve.dart';
 
 // ignore: must_be_immutable
@@ -122,11 +124,11 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                     child: Container(
                       width: 50,
                       height: 50,
-                      margin: const EdgeInsets.symmetric(horizontal: 4),
+                      margin: EdgeInsets.symmetric(horizontal: 4),
                       decoration: BoxDecoration(
                         color: terrainCubit.selectedDate.day ==
                                 DateTime.now().add(Duration(days: i)).day
-                            ? Colors.blue
+                            ? Colors.blue[300]
                             : Colors.transparent,
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -181,6 +183,22 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 18),
           child: BlocBuilder<TerrainCubit, TerrainState>(
             builder: (context, state) {
+              if (state is DeleteDemandeReservationLoading) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (state is DeleteDemandeReservationStateGood) {
+                TerrainCubit.get(context).fetchReservations(
+                    terrainId: widget.terrainModel.id!,
+                    date: TerrainCubit.get(context).selectedDate);
+                showToast(
+                    msg: 'delete demande reservation success',
+                    state: ToastStates.success);
+              } else if (state is DeleteDemandeReservationStateBad) {
+                showToast(
+                    msg: 'delete demande reservation failed',
+                    state: ToastStates.error);
+              }
               if (state is GetReservationLoadingState) {
                 return const Center(
                   child: Center(child: CircularProgressIndicator()),
@@ -265,14 +283,14 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                                       hour: hour,
                                       idTerrain: widget.terrainModel.id!));
                             } else if (isCharge) {
-                              showToast(
-                                  msg: "This slot is already booked",
-                                  state: ToastStates.warning);
+                              navigatAndReturn(
+                                  context: context,
+                                  page: DetailOtherReserve(
+                                    jour: terrainCubit.selectedDate,
+                                    heure: timeSlots[index],
+                                    terrainId: widget.terrainModel.id!,
+                                  ));
                             } else if (isMyReservationPaying) {
-                              // showToast(
-                              //     msg: "You have already booked this slot",
-                              //     state: ToastStates.warning);
-
                               navigatAndReturn(
                                   context: context,
                                   page: DetailMyReserve(
@@ -281,9 +299,38 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                                     terrainId: widget.terrainModel.id!,
                                   ));
                             } else if (isMyReservation) {
-                              showToast(
-                                  msg: "you are waiting for accepte from admin",
-                                  state: ToastStates.warning);
+                              // i want when long press show dialog to delete reservation
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    final ReservationModel reserve =
+                                        terrainCubit.reservationList.firstWhere(
+                                            (element) =>
+                                                element.heureDebutTemps ==
+                                                timeSlots[index]);
+                                    return AlertDialog(
+                                      title: const Text('Delete Reservation'),
+                                      content: Text(
+                                          'Are you sure you want to delete this reservation?\n Duree for : ${reserve.duree} semaine(s)'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text('Cancel'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            terrainCubit
+                                                .deleteDemandeReservation(
+                                                    ReservationId: reserve.id!);
+                                            Navigator.pop(context);
+                                          },
+                                          child: const Text('Delete'),
+                                        ),
+                                      ],
+                                    );
+                                  });
                             }
                           },
                           child: itemGridViewReservation(
@@ -310,175 +357,156 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
 
   Padding descriptionInfo(double screenHeight, BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          SizedBox(
-            height: screenHeight * 0.02,
+      padding: const EdgeInsets.all(16.0),
+      child: Material(
+        elevation: 2.0,
+        borderRadius: BorderRadius.circular(10.0),
+        child: Container(
+          padding: const EdgeInsets.all(16.0),
+          decoration: BoxDecoration(
+            // color: Colors.grey[50],
+            border: Border.all(color: Colors.grey.shade300),
+            borderRadius: BorderRadius.circular(10.0),
           ),
-          Row(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Icon(Icons.sports_soccer_rounded),
-              const SizedBox(
-                width: 8,
-              ),
-              RichText(
-                text: TextSpan(
-                  // Default style for all spans
-                  style: DefaultTextStyle.of(context).style,
-                  children: <TextSpan>[
-                    const TextSpan(
-                      text: 'Nom: ',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    TextSpan(
-                      text: widget.terrainModel.nom!,
-                      style: const TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-          Row(
-            children: [
-              const Icon(Icons.location_on),
-              const SizedBox(
-                width: 8,
-              ),
-              RichText(
-                text: TextSpan(
-                  // Default style for all spans
-                  style: DefaultTextStyle.of(context).style,
-                  children: <TextSpan>[
-                    const TextSpan(
-                      text: 'Address: ',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    TextSpan(
-                      text: widget.terrainModel.adresse!,
-                      style: const TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-          Row(
-            children: [
-              const Icon(Icons.phone),
-              const SizedBox(
-                width: 8,
-              ),
-              RichText(
-                text: TextSpan(
-                  style: DefaultTextStyle.of(context).style,
-                  children: <TextSpan>[
-                    const TextSpan(
-                      text: 'Telephone: ',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    TextSpan(
-                      text: widget.terrainModel.admin!.telephone.toString(),
-                      style: const TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-          Row(
-            children: [
-              const Icon(Icons.groups_2_rounded),
-              const SizedBox(
-                width: 8,
-              ),
-              RichText(
-                  text: TextSpan(
-                style: DefaultTextStyle.of(context).style,
+              SizedBox(height: screenHeight * 0.02),
+              Row(
                 children: [
-                  const TextSpan(
-                      text: 'Nombre de joueurs: ',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  TextSpan(
-                      text: "${widget.terrainModel.capacite} joueurs",
-                      style: const TextStyle(fontStyle: FontStyle.italic)),
+                  const Icon(Icons.sports_soccer_rounded),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Nom: ',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
+                  Expanded(
+                    child: Text(
+                      widget.terrainModel.nom!,
+                      style:
+                          TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
+                    ),
+                  ),
                 ],
-              ))
-            ],
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-          Row(
-            children: [
-              const Icon(Icons.sports_soccer_rounded),
-              const SizedBox(
-                width: 8,
               ),
-              RichText(
-                text: TextSpan(
-                  style: DefaultTextStyle.of(context).style,
-                  children: [
-                    const TextSpan(
-                        text: 'État du terrain: ',
-                        style: TextStyle(fontWeight: FontWeight.bold)),
-                    TextSpan(
-                        text: widget.terrainModel.etat!,
-                        style: const TextStyle(fontStyle: FontStyle.italic)),
-                  ],
+              SizedBox(height: 16),
+              Row(
+                children: [
+                  const Icon(Icons.location_on),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Adresse: ',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
+                  Expanded(
+                    child: Text(
+                      widget.terrainModel.adresse!,
+                      style:
+                          TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 16),
+              Row(
+                children: [
+                  const Icon(Icons.phone),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Téléphone: ',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
+                  Expanded(
+                    child: Text(
+                      widget.terrainModel.admin!.telephone.toString(),
+                      style:
+                          TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 16),
+              Row(
+                children: [
+                  const Icon(Icons.groups_2_rounded),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Nombre de joueurs: ',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
+                  Expanded(
+                    child: Text(
+                      "${widget.terrainModel.capacite} joueurs",
+                      style:
+                          TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 16),
+              Row(
+                children: [
+                  const Icon(Icons.sports_soccer_rounded),
+                  const SizedBox(width: 8),
+                  Text(
+                    'État du terrain: ',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                  ),
+                  Expanded(
+                    child: Text(
+                      widget.terrainModel.etat!,
+                      style:
+                          TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 16),
+              Text(
+                "Description:",
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+              SizedBox(height: 8),
+              Text(
+                widget.terrainModel.description!,
+                style: TextStyle(fontSize: 16),
+                textAlign: TextAlign.justify,
+              ),
+              SizedBox(height: 16),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: TextButton.icon(
+                  onPressed: () {
+                    navigatAndReturn(
+                      context: context,
+                      page: LocationTErrain(
+                        terrainId: widget.terrainModel.id!,
+                        location: LatLng(
+                          widget.terrainModel.coordonnee!.latitude!,
+                          widget.terrainModel.coordonnee!.longitude!,
+                        ),
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.location_on_outlined,
+                      color: Colors.white),
+                  label: const Text(
+                    'Voir sur la carte',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                    backgroundColor: greenConst,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
                 ),
               ),
             ],
           ),
-          const SizedBox(
-            height: 8,
-          ),
-          const Text("More:", style: TextStyle(fontWeight: FontWeight.bold)),
-          const SizedBox(
-            height: 8,
-          ),
-          Text(
-            widget.terrainModel.description!,
-            textAlign: TextAlign.center,
-          ),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: IconButton(
-              iconSize: 30,
-              onPressed: () {
-                navigatAndReturn(
-                    context: context,
-                    page: LocationTErrain(
-                      terrainId: widget.terrainModel.id!,
-                      location: LatLng(
-                          widget.terrainModel.coordonnee!.latitude!,
-                          widget.terrainModel.coordonnee!.longitude!),
-                    ));
-              },
-              icon: const Icon(
-                Icons.location_on_outlined,
-                color: Colors.blue,
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
@@ -493,12 +521,14 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
         !terrainCubit.showStadiumDetails,
         terrainCubit.showStadiumDetails,
       ],
-      // borderRadius: BorderRadius.circular(8),
-      //       borderColor: Colors.blue,
-      //       selectedBorderColor: Colors.blueAccent,
-      //       selectedColor: Colors.white,
-      //       fillColor: Colors.lightBlueAccent.withOpacity(0.5),
-      //       constraints: const BoxConstraints(minHeight: 40.0),
+      borderRadius: BorderRadius.circular(8),
+      // borderColor: Colors.grey[50],
+      // color: Colors.grey[50],
+      // selectedBorderColor: Colors.blueAccent,
+      selectedColor: Colors.black,
+      fillColor: Colors.grey[200],
+      // fillColor: Colors.lightBlueAccent.withOpacity(0.5),
+      // constraints: const BoxConstraints(minHeight: 40.0),
       constraints: BoxConstraints(
           minWidth: MediaQuery.of(context).size.width / 2 - 10, minHeight: 40),
       children: const [
@@ -638,6 +668,7 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
 
 Widget _buildColorIndex() {
   return Card(
+    color: Colors.grey[50],
     elevation: 2,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
     child: Padding(

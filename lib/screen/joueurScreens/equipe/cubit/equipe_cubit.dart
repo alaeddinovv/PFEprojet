@@ -6,7 +6,6 @@ import 'dart:convert' as convert;
 import 'package:pfeprojet/Api/constApi.dart';
 import 'package:pfeprojet/Api/httplaravel.dart';
 import 'package:pfeprojet/Model/equipe_model.dart';
-import 'package:pfeprojet/Model/oneequipe_model.dart';
 import 'package:pfeprojet/Model/user_model.dart';
 
 import '../../../../Model/error_model.dart';
@@ -26,9 +25,19 @@ class EquipeCubit extends Cubit<EquipeState> {
     cursorId1 = "";
     equipeInviteData = [];
     cursorId2 = "";
+    isSelected = [true, false, false, false];
     joueuraccepted = DataJoueurModel();
     joueur = DataJoueurModel();
     emit(ResetEquipeState());
+  }
+
+  List<bool> isSelected = [true, false, false, false];
+  void changeTogelButton(int index) {
+    for (int i = 0; i < isSelected.length; i++) {
+      isSelected[i] = false;
+    }
+    isSelected[index] = true;
+    emit(ChangeIndexNavBarState());
   }
 
 //------------------ equipe creer---------------------
@@ -63,11 +72,12 @@ class EquipeCubit extends Cubit<EquipeState> {
   //----------------- get my terrain--------------------
   List<EquipeData> equipeData = [];
   String cursorId = "";
-  Future<void> getMyEquipe({String cursor = ''}) async {
+  Future<void> getMyEquipe({String cursor = '', bool? vertial}) async {
     emit(GetMyEquipeLoading());
 
-    await Httplar.httpget(path: GETMYEQUIPE, query: {'cursor': cursor})
-        .then((value) {
+    await Httplar.httpget(
+        path: GETMYEQUIPE,
+        query: {'cursor': cursor, 'vertial': vertial.toString()}).then((value) {
       if (value.statusCode == 200) {
         if (cursor == "") {
           equipeData = [];
@@ -76,8 +86,8 @@ class EquipeCubit extends Cubit<EquipeState> {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
         EquipeModel model = EquipeModel.fromJson(jsonResponse);
-        equipeData.addAll(model.data!);
-        cursorId = model.nextCursor!;
+        equipeData.addAll(model.data);
+        cursorId = model.nextCursor;
         print(jsonResponse['nom']);
         emit(GetMyEquipeStateGood());
       } else {
@@ -138,14 +148,39 @@ class EquipeCubit extends Cubit<EquipeState> {
     });
   }
 
+  Future<void> updateJoueursEquipe(
+      {required List<String?> joueursId,
+      required List<String?> attente_joueursID,
+      required String equipeId}) async {
+    emit(UpdateJoueursEquipeLoadingState());
+    print(joueursId);
+    await Httplar.httpPut(path: UPDATEJOUEURSEQUIPE + equipeId, data: {
+      'joueurs': joueursId,
+      'attente_joueurs': attente_joueursID,
+    }).then((value) {
+      if (value.statusCode == 200) {
+        emit(UpdateJoueursEquipeStateGood());
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(UpdateJoueursEquipeStateBad());
+    });
+  }
+
   //-------------------- get all equipes ----------------------------
   List<EquipeData> equipes = [];
   // cusrsorid mdeclari lfug
   String cursorid = "";
-  Future<void> getAllEquipe({String cursor = '', String capitanId = ''}) async {
+  Future<void> getAllEquipe(
+      {String cursor = '', String capitanId = '', bool? vertial}) async {
     emit(GetAllEquipeLoading());
-    await Httplar.httpget(path: GETALLEQUIPE, query: {'cursor': cursor})
-        .then((value) {
+    await Httplar.httpget(
+        path: GETALLEQUIPE,
+        query: {'cursor': cursor, 'vertial': vertial.toString()}).then((value) {
       if (value.statusCode == 200) {
         if (cursor == "") {
           equipes = [];
@@ -180,11 +215,12 @@ class EquipeCubit extends Cubit<EquipeState> {
   //------------------ equipes im in
   List<EquipeData> equipeImInData = [];
   String cursorId1 = "";
-  Future<void> getEquipeImIn({String cursor = ''}) async {
+  Future<void> getEquipeImIn({String cursor = '', bool? vertial}) async {
     emit(GetEquipeImInLoading());
 
-    await Httplar.httpget(path: GETEQUIPEIMIN, query: {'cursor': cursor})
-        .then((value) {
+    await Httplar.httpget(
+        path: GETEQUIPEIMIN,
+        query: {'cursor': cursor, 'vertial': vertial.toString()}).then((value) {
       if (value.statusCode == 200) {
         if (cursor == "") {
           equipeImInData = [];
@@ -193,8 +229,8 @@ class EquipeCubit extends Cubit<EquipeState> {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
         EquipeModel model = EquipeModel.fromJson(jsonResponse);
-        equipeImInData.addAll(model.data!);
-        cursorId1 = model.nextCursor!;
+        equipeImInData.addAll(model.data);
+        cursorId1 = model.nextCursor;
 
         emit(GetEquipeImInStateGood());
       } else {
@@ -223,8 +259,8 @@ class EquipeCubit extends Cubit<EquipeState> {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
         EquipeModel model = EquipeModel.fromJson(jsonResponse);
-        equipeInviteData.addAll(model.data!);
-        cursorId2 = model.nextCursor!;
+        equipeInviteData.addAll(model.data);
+        cursorId2 = model.nextCursor;
 
         emit(GetEquipeInviteStateGood());
       } else {
@@ -464,16 +500,16 @@ class EquipeCubit extends Cubit<EquipeState> {
   }
 
   //-------------------- check by usernme -------------------------
-  void checkUserByUsername({required String username}) {
+  Future<void> checkUserByUsername({required String username}) async {
     emit(LoadinCheckUserByUsernameState());
-    Httplar.httpget(
+    await Httplar.httpget(
       path: getJouerByUsername + username,
     ).then((value) {
-      print(getJouerByUsername + username);
+      // print(getJouerByUsername + username);
       if (value.statusCode == 200) {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
-        print(jsonResponse);
+        // print(jsonResponse);
         // emit(TerrainViewToggled());
 
         emit(CheckUserByUsernameStateGood(

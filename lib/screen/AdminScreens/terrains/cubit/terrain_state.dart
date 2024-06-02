@@ -5,6 +5,8 @@ abstract class TerrainState {}
 
 class TerrainInitial extends TerrainState {}
 
+class ResetValueTerrainState extends TerrainState {}
+
 final class ErrorTerrainsState extends TerrainState {
   final ErrorModel errorModel;
 

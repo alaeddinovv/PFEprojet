@@ -16,6 +16,12 @@ class AnnonceCubit extends Cubit<AnnonceState> {
 
   static AnnonceCubit get(context) => BlocProvider.of<AnnonceCubit>(context);
 
+  void resetValue() {
+    annonceData = [];
+    cursorId = "";
+    emit(ResetValueAnnonceState());
+  }
+
   // creer annonce -----------------------------------------------------------------------
   Future<void> creerAnnonce(
       {required String type,

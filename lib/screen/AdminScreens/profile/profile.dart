@@ -68,7 +68,7 @@ class ProfileAdmin extends StatelessWidget {
                       radius: 60,
                       backgroundImage: adminModel.photo != null
                           ? NetworkImage(adminModel.photo!)
-                          : const AssetImage('assets/images/user.png')
+                          : const AssetImage('assets/images/football.png')
                               as ImageProvider<Object>,
                     ),
                     const SizedBox(

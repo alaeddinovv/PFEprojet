@@ -56,6 +56,7 @@ class _SearchTerrainState extends State<SearchTerrain> {
       showResults = false;
       widget.terrainIdController.text =
           terrain.id; // Update the parent's TextEditingController
+      searchController.text = terrain.nom;
     });
     if (widget.onTerrainSelected != null) {
       widget.onTerrainSelected!(terrain);
@@ -83,97 +84,119 @@ class _SearchTerrainState extends State<SearchTerrain> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: SingleChildScrollView(
-        child: Stack(
-          children: [
-            TextFormField(
-              controller: searchController,
-              onChanged: _onSearchChanged,
-              decoration: InputDecoration(
-                hintText: 'Search Terrain...',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(15.0),
-                ),
-                prefixIcon: const Icon(Icons.search, color: Colors.deepPurple),
-                filled: true,
-                fillColor: Colors.white,
-                labelStyle: const TextStyle(color: Colors.deepPurple),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.deepPurple),
-                  borderRadius: BorderRadius.circular(15.0),
-                ),
+    return SingleChildScrollView(
+      child: Stack(
+        children: [
+          TextFormField(
+            controller: searchController,
+            onChanged: _onSearchChanged,
+            decoration: InputDecoration(
+              hintText: 'Search Terrain...',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              prefixIcon: const Icon(Icons.search, color: Colors.deepPurple),
+              filled: true,
+              fillColor: Colors.white,
+              labelStyle: const TextStyle(color: Colors.deepPurple),
+              focusedBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.deepPurple),
+                borderRadius: BorderRadius.circular(10.0),
               ),
             ),
-            BlocConsumer<AnnonceJoueurCubit, AnnonceJoueurState>(
-              listener: (context, state) {},
-              builder: (context, state) {
-                bool hasResults = cubit.terrainSearch.isNotEmpty;
-                bool isLoading = state is GetSearchTerrainLoading;
-                bool isSearchTextEmpty = searchController.text.isEmpty;
-                bool shouldShowResults =
-                    hasResults || (isLoading && !isSearchTextEmpty);
-                if (!showResults) {
-                  return const SizedBox();
-                } else {
-                  return Container(
-                    margin: const EdgeInsets.only(top: 60),
-                    child: Visibility(
-                      visible: shouldShowResults,
-                      child: SizedBox(
-                        height: 250,
-                        child: Column(
-                          children: [
-                            Expanded(
-                              child: ListView.separated(
-                                physics: const AlwaysScrollableScrollPhysics(),
-                                controller: _controller,
-                                itemBuilder: (context, index) {
-                                  var terrain = cubit.terrainSearch[index];
-                                  return Card(
-                                    color:
-                                        Colors.green.shade50.withOpacity(0.8),
-                                    margin:
-                                        const EdgeInsets.symmetric(vertical: 4),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    elevation: 4,
-                                    child: ListTile(
-                                      title: Text(terrain.nom),
-                                      subtitle: Text(
-                                          'superficie: ${terrain.superficie} - Position: ${terrain.id}'),
-                                      onTap: () {
-                                        print(terrain.id);
-                                        _selectTerrain(terrain);
-                                        widget.terrainIdController.text =
-                                            terrain.id;
-                                        // widget.onSelectedJoueur(joueur.id!);
-                                      },
-                                    ),
-                                  );
-                                },
-                                itemCount: cubit.terrainSearch.length,
-                                separatorBuilder:
-                                    (BuildContext context, int index) =>
-                                        const Divider(),
-                              ),
+          ),
+          BlocConsumer<AnnonceJoueurCubit, AnnonceJoueurState>(
+            listener: (context, state) {},
+            builder: (context, state) {
+              bool hasResults = cubit.terrainSearch.isNotEmpty;
+              bool isLoading = state is GetSearchTerrainLoading;
+              bool isSearchTextEmpty = searchController.text.isEmpty;
+              bool shouldShowResults =
+                  hasResults || (isLoading && !isSearchTextEmpty);
+              if (!showResults) {
+                return const SizedBox();
+              } else {
+                return Container(
+                  margin: const EdgeInsets.only(top: 60),
+                  child: Visibility(
+                    visible: shouldShowResults,
+                    child: SizedBox(
+                      height: 200,
+                      child: Column(
+                        children: [
+                          Expanded(
+                            child: ListView.separated(
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              controller: _controller,
+                              itemBuilder: (context, index) {
+                                var terrain = cubit.terrainSearch[index];
+                                return ListTile(
+                                  tileColor: index % 2 == 0
+                                      ? Colors.grey.shade100
+                                      : Colors.white,
+                                  title: Row(
+                                    children: [
+                                      Text(
+                                        terrain.nom,
+                                        style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 8),
+                                      if (terrain.etat == 'disponible')
+                                        const Icon(
+                                          Icons.check_circle,
+                                          color: Colors.green,
+                                          size: 18,
+                                        ),
+                                    ],
+                                  ),
+                                  subtitle: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        'Superficie: ${terrain.superficie} m²',
+                                        style: const TextStyle(fontSize: 14),
+                                      ),
+                                      Text(
+                                        'Adresse: ${terrain.adresse}',
+                                        style: const TextStyle(fontSize: 14),
+                                      ),
+                                    ],
+                                  ),
+                                  onTap: () {
+                                    print(terrain.id);
+                                    _selectTerrain(terrain);
+                                    widget.terrainIdController.text =
+                                        terrain.id;
+                                  },
+                                  trailing: const Icon(
+                                    Icons.arrow_forward_ios,
+                                    color: Colors.deepPurple,
+                                  ),
+                                );
+                              },
+                              itemCount: cubit.terrainSearch.length,
+                              separatorBuilder:
+                                  (BuildContext context, int index) =>
+                                      const Divider(),
                             ),
-                            if (isLoading &&
-                                !isSearchTextEmpty &&
-                                cubit.cursorIdTerrain != '')
-                              const CircularProgressIndicator(),
-                          ],
-                        ),
+                          ),
+                          if (isLoading &&
+                              !isSearchTextEmpty &&
+                              cubit.cursorIdTerrain != '')
+                            const CircularProgressIndicator(),
+                        ],
                       ),
                     ),
-                  );
-                }
-              },
-            ),
-          ],
-        ),
+                  ),
+                );
+              }
+            },
+          ),
+        ],
       ),
     );
   }

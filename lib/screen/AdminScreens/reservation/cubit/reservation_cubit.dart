@@ -12,6 +12,13 @@ part 'reservation_state.dart';
 class ReservationCubit extends Cubit<ReservationState> {
   ReservationCubit() : super(ReservationInitial());
   static ReservationCubit get(context) => BlocProvider.of(context);
+
+  void resetValue() {
+    cursorId = "";
+    reservationList = [];
+    emit(ResetValueReservationState());
+  }
+
   String cursorId = "";
 
   List<ReservationPaginationModelData> reservationList = [];

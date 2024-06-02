@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pfeprojet/Model/equipe_model.dart';
-import 'package:pfeprojet/Model/user_model.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/const.dart';
 import 'package:pfeprojet/screen/joueurScreens/equipe/addequipe.dart';
@@ -15,7 +14,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class Equipe extends StatefulWidget {
-  const Equipe({Key? key}) : super(key: key);
+  Equipe({Key? key}) : super(key: key);
 
   @override
   State<Equipe> createState() => _EquipeState();
@@ -23,16 +22,22 @@ class Equipe extends StatefulWidget {
 
 class _EquipeState extends State<Equipe> {
   late ScrollController _controller;
-  List<bool> isSelected = [
-    true,
-    false,
-    false,
-    false
-  ]; // State to control which view to show
+
+  bool vertial = false;
+
+  // List<bool> isSelected = [
+  //   true,
+  //   false,
+  //   false,
+  //   false
+  // ]; // State to control which view to show
   late final EquipeCubit cubit;
   @override
   void initState() {
     super.initState();
+    // if (widget.houssem != null) {
+    //   isSelected = widget.houssem!;
+    // }
     cubit = EquipeCubit.get(context);
     cubit.getMyEquipe();
     _controller = ScrollController();
@@ -40,25 +45,26 @@ class _EquipeState extends State<Equipe> {
       ..addListener(() {
         if (_controller.offset >= _controller.position.maxScrollExtent &&
             !_controller.position.outOfRange) {
-          if (isSelected[0]) {
+          if (cubit.isSelected[0]) {
             if (EquipeCubit.get(context).cursorId != "") {
-              EquipeCubit.get(context)
-                  .getMyEquipe(cursor: EquipeCubit.get(context).cursorId);
+              EquipeCubit.get(context).getMyEquipe(
+                  cursor: EquipeCubit.get(context).cursorId, vertial: vertial);
             }
-          } else if (isSelected[1]) {
+          } else if (cubit.isSelected[1]) {
             if (EquipeCubit.get(context).cursorid != "") {
               EquipeCubit.get(context).getAllEquipe(
                   cursor: EquipeCubit.get(context).cursorid,
-                  capitanId: HomeJoueurCubit.get(context).joueurModel!.id!);
+                  capitanId: HomeJoueurCubit.get(context).joueurModel!.id!,
+                  vertial: vertial);
               print('ggggg');
             }
-          } else if (isSelected[2]) {
+          } else if (cubit.isSelected[2]) {
             if (EquipeCubit.get(context).cursorId1 != "") {
-              EquipeCubit.get(context)
-                  .getEquipeImIn(cursor: EquipeCubit.get(context).cursorId1);
+              EquipeCubit.get(context).getEquipeImIn(
+                  cursor: EquipeCubit.get(context).cursorId1, vertial: vertial);
               print('ggggg');
             }
-          } else if (isSelected[3]) {
+          } else if (cubit.isSelected[3]) {
             if (EquipeCubit.get(context).cursorId2 != "") {
               EquipeCubit.get(context)
                   .getEquipeInvite(cursor: EquipeCubit.get(context).cursorId2);
@@ -85,25 +91,26 @@ class _EquipeState extends State<Equipe> {
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               child: ToggleButtons(
-                isSelected: isSelected,
+                isSelected: cubit.isSelected,
                 onPressed: (int index) {
                   setState(() {
                     // Update all toggles based on the index
-                    for (int buttonIndex = 0;
-                        buttonIndex < isSelected.length;
-                        buttonIndex++) {
-                      isSelected[buttonIndex] = buttonIndex == index;
-                    }
+                    // for (int buttonIndex = 0;
+                    //     buttonIndex < isSelected.length;
+                    //     buttonIndex++) {
+                    //   isSelected[buttonIndex] = buttonIndex == index;
+                    // }
+                    cubit.changeTogelButton(index);
                     if (index == 0) {
-                      EquipeCubit.get(context)
-                          .getMyEquipe(); // Fetch data for "My Equipes"
+                      EquipeCubit.get(context).getMyEquipe(
+                          vertial: vertial); // Fetch data for "My Equipes"
                     } else if (index == 1) {
                       EquipeCubit.get(context).getAllEquipe(
-                          capitanId: HomeJoueurCubit.get(context)
-                              .joueurModel!
-                              .id!); // Fetch data for "All Equipes"
+                          capitanId:
+                              HomeJoueurCubit.get(context).joueurModel!.id!,
+                          vertial: vertial); // Fetch data for "All Equipes"
                     } else if (index == 2) {
-                      EquipeCubit.get(context).getEquipeImIn();
+                      EquipeCubit.get(context).getEquipeImIn(vertial: vertial);
                     } else if (index == 3) {
                       EquipeCubit.get(context).getEquipeInvite();
                     }
@@ -137,7 +144,7 @@ class _EquipeState extends State<Equipe> {
             ),
           ),
           Expanded(
-              child: isSelected[0]
+              child: cubit.isSelected[0]
                   ? Padding(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 20, vertical: 20),
@@ -145,7 +152,7 @@ class _EquipeState extends State<Equipe> {
                         listener: (context, state) {
                           if (state is DeleteEquipeStateGood) {
                             EquipeCubit.get(context)
-                                .getMyEquipe()
+                                .getMyEquipe(vertial: vertial)
                                 .then((value) => Navigator.pop(context));
                           }
                         },
@@ -156,26 +163,55 @@ class _EquipeState extends State<Equipe> {
                                 child: CircularProgressIndicator());
                           }
 
-                          return ListView.separated(
-                            controller: _controller,
-                            physics: const BouncingScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              return _buildEquipeItem(
-                                  EquipeCubit.get(context).equipeData[index],
-                                  index,
-                                  context);
-                            },
-                            separatorBuilder: (context, int index) =>
-                                const SizedBox(height: 16),
-                            itemCount:
-                                EquipeCubit.get(context).equipeData.length,
-                            shrinkWrap:
-                                true, // to prevent infinite height error
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                children: [
+                                  const Text(
+                                    'Vertial equipe :',
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Checkbox(
+                                      value: vertial,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          vertial = value!;
+                                          EquipeCubit.get(context)
+                                              .getMyEquipe(vertial: vertial);
+                                        });
+                                      }),
+                                ],
+                              ),
+                              Expanded(
+                                child: ListView.separated(
+                                  controller: _controller,
+                                  physics: const BouncingScrollPhysics(),
+                                  itemBuilder: (context, index) {
+                                    return _buildEquipeItem(
+                                        EquipeCubit.get(context)
+                                            .equipeData[index],
+                                        index,
+                                        context,
+                                        vertial);
+                                  },
+                                  separatorBuilder: (context, int index) =>
+                                      const SizedBox(height: 16),
+                                  itemCount: EquipeCubit.get(context)
+                                      .equipeData
+                                      .length,
+                                  shrinkWrap:
+                                      true, // to prevent infinite height error
+                                ),
+                              ),
+                            ],
                           );
                         },
                       ),
                     )
-                  : isSelected[1]
+                  : cubit.isSelected[1]
                       ? Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 20, vertical: 20),
@@ -187,26 +223,60 @@ class _EquipeState extends State<Equipe> {
                                 return const Center(
                                     child: CircularProgressIndicator());
                               }
-                              return ListView.separated(
-                                controller: _controller,
-                                physics: const BouncingScrollPhysics(),
-                                itemBuilder: (context, index) {
-                                  return _buildAllEquipeItem(
-                                      EquipeCubit.get(context).equipes[index],
-                                      index,
-                                      context);
-                                },
-                                separatorBuilder: (context, int index) =>
-                                    const SizedBox(height: 16),
-                                itemCount:
-                                    EquipeCubit.get(context).equipes.length,
-                                shrinkWrap:
-                                    true, // to prevent infinite height error
+                              return Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      const Text(
+                                        'Vertial equipe :',
+                                        style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      Checkbox(
+                                          value: vertial,
+                                          onChanged: (value) {
+                                            setState(() {
+                                              vertial = value!;
+                                              EquipeCubit.get(context)
+                                                  .getAllEquipe(
+                                                      capitanId:
+                                                          HomeJoueurCubit.get(
+                                                                  context)
+                                                              .joueurModel!
+                                                              .id!,
+                                                      vertial: vertial);
+                                            });
+                                          }),
+                                    ],
+                                  ),
+                                  Expanded(
+                                    child: ListView.separated(
+                                      controller: _controller,
+                                      physics: const BouncingScrollPhysics(),
+                                      itemBuilder: (context, index) {
+                                        return _buildAllEquipeItem(
+                                          EquipeCubit.get(context)
+                                              .equipes[index],
+                                          index,
+                                          context,
+                                        );
+                                      },
+                                      separatorBuilder: (context, int index) =>
+                                          const SizedBox(height: 16),
+                                      itemCount: EquipeCubit.get(context)
+                                          .equipes
+                                          .length,
+                                      shrinkWrap:
+                                          true, // to prevent infinite height error
+                                    ),
+                                  ),
+                                ],
                               );
                             },
                           ),
                         )
-                      : isSelected[2]
+                      : cubit.isSelected[2]
                           ? Padding(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 20, vertical: 20),
@@ -220,23 +290,51 @@ class _EquipeState extends State<Equipe> {
                                         child: CircularProgressIndicator());
                                   }
 
-                                  return ListView.separated(
-                                    controller: _controller,
-                                    physics: const BouncingScrollPhysics(),
-                                    itemBuilder: (context, index) {
-                                      return _buildEquipeImInItem(
-                                          EquipeCubit.get(context)
-                                              .equipeImInData[index],
-                                          index,
-                                          context);
-                                    },
-                                    separatorBuilder: (context, int index) =>
-                                        const SizedBox(height: 16),
-                                    itemCount: EquipeCubit.get(context)
-                                        .equipeImInData
-                                        .length,
-                                    shrinkWrap:
-                                        true, // to prevent infinite height error
+                                  return Column(
+                                    children: [
+                                      Row(
+                                        children: [
+                                          const Text(
+                                            'Vertial equipe :',
+                                            style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          Checkbox(
+                                              value: vertial,
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  vertial = value!;
+                                                  EquipeCubit.get(context)
+                                                      .getEquipeImIn(
+                                                          vertial: vertial);
+                                                });
+                                              }),
+                                        ],
+                                      ),
+                                      Expanded(
+                                        child: ListView.separated(
+                                          controller: _controller,
+                                          physics:
+                                              const BouncingScrollPhysics(),
+                                          itemBuilder: (context, index) {
+                                            return _buildEquipeImInItem(
+                                                EquipeCubit.get(context)
+                                                    .equipeImInData[index],
+                                                index,
+                                                context);
+                                          },
+                                          separatorBuilder:
+                                              (context, int index) =>
+                                                  const SizedBox(height: 16),
+                                          itemCount: EquipeCubit.get(context)
+                                              .equipeImInData
+                                              .length,
+                                          shrinkWrap:
+                                              true, // to prevent infinite height error
+                                        ),
+                                      ),
+                                    ],
                                   );
                                 },
                               ),
@@ -285,7 +383,7 @@ class _EquipeState extends State<Equipe> {
                             )),
         ],
       ),
-      floatingActionButton: isSelected[0]
+      floatingActionButton: cubit.isSelected[0]
           ? FloatingActionButton(
               onPressed: () {
                 navigatAndReturn(context: context, page: AddEquipe());
@@ -297,13 +395,17 @@ class _EquipeState extends State<Equipe> {
   }
 
 //---------------------------- my team----------------------------------------------------------
-  Widget _buildEquipeItem(EquipeData model, int index, BuildContext context) {
+  Widget _buildEquipeItem(
+      EquipeData model, int index, BuildContext context, bool vertial) {
     return InkWell(
       onTap: () {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => MyEquipeDetailsScreen(equipeData: model)),
+              builder: (context) => MyEquipeDetailsScreen(
+                    equipeData: model,
+                    vartial: vertial,
+                  )),
         );
       },
       splashColor: Colors.transparent, // Prevents ripple effect on tap
@@ -342,7 +444,8 @@ class _EquipeState extends State<Equipe> {
                 icon: Icon(Icons.edit, color: Color(0xFF4CAF50)),
                 onPressed: () {
                   navigatAndReturn(
-                      context: context, page: EditEquipe(equipeModel: model));
+                      context: context,
+                      page: EditEquipe(equipeModel: model, vertial: vertial));
                   // Your code to handle edit action
                 },
               ),
@@ -369,7 +472,10 @@ class _EquipeState extends State<Equipe> {
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) => AllEquipeDetailsScreen(equipes: model)),
+              builder: (context) => AllEquipeDetailsScreen(
+                    equipes: model,
+                    vertial: vertial,
+                  )),
         );
       },
       splashColor: Colors.transparent, // Prevents ripple effect on tap
