@@ -2,23 +2,32 @@
 // const URLHTTP = '192.168.1.2:3000';
 
 // const URLHTTP = '192.168.1.20:3000'; //IP houssem
-const URLHTTP = '172.16.70.68:3000'; //IP ala
+
+
+
+const URLHTTP = '192.168.227.142:3000'; //IP ala
+
 
 // const URLHTTP = '10.0.2.2:3000';
 
 const CREATEEQUIPEVERTIAL = '/api/equipe/vertial';
-const CONFIRMCONNECTEQUIPE = '/api/reservation/connequipe';
-const GETMYRESERVE = '/api/reservation/myreservation';
+
+//const CONFIRMCONNECTEQUIPE = '/api/reservation/connequipe';
+//const GETMYRESERVE = '/api/reservation/myreservation';
 const GETOTHERRESERVE = '/api/reservation/other';
 
 const DELETEDEMANDERESERVATION = '/api/reservation/demander/';
 
+const CONFIRMCONNECTEQUIPE = '/api/reservation/connected/equipe';
+const GETMYRESERVE = '/api/reservation/my';
+
+
 const SENDNOTIFICATIONTOADMIN = '/api/notification/admin/';
 const SENDNOTIFICATIONTOJOUEUR = '/api/notification/joueur/';
 
-const SEARCHJOUEURPAGINATION = '/api/search/joueur/';
-const SEARCHMYEQUIPEPAGINATION = '/api/myequipe/';
-const SEARCHEQUIPEPAGINATION = '/api/searchequipe/';
+const SEARCHJOUEURPAGINATION = '/api/joueur/search/';
+const SEARCHMYEQUIPEPAGINATION = '/api/equipe/my';
+const SEARCHEQUIPEPAGINATION = '/api/equipe/search/';
 
 const ADDORUPDATETOKENFCMADMIN = '/api/addOrUpdateTokenAdmin/';
 const REMOVETETOKENFCMADMIN = '/api/removeTokenFcmAdmin/';
@@ -26,35 +35,37 @@ const ADDORUPDATETOKENFCMJoueur = '/api/addOrUpdateTokenJoueur/';
 const REMOVETETOKENFCMJoueur = '/api/removeTokenFcmJoueur/';
 
 const ReservationJoueur = '/api/reservation/';
-const DELETGROUPRESERVATION =
-    '/api/ReservationGroup/'; // delete group reservation or one reservation but payment is true
-const RESERVERTERRAINWITHADMIN = '/api/reservationadmin/';
-const SETRESERVEWITHADMIN = '/api/setreservewithadmin/';
+const DELETGROUPRESERVATION = '/api/Reservation/groupe/'; // delete group reservation or one reservation but payment is true
+const RESERVERTERRAINWITHADMIN = '/api/reservation/admin/';
+const SETRESERVEWITHADMIN = '/api/reservation/set/admin/';
 const FILTERRESERVATION = '/api/reservations/filter';
-const FILTERRESERVATIONPagination = '/api/reservationspagination/filter';
-const MYRESERVATIONWITHOTHER = '/api/myreservationswithother/';
+const FILTERRESERVATIONPagination = '/api/reservations/pagination/filter';
+const MYRESERVATIONWITHOTHER = '/api/reservations/with/other/';
 const ADDTERRAIN = '/api/terrain';
 const DELETETERRAIN = '/api/terrain/';
 const DELETETERRAINPHOTO =
     '/api/terrain/'; // rani fl function nkml /terrain/:id/photo/
 const UPDATETERRAIN = '/api/terrain/';
 
-const GETMYTERRAINS = '/api/myterrains';
+
+const GETMYTERRAINS = '/api/terrains/my';
+
 const SEARCHTERRAIN = '/api/search/terrain';
 const SEARCHMYTERRAIN = '/api/search/myterrain';
+
 const GETAllTerrain = '/api//terrains';
-const Loginjoueur = '/api/loginjoueur';
+const Loginjoueur = '/api/joueur/login';
 const REGISTERJOUER = '/api/joueur';
-const GETMYINFORMATIONJOUEUR = '/api/joueur/myinformation';
-const GETMYINFORMATIONADMIN = '/api/admin/myinformation';
+const GETMYINFORMATIONJOUEUR = '/api/joueur/information';
+const GETMYINFORMATIONADMIN = '/api/admin/information';
 const UPDATEJOUEUR = '/api/joueur';
 const UPDATEADMIN = '/api/admin';
 const UPDATEMDPADMIN = '/api/admins/password';
 const UPDATEMDPJOUEUR = '/api/joueurs/password';
 const ADDANNONCE = '/api/annonce';
 const DELETEANNONCE = '/api/annonce/';
-const GETMYANNONCEJOUEUR = '/api/myannonces/joueur/';
-const GETMYANNONCEADMIN = '/api/myannonces/admin/';
+const GETMYANNONCEJOUEUR = '/api/annonces/my/joueur/';
+const GETMYANNONCEADMIN = '/api/annonces/my/admin/';
 const UPDATEANNONCE = '/api/annonce/';
 const GETANNONCEBYID = '/api/annonce/';
 const RECOVERPASSWORD = '/api/joueur/recoverpassword';
@@ -71,8 +82,8 @@ const UPDATEEQUIPE = '/api/equipe/';
 const UPDATEJOUEURSEQUIPE = '/api/equipe/joueurs/';
 const DELETEEQUIPE = '/api/equipe/';
 const GETALLEQUIPE = '/api/equipe';
-const GETMYEQUIPE = '/api/myequipe';
-const GETEQUIPEIMIN = '/api/equipeimin';
+const GETMYEQUIPE = '/api/equipe/my';
+const GETEQUIPEIMIN = '/api/equipe/imin';
 const GETEQUIPEINVITE = '/api/equipes/invite';
 
 const ACCEPTERINVITATION = '/api/joueur/accepter/';
@@ -86,7 +97,7 @@ const CAPITAINEINVITEJOUEUR = '/api/joueur/capitaine/demande/';
 const CAPITAINEANNULEINVITATIONJOUEUR = '/api/joueur/capitaine/annuler/';
 const QUITEREQUIPE = '/api/joueur/supprimer/';
 
-const Loginadmin = '/api/loginadmin';
+const Loginadmin = '/api/admin/login';
 const getJouerById = '/api/joueur/';
 const getJouerByUsername = '/api/joueur/username/';
 String PATH = Loginjoueur;
