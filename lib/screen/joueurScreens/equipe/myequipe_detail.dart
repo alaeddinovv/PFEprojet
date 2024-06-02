@@ -6,6 +6,7 @@ import 'package:pfeprojet/Model/equipe_model.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/const.dart';
 import 'package:pfeprojet/screen/joueurScreens/equipe/cubit/equipe_cubit.dart';
+import 'package:pfeprojet/screen/joueurScreens/profile/profile_other.dart';
 import 'package:url_launcher/url_launcher.dart'; // Ensure this path is correct
 
 // ignore: must_be_immutable
@@ -20,6 +21,7 @@ class MyEquipeDetailsScreen extends StatefulWidget {
 }
 
 class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
+  bool goProfile = false;
   @override
   Widget build(BuildContext context) {
     // Total count now uses numeroJoueurs from the equipeData
@@ -72,6 +74,15 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                 const SizedBox(height: 15),
                 BlocConsumer<EquipeCubit, EquipeState>(
                   listener: (context, state) async {
+                    // go profile for separate when i search joueur or i want to go to profile
+                    if (state is CheckUserByUsernameStateGood && goProfile) {
+                      print('ddddddddddddddddddddd');
+                      goProfile = false;
+                      navigatAndReturn(
+                          context: context,
+                          page: OtherJoueurDetails(
+                              joueurModel: state.dataJoueurModel));
+                    }
                     if (state is QuiterEquipeStateGood) {
                       showToast(
                           msg: "Operation successful",
@@ -140,7 +151,7 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                       itemBuilder: (context, index) {
                         if (index < joueurCount) {
                           Joueurs joueur = widget.equipeData.joueurs[index];
-                          print(joueur.photo);
+                          // print(joueur.photo);
                           return _buildJoueurItem(
                             index,
                             joueur.id,
@@ -297,6 +308,13 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
           ],
         ),
         child: ListTile(
+          onTap: () {
+            EquipeCubit.get(context)
+                .checkUserByUsername(username: username)
+                .then((value) {
+              goProfile = true;
+            });
+          },
           leading: CircleAvatar(
             backgroundImage: photo != null
                 ? NetworkImage(photo)
@@ -343,6 +361,13 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
           ],
         ),
         child: ListTile(
+          onTap: () {
+            EquipeCubit.get(context)
+                .checkUserByUsername(username: username)
+                .then((value) {
+              goProfile = true;
+            });
+          },
           leading: CircleAvatar(
             backgroundImage: photo != null
                 ? NetworkImage(photo)
@@ -466,6 +491,8 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                   BlocConsumer<EquipeCubit, EquipeState>(
                     listener: (context, state) {
                       if (state is CheckUserByUsernameStateGood) {
+                        print('ddddddddddddddddddddd');
+
                         joueurId =
                             state.dataJoueurModel.id; // Store the joueur ID
                         setState(() => message =
@@ -557,6 +584,13 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
           ],
         ),
         child: ListTile(
+          onTap: () {
+            EquipeCubit.get(context)
+                .checkUserByUsername(username: username)
+                .then((value) {
+              goProfile = true;
+            });
+          },
           leading: CircleAvatar(
             backgroundImage: photo != null
                 ? NetworkImage(photo)

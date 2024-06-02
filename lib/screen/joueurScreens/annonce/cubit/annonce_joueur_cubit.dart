@@ -249,14 +249,22 @@ class AnnonceJoueurCubit extends Cubit<AnnonceJoueurState> {
   }
 
   Future<void> demanderRejoindreEquipe(
-      {required String equipeId, required String post}) async {
+      {required String joueurId,
+      required String userName,
+      required String equipeId,
+      required String post,
+      required String nameEquipe}) async {
     emit(DemandeRejoindreEquipeLoadingState());
     print(equipeId);
     await Httplar.httpPost(path: DEMANDERREJOINDREEQUIPE + equipeId, data: {
       "post": post,
     }).then((value) {
       if (value.statusCode == 200) {
-        emit(DemandeRejoindreEquipeStateGood());
+        emit(DemandeRejoindreEquipeStateGood(
+            userName: userName,
+            equipeName: nameEquipe,
+            joueurId: joueurId,
+            post: post));
       } else {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;

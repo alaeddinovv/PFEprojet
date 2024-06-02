@@ -500,16 +500,16 @@ class EquipeCubit extends Cubit<EquipeState> {
   }
 
   //-------------------- check by usernme -------------------------
-  void checkUserByUsername({required String username}) {
+  Future<void> checkUserByUsername({required String username}) async {
     emit(LoadinCheckUserByUsernameState());
-    Httplar.httpget(
+    await Httplar.httpget(
       path: getJouerByUsername + username,
     ).then((value) {
-      print(getJouerByUsername + username);
+      // print(getJouerByUsername + username);
       if (value.statusCode == 200) {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
-        print(jsonResponse);
+        // print(jsonResponse);
         // emit(TerrainViewToggled());
 
         emit(CheckUserByUsernameStateGood(

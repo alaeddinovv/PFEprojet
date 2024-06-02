@@ -111,11 +111,13 @@ class Equipe {
   String id;
   String nom;
   List<Joueur> joueurs;
+  String? capitaine_id;
 
   Equipe({
     required this.id,
     required this.nom,
     required this.joueurs,
+    this.capitaine_id,
   });
 
   factory Equipe.fromJson(Map<String, dynamic> json) {
@@ -125,6 +127,7 @@ class Equipe {
       joueurs: (json['joueurs'] as List<dynamic>)
           .map((e) => Joueur.fromJson(e as Map<String, dynamic>))
           .toList(),
+      capitaine_id: json['capitaine_id'] as String?,
     );
   }
 }

@@ -6,7 +6,9 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import 'package:pfeprojet/Model/annonce/pulier/annonce_search_model.dart';
 import 'package:pfeprojet/component/components.dart';
+import 'package:pfeprojet/component/const.dart';
 import 'package:pfeprojet/screen/joueurScreens/annonce/cubit/annonce_joueur_cubit.dart';
+import 'package:pfeprojet/screen/joueurScreens/home/cubit/home_joueur_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/location/terrain_location.dart';
 
 class AnnonceSearchJoueurDetails extends StatefulWidget {
@@ -58,7 +60,7 @@ class _AnnonceSearchJoueurDetailsState
         title: const Text('Annonce Details'),
       ),
       body: BlocConsumer<AnnonceJoueurCubit, AnnonceJoueurState>(
-        listener: (context, state) {
+        listener: (context, state) async {
           if (state is GetAnnonceByIDStateGood) {
             annonceDetails = state.annonceModel;
           }
@@ -68,7 +70,13 @@ class _AnnonceSearchJoueurDetailsState
             Navigator.pop(context);
           }
           if (state is DemandeRejoindreEquipeStateGood) {
+            Navigator.pop(context);
             showToast(msg: 'Request to join sent', state: ToastStates.success);
+            await sendNotificationToJoueur(
+                title: 'request to join equipe',
+                body:
+                    '${state.userName} send request to join ${state.equipeName}\n post: ${state.post} ',
+                joueurId: state.joueurId);
           }
         },
         builder: (context, state) {
@@ -122,13 +130,13 @@ class _AnnonceSearchJoueurDetailsState
                       Icons.timer,
                       Colors.brown),
                   _buildTeamExpansionTile(
-                      'Team 1',
+                      'Team 1: ${annonceDetails.reservationId.equipeId1!.nom}',
                       annonceDetails.reservationId.equipeId1 != null
                           ? annonceDetails.reservationId.equipeId1!.joueurs
                           : [],
                       Colors.blue),
                   _buildTeamExpansionTile(
-                      'Team 2',
+                      'Team 2 : ${annonceDetails.reservationId.equipeId2!.nom}',
                       annonceDetails.reservationId.equipeId2 != null
                           ? annonceDetails.reservationId.equipeId2!.joueurs
                           : [],
@@ -140,35 +148,35 @@ class _AnnonceSearchJoueurDetailsState
                       Colors.grey),
                   const SizedBox(height: 20),
                   Center(
-                    child: widget.isMyAnnonce
-                        ? state is UpdateAnnonceJoueurLoadingState
-                            ? const CircularProgressIndicator()
-                            : defaultSubmit2(
-                                text: 'Update Annonce',
-                                onPressed: () {
-                                  List<Map<String, dynamic>> postWantList =
-                                      annonceDetails.postWant
-                                          .map((postWant) => postWant.toJson())
-                                          .toList();
-                                  Map<String, dynamic> model = {
-                                    'description': annonceDetails.description,
-                                    'post_want': postWantList,
-                                    'numero_joueurs':
-                                        annonceDetails.postWant.length,
-                                    'wilaya': annonceDetails.wilaya,
-                                    'commune': annonceDetails.commune,
-                                  };
-                                  AnnonceJoueurCubit.get(context)
-                                      .updateAnnonceJoueur(
-                                          model: model, id: annonceDetails.id);
-                                })
-                        : ElevatedButton(
-                            onPressed: () {
-                              _showJoinRequestDialog(context);
-                            },
-                            child: const Text('Request to Join Team'),
-                          ),
-                  ),
+                      child: widget.isMyAnnonce
+                          ? state is UpdateAnnonceJoueurLoadingState
+                              ? const CircularProgressIndicator()
+                              : defaultSubmit2(
+                                  text: 'Update Annonce',
+                                  onPressed: () {
+                                    List<Map<String, dynamic>> postWantList =
+                                        annonceDetails.postWant
+                                            .map(
+                                                (postWant) => postWant.toJson())
+                                            .toList();
+                                    Map<String, dynamic> model = {
+                                      'description': annonceDetails.description,
+                                      'post_want': postWantList,
+                                      'numero_joueurs':
+                                          annonceDetails.postWant.length,
+                                      'wilaya': annonceDetails.wilaya,
+                                      'commune': annonceDetails.commune,
+                                    };
+                                    AnnonceJoueurCubit.get(context)
+                                        .updateAnnonceJoueur(
+                                            model: model,
+                                            id: annonceDetails.id);
+                                  })
+                          : defaultSubmit2(
+                              text: 'request to join Match',
+                              onPressed: () {
+                                _showJoinRequestDialog(context);
+                              })),
                 ],
               ),
             ),
@@ -233,7 +241,11 @@ class _AnnonceSearchJoueurDetailsState
     // Implement the logic to send the join request
     print('Request to join as $position sent.');
     AnnonceJoueurCubit.get(context).demanderRejoindreEquipe(
-        equipeId: annonceDetails.reservationId.equipeId1!.id, post: position);
+        userName: HomeJoueurCubit.get(context).joueurModel!.username!,
+        equipeId: annonceDetails.reservationId.equipeId1!.id,
+        post: position,
+        nameEquipe: annonceDetails.reservationId.equipeId1!.nom,
+        joueurId: annonceDetails.reservationId.equipeId1!.capitaine_id!);
   }
 
   Widget _buildDetailCardWithNavigation(String title, String subtitle,
