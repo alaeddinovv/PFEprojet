@@ -45,7 +45,7 @@ class _HomeAdminState extends State<HomeAdmin> {
                                 null
                             ? NetworkImage(
                                 HomeAdminCubit.get(context).adminModel!.photo!)
-                            : const AssetImage('assets/images/user.png')
+                            : const AssetImage('assets/images/football.png')
                                 as ImageProvider<Object>,
                       ),
                     ),

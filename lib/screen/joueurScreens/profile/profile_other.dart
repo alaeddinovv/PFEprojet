@@ -25,7 +25,7 @@ class OtherJoueurDetails extends StatelessWidget {
               radius: 50,
               backgroundImage: joueurModel.photo != null
                   ? NetworkImage(joueurModel.photo!)
-                  : const AssetImage('assets/images/user.png')
+                  : const AssetImage('assets/images/football.png')
                       as ImageProvider<Object>,
             ),
             const SizedBox(height: 10),

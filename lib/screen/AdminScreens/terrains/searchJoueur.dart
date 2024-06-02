@@ -148,7 +148,7 @@ class _SearchTestState extends State<SearchTest> {
                                       backgroundImage: joueur.photo != null
                                           ? NetworkImage(joueur.photo!)
                                           : const AssetImage(
-                                                  'assets/images/user.png')
+                                                  'assets/images/football.png')
                                               as ImageProvider,
                                     ),
                                     title: Text(joueur.username!),
