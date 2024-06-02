@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pfeprojet/Model/admin_medel.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/const.dart';
+import 'package:pfeprojet/cubit/main_cubit.dart';
+import 'package:pfeprojet/generated/l10n.dart';
 import 'package:pfeprojet/helper/cachhelper.dart';
 import 'package:pfeprojet/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
 import 'package:pfeprojet/screen/AdminScreens/home/home.dart';
 import 'package:pfeprojet/screen/AdminScreens/profile/cubit/profile_admin_cubit.dart';
 import 'package:pfeprojet/screen/AdminScreens/profile/update_form.dart';
-
 import 'package:pfeprojet/screen/Auth/login.dart';
-
 import 'package:pfeprojet/screen/AdminScreens/profile/update_mdp.dart';
 
 class ProfileAdmin extends StatelessWidget {
@@ -21,169 +22,206 @@ class ProfileAdmin extends StatelessWidget {
     final DataAdminModel adminModel = HomeAdminCubit.get(context).adminModel!;
 
     return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
+      appBar: AppBar(
+        leading: Builder(
+          builder: (context) {
+            return IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+            );
+          },
+        ),
+        title: Text('Profile',
+            style:
+            GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.bold)),
+      ),
+      drawer: _buildDrawer(context, adminModel),
+      body: BlocConsumer<ProfileAdminCubit, ProfileAdminState>(
+        listener: (context, state) {},
+        builder: (context, state) {
+          return PopScope(
+            canPop: false,
+            onPopInvoked: (didPop) {
+              if (!didPop) {
+                navigatAndFinish(context: context, page: const HomeAdmin());
+              }
+            },
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 20),
+                  CircleAvatar(
+                    radius: 50,
+                    backgroundImage: adminModel.photo != null
+                        ? NetworkImage(adminModel.photo!)
+                        : const AssetImage('assets/images/football.png')
+                    as ImageProvider<Object>,
+                  ),
+                  const SizedBox(height: 10),
+                  Text(
+                    adminModel.nom!,
+                    style: GoogleFonts.poppins(
+                        fontSize: 24, fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(height: 20),
+                  _buildProfileCard(context, adminModel),
+                  const SizedBox(height: 30),
+                ],
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildProfileCard(BuildContext context, DataAdminModel adminModel) {
+    return Card(
+      margin: const EdgeInsets.symmetric(horizontal: 16),
+      elevation: 5,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            _buildListTile(context,
+                icon: Icons.person,
+                title: 'Nom',
+                subtitle: adminModel.nom!),
+            _buildListTile(context,
+                icon: Icons.person,
+                title: 'Prenom',
+                subtitle: adminModel.prenom!),
+            _buildListTile(context,
+                icon: Icons.location_city,
+                title: 'Wilaya',
+                subtitle: adminModel.wilaya!),
+            _buildListTile(context,
+                icon: Icons.email,
+                title: 'Email',
+                subtitle: adminModel.email!),
+            _buildListTile(context,
+                icon: Icons.phone,
+                title: 'Phone',
+                subtitle: adminModel.telephone!.toString()),
+          ],
+        ),
+      ),
+    );
+  }
+
+  ListTile _buildListTile(BuildContext context,
+      {required IconData icon,
+        required String title,
+        required String subtitle}) {
+    return ListTile(
+      leading: Icon(icon),
+      title:
+      Text(title, style: GoogleFonts.poppins(fontWeight: FontWeight.bold)),
+      subtitle: Text(subtitle, style: GoogleFonts.poppins()),
+      onTap: () {},
+    );
+  }
+
+  Drawer _buildDrawer(BuildContext context, DataAdminModel adminModel) {
+    return Drawer(
+      child: ListView(
+        padding: EdgeInsets.zero,
+        children: [
+          DrawerHeader(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                CircleAvatar(
+                  radius: 40,
+                  backgroundImage: adminModel.photo != null
+                      ? NetworkImage(adminModel.photo!)
+                      : const AssetImage('assets/images/football.png')
+                  as ImageProvider<Object>,
+                ),
+              ],
+            ),
+          ),
+          ListTile(
+            leading: Icon(Icons.home),
+            title: Text('Home', style: GoogleFonts.poppins()),
+            onTap: () {
               navigatAndFinish(context: context, page: const HomeAdmin());
             },
           ),
-          title: const Text('Profile'),
-          actions: [
-            TextButton(
-                onPressed: () async {
-                  removeFCMTokenAdmin(
-                          device: await CachHelper.getData(key: 'deviceInfo'))
-                      .then((value) {
-                    navigatAndFinish(context: context, page: Login());
-                    CachHelper.removdata(key: "TOKEN");
-                    showToast(msg: "Disconnect", state: ToastStates.error);
-                  });
-                },
-                child: const Text(
-                  "Disconnect",
-                  style: TextStyle(color: Colors.red),
-                ))
-          ],
-        ),
-        body: BlocConsumer<ProfileAdminCubit, ProfileAdminState>(
-          listener: (context, state) {},
-          builder: (context, state) {
-            // if (state is GetMyInformationLoading) {
-            //   return const Center(child: CircularProgressIndicator());
-            // }
-            return PopScope(
-              canPop: false,
-              onPopInvoked: (didPop) {
-                if (!didPop) {
-                  navigatAndFinish(context: context, page: const HomeAdmin());
-                }
-              },
-              child: SingleChildScrollView(
-                child: Column(
-                  // mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    CircleAvatar(
-                      radius: 60,
-                      backgroundImage: adminModel.photo != null
-                          ? NetworkImage(adminModel.photo!)
-                          : const AssetImage('assets/images/football.png')
-                              as ImageProvider<Object>,
-                    ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.person),
-                      title: const Text('Nom'),
-                      subtitle: Text(
-                        adminModel.nom!,
+          ListTile(
+            leading: Icon(Icons.edit),
+            title: Text('Modifier profile', style: GoogleFonts.poppins()),
+            onTap: () {
+              navigatAndReturn(
+                context: context,
+                page: const UpdateAdminForm(),
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.lock),
+            title: Text('Modifier mdp', style: GoogleFonts.poppins()),
+            onTap: () {
+              navigatAndReturn(
+                context: context,
+                page: UpdateMdpForm(),
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.translate),
+            title: Text('Change Language', style: GoogleFonts.poppins()),
+            onTap: () {
+              showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                  title: Text(S.of(context).change_language,
+                      style: GoogleFonts.poppins()),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      ListTile(
+                        title: Text('Frencais', style: GoogleFonts.poppins()),
+                        onTap: () {
+                          MainCubit.get(context)
+                              .changeLanguage(const Locale('en'));
+                          Navigator.pop(context);
+                        },
                       ),
-                      onTap: () {},
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.person),
-                      title: const Text('Prenom'),
-                      subtitle: Text(
-                        adminModel.prenom!,
+                      ListTile(
+                        title: Text('Arab', style: GoogleFonts.poppins()),
+                        onTap: () {
+                          MainCubit.get(context)
+                              .changeLanguage(const Locale('ar'));
+                          Navigator.pop(context);
+                        },
                       ),
-                      onTap: () {},
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.location_city),
-                      title: const Text('Wilaya'),
-                      subtitle: Text(
-                        adminModel.wilaya!,
-                      ),
-                      onTap: () {},
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.email),
-                      title: const Text('Email'),
-                      subtitle: Text(
-                        adminModel.email!,
-                      ),
-                      onTap: () {},
-                    ),
-                    ListTile(
-                      leading: const Icon(Icons.phone),
-                      title: const Text('Phone'),
-                      subtitle: Text(
-                        adminModel.telephone!.toString(),
-                      ),
-                      onTap: () {},
-                    ),
-                    const SizedBox(
-                      height: 30,
-                    ),
-                    Padding(
-                      padding: EdgeInsets.all(16.0),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Container(
-                              height: 55,
-                              color: Colors.blueAccent,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(5))),
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 15),
-                                    // textStyle: const TextStyle(fontSize: 19),
-                                    backgroundColor: Colors.blueAccent),
-                                onPressed: () {
-                                  navigatAndReturn(
-                                    context: context,
-                                    page: const UpdateAdminForm(),
-                                  );
-                                },
-                                child: const Text(
-                                  "Modifier profile",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 16),
-                                ),
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 10),
-                          Expanded(
-                            child: Container(
-                              height: 55,
-                              color: Colors.blueAccent,
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                    shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(5))),
-                                    padding: const EdgeInsets.symmetric(
-                                        horizontal: 20, vertical: 15),
-                                    // textStyle: const TextStyle(fontSize: 19),
-                                    backgroundColor: Colors.blueAccent),
-                                onPressed: () {
-                                  navigatAndReturn(
-                                    context: context,
-                                    page: UpdateMdpForm(),
-                                  );
-                                },
-                                child: const Text(
-                                  "Modifier mdp",
-                                  style: TextStyle(
-                                      color: Colors.white, fontSize: 16),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            );
-          },
-        ));
+              );
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.exit_to_app),
+            title: Text('Disconnect', style: GoogleFonts.poppins()),
+            onTap: () async {
+              removeFCMTokenAdmin(
+                  device: await CachHelper.getData(key: 'deviceInfo'))
+                  .then((value) {
+                navigatAndFinish(context: context, page: Login());
+                CachHelper.removdata(key: "TOKEN");
+                showToast(msg: "Disconnect", state: ToastStates.error);
+              });
+            },
+          ),
+        ],
+      ),
+    );
   }
 }

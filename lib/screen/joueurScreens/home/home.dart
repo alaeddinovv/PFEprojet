@@ -67,7 +67,7 @@ class _HomeJoueurState extends State<HomeJoueur> {
   NavigationBarTheme navigationBar(BuildContext context) {
     return NavigationBarTheme(
         data: NavigationBarThemeData(
-          indicatorColor: Colors.blue[100],
+          indicatorColor: const Color(0xFF00FFCC),
           labelTextStyle: MaterialStateProperty.all(
             const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
           ),
@@ -82,7 +82,7 @@ class _HomeJoueurState extends State<HomeJoueur> {
             NavigationDestination(icon: Icon(Icons.home), label: 'terrain'),
             NavigationDestination(
                 icon: Icon(Icons.more_time_rounded), label: 'Reservation'),
-            NavigationDestination(icon: Icon(Icons.add), label: 'annonce'),
+            NavigationDestination(icon: Icon(Icons.campaign), label: 'annonce'),
             NavigationDestination(icon: Icon(Icons.groups_2), label: 'equipe'),
           ],
         ));

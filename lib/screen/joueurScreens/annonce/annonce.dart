@@ -68,39 +68,6 @@ class _AnnonceState extends State<Annonce> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child:
-                // ToggleButtons(
-                //   isSelected: [_showList, !_showList],
-                //   onPressed: (int index) {
-                //     setState(() {
-                //       _showList = index == 0;
-                //       if (!_showList) {
-                //         AnnonceJoueurCubit.get(context).getAllAnnonce(
-                //             myId: HomeJoueurCubit.get(context)
-                //                 .joueurModel!
-                //                 .id); // Call getAllAnnonce  owner: HomeJoueurCubit.get(context).joueurModel!.idwhen "All annonces" is selected
-                //       } else {
-                //         AnnonceJoueurCubit.get(context)
-                //             .getMyAnnonceJoueur(); // Optional: Refresh "My annonces" when switching back
-                //       }
-                //     });
-                //   },
-                //   borderRadius: BorderRadius.circular(8),
-                //   borderColor: Colors.blue,
-                //   selectedBorderColor: Colors.blueAccent,
-                //   selectedColor: Colors.white,
-                //   fillColor: Colors.lightBlueAccent.withOpacity(0.5),
-                //   constraints: const BoxConstraints(minHeight: 40.0),
-                //   children: <Widget>[
-                //     Padding(
-                //       padding: const EdgeInsets.symmetric(horizontal: 16),
-                //       child: Text(S.of(context).my_annonces),
-                //     ),
-                //     Padding(
-                //       padding: const EdgeInsets.symmetric(horizontal: 16),
-                //       child: Text(S.of(context).all_annonces),
-                //     ),
-                //   ],
-                // ),
                 ToggleButtonsWidget(
               icon1: Icons.list_outlined,
               icon2: Icons.list_outlined,
@@ -313,28 +280,52 @@ class _AnnonceState extends State<Annonce> {
   }
 
 //----------------------------------------------------------------mmmmmmmmmmmmmmmmmmmmmyyyyyyyyyyyyy
-  Widget _buildAnnonceItem(
-      AnnonceAdminData model, int index, BuildContext context) {
+  Widget _buildAnnonceItem(AnnonceAdminData model, int index, BuildContext context) {
+    IconData getIconForType(String? type) {
+      switch (type) {
+        case 'other':
+          return Icons.info;
+        case 'search joueur':
+          return Icons.person_search;
+        case 'search join equipe':
+          return Icons.group_add;
+        default:
+          return Icons.help;
+      }
+    }
+
+    Color getColorForType(String? type) {
+      switch (type) {
+        case 'other':
+          return const Color(0xFF76A26C); // Green
+        case 'search_joueur':
+          return const Color(0xFF6E8898); // Light Slate Gray
+        case 'search_join_equipe':
+          return const Color(0xFF93385F); // Purple
+        default:
+          return const Color(0xFF333D79); // Navy Blue
+      }
+    }
+
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+      margin: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border.all(
-            color: Colors.blueAccent, width: 1), // Softer blue border
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.circular(12.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 1,
-            blurRadius: 5,
-            offset: const Offset(0, 3), // Elevated shadow effect
+            color: Colors.grey.withOpacity(0.3),
+            spreadRadius: 2,
+            blurRadius: 6,
+            offset: const Offset(0, 3),
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ListTile(
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12.0),
+        child: Material(
+          color: Colors.white,
+          child: InkWell(
             onTap: () {
               navigatAndReturn(
                 context: context,
@@ -345,61 +336,111 @@ class _AnnonceState extends State<Annonce> {
                 ),
               );
             },
-            title: Text(
-              model.type ?? '',
-              style: const TextStyle(
-                color: Colors.black87,
-                fontWeight: FontWeight.bold,
-                fontSize: 18,
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Row(
+                children: [
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: getColorForType(model.type),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      getIconForType(model.type),
+                      color: Colors.white,
+                      size: 24,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          model.type ?? '',
+                          style: TextStyle(
+                            color: getColorForType(model.type),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          model.description ?? '',
+                          style: const TextStyle(
+                            color: Colors.black54,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.delete),
+                    color: getColorForType(model.type),
+                    onPressed: () {
+                      dialogDelete(context, model);
+                    },
+                  ),
+                ],
               ),
             ),
-            trailing: IconButton(
-              icon: const Icon(Icons.delete,
-                  color: Color(0xFFBDBDBD)), // Softer grey
-              onPressed: () {
-                dialogDelete(context, model);
-                // Your code to handle delete action
-              },
-            ),
           ),
-          Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            child: Text(
-              model.description ?? '', // Display the description
-              style: const TextStyle(
-                fontSize: 16, // Readability enhancement
-                color: Colors.black54, // Softer text color
-              ),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }
 
+
   //--------------------------------------alallllllllllllllllllllllllllllllllllll
-  Widget _buildAllAnnonceItem(
-      AnnonceData model, int index, BuildContext context) {
+  Widget _buildAllAnnonceItem(AnnonceData model, int index, BuildContext context) {
+    IconData getIconForType(String? type) {
+      switch (type) {
+        case 'other':
+          return Icons.info;
+        case 'search joueur':
+          return Icons.person_search;
+        case 'search join equipe':
+          return Icons.group_add;
+        default:
+          return Icons.help;
+      }
+    }
+
+    Color getColorForType(String? type) {
+      switch (type) {
+        case 'other':
+          return const Color(0xFF76A26C); // Green
+        case 'search_joueur':
+          return const Color(0xFF6E8898); // Light Slate Gray
+        case 'search_join_equipe':
+          return const Color(0xFF93385F); // Purple
+        default:
+          return const Color(0xFF333D79); // Navy Blue
+      }
+    }
+
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+      margin: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border.all(color: Colors.blueAccent, width: 1),
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.circular(12.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
-            spreadRadius: 1,
-            blurRadius: 5,
-            offset: const Offset(0, 3), // Changes position of shadow
+            color: Colors.grey.withOpacity(0.3),
+            spreadRadius: 2,
+            blurRadius: 6,
+            offset: const Offset(0, 3),
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ListTile(
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(12.0),
+        child: Material(
+          color: Colors.white,
+          child: InkWell(
             onTap: () {
               navigatAndReturn(
                 context: context,
@@ -410,53 +451,72 @@ class _AnnonceState extends State<Annonce> {
                 ),
               );
             },
-            title: Text(
-              model.type ?? '',
-              style: const TextStyle(
-                color: Colors.black87,
-                fontWeight: FontWeight.bold,
-                fontSize: 18, // Larger font size for prominence
-              ),
-            ),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min, // Keeps the Row compact
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.call,
-                      color: Color(0xFF4CAF50)), // Softer green
-                  onPressed: () {
-                    int? phoneNumber =
-                        model.admin?.telephone ?? model.joueur?.telephone;
-                    if (phoneNumber != null) {
-                      _makePhoneCall(phoneNumber.toString());
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content:
-                              Text(S.of(context).no_telephone_number_available),
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Row(
+                children: [
+                  Container(
+                    width: 40,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      color: getColorForType(model.type),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Icon(
+                      getIconForType(model.type),
+                      color: Colors.white,
+                      size: 24,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          model.type ?? '',
+                          style: TextStyle(
+                            color: getColorForType(model.type),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
                         ),
-                      );
-                    }
-                  },
-                ),
-              ],
-            ),
-          ),
-          Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            child: Text(
-              model.description ?? '', // Display the description
-              style: const TextStyle(
-                fontSize: 16, // Slightly larger font for readability
-                color: Colors.black54, // Softer text color
+                        const SizedBox(height: 4),
+                        Text(
+                          model.joueur?.nom ?? model.admin?.nom ?? '',
+                          style: const TextStyle(
+                            color: Colors.black54,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.call),
+                    color: getColorForType(model.type),
+                    onPressed: () {
+                      int? phoneNumber = model.admin?.telephone ?? model.joueur?.telephone;
+                      if (phoneNumber != null) {
+                        _makePhoneCall(phoneNumber.toString());
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(S.of(context).no_telephone_number_available),
+                          ),
+                        );
+                      }
+                    },
+                  ),
+                ],
               ),
             ),
           ),
-        ],
+        ),
       ),
     );
   }
+
 
   //-----------------------------------------------------------------------------
 
