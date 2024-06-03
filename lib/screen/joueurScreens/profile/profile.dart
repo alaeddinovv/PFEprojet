@@ -210,7 +210,7 @@ class ProfileJoueur extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       ListTile(
-                        title: Text('French', style: GoogleFonts.poppins()),
+                        title: Text('Frencais', style: GoogleFonts.poppins()),
                         onTap: () {
                           MainCubit.get(context)
                               .changeLanguage(const Locale('en'));
@@ -218,7 +218,7 @@ class ProfileJoueur extends StatelessWidget {
                         },
                       ),
                       ListTile(
-                        title: Text('Arabic', style: GoogleFonts.poppins()),
+                        title: Text('Arab', style: GoogleFonts.poppins()),
                         onTap: () {
                           MainCubit.get(context)
                               .changeLanguage(const Locale('ar'));
