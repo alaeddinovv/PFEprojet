@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pfeprojet/Api/color.dart';
 import 'package:pfeprojet/Model/annonce/annonce_model.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/tpggleButtons.dart';
@@ -316,11 +317,10 @@ class _AnnonceState extends State<Annonce> {
   Widget _buildAnnonceItem(
       AnnonceAdminData model, int index, BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+      margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border.all(
-            color: Colors.blueAccent, width: 1), // Softer blue border
+        border: Border.all(color: greenConst, width: 1), // Softer blue border
         borderRadius: BorderRadius.circular(10.0),
         boxShadow: [
           BoxShadow(
@@ -382,10 +382,10 @@ class _AnnonceState extends State<Annonce> {
   Widget _buildAllAnnonceItem(
       AnnonceData model, int index, BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+      margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
       decoration: BoxDecoration(
         color: Colors.white,
-        border: Border.all(color: Colors.blueAccent, width: 1),
+        border: Border.all(color: greenConst, width: 1),
         borderRadius: BorderRadius.circular(10.0),
         boxShadow: [
           BoxShadow(

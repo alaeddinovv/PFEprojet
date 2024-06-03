@@ -52,23 +52,33 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Center(
-                  child: Text(
-                    '${widget.equipeData.nom}',
-                    // Display team name at the top of the page
-                    style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: greenConst),
-                  ),
-                ),
+                // Center(
+                //   child: Text(
+                //     '${widget.equipeData.nom}',
+                //     // Display team name at the top of the page
+                //     style: TextStyle(
+                //         fontSize: 24,
+                //         fontWeight: FontWeight.bold,
+                //         color: greenConst),
+                //   ),
+                // ),
                 const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(
-                    'Capitaine : ${widget.equipeData.capitaineId.username}',
-                    style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold),
+                  child: Row(
+                    children: [
+                      Text(
+                        'Capitaine: ',
+                        style: const TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        '${widget.equipeData.capitaineId.username}',
+                        style: const TextStyle(
+                          fontSize: 18,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 15),
@@ -440,8 +450,8 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
               ),
             ],
           ),
-          child: const Center(
-            child: Icon(Icons.add, color: Colors.green, size: 32),
+          child: Center(
+            child: Icon(Icons.add, color: greenConst, size: 30),
           ),
         ),
       ),
@@ -560,17 +570,19 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
   //------------------------ les demande ----------------------------------
 
   Widget _buildDemandeItem(
-      int index,
-      String joueurId,
-      String equipeId,
-      String equipename,
-      String username,
-      int? telephone,
-      String? post,
-      String? photo) {
+    int index,
+    String joueurId,
+    String equipeId,
+    String equipename,
+    String username,
+    int? telephone,
+    String? post,
+    String? photo,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Container(
+        // margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
@@ -583,63 +595,78 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
             ),
           ],
         ),
-        child: ListTile(
-          onTap: () {
-            EquipeCubit.get(context)
-                .checkUserByUsername(username: username)
-                .then((value) {
-              goProfile = true;
-            });
-          },
-          leading: CircleAvatar(
-            backgroundImage: photo != null
-                ? NetworkImage(photo)
-                : const AssetImage(
-                    'assets/images/football.png',
-                  ) as ImageProvider<Object>,
-          ),
-          title: Text(
-            username,
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          subtitle: Text(post!.isEmpty ? "accept" : post),
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              InkWell(
-                  onTap: () {
-                    int? phoneNumber = telephone;
-                    if (phoneNumber != null) {
-                      _makePhoneCall(phoneNumber.toString());
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text("No telephone number available."),
+        child: Container(
+          height: 75,
+          child: Center(
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CircleAvatar(
+                    backgroundImage: photo != null
+                        ? NetworkImage(photo)
+                        : const AssetImage('assets/images/football.png')
+                            as ImageProvider<Object>,
+                  ),
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        username,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
                         ),
-                      );
-                    }
-                  },
-                  child: const Icon(Icons.call, color: Colors.green)),
-              const SizedBox(width: 15),
-              InkWell(
-                  onTap: () {
-                    EquipeCubit.get(context).capitaineAceeptJoueur(
-                      equipeId: equipeId,
-                      joueurId: joueurId,
-                      equipename: equipename,
-                    );
-                  },
-                  child: const Icon(Icons.check, color: Colors.green)),
-              const SizedBox(width: 15),
-              InkWell(
-                  onTap: () {
-                    EquipeCubit.get(context).capitaineRefuseJoueur(
-                      equipeId: equipeId,
-                      joueurId: joueurId,
-                    );
-                  },
-                  child: const Icon(Icons.cancel, color: Colors.red)),
-            ],
+                      ),
+                      Text(post!.isEmpty ? "accepter" : post),
+                    ],
+                  ),
+                ),
+                Row(
+                  children: [
+                    SizedBox(width: 8),
+                    InkWell(
+                        onTap: () {
+                          int? phoneNumber = telephone;
+                          if (phoneNumber != null) {
+                            _makePhoneCall(phoneNumber.toString());
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("No telephone number available."),
+                              ),
+                            );
+                          }
+                        },
+                        child: Icon(Icons.call, color: Colors.green)),
+                    SizedBox(width: 8),
+                    InkWell(
+                        onTap: () {
+                          EquipeCubit.get(context).capitaineAceeptJoueur(
+                            equipeId: equipeId,
+                            joueurId: joueurId,
+                            equipename: equipename,
+                          );
+                        },
+                        child: Icon(Icons.check, color: Colors.green)),
+                    SizedBox(width: 8),
+                    InkWell(
+                        onTap: () {
+                          EquipeCubit.get(context).capitaineRefuseJoueur(
+                            equipeId: equipeId,
+                            joueurId: joueurId,
+                          );
+                        },
+                        child: Icon(Icons.cancel, color: Colors.red)),
+                    SizedBox(width: 8),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
