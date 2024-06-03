@@ -71,7 +71,7 @@ class EquipeCubit extends Cubit<EquipeState> {
 
   //----------------- get my terrain--------------------
   List<EquipeData> equipeData = [];
-  String cursorId = "";
+  String cursorId = '';
   Future<void> getMyEquipe({String cursor = '', bool? vertial}) async {
     emit(GetMyEquipeLoading());
 
@@ -85,6 +85,7 @@ class EquipeCubit extends Cubit<EquipeState> {
         }
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
+        print(jsonResponse);
         EquipeModel model = EquipeModel.fromJson(jsonResponse);
         equipeData.addAll(model.data);
         cursorId = model.nextCursor;

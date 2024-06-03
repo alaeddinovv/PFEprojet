@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:pfeprojet/Api/color.dart';
 
 import 'package:pfeprojet/Model/annonce/pulier/annonce_search_model.dart';
 import 'package:pfeprojet/component/components.dart';
@@ -90,22 +91,22 @@ class _AnnonceSearchJoueurDetailsState
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _buildDetailCard('Type', annonceDetails.type,
-                      Icons.sports_soccer, Colors.orange),
+                      Icons.sports_soccer, greenConst),
                   _buildDetailCard(
                       'Date',
                       annonceDetails.reservationId.jour.toIso8601String(),
                       Icons.calendar_today,
-                      Colors.green),
+                      greenConst),
                   _buildDetailCard(
                       'Start Time',
                       annonceDetails.reservationId.heureDebutTemps,
                       Icons.access_time,
-                      Colors.blue),
+                      greenConst),
                   _buildDetailCardWithNavigation(
                     'Terrain Name and Address',
                     '${annonceDetails.terrainId.nom}, ${annonceDetails.terrainId.adresse}',
                     Icons.location_on,
-                    Colors.red,
+                    greenConst,
                     () {
                       navigatAndReturn(
                           context: context,
@@ -121,20 +122,20 @@ class _AnnonceSearchJoueurDetailsState
                       'Number of Players',
                       annonceDetails.postWant.length.toString(),
                       Icons.people,
-                      Colors.purple),
+                      greenConst),
                   _buildExpansionTile('Post Wanted', annonceDetails.postWant,
-                      Icons.search, Colors.teal),
+                      Icons.search, greenConst),
                   _buildDetailCard(
                       'Duration',
                       '${annonceDetails.reservationId.duree} hours',
                       Icons.timer,
-                      Colors.brown),
+                      greenConst),
                   _buildTeamExpansionTile(
                       'Team 1: ${annonceDetails.reservationId.equipeId1!.nom}',
                       annonceDetails.reservationId.equipeId1 != null
                           ? annonceDetails.reservationId.equipeId1!.joueurs
                           : [],
-                      Colors.blue),
+                      greenConst),
                   _buildTeamExpansionTile(
                       'Team 2 : ${annonceDetails.reservationId.equipeId2!.nom}',
                       annonceDetails.reservationId.equipeId2 != null
@@ -145,7 +146,7 @@ class _AnnonceSearchJoueurDetailsState
                       'Description',
                       annonceDetails.description,
                       Icons.description,
-                      Colors.grey),
+                      greenConst),
                   const SizedBox(height: 20),
                   Center(
                       child: widget.isMyAnnonce
@@ -250,8 +251,21 @@ class _AnnonceSearchJoueurDetailsState
 
   Widget _buildDetailCardWithNavigation(String title, String subtitle,
       IconData icon, Color iconColor, VoidCallback onIconPressed) {
-    return Card(
+    return Container(
       margin: const EdgeInsets.symmetric(vertical: 8.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        // border: Border.all(color: iconColor, width: 1),
+        borderRadius: BorderRadius.circular(10.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 1,
+            blurRadius: 5,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
       child: ListTile(
         leading: GestureDetector(
           onTap: onIconPressed,
@@ -268,8 +282,21 @@ class _AnnonceSearchJoueurDetailsState
 
   Widget _buildDetailCard(
       String title, String subtitle, IconData icon, Color iconColor) {
-    return Card(
+    return Container(
       margin: const EdgeInsets.symmetric(vertical: 8.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        // border: Border.all(color: iconColor, width: 1),
+        borderRadius: BorderRadius.circular(10.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 1,
+            blurRadius: 5,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
       child: ListTile(
         leading: Icon(icon, color: iconColor),
         title: Text(
@@ -283,8 +310,21 @@ class _AnnonceSearchJoueurDetailsState
 
   Widget _buildDetailCardDescription(
       String title, String subtitle, IconData icon, Color iconColor) {
-    return Card(
+    return Container(
       margin: const EdgeInsets.symmetric(vertical: 8.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: iconColor, width: 1),
+        borderRadius: BorderRadius.circular(10.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 1,
+            blurRadius: 5,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
       child: ListTile(
         leading: Icon(icon, color: iconColor),
         title: Row(
@@ -293,13 +333,17 @@ class _AnnonceSearchJoueurDetailsState
               title,
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
-            const SizedBox(width: 8.0),
+            // const SizedBox(width: 8.0),
             if (widget.isMyAnnonce)
               IconButton(
-                  onPressed: () {
-                    _toggleEditing(title: title);
-                  },
-                  icon: Icon(isEditingDescription ? Icons.done : Icons.edit))
+                onPressed: () {
+                  _toggleEditing(title: title);
+                },
+                icon: Icon(
+                  isEditingDescription ? Icons.done : Icons.edit,
+                  size: 20,
+                ),
+              ),
           ],
         ),
         subtitle: isEditingDescription && title == 'Description'
@@ -319,8 +363,21 @@ class _AnnonceSearchJoueurDetailsState
 
   Widget _buildExpansionTile(
       String title, List<PostWant> items, IconData icon, Color iconColor) {
-    return Card(
+    return Container(
       margin: const EdgeInsets.symmetric(vertical: 8.0),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: iconColor, width: 1),
+        borderRadius: BorderRadius.circular(10.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.5),
+            spreadRadius: 1,
+            blurRadius: 5,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
       child: ExpansionTile(
         leading: Icon(icon, color: iconColor),
         title: Row(
@@ -329,13 +386,17 @@ class _AnnonceSearchJoueurDetailsState
               title,
               style: const TextStyle(fontWeight: FontWeight.bold),
             ),
-            const SizedBox(width: 8.0),
+            // const SizedBox(width: 8.0),
             if (widget.isMyAnnonce)
               IconButton(
-                  onPressed: () {
-                    _toggleEditing(title: 'Post Wanted');
-                  },
-                  icon: Icon(isEditingPost ? Icons.done : Icons.edit))
+                onPressed: () {
+                  _toggleEditing(title: 'Post Wanted');
+                },
+                icon: Icon(
+                  isEditingPost ? Icons.done : Icons.edit,
+                  size: 20,
+                ),
+              ),
           ],
         ),
         children: isEditingPost
@@ -406,6 +467,7 @@ class _AnnonceSearchJoueurDetailsState
   Widget _buildTeamExpansionTile(
       String teamName, List<Joueur> players, Color teamColor) {
     return Card(
+      elevation: 10,
       margin: const EdgeInsets.symmetric(vertical: 8.0),
       child: ExpansionTile(
         leading: Icon(Icons.group, color: teamColor),

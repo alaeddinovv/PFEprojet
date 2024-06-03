@@ -375,17 +375,22 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
               SizedBox(height: screenHeight * 0.02),
               Row(
                 children: [
-                  const Icon(Icons.sports_soccer_rounded),
-                  const SizedBox(width: 8),
+                  const Icon(
+                    Icons.sports_soccer_rounded,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 5),
                   Text(
-                    'Nom: ',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    'Nom:  ',
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 19),
                   ),
                   Expanded(
                     child: Text(
                       widget.terrainModel.nom!,
-                      style:
-                          TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey[800]!,
+                      ),
                     ),
                   ),
                 ],
@@ -393,17 +398,22 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
               SizedBox(height: 16),
               Row(
                 children: [
-                  const Icon(Icons.location_on),
-                  const SizedBox(width: 8),
+                  const Icon(
+                    Icons.location_on,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 5),
                   Text(
-                    'Adresse: ',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    'Adresse:  ',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 19,
+                    ),
                   ),
                   Expanded(
                     child: Text(
                       widget.terrainModel.adresse!,
-                      style:
-                          TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
+                      style: TextStyle(fontSize: 16, color: Colors.grey[800]!),
                     ),
                   ),
                 ],
@@ -411,17 +421,19 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
               SizedBox(height: 16),
               Row(
                 children: [
-                  const Icon(Icons.phone),
-                  const SizedBox(width: 8),
+                  const Icon(
+                    Icons.phone,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 5),
                   Text(
-                    'Téléphone: ',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    'Téléphone:  ',
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 19),
                   ),
                   Expanded(
                     child: Text(
                       widget.terrainModel.admin!.telephone.toString(),
-                      style:
-                          TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
+                      style: TextStyle(fontSize: 16, color: Colors.grey[800]!),
                     ),
                   ),
                 ],
@@ -429,17 +441,19 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
               SizedBox(height: 16),
               Row(
                 children: [
-                  const Icon(Icons.groups_2_rounded),
-                  const SizedBox(width: 8),
+                  const Icon(
+                    Icons.groups_2_rounded,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 5),
                   Text(
-                    'Nombre de joueurs: ',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    'Nombre de joueurs:  ',
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 19),
                   ),
                   Expanded(
                     child: Text(
                       "${widget.terrainModel.capacite} joueurs",
-                      style:
-                          TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
+                      style: TextStyle(fontSize: 16, color: Colors.grey[800]!),
                     ),
                   ),
                 ],
@@ -447,17 +461,19 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
               SizedBox(height: 16),
               Row(
                 children: [
-                  const Icon(Icons.sports_soccer_rounded),
-                  const SizedBox(width: 8),
+                  const Icon(
+                    Icons.stadium,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 5),
                   Text(
-                    'État du terrain: ',
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                    'État du terrain:  ',
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 19),
                   ),
                   Expanded(
                     child: Text(
                       widget.terrainModel.etat!,
-                      style:
-                          TextStyle(fontSize: 18, fontStyle: FontStyle.italic),
+                      style: TextStyle(fontSize: 16, color: Colors.grey[800]!),
                     ),
                   ),
                 ],
@@ -465,13 +481,12 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
               SizedBox(height: 16),
               Text(
                 "Description:",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 19),
               ),
               SizedBox(height: 8),
               Text(
                 widget.terrainModel.description!,
-                style: TextStyle(fontSize: 16),
-                textAlign: TextAlign.justify,
+                style: TextStyle(fontSize: 16, color: Colors.grey[800]!),
               ),
               SizedBox(height: 16),
               Align(
@@ -511,30 +526,34 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
     );
   }
 
-  ToggleButtons togeleReserveOrShowDescription(
+  Padding togeleReserveOrShowDescription(
       TerrainCubit terrainCubit, BuildContext context) {
-    return ToggleButtons(
-      onPressed: (int index) {
-        terrainCubit.toggleView(index);
-      },
-      isSelected: [
-        !terrainCubit.showStadiumDetails,
-        terrainCubit.showStadiumDetails,
-      ],
-      borderRadius: BorderRadius.circular(8),
-      // borderColor: Colors.grey[50],
-      // color: Colors.grey[50],
-      // selectedBorderColor: Colors.blueAccent,
-      selectedColor: Colors.black,
-      fillColor: Colors.grey[200],
-      // fillColor: Colors.lightBlueAccent.withOpacity(0.5),
-      // constraints: const BoxConstraints(minHeight: 40.0),
-      constraints: BoxConstraints(
-          minWidth: MediaQuery.of(context).size.width / 2 - 10, minHeight: 40),
-      children: const [
-        Text('Reservation'),
-        Text('Description'),
-      ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: ToggleButtons(
+        onPressed: (int index) {
+          terrainCubit.toggleView(index);
+        },
+        isSelected: [
+          !terrainCubit.showStadiumDetails,
+          terrainCubit.showStadiumDetails,
+        ],
+        borderRadius: BorderRadius.circular(8),
+        // borderColor: Colors.grey[50],
+        // color: Colors.grey[50],
+        // selectedBorderColor: Colors.blueAccent,
+        selectedColor: Colors.black,
+        fillColor: Colors.grey[200],
+        // fillColor: Colors.lightBlueAccent.withOpacity(0.5),
+        // constraints: const BoxConstraints(minHeight: 40.0),
+        constraints: BoxConstraints(
+            minWidth: MediaQuery.of(context).size.width / 2 - 20,
+            minHeight: 40),
+        children: const [
+          Text('Reservation'),
+          Text('Description'),
+        ],
+      ),
     );
   }
 
@@ -637,6 +656,7 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
 
     return Container(
       height: 20,
+      // width: 10,
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(10),
