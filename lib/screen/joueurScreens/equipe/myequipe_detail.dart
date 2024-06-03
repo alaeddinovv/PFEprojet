@@ -317,36 +317,71 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
             ),
           ],
         ),
-        child: ListTile(
-          onTap: () {
-            EquipeCubit.get(context)
-                .checkUserByUsername(username: username)
-                .then((value) {
-              goProfile = true;
-            });
-          },
-          leading: CircleAvatar(
-            backgroundImage: photo != null
-                ? NetworkImage(photo)
-                : const AssetImage(
-                    'assets/images/football.png',
-                  ) as ImageProvider<Object>,
+        child: Container(
+          height: 75,
+          child: Center(
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CircleAvatar(
+                    backgroundImage: photo != null
+                        ? NetworkImage(photo)
+                        : const AssetImage('assets/images/football.png')
+                            as ImageProvider<Object>,
+                  ),
+                ),
+                Expanded(
+                  child: InkWell(
+                    onTap: () {
+                      EquipeCubit.get(context)
+                          .checkUserByUsername(username: username)
+                          .then((value) {
+                        goProfile = true;
+                      });
+                    },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          username,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const Text('En attente'),
+                      ],
+                    ),
+                  ),
+                ),
+                Row(
+                  children: [
+                    const SizedBox(width: 8),
+                    const Icon(
+                      Icons.hourglass_empty,
+                      color: Colors.orange,
+                      size: 24,
+                    ),
+                    const SizedBox(width: 8),
+                    InkWell(
+                      onTap: () {
+                        EquipeCubit.get(context)
+                            .capitaineAnnuleInvitationJoueur(
+                          equipeId: equipeId,
+                          joueurId: joueurId,
+                        );
+                      },
+                      child: const Icon(Icons.cancel, color: Colors.red),
+                    ),
+                    const SizedBox(width: 8),
+                  ],
+                ),
+              ],
+            ),
           ),
-          title: Row(
-            children: [
-              Text(username,
-                  style: const TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.bold)),
-              Icon(Icons.hourglass_empty, color: Colors.orange, size: 20),
-            ],
-          ),
-          subtitle: const Text('En attente'),
-          trailing: InkWell(
-              onTap: () {
-                EquipeCubit.get(context).capitaineAnnuleInvitationJoueur(
-                    equipeId: equipeId, joueurId: joueurId);
-              },
-              child: const Icon(Icons.cancel, color: Colors.red)),
         ),
       ),
     );
@@ -370,58 +405,85 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
             ),
           ],
         ),
-        child: ListTile(
-          onTap: () {
-            EquipeCubit.get(context)
-                .checkUserByUsername(username: username)
-                .then((value) {
-              goProfile = true;
-            });
-          },
-          leading: CircleAvatar(
-            backgroundImage: photo != null
-                ? NetworkImage(photo)
-                : const AssetImage(
-                    'assets/images/football.png',
-                  ) as ImageProvider<Object>,
-          ),
-          title: Text(
-            username,
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
-          subtitle: Text('Joueur'),
-          trailing: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Visibility(
-                visible: index != 0,
-                child: IconButton(
-                  onPressed: () {
-                    int? phoneNumber = telephone;
-                    if (phoneNumber != null) {
-                      _makePhoneCall(phoneNumber.toString());
-                    } else {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text("No telephone number available."),
-                        ),
-                      );
-                    }
-                  },
-                  icon: const Icon(Icons.call, color: Colors.green),
+        child: Container(
+          height: 75,
+          child: Center(
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CircleAvatar(
+                    backgroundImage: photo != null
+                        ? NetworkImage(photo)
+                        : const AssetImage('assets/images/football.png')
+                            as ImageProvider<Object>,
+                  ),
                 ),
-              ),
-              const SizedBox(width: 8),
-              Visibility(
-                visible: index != 0,
-                child: InkWell(
+                Expanded(
+                  child: InkWell(
                     onTap: () {
                       EquipeCubit.get(context)
-                          .quiterEquipe(equipeId: equipeId, joueurId: joueurId);
+                          .checkUserByUsername(username: username)
+                          .then((value) {
+                        goProfile = true;
+                      });
                     },
-                    child: Icon(Icons.cancel, color: Colors.red)),
-              ),
-            ],
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          username,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const Text('Joueur'),
+                      ],
+                    ),
+                  ),
+                ),
+                Row(
+                  children: [
+                    const SizedBox(width: 8),
+                    Visibility(
+                      visible: index != 0,
+                      child: InkWell(
+                        onTap: () {
+                          int? phoneNumber = telephone;
+                          if (phoneNumber != null) {
+                            _makePhoneCall(phoneNumber.toString());
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("No telephone number available."),
+                              ),
+                            );
+                          }
+                        },
+                        child: const Icon(Icons.call, color: Colors.green),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Visibility(
+                      visible: index != 0,
+                      child: InkWell(
+                        onTap: () {
+                          EquipeCubit.get(context).quiterEquipe(
+                            equipeId: equipeId,
+                            joueurId: joueurId,
+                          );
+                        },
+                        child: const Icon(Icons.cancel, color: Colors.red),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
