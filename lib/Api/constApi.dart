@@ -5,7 +5,7 @@
 
 
 
-const URLHTTP = '172.20.100.139:3000'; //IP ala
+const URLHTTP = '192.168.137.1:3000'; //IP ala
 
 
 // const URLHTTP = '10.0.2.2:3000';
