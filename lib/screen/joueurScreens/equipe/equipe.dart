@@ -682,15 +682,7 @@ class _EquipeState extends State<Equipe> {
                     icon: Icon(Icons.phone_in_talk, color: Colors.green),
                     onPressed: () {
                       int? phoneNumber = model.capitaineId.telephone;
-                      if (phoneNumber != null) {
-                        _makePhoneCall(phoneNumber.toString());
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text("No telephone number available."),
-                          ),
-                        );
-                      }
+                      _makePhoneCall(phoneNumber.toString());
                     },
                   ),
                 ],
@@ -777,15 +769,7 @@ class _EquipeState extends State<Equipe> {
                     icon: Icon(Icons.phone_in_talk, color: Colors.green),
                     onPressed: () {
                       int? phoneNumber = model.capitaineId.telephone;
-                      if (phoneNumber != null) {
-                        _makePhoneCall(phoneNumber.toString());
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text("No telephone number available."),
-                          ),
-                        );
-                      }
+                      _makePhoneCall(phoneNumber.toString());
                     },
                   ),
                 ],
@@ -939,15 +923,7 @@ class _EquipeState extends State<Equipe> {
                     icon: Icon(Icons.phone_in_talk, color: Colors.green),
                     onPressed: () {
                       int? phoneNumber = model.capitaineId.telephone;
-                      if (phoneNumber != null) {
-                        _makePhoneCall(phoneNumber.toString());
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text("No telephone number available."),
-                          ),
-                        );
-                      }
+                      _makePhoneCall(phoneNumber.toString());
                     },
                     iconSize: 24,
                     padding: EdgeInsets.all(4),
@@ -973,7 +949,7 @@ class _EquipeState extends State<Equipe> {
           actions: [
             TextButton(
               onPressed: () {
-                EquipeCubit.get(context).deleteEquipe(id: model.id!);
+                EquipeCubit.get(context).deleteEquipe(id: model.id);
               },
               child: const Text('Yes'),
             ),

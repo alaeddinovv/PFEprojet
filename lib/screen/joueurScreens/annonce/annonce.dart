@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pfeprojet/Api/color.dart';
 import 'package:pfeprojet/Model/annonce/annonce_model.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/tpggleButtons.dart';
@@ -68,8 +67,7 @@ class _AnnonceState extends State<Annonce> {
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
-            child:
-                ToggleButtonsWidget(
+            child: ToggleButtonsWidget(
               icon1: Icons.list_outlined,
               icon2: Icons.list_outlined,
               text1: S.of(context).my_annonces,
@@ -281,7 +279,8 @@ class _AnnonceState extends State<Annonce> {
   }
 
 //----------------------------------------------------------------mmmmmmmmmmmmmmmmmmmmmyyyyyyyyyyyyy
-  Widget _buildAnnonceItem(AnnonceAdminData model, int index, BuildContext context) {
+  Widget _buildAnnonceItem(
+      AnnonceAdminData model, int index, BuildContext context) {
     IconData getIconForType(String? type) {
       switch (type) {
         case 'other':
@@ -309,18 +308,16 @@ class _AnnonceState extends State<Annonce> {
     }
 
     return Container(
-
-   //   margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-     // decoration: BoxDecoration(
-       // color: Colors.white,
-       // border: Border.all(color: greenConst, width: 1), // Softer blue border
-       // borderRadius: BorderRadius.circular(10.0),
+      //   margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+      // decoration: BoxDecoration(
+      // color: Colors.white,
+      // border: Border.all(color: greenConst, width: 1), // Softer blue border
+      // borderRadius: BorderRadius.circular(10.0),
 
       margin: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12.0),
-
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.3),
@@ -402,9 +399,9 @@ class _AnnonceState extends State<Annonce> {
     );
   }
 
-
   //--------------------------------------alallllllllllllllllllllllllllllllllllll
-  Widget _buildAllAnnonceItem(AnnonceData model, int index, BuildContext context) {
+  Widget _buildAllAnnonceItem(
+      AnnonceData model, int index, BuildContext context) {
     IconData getIconForType(String? type) {
       switch (type) {
         case 'other':
@@ -432,18 +429,16 @@ class _AnnonceState extends State<Annonce> {
     }
 
     return Container(
-
-    //  margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-     // decoration: BoxDecoration(
+      //  margin: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+      // decoration: BoxDecoration(
       //  color: Colors.white,
-       // border: Border.all(color: greenConst, width: 1),
-       // borderRadius: BorderRadius.circular(10.0),
+      // border: Border.all(color: greenConst, width: 1),
+      // borderRadius: BorderRadius.circular(10.0),
 
       margin: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12.0),
-
         boxShadow: [
           BoxShadow(
             color: Colors.grey.withOpacity(0.3),
@@ -513,13 +508,15 @@ class _AnnonceState extends State<Annonce> {
                     icon: const Icon(Icons.call),
                     color: getColorForType(model.type),
                     onPressed: () {
-                      int? phoneNumber = model.admin?.telephone ?? model.joueur?.telephone;
+                      int? phoneNumber =
+                          model.admin?.telephone ?? model.joueur?.telephone;
                       if (phoneNumber != null) {
                         _makePhoneCall(phoneNumber.toString());
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text(S.of(context).no_telephone_number_available),
+                            content: Text(
+                                S.of(context).no_telephone_number_available),
                           ),
                         );
                       }
@@ -533,7 +530,6 @@ class _AnnonceState extends State<Annonce> {
       ),
     );
   }
-
 
   //-----------------------------------------------------------------------------
 

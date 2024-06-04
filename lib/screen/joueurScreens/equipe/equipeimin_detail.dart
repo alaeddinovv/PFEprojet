@@ -78,18 +78,9 @@ class _EquipeImInDetailsScreenState extends State<EquipeImInDetailsScreen> {
                     IconButton(
                       icon: const Icon(Icons.call, color: Colors.green),
                       onPressed: () {
-                        if (widget.equipeImInData.capitaineId.telephone !=
-                            null) {
-                          _makePhoneCall(widget
-                              .equipeImInData.capitaineId.telephone
-                              .toString());
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("No telephone number available."),
-                            ),
-                          );
-                        }
+                        _makePhoneCall(widget
+                            .equipeImInData.capitaineId.telephone
+                            .toString());
                       },
                     ),
                   ],

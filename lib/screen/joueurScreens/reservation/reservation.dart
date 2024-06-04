@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pfeprojet/component/tpggleButtons.dart';
 import 'package:pfeprojet/screen/joueurScreens/equipe/cubit/equipe_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/reservation/cubit/reservation_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/reservation/equipe_reserve_details.dart';

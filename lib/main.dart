@@ -39,6 +39,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  // ignore: unused_local_variable
   String deviceInfo = await CachHelper.getData(key: 'deviceInfo') ??
       await getDeviceIdentifier();
   Widget startWidget = Login();

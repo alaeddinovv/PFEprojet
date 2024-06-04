@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/drop_down_wilaya.dart';
-import 'package:pfeprojet/screen/AdminScreens/home/home.dart';
 import 'package:pfeprojet/screen/JoueurScreens/home/home.dart';
 import 'cubit/equipe_cubit.dart';
-import 'package:pfeprojet/Api/wilaya_list.dart';// Import your JSON data
+import 'package:pfeprojet/Api/wilaya_list.dart'; // Import your JSON data
 
 class AddEquipe extends StatefulWidget {
   AddEquipe({Key? key}) : super(key: key);
@@ -32,6 +31,7 @@ class _AddEquipeState extends State<AddEquipe> {
     super.initState();
     loadWilayas();
   }
+
   void loadWilayas() {
     final parsed = json.decode(wilayasJson) as Map<String, dynamic>;
     setState(() {
@@ -147,7 +147,7 @@ class _AddEquipeState extends State<AddEquipe> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => const HomeJoueur()),
-                                  (route) => false,
+                              (route) => false,
                             );
                           });
                         } else if (state is CreerEquipeStateBad) {
@@ -171,7 +171,7 @@ class _AddEquipeState extends State<AddEquipe> {
                                   wilaya: wilayaController.text,
                                   commune: dairaController.text
                                   // commune: selectedCommune
-                              );
+                                  );
                             }
                           },
                         );
