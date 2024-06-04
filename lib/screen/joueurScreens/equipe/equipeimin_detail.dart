@@ -11,7 +11,8 @@ import 'package:url_launcher/url_launcher.dart';
 class EquipeImInDetailsScreen extends StatefulWidget {
   final EquipeData equipeImInData;
 
-  EquipeImInDetailsScreen({super.key, required this.equipeImInData});
+  EquipeImInDetailsScreen({Key? key, required this.equipeImInData})
+      : super(key: key);
 
   @override
   State<EquipeImInDetailsScreen> createState() =>
@@ -19,69 +20,63 @@ class EquipeImInDetailsScreen extends StatefulWidget {
 }
 
 class _EquipeImInDetailsScreenState extends State<EquipeImInDetailsScreen> {
-  // bool isRequestSent = false;
-
   @override
   void initState() {
     super.initState();
-    // Check if the player ID is in the attenteJoueursDemande list
-    // isRequestSent = widget.equipeImInData.attenteJoueursDemande.any((joueur) => joueur.id == HomeJoueurCubit.get(context).joueurModel!.id);
   }
 
   @override
   Widget build(BuildContext context) {
     final joueurId = HomeJoueurCubit.get(context).joueurModel!.id;
     bool canPop = true;
+
     return PopScope(
       canPop: false,
       onPopInvoked: (didPop) async {
-        if (!didPop) {
-          if (canPop == true) {
-            // await EquipeCubit.get(context).getAllEquipe();
-            Navigator.pop(context);
-          }
+        if (!didPop && canPop) {
+          Navigator.pop(context);
         }
       },
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Détail de l\'équipe'), // Display team name
+          title: const Text('Détail de l\'équipe'),
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Equipe : ${widget.equipeImInData.nom}', // Display team name at the top of the page
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 10),
-              Container(
-                width: double.infinity, // Match the width of the ListView
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.2),
-                      spreadRadius: 1,
-                      blurRadius: 3,
-                      offset: Offset(0, 1),
-                    ),
-                  ],
+              Center(
+                child: Text(
+                  widget.equipeImInData.nom,
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.green,
+                  ),
                 ),
-                padding: EdgeInsets.all(8.0),
+              ),
+              const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Row(
                   children: [
-                    Expanded(
-                      child: Text(
-                        'Capitaine : ${widget.equipeImInData.capitaineId.username}',
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
+                    const Text(
+                      'Capitaine: ',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
+                    Text(
+                      widget.equipeImInData.capitaineId.username,
+                      style: const TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                    const Spacer(),
                     IconButton(
-                      icon: Icon(Icons.call, color: Colors.green),
+                      icon: const Icon(Icons.call, color: Colors.green),
                       onPressed: () {
                         if (widget.equipeImInData.capitaineId.telephone !=
                             null) {
@@ -90,7 +85,7 @@ class _EquipeImInDetailsScreenState extends State<EquipeImInDetailsScreen> {
                               .toString());
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
+                            const SnackBar(
                               content: Text("No telephone number available."),
                             ),
                           );
@@ -100,16 +95,24 @@ class _EquipeImInDetailsScreenState extends State<EquipeImInDetailsScreen> {
                   ],
                 ),
               ),
-              SizedBox(height: 20),
-              Text('Players:',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 15),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                child: Text(
+                  'Players:',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
               Expanded(
                 child: ListView.builder(
                   itemCount: widget.equipeImInData.joueurs.length,
                   itemBuilder: (context, index) {
                     Joueurs joueur = widget.equipeImInData.joueurs[index];
                     return _buildJoueurItem(
-                        index, joueur.username, joueur.telephone);
+                        index, joueur.username, joueur.telephone, joueur.photo);
                   },
                 ),
               ),
@@ -123,13 +126,14 @@ class _EquipeImInDetailsScreenState extends State<EquipeImInDetailsScreen> {
                   }
                   if (state is QuiterEquipeStateGood) {
                     showToast(
-                        msg: "equipe quiter avec succes",
-                        state: ToastStates.success);
+                      msg: "Equipe quittée avec succès",
+                      state: ToastStates.success,
+                    );
                     EquipeCubit.get(context)
                         .getAllEquipe(
-                            cursor: "",
-                            capitanId:
-                                HomeJoueurCubit.get(context).joueurModel!.id!)
+                      cursor: "",
+                      capitanId: HomeJoueurCubit.get(context).joueurModel!.id!,
+                    )
                         .then((value) {
                       Navigator.pushAndRemoveUntil(
                         context,
@@ -139,7 +143,7 @@ class _EquipeImInDetailsScreenState extends State<EquipeImInDetailsScreen> {
                       );
                     });
                   } else if (state is QuiterEquipeStateBad) {
-                    showToast(msg: "ressayer", state: ToastStates.error);
+                    showToast(msg: "Réessayez", state: ToastStates.error);
                   } else if (state is ErrorState) {
                     String errorMessage = state.errorModel.message!;
                     showToast(msg: errorMessage, state: ToastStates.error);
@@ -147,18 +151,16 @@ class _EquipeImInDetailsScreenState extends State<EquipeImInDetailsScreen> {
                 },
                 builder: (context, state) {
                   return defaultSubmit2(
-                    text: 'Quitter equipe',
+                    text: 'Quitter équipe',
                     background: Colors.blueAccent,
                     onPressed: () {
-                      // EquipeCubit.get(context).quiterEquipe(id: widget.equipeImInData.id, joueurId: joueurId);
                       if (joueurId != null) {
-                        // Check if joueurId is not null
                         EquipeCubit.get(context).quiterEquipe(
-                            equipeId: widget.equipeImInData.id,
-                            joueurId: joueurId);
+                          equipeId: widget.equipeImInData.id,
+                          joueurId: joueurId,
+                        );
                       } else {
-                        // Handle the error state here if joueurId is null
-                        showToast(msg: "ressayer", state: ToastStates.error);
+                        showToast(msg: "Réessayez", state: ToastStates.error);
                       }
                     },
                   );
@@ -171,32 +173,57 @@ class _EquipeImInDetailsScreenState extends State<EquipeImInDetailsScreen> {
     );
   }
 
-  Widget _buildJoueurItem(int index, String username, int? telephone) {
+  Widget _buildJoueurItem(
+      int index, String username, int? telephone, String? photo) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Container(
-        height: 50,
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
-              spreadRadius: 1,
-              blurRadius: 3,
-              offset: Offset(0, 1),
+              color: Colors.grey.withOpacity(0.3),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: const Offset(0, 2),
             ),
           ],
         ),
-        child: Row(
-          children: [
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
-              child: Text(username, style: TextStyle(fontSize: 16)),
+        child: Container(
+          height: 75,
+          child: Center(
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CircleAvatar(
+                    backgroundImage: photo != null
+                        ? NetworkImage(photo)
+                        : const AssetImage('assets/images/football.png')
+                            as ImageProvider<Object>,
+                  ),
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        username,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const Text('Joueur'),
+                    ],
+                  ),
+                ),
+              ],
             ),
-            Spacer(),
-          ],
+          ),
         ),
       ),
     );

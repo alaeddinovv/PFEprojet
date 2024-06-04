@@ -99,7 +99,8 @@ class _EquipeState extends State<Equipe> {
                       EquipeCubit.get(context).getMyEquipe(vertial: vertial);
                     } else if (index == 1) {
                       EquipeCubit.get(context).getAllEquipe(
-                        capitanId: HomeJoueurCubit.get(context).joueurModel!.id!,
+                        capitanId:
+                            HomeJoueurCubit.get(context).joueurModel!.id!,
                         vertial: vertial,
                       );
                     } else if (index == 2) {
@@ -121,13 +122,16 @@ class _EquipeState extends State<Equipe> {
                       children: [
                         Icon(
                           Icons.group,
-                          color: cubit.isSelected[0] ? Colors.white : Colors.green,
+                          color:
+                              cubit.isSelected[0] ? Colors.white : Colors.green,
                         ),
                         SizedBox(width: 8),
                         Text(
                           'My equipes',
                           style: TextStyle(
-                            color: cubit.isSelected[0] ? Colors.white : Colors.green,
+                            color: cubit.isSelected[0]
+                                ? Colors.white
+                                : Colors.green,
                           ),
                         ),
                       ],
@@ -139,13 +143,16 @@ class _EquipeState extends State<Equipe> {
                       children: [
                         Icon(
                           Icons.group,
-                          color: cubit.isSelected[1] ? Colors.white : Colors.green,
+                          color:
+                              cubit.isSelected[1] ? Colors.white : Colors.green,
                         ),
                         SizedBox(width: 8),
                         Text(
                           'All Equipes',
                           style: TextStyle(
-                            color: cubit.isSelected[1] ? Colors.white : Colors.green,
+                            color: cubit.isSelected[1]
+                                ? Colors.white
+                                : Colors.green,
                           ),
                         ),
                       ],
@@ -157,13 +164,16 @@ class _EquipeState extends State<Equipe> {
                       children: [
                         Icon(
                           Icons.group,
-                          color: cubit.isSelected[2] ? Colors.white : Colors.green,
+                          color:
+                              cubit.isSelected[2] ? Colors.white : Colors.green,
                         ),
                         SizedBox(width: 8),
                         Text(
                           'Equipe im in',
                           style: TextStyle(
-                            color: cubit.isSelected[2] ? Colors.white : Colors.green,
+                            color: cubit.isSelected[2]
+                                ? Colors.white
+                                : Colors.green,
                           ),
                         ),
                       ],
@@ -175,13 +185,16 @@ class _EquipeState extends State<Equipe> {
                       children: [
                         Icon(
                           Icons.mail,
-                          color: cubit.isSelected[3] ? Colors.white : Colors.green,
+                          color:
+                              cubit.isSelected[3] ? Colors.white : Colors.green,
                         ),
                         SizedBox(width: 8),
                         Text(
                           'Les demandes',
                           style: TextStyle(
-                            color: cubit.isSelected[3] ? Colors.white : Colors.green,
+                            color: cubit.isSelected[3]
+                                ? Colors.white
+                                : Colors.green,
                           ),
                         ),
                       ],
@@ -189,7 +202,6 @@ class _EquipeState extends State<Equipe> {
                   ),
                 ],
               ),
-
             ),
           ),
           Expanded(
@@ -216,7 +228,8 @@ class _EquipeState extends State<Equipe> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 8),
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(12),
@@ -230,7 +243,8 @@ class _EquipeState extends State<Equipe> {
                                   ],
                                 ),
                                 child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     const Text(
                                       'Les équipes virtuelles :',
@@ -247,20 +261,25 @@ class _EquipeState extends State<Equipe> {
                                         onChanged: (value) {
                                           setState(() {
                                             vertial = value!;
-                                            EquipeCubit.get(context).getMyEquipe(vertial: vertial);
+                                            EquipeCubit.get(context)
+                                                .getMyEquipe(vertial: vertial);
                                           });
                                         },
                                         activeColor: Colors.green,
                                         shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(4),
+                                          borderRadius:
+                                              BorderRadius.circular(4),
                                         ),
-                                        side: const BorderSide(color: Colors.green),
+                                        side: const BorderSide(
+                                            color: Colors.green),
                                       ),
                                     ),
                                   ],
                                 ),
                               ),
-
+                              SizedBox(
+                                height: 20,
+                              ),
                               Expanded(
                                 child: ListView.separated(
                                   controller: _controller,
@@ -302,7 +321,8 @@ class _EquipeState extends State<Equipe> {
                               return Column(
                                 children: [
                                   Container(
-                                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 16, vertical: 8),
                                     decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(12),
@@ -316,7 +336,8 @@ class _EquipeState extends State<Equipe> {
                                       ],
                                     ),
                                     child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       children: [
                                         const Text(
                                           'Les équipes virtuelles :',
@@ -335,25 +356,29 @@ class _EquipeState extends State<Equipe> {
                                                 vertial = value!;
                                                 EquipeCubit.get(context)
                                                     .getAllEquipe(
-                                                    capitanId:
-                                                    HomeJoueurCubit.get(
-                                                        context)
-                                                        .joueurModel!
-                                                        .id!,
-                                                    vertial: vertial);
+                                                        capitanId:
+                                                            HomeJoueurCubit.get(
+                                                                    context)
+                                                                .joueurModel!
+                                                                .id!,
+                                                        vertial: vertial);
                                               });
                                             },
                                             activeColor: Colors.green,
                                             shape: RoundedRectangleBorder(
-                                              borderRadius: BorderRadius.circular(4),
+                                              borderRadius:
+                                                  BorderRadius.circular(4),
                                             ),
-                                            side: const BorderSide(color: Colors.green),
+                                            side: const BorderSide(
+                                                color: Colors.green),
                                           ),
                                         ),
                                       ],
                                     ),
                                   ),
-
+                                  SizedBox(
+                                    height: 20,
+                                  ),
                                   Expanded(
                                     child: ListView.separated(
                                       controller: _controller,
@@ -397,13 +422,16 @@ class _EquipeState extends State<Equipe> {
                                   return Column(
                                     children: [
                                       Container(
-                                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 16, vertical: 8),
                                         decoration: BoxDecoration(
                                           color: Colors.white,
-                                          borderRadius: BorderRadius.circular(12),
+                                          borderRadius:
+                                              BorderRadius.circular(12),
                                           boxShadow: [
                                             BoxShadow(
-                                              color: Colors.grey.withOpacity(0.3),
+                                              color:
+                                                  Colors.grey.withOpacity(0.3),
                                               spreadRadius: 2,
                                               blurRadius: 6,
                                               offset: const Offset(0, 3),
@@ -411,7 +439,8 @@ class _EquipeState extends State<Equipe> {
                                           ],
                                         ),
                                         child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: [
                                             const Text(
                                               'Les équipes virtuelles :',
@@ -426,25 +455,28 @@ class _EquipeState extends State<Equipe> {
                                               child: Checkbox(
                                                 value: vertial,
                                                 onChanged: (value) {
-
                                                   setState(() {
                                                     vertial = value!;
                                                     EquipeCubit.get(context)
                                                         .getEquipeImIn(
-                                                        vertial: vertial);
+                                                            vertial: vertial);
                                                   });
                                                 },
                                                 activeColor: Colors.green,
                                                 shape: RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.circular(4),
+                                                  borderRadius:
+                                                      BorderRadius.circular(4),
                                                 ),
-                                                side: const BorderSide(color: Colors.green),
+                                                side: const BorderSide(
+                                                    color: Colors.green),
                                               ),
                                             ),
                                           ],
                                         ),
                                       ),
-
+                                      SizedBox(
+                                        height: 20,
+                                      ),
                                       Expanded(
                                         child: ListView.separated(
                                           controller: _controller,
@@ -544,7 +576,7 @@ class _EquipeState extends State<Equipe> {
       splashColor: Colors.transparent, // Prevents ripple effect on tap
       highlightColor: Colors.transparent,
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+        // margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
         decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(color: Colors.blueAccent, width: 1),
@@ -614,7 +646,7 @@ class _EquipeState extends State<Equipe> {
       splashColor: Colors.transparent, // Prevents ripple effect on tap
       highlightColor: Colors.transparent, // Prevents highlight effect on tap
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+        // margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
         decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(color: Colors.blueAccent, width: 1),
@@ -709,7 +741,7 @@ class _EquipeState extends State<Equipe> {
       splashColor: Colors.transparent, // Prevents ripple effect on tap
       highlightColor: Colors.transparent, // Prevents highlight effect on tap
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+        // margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
         decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(color: Colors.blueAccent, width: 1),
@@ -799,7 +831,7 @@ class _EquipeState extends State<Equipe> {
       splashColor: Colors.transparent, // Prevents ripple effect on tap
       highlightColor: Colors.transparent, // Prevents highlight effect on tap
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+        // margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
         decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(color: Colors.blueAccent, width: 1),

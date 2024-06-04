@@ -30,6 +30,7 @@ class DetailMyReserve extends StatefulWidget {
 class _DetailMyReserveState extends State<DetailMyReserve> {
   bool isEditeEquipe1 = false;
   bool isSomthingChanged = false;
+  bool isJustChangeEquipe = false;
   late final TerrainCubit cubit;
 
   final TextEditingController equipeIdController = TextEditingController();
@@ -187,6 +188,14 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                                                                       .map((e) =>
                                                                           e.id!)
                                                                       .toList();
+                                                              equipe1JoueursAttend =
+                                                                  equipe
+                                                                      .attenteJoueurs!
+                                                                      .map((e) =>
+                                                                          e.id!)
+                                                                      .toList();
+                                                              isJustChangeEquipe =
+                                                                  true;
                                                               isSomthingChanged =
                                                                   true;
                                                             });
@@ -229,6 +238,14 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                                                                       .map((e) =>
                                                                           e.id!)
                                                                       .toList();
+                                                              equipe1JoueursAttend =
+                                                                  equipe
+                                                                      .attenteJoueurs!
+                                                                      .map((e) =>
+                                                                          e.id!)
+                                                                      .toList();
+                                                              isJustChangeEquipe =
+                                                                  true;
                                                             });
                                                             isSomthingChanged =
                                                                 true;
@@ -268,6 +285,10 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                                                               setState(() {
                                                                 reservation!
                                                                         .equipe1 =
+                                                                    null;
+                                                                equipe1Joueurs =
+                                                                    null;
+                                                                equipe1JoueursAttend =
                                                                     null;
                                                                 isSomthingChanged =
                                                                     true;
@@ -674,7 +695,7 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
 
                             print(isEquialEquipe1);
 
-                            if (isEquialEquipe1) {
+                            if (isEquialEquipe1 && isJustChangeEquipe) {
                               if (!isSomthingChanged) {
                                 showToast(
                                     msg: S.of(context).noChangesDetected,

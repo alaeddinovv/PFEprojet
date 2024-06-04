@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pfeprojet/Api/color.dart';
 import 'package:pfeprojet/Model/equipe_model.dart';
-import 'package:pfeprojet/Model/user_model.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/screen/joueurScreens/equipe/cubit/equipe_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/home/cubit/home_joueur_cubit.dart';
@@ -67,60 +66,85 @@ class _AllEquipeDetailsScreenState extends State<AllEquipeDetailsScreen> {
               ),
               const SizedBox(height: 10),
               Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(12),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.grey.withOpacity(0.3),
-                        spreadRadius: 2,
-                        blurRadius: 5,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      backgroundColor: greenConst,
-                      child: Icon(Icons.person, color: Colors.white),
-                    ),
-                    title: Text(
-                      widget.equipes.capitaineId.username,
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  children: [
+                    Text(
+                      'Capitaine: ',
                       style: const TextStyle(
                           fontSize: 18, fontWeight: FontWeight.bold),
                     ),
-                    subtitle: const Text('Capitaine'),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.call, color: Colors.green),
-                      onPressed: () {
-                        if (widget.equipes.capitaineId.telephone != null) {
-                          _makePhoneCall(
-                              widget.equipes.capitaineId.telephone.toString());
-                        } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text("No telephone number available."),
-                            ),
-                          );
-                        }
-                      },
+                    Text(
+                      '${widget.equipes.capitaineId.username}',
+                      style: const TextStyle(
+                        fontSize: 18,
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ),
-              const SizedBox(height: 20),
-              const Text('Players:',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+
+              const SizedBox(height: 15),
+              // Padding(
+              //   padding:
+              //       const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              //   child: Container(
+              //     decoration: BoxDecoration(
+              //       color: Colors.white,
+              //       borderRadius: BorderRadius.circular(12),
+              //       boxShadow: [
+              //         BoxShadow(
+              //           color: Colors.grey.withOpacity(0.3),
+              //           spreadRadius: 2,
+              //           blurRadius: 5,
+              //           offset: const Offset(0, 2),
+              //         ),
+              //       ],
+              //     ),
+              //     child: ListTile(
+              //       leading: CircleAvatar(
+              //         backgroundColor: greenConst,
+              //         child: Icon(Icons.person, color: Colors.white),
+              //       ),
+              //       title: Text(
+              //         widget.equipes.capitaineId.username,
+              //         style: const TextStyle(
+              //             fontSize: 18, fontWeight: FontWeight.bold),
+              //       ),
+              //       subtitle: const Text('Capitaine'),
+              //       trailing: IconButton(
+              //         icon: const Icon(Icons.call, color: Colors.green),
+              //         onPressed: () {
+              //           if (widget.equipes.capitaineId.telephone != null) {
+              //             _makePhoneCall(
+              //                 widget.equipes.capitaineId.telephone.toString());
+              //           } else {
+              //             ScaffoldMessenger.of(context).showSnackBar(
+              //               const SnackBar(
+              //                 content: Text("No telephone number available."),
+              //               ),
+              //             );
+              //           }
+              //         },
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              // const SizedBox(height: 20),
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                child: const Text('Players:',
+                    style:
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              ),
               Expanded(
                 child: ListView.builder(
                   itemCount: widget.equipes.joueurs.length,
                   itemBuilder: (context, index) {
                     Joueurs joueur = widget.equipes.joueurs[index];
                     return _buildJoueurItem(
-                        index, joueur.username, joueur.telephone);
+                        index, joueur.username, joueur.telephone, joueur.photo);
                   },
                 ),
               ),
@@ -180,48 +204,66 @@ class _AllEquipeDetailsScreenState extends State<AllEquipeDetailsScreen> {
     );
   }
 
-  Widget _buildJoueurItem(int index, String username, int? telephone) {
+  Widget _buildJoueurItem(
+      int index, String username, int? telephone, String? photo) {
     return Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.3),
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
         child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withOpacity(0.3),
-                spreadRadius: 2,
-                blurRadius: 5,
-                offset: const Offset(0, 2),
-              ),
-            ],
-          ),
-          child: ListTile(
-            leading: CircleAvatar(
-              backgroundColor: greenConst,
-              child: Icon(Icons.person, color: Colors.white),
-            ),
-            title: Text(
-              username,
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            subtitle: const Text('Joueur'),
-            trailing: IconButton(
-              icon: const Icon(Icons.call, color: Colors.green),
-              onPressed: () {
-                if (telephone != null) {
-                  _makePhoneCall(telephone.toString());
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text("No telephone number available."),
+          height: 75,
+          child: Center(
+            child: Row(
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: CircleAvatar(
+                    backgroundImage: photo != null
+                        ? NetworkImage(photo)
+                        : const AssetImage('assets/images/football.png')
+                            as ImageProvider<Object>,
+                  ),
+                ),
+                Expanded(
+                  child: InkWell(
+                    onTap: () {
+                      print('ggggggggggg');
+                      print(photo);
+                    },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          username,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const Text('Joueur'),
+                      ],
                     ),
-                  );
-                }
-              },
+                  ),
+                ),
+              ],
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 
   Future<void> _makePhoneCall(String phoneNumber) async {
