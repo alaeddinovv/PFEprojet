@@ -30,7 +30,7 @@ class _HomeJoueurState extends State<HomeJoueur> {
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text('HomeJoueur'),
+            title: const Text('Home'),
             actions: [
               state is GetMyInformationLoading
                   ? const Center(child: CircularProgressIndicator())

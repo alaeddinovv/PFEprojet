@@ -526,34 +526,59 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
     );
   }
 
-  Padding togeleReserveOrShowDescription(
+  ToggleButtons togeleReserveOrShowDescription(
       TerrainCubit terrainCubit, BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: ToggleButtons(
-        onPressed: (int index) {
-          terrainCubit.toggleView(index);
-        },
-        isSelected: [
-          !terrainCubit.showStadiumDetails,
-          terrainCubit.showStadiumDetails,
-        ],
-        borderRadius: BorderRadius.circular(8),
-        // borderColor: Colors.grey[50],
-        // color: Colors.grey[50],
-        // selectedBorderColor: Colors.blueAccent,
-        selectedColor: Colors.black,
-        fillColor: Colors.grey[200],
-        // fillColor: Colors.lightBlueAccent.withOpacity(0.5),
-        // constraints: const BoxConstraints(minHeight: 40.0),
-        constraints: BoxConstraints(
-            minWidth: MediaQuery.of(context).size.width / 2 - 20,
-            minHeight: 40),
-        children: const [
-          Text('Reservation'),
-          Text('Description'),
-        ],
+    return ToggleButtons(
+      onPressed: (int index) {
+        terrainCubit.toggleView(index);
+      },
+      isSelected: [
+        !terrainCubit.showStadiumDetails,
+        terrainCubit.showStadiumDetails,
+      ],
+      borderRadius: BorderRadius.circular(8),
+      selectedColor: Colors.white,
+      fillColor: Colors.green,
+      color: Colors.green, // Set the unselected text color to green
+      constraints: BoxConstraints(
+        minWidth: MediaQuery.of(context).size.width / 2 - 10,
+        minHeight: 50, // Increase the height
       ),
+      children: [
+        Row(
+          children: [
+            Icon(
+              Icons.sports_soccer_rounded,
+              color: !terrainCubit.showStadiumDetails
+                  ? Colors.white
+                  : Colors.green,
+            ),
+            SizedBox(width: 5),
+            Text('Reservation',
+                style: TextStyle(
+                  color: !terrainCubit.showStadiumDetails
+                      ? Colors.white
+                      : Colors.green,
+                )),
+          ],
+        ),
+        Row(
+          children: [
+            Icon(
+              Icons.description,
+              color:
+                  terrainCubit.showStadiumDetails ? Colors.white : Colors.green,
+            ),
+            SizedBox(width: 5),
+            Text('Description',
+                style: TextStyle(
+                  color: terrainCubit.showStadiumDetails
+                      ? Colors.white
+                      : Colors.green,
+                )),
+          ],
+        ),
+      ],
     );
   }
 

@@ -31,7 +31,7 @@ class _AnnonceSearchJoueurDetailsState
     extends State<AnnonceSearchJoueurDetails> {
   late final AnnonceJoueurCubit cubit;
 
-  late AnnonceSearchJoueurModel annonceDetails;
+  AnnonceSearchJoueurModel? annonceDetails;
   bool isEditingPost = false;
   bool isEditingDescription = false;
 
@@ -90,61 +90,69 @@ class _AnnonceSearchJoueurDetailsState
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  _buildDetailCard('Type', annonceDetails.type,
+                  _buildDetailCard('Type', annonceDetails?.type ?? '',
                       Icons.sports_soccer, greenConst),
                   _buildDetailCard(
                       'Date',
-                      annonceDetails.reservationId.jour.toIso8601String(),
+                      formatDate(annonceDetails?.reservationId.jour) ?? '',
                       Icons.calendar_today,
                       greenConst),
                   _buildDetailCard(
                       'Start Time',
-                      annonceDetails.reservationId.heureDebutTemps,
+                      annonceDetails?.reservationId.heureDebutTemps ?? '',
                       Icons.access_time,
                       greenConst),
                   _buildDetailCardWithNavigation(
                     'Terrain Name and Address',
-                    '${annonceDetails.terrainId.nom}, ${annonceDetails.terrainId.adresse}',
+                    '${annonceDetails?.terrainId.nom}, ${annonceDetails?.terrainId.adresse}',
                     Icons.location_on,
                     greenConst,
                     () {
-                      navigatAndReturn(
+                      if (annonceDetails?.terrainId != null) {
+                        navigatAndReturn(
                           context: context,
                           page: LocationTErrain(
-                            terrainId: annonceDetails.terrainId.id.toString(),
+                            terrainId: annonceDetails!.terrainId.id.toString(),
                             location: LatLng(
-                                annonceDetails.terrainId.coordonnee.latitude,
-                                annonceDetails.terrainId.coordonnee.longitude),
-                          ));
+                                annonceDetails!.terrainId.coordonnee.latitude,
+                                annonceDetails!.terrainId.coordonnee.longitude),
+                          ),
+                        );
+                      } else {
+                        showToast(
+                            msg: 'No Terrain find', state: ToastStates.warning);
+                      }
                     },
                   ),
                   _buildDetailCard(
                       'Number of Players',
-                      annonceDetails.postWant.length.toString(),
+                      annonceDetails?.postWant.length.toString() ?? '',
                       Icons.people,
                       greenConst),
-                  _buildExpansionTile('Post Wanted', annonceDetails.postWant,
-                      Icons.search, greenConst),
+                  _buildExpansionTile('Post Wanted',
+                      annonceDetails?.postWant ?? [], Icons.search, greenConst),
                   _buildDetailCard(
                       'Duration',
-                      '${annonceDetails.reservationId.duree} hours',
+                      '${annonceDetails?.reservationId.duree} hours',
                       Icons.timer,
                       greenConst),
                   _buildTeamExpansionTile(
-                      'Team 1: ${annonceDetails.reservationId.equipeId1!.nom}',
-                      annonceDetails.reservationId.equipeId1 != null
-                          ? annonceDetails.reservationId.equipeId1!.joueurs
+                      'Team 1: ${annonceDetails?.reservationId.equipeId1?.nom}',
+                      annonceDetails?.reservationId.equipeId1 != null
+                          ? annonceDetails?.reservationId.equipeId1!.joueurs ??
+                              []
                           : [],
                       greenConst),
                   _buildTeamExpansionTile(
-                      'Team 2 : ${annonceDetails.reservationId.equipeId2!.nom}',
-                      annonceDetails.reservationId.equipeId2 != null
-                          ? annonceDetails.reservationId.equipeId2!.joueurs
+                      'Team 2 : ${annonceDetails?.reservationId.equipeId2?.nom}',
+                      annonceDetails?.reservationId.equipeId2 != null
+                          ? annonceDetails?.reservationId.equipeId2!.joueurs ??
+                              []
                           : [],
                       Colors.red),
                   _buildDetailCardDescription(
                       'Description',
-                      annonceDetails.description,
+                      annonceDetails?.description ?? '',
                       Icons.description,
                       greenConst),
                   const SizedBox(height: 20),
@@ -156,27 +164,33 @@ class _AnnonceSearchJoueurDetailsState
                                   text: 'Update Annonce',
                                   onPressed: () {
                                     List<Map<String, dynamic>> postWantList =
-                                        annonceDetails.postWant
+                                        annonceDetails!.postWant
                                             .map(
                                                 (postWant) => postWant.toJson())
                                             .toList();
                                     Map<String, dynamic> model = {
-                                      'description': annonceDetails.description,
+                                      'description':
+                                          annonceDetails?.description,
                                       'post_want': postWantList,
                                       'numero_joueurs':
-                                          annonceDetails.postWant.length,
-                                      'wilaya': annonceDetails.wilaya,
-                                      'commune': annonceDetails.commune,
+                                          annonceDetails?.postWant.length,
+                                      'wilaya': annonceDetails?.wilaya,
+                                      'commune': annonceDetails?.commune,
                                     };
                                     AnnonceJoueurCubit.get(context)
                                         .updateAnnonceJoueur(
                                             model: model,
-                                            id: annonceDetails.id);
+                                            id: annonceDetails!.id);
                                   })
                           : defaultSubmit2(
                               text: 'request to join Match',
                               onPressed: () {
-                                _showJoinRequestDialog(context);
+                                if (annonceDetails != null ||
+                                    annonceDetails?.terrainId != null ||
+                                    annonceDetails?.reservationId.equipeId1 !=
+                                        null) {
+                                  _showJoinRequestDialog(context);
+                                }
                               })),
                 ],
               ),
@@ -189,7 +203,7 @@ class _AnnonceSearchJoueurDetailsState
 
   void _showJoinRequestDialog(BuildContext context) {
     List<PostWant> availablePositions =
-        annonceDetails.postWant.where((postWant) => !postWant.find).toList();
+        annonceDetails!.postWant.where((postWant) => !postWant.find).toList();
 
     // Create a set to store unique positions
     Set<String> uniquePositions =
@@ -243,10 +257,10 @@ class _AnnonceSearchJoueurDetailsState
     print('Request to join as $position sent.');
     AnnonceJoueurCubit.get(context).demanderRejoindreEquipe(
         userName: HomeJoueurCubit.get(context).joueurModel!.username!,
-        equipeId: annonceDetails.reservationId.equipeId1!.id,
+        equipeId: annonceDetails!.reservationId.equipeId1!.id,
         post: position,
-        nameEquipe: annonceDetails.reservationId.equipeId1!.nom,
-        joueurId: annonceDetails.reservationId.equipeId1!.capitaine_id!);
+        nameEquipe: annonceDetails!.reservationId.equipeId1!.nom,
+        joueurId: annonceDetails!.reservationId.equipeId1!.capitaine_id!);
   }
 
   Widget _buildDetailCardWithNavigation(String title, String subtitle,
@@ -352,7 +366,7 @@ class _AnnonceSearchJoueurDetailsState
                 initialValue: subtitle,
                 onChanged: (value) {
                   setState(() {
-                    annonceDetails.description = value;
+                    annonceDetails?.description = value;
                   });
                 },
               )

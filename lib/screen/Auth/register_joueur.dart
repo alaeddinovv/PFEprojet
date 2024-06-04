@@ -204,10 +204,16 @@ class RegisterJoueur extends StatelessWidget {
                           if (state is RegisterStateGood) {
                             CachHelper.putcache(
                                     key: "TOKEN", value: state.model.token)
-                                .then((value) {
+                                .then((value) async {
                               TOKEN = state.model.token;
-                              navigatAndFinish(
-                                  context: context, page: const HomeJoueur());
+                              addOrUpdateFCMTokenJoueur(
+                                      fcmToken: fCMToken,
+                                      device: await CachHelper.getData(
+                                          key: 'deviceInfo'))
+                                  .then((value) {
+                                navigatAndFinish(
+                                    context: context, page: const HomeJoueur());
+                              });
                             });
 
                             showToast(
