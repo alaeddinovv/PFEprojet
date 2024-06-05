@@ -10,7 +10,6 @@ import 'package:pfeprojet/screen/AdminScreens/reservation/reservation.dart';
 import 'dart:convert' as convert;
 
 import 'package:pfeprojet/screen/AdminScreens/terrains/terrains.dart';
-import 'package:pfeprojet/screen/AdminScreens/tournoi/tournoi.dart';
 
 part 'home_admin_state.dart';
 
@@ -21,9 +20,12 @@ class HomeAdminCubit extends Cubit<HomeAdminState> {
     const Terrains(),
     Reservation(),
     const Annonce(),
-    const Tournoi()
   ];
-  final List<String> title = ["Terrains", "Reservation", "Annonce", "Tournoi"];
+  final List<String> title = [
+    "Terrains",
+    "Reservation",
+    "Annonce",
+  ];
 
   void resetValue() {
     selectedIndex = 0;

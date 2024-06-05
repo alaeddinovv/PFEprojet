@@ -184,6 +184,7 @@ class AnnonceJoueurCubit extends Cubit<AnnonceJoueurState> {
         if (jsonResponse['type'] == 'search joueur') {
           AnnonceSearchJoueurModel annonce =
               AnnonceSearchJoueurModel.fromJson(jsonResponse);
+          print(annonce);
           emit(GetAnnonceByIDStateGood(annonceModel: annonce));
         } else {
           print(jsonResponse);

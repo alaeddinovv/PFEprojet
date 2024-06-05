@@ -63,11 +63,6 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
         }
       },
       child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            // navigatAndReturn(context: context, page: SearchTest());
-          },
-        ),
         appBar: AppBar(
           title: const Text('Terrain Details'),
         ),
@@ -135,7 +130,7 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                       decoration: BoxDecoration(
                         color: terrainCubit.selectedDate.day ==
                                 DateTime.now().add(Duration(days: i)).day
-                            ? Colors.blue
+                            ? Colors.blue[300]
                             : Colors.transparent,
                         borderRadius: BorderRadius.circular(10),
                       ),
@@ -287,156 +282,163 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
 
   Padding descriptionInfo(double screenHeight, BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        mainAxisSize: MainAxisSize.max,
-        children: [
-          SizedBox(
-            height: screenHeight * 0.02,
+      padding: const EdgeInsets.all(16.0),
+      child: Material(
+        elevation: 2.0,
+        borderRadius: BorderRadius.circular(10.0),
+        child: Container(
+          padding: const EdgeInsets.all(16.0),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey.shade300),
+            borderRadius: BorderRadius.circular(10.0),
           ),
-          Row(
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Icon(Icons.location_on),
-              const SizedBox(
-                width: 8,
+              SizedBox(height: screenHeight * 0.02),
+              Row(
+                children: [
+                  const Icon(
+                    Icons.location_on,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 5),
+                  Text(
+                    'Adresse:  ',
+                    style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 19,
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      widget.terrainModel.adresse!,
+                      style: TextStyle(fontSize: 16, color: Colors.grey[800]!),
+                    ),
+                  ),
+                ],
               ),
-              RichText(
-                text: TextSpan(
-                  // Default style for all spans
-                  style: DefaultTextStyle.of(context).style,
-                  children: <TextSpan>[
-                    const TextSpan(
-                      text: 'Address: ',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    TextSpan(
-                      text: widget.terrainModel.adresse!,
-                      style: const TextStyle(fontStyle: FontStyle.italic),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-          Row(
-            children: [
-              const Icon(Icons.phone),
-              const SizedBox(
-                width: 8,
-              ),
-              RichText(
-                text: TextSpan(
-                  style: DefaultTextStyle.of(context).style,
-                  children: <TextSpan>[
-                    const TextSpan(
-                      text: 'Telephone: ',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    TextSpan(
-                      text: HomeAdminCubit.get(context)
+              SizedBox(height: 16),
+              Row(
+                children: [
+                  const Icon(
+                    Icons.phone,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 5),
+                  Text(
+                    'Téléphone:  ',
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 19),
+                  ),
+                  Expanded(
+                    child: Text(
+                      HomeAdminCubit.get(context)
                           .adminModel!
                           .telephone!
                           .toString(),
-                      style: const TextStyle(fontStyle: FontStyle.italic),
+                      style: TextStyle(fontSize: 16, color: Colors.grey[800]!),
                     ),
-                  ],
-                ),
-              )
-            ],
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-          Row(
-            children: [
-              const Icon(Icons.groups_2_rounded),
-              const SizedBox(
-                width: 8,
-              ),
-              RichText(
-                  text: TextSpan(
-                style: DefaultTextStyle.of(context).style,
-                children: [
-                  const TextSpan(
-                      text: 'Nombre de joueurs: ',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  TextSpan(
-                      text: "${widget.terrainModel.capacite} joueurs",
-                      style: const TextStyle(fontStyle: FontStyle.italic)),
+                  ),
                 ],
-              ))
-            ],
-          ),
-          const SizedBox(
-            height: 8,
-          ),
-          Row(
-            children: [
-              const Icon(Icons.sports_soccer_rounded),
-              const SizedBox(
-                width: 8,
               ),
-              RichText(
-                text: TextSpan(
-                  style: DefaultTextStyle.of(context).style,
-                  children: [
-                    const TextSpan(
-                        text: 'État du terrain: ',
-                        style: TextStyle(fontWeight: FontWeight.bold)),
-                    TextSpan(
-                        text: widget.terrainModel.etat!,
-                        style: const TextStyle(fontStyle: FontStyle.italic)),
-                  ],
+              SizedBox(height: 16),
+              Row(
+                children: [
+                  const Icon(
+                    Icons.groups_2_rounded,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 5),
+                  Text(
+                    'Nombre de joueurs:  ',
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 19),
+                  ),
+                  Expanded(
+                    child: Text(
+                      "${widget.terrainModel.capacite} joueurs",
+                      style: TextStyle(fontSize: 16, color: Colors.grey[800]!),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 16),
+              Row(
+                children: [
+                  const Icon(
+                    Icons.sports_soccer_rounded,
+                    size: 20,
+                  ),
+                  const SizedBox(width: 5),
+                  Text(
+                    'État du terrain:  ',
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 19),
+                  ),
+                  Expanded(
+                    child: Text(
+                      widget.terrainModel.etat!,
+                      style: TextStyle(fontSize: 16, color: Colors.grey[800]!),
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 16),
+              Text(
+                "Description:",
+                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 19),
+              ),
+              SizedBox(height: 8),
+              Text(
+                widget.terrainModel.description!,
+                style: TextStyle(fontSize: 16, color: Colors.grey[800]!),
+              ),
+              SizedBox(height: 16),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: TextButton.icon(
+                  onPressed: () {
+                    navigatAndReturn(
+                      context: context,
+                      page: LocationTErrain(
+                        terrainId: widget.terrainModel.id!,
+                        location: LatLng(
+                          widget.terrainModel.coordonnee!.latitude!,
+                          widget.terrainModel.coordonnee!.longitude!,
+                        ),
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.location_on_outlined,
+                      color: Colors.white),
+                  label: const Text(
+                    'Voir sur la carte',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                  style: TextButton.styleFrom(
+                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                    backgroundColor: greenConst,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 16),
+              Align(
+                alignment: Alignment.bottomRight,
+                child: defaultSubmit2(
+                  text: "UPDATE TERRAIN",
+                  onPressed: () {
+                    navigatAndReturn(
+                      context: context,
+                      page: EditTerrainPage(terrainModel: widget.terrainModel),
+                    );
+                  },
                 ),
               ),
             ],
           ),
-          const SizedBox(
-            height: 8,
-          ),
-          const Text("More:", style: TextStyle(fontWeight: FontWeight.bold)),
-          const SizedBox(
-            height: 8,
-          ),
-          Text(
-            widget.terrainModel.description!,
-            textAlign: TextAlign.center,
-          ),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: IconButton(
-              iconSize: 30,
-              onPressed: () {
-                navigatAndReturn(
-                    context: context,
-                    page: LocationTErrain(
-                      terrainId: widget.terrainModel.id!,
-                      location: LatLng(
-                          widget.terrainModel.coordonnee!.latitude!,
-                          widget.terrainModel.coordonnee!.longitude!),
-                    ));
-              },
-              icon: const Icon(
-                Icons.location_on_outlined,
-                color: Colors.blue,
-              ),
-            ),
-          ),
-          defaultSubmit2(
-              text: "UPDATE TERRAIN",
-              onPressed: () {
-                navigatAndReturn(
-                    context: context,
-                    page: EditTerrainPage(terrainModel: widget.terrainModel));
-              })
-        ],
+        ),
       ),
     );
   }
@@ -451,11 +453,48 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
         !terrainCubit.showStadiumDetails,
         terrainCubit.showStadiumDetails,
       ],
+      borderRadius: BorderRadius.circular(8),
+      selectedColor: Colors.white,
+      fillColor: greenConst,
+      color: greenConst, // Set the unselected text color to green
       constraints: BoxConstraints(
-          minWidth: MediaQuery.of(context).size.width / 2 - 10, minHeight: 40),
-      children: const [
-        Text('Reservation'),
-        Text('Description'),
+        minWidth: MediaQuery.of(context).size.width / 2 - 10,
+        minHeight: 50, // Increase the height
+      ),
+      children: [
+        Row(
+          children: [
+            Icon(
+              Icons.sports_soccer_rounded,
+              color: !terrainCubit.showStadiumDetails
+                  ? Colors.white
+                  : Colors.green,
+            ),
+            SizedBox(width: 5),
+            Text('Reservation',
+                style: TextStyle(
+                  color: !terrainCubit.showStadiumDetails
+                      ? Colors.white
+                      : Colors.green,
+                )),
+          ],
+        ),
+        Row(
+          children: [
+            Icon(
+              Icons.description,
+              color:
+                  terrainCubit.showStadiumDetails ? Colors.white : Colors.green,
+            ),
+            SizedBox(width: 5),
+            Text('Description',
+                style: TextStyle(
+                  color: terrainCubit.showStadiumDetails
+                      ? Colors.white
+                      : Colors.green,
+                )),
+          ],
+        ),
       ],
     );
   }
@@ -471,9 +510,7 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
             height: screenHeight * 0.2,
             initialPage: terrainCubit.indexSlide,
             viewportFraction: 1,
-            // autoPlay: true,
             enlargeCenterPage: true,
-
             onPageChanged: (index, reason) {
               terrainCubit.setCurrentSlide(index);
             },
@@ -482,17 +519,8 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
               ? [
                   Builder(
                     builder: (BuildContext context) {
-                      return Container(
-                        width: double.infinity,
-                        margin: const EdgeInsets.symmetric(horizontal: 5.0),
-                        decoration: const BoxDecoration(
-                          color: Colors.grey,
-                        ),
-                        child: const Icon(
-                          Icons.image_not_supported,
-                          size: 100,
-                        ),
-                      );
+                      return Image.asset('assets/images/terr.jpg',
+                          fit: BoxFit.fill, width: double.infinity);
                     },
                   ),
                 ]
@@ -531,7 +559,7 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                     const EdgeInsets.symmetric(vertical: 10.0, horizontal: 2.0),
                 decoration: BoxDecoration(
                   color: terrainCubit.indexSlide == index
-                      ? Colors.blue
+                      ? Colors.blue // Solid blue color
                       : Colors.grey,
                   borderRadius: BorderRadius.circular(4.0),
                 ),
@@ -549,8 +577,7 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
     List<String> timeSlots,
     int index,
   ) {
-    Color backgroundColor =
-        Colors.green[500]!; // Default to green for available slots
+    Color backgroundColor = greenConst; // Default to green for available slots
 
     // If the slot is not reservable (blocked), it gets a red color
     if (isReservable.contains(timeSlots[index])) {

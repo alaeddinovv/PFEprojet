@@ -80,7 +80,6 @@ class _HomeAdminState extends State<HomeAdmin> {
             NavigationDestination(
                 icon: Icon(Icons.more_time_rounded), label: 'Reservation'),
             NavigationDestination(icon: Icon(Icons.add), label: 'Annonce'),
-            NavigationDestination(icon: Icon(Icons.groups_2), label: 'tournoi'),
           ],
         ));
   }

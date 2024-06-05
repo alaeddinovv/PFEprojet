@@ -4,8 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/drop_down_wilaya.dart';
 import 'package:pfeprojet/screen/AdminScreens/home/home.dart';
+import 'package:pfeprojet/screen/joueurScreens/annonce/addannonce.dart';
 import 'cubit/annonce_cubit.dart';
-import 'package:pfeprojet/Api/wilaya_list.dart';// Import your JSON data
+import 'package:pfeprojet/Api/wilaya_list.dart'; // Import your JSON data
 
 class AddAnnonce extends StatefulWidget {
   AddAnnonce({Key? key}) : super(key: key);
@@ -15,7 +16,7 @@ class AddAnnonce extends StatefulWidget {
 }
 
 class _AddAnnonceState extends State<AddAnnonce> {
-  final TextEditingController _typeController = TextEditingController();
+  // final TextEditingController _typeController = TextEditingController();
   final TextEditingController _textController = TextEditingController();
   final wilayaController = TextEditingController();
   final dairaController = TextEditingController();
@@ -25,6 +26,7 @@ class _AddAnnonceState extends State<AddAnnonce> {
   String? selectedCommune;
   List<dynamic> wilayas = [];
   List<String> communes = [];
+  String? _selectedType;
 
   @override
   void initState() {
@@ -41,9 +43,10 @@ class _AddAnnonceState extends State<AddAnnonce> {
 
   void updateCommunes(String? wilayaName) {
     setState(() {
-      selectedCommune = null;  // Reset the commune selection
+      selectedCommune = null; // Reset the commune selection
       communes = wilayaName != null
-          ? List<String>.from(wilayas.firstWhere((element) => element['name'] == wilayaName)['communes'])
+          ? List<String>.from(wilayas.firstWhere(
+              (element) => element['name'] == wilayaName)['communes'])
           : [];
     });
   }
@@ -79,22 +82,39 @@ class _AddAnnonceState extends State<AddAnnonce> {
                       return const SizedBox(height: 30);
                     },
                   ),
-                  defaultForm3(
+                  // defaultForm3(
+                  //   context: context,
+                  //   controller: _typeController,
+                  //   type: TextInputType.text,
+                  //   valid: (String value) {
+                  //     if (value.isEmpty) {
+                  //       return 'Type Must Not Be Empty';
+                  //     }
+                  //   },
+                  //   prefixIcon: const Icon(
+                  //     Icons.keyboard_arrow_right_sharp,
+                  //     color: Colors.grey,
+                  //   ),
+                  //   labelText: "TYPE DE L'ANNONCE",
+                  //   textInputAction: TextInputAction.next,
+                  // ),
+                  buildDropdownField(
                     context: context,
-                    controller: _typeController,
-                    type: TextInputType.text,
-                    valid: (String value) {
-                      if (value.isEmpty) {
-                        return 'Type Must Not Be Empty';
-                      }
+                    label: 'Type', // Localized string
+                    value: _selectedType,
+                    items: [
+                      'Concernant le timing',
+                      'Perte de propriété',
+                      'other'
+                    ],
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedType = value;
+                      });
                     },
-                    prefixIcon: const Icon(
-                      Icons.keyboard_arrow_right_sharp,
-                      color: Colors.grey,
-                    ),
-                    labelText: "TYPE DE L'ANNONCE",
-                    textInputAction: TextInputAction.next,
+                    icon: Icons.category,
                   ),
+
                   const SizedBox(height: 20),
                   defaultForm3(
                     context: context,
@@ -177,7 +197,7 @@ class _AddAnnonceState extends State<AddAnnonce> {
                               context,
                               MaterialPageRoute(
                                   builder: (context) => const HomeAdmin()),
-                                  (route) => false,
+                              (route) => false,
                             );
                           });
                         } else if (state is CreerAnnonceStateBad) {
@@ -196,11 +216,10 @@ class _AddAnnonceState extends State<AddAnnonce> {
                           onPressed: () {
                             if (formkey.currentState!.validate()) {
                               AnnonceCubit.get(context).creerAnnonce(
-                                  type: _typeController.text,
+                                  type: _selectedType ?? '',
                                   text: _textController.text,
                                   wilaya: wilayaController.text,
-                                  commune: dairaController.text
-                              );
+                                  commune: dairaController.text);
                             }
                           },
                         );

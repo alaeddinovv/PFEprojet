@@ -16,6 +16,7 @@ class AnnouncementPage extends StatefulWidget {
 class _AnnouncementPageState extends State<AnnouncementPage> {
   late final AnnonceJoueurCubit cubit;
   late final AnnounceOter annonceDetails;
+
   @override
   void initState() {
     cubit = AnnonceJoueurCubit.get(context);
@@ -27,8 +28,8 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Announcement Details'),
-        backgroundColor: Colors.blue[800],
+        title: const Text('Détails de l\'annonce'),
+        backgroundColor: const Color(0XFF76A26C),
       ),
       body: BlocConsumer<AnnonceJoueurCubit, AnnonceJoueurState>(
         listener: (context, state) {
@@ -50,6 +51,8 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                     elevation: 4,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
+                      side:
+                          BorderSide(color: const Color(0XFF76A26C), width: 2),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
@@ -57,21 +60,21 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Announcement Details',
+                            'Détails de l\'annonce',
                             style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
-                              color: Colors.blue[800],
+                              color: const Color(0XFF76A26C),
                             ),
                           ),
                           const SizedBox(height: 16),
-                          buildDetailRow('Type:', annonceDetails.type!),
+                          buildDetailRow('Type :', annonceDetails.type!),
+                          buildDetailRow('Description :',
+                              annonceDetails.description ?? ""),
                           buildDetailRow(
-                              'Description:', annonceDetails.description ?? ""),
+                              'Wilaya :', annonceDetails.wilaya ?? ""),
                           buildDetailRow(
-                              'Wilaya:', annonceDetails.wilaya ?? ""),
-                          buildDetailRow(
-                              'Commune:', annonceDetails.commune ?? ""),
+                              'Commune :', annonceDetails.commune ?? ""),
                         ],
                       ),
                     ),
@@ -81,6 +84,8 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                     elevation: 4,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
+                      side:
+                          BorderSide(color: const Color(0XFF76A26C), width: 2),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
@@ -88,26 +93,22 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Owner Details',
+                            'Détails du propriétaire',
                             style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
-                              color: Colors.blue[800],
+                              color: const Color(0XFF76A26C),
                             ),
                           ),
                           const SizedBox(height: 16),
                           if (annonceDetails.user is Admin)
                             buildDetailRow(
-                              'Nom:',
-                              annonceDetails.user?.nom ?? "",
-                            ),
+                                'Nom :', annonceDetails.user?.nom ?? ""),
                           if (annonceDetails.user is Joueur)
-                            buildDetailRow('Username:',
+                            buildDetailRow('Nom d\'utilisateur :',
                                 annonceDetails.user?.username ?? ""),
-                          buildDetailRow(
-                            'Telephone:',
-                            annonceDetails.user?.telephone.toString() ?? "",
-                          ),
+                          buildDetailRow('Téléphone :',
+                              annonceDetails.user?.telephone.toString() ?? ""),
                         ],
                       ),
                     ),
@@ -117,6 +118,8 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                     elevation: 4,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
+                      side:
+                          BorderSide(color: const Color(0XFF76A26C), width: 2),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.all(16.0),
@@ -124,22 +127,18 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Announcement Timestamps',
+                            'Horodatage de l\'annonce',
                             style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
-                              color: Colors.blue[800],
+                              color: const Color(0XFF76A26C),
                             ),
                           ),
                           const SizedBox(height: 16),
-                          buildDetailRow(
-                            'Created At:',
-                            annonceDetails.createdAt!.toLocal().toString(),
-                          ),
-                          buildDetailRow(
-                            'Last Update:',
-                            annonceDetails.updatedAt!.toLocal().toString(),
-                          ),
+                          buildDetailRow('Créé le :',
+                              '${annonceDetails.createdAt?.year}-${annonceDetails.createdAt?.month.toString().padLeft(2, '0')}-${annonceDetails.createdAt?.day.toString().padLeft(2, '0')}'),
+                          buildDetailRow('Dernière mise à jour :',
+                              '${annonceDetails.updatedAt?.year}-${annonceDetails.updatedAt?.month.toString().padLeft(2, '0')}-${annonceDetails.updatedAt?.day.toString().padLeft(2, '0')}'),
                         ],
                       ),
                     ),
@@ -152,9 +151,9 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Add call functionality here
+          // Ajouter la fonctionnalité d'appel ici
         },
-        backgroundColor: Colors.green,
+        backgroundColor: const Color(0XFF76A26C),
         child: const Icon(Icons.call),
       ),
     );

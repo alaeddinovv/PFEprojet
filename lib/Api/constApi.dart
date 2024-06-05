@@ -3,7 +3,7 @@
 
 // const URLHTTP = '192.168.1.20:3000'; //IP houssem
 
-const URLHTTP = '172.16.70.68:3000'; //IP ala
+const URLHTTP = '192.168.23.68:3000'; //IP ala
 
 // const URLHTTP = '192.168.227.142:3000'; //IP ala
 
@@ -97,7 +97,7 @@ const QUITEREQUIPE = '/api/joueur/supprimer/';
 
 const Loginadmin = '/api/admin/login';
 const getJouerById = '/api/joueur/';
-const getJouerByUsername = '/api/joueur/username/';
+const getJouerByUsername = '/api/joueurs/username/';
 String PATH = Loginjoueur;
 String PATH1 = RECOVERPASSWORD;
 String PATH2 = VERIFYJOUEURCODE;

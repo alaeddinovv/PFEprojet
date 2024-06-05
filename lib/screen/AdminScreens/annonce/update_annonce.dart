@@ -4,6 +4,7 @@ import 'package:pfeprojet/Model/annonce/annonce_admin_model.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/drop_down_wilaya.dart';
 import 'package:pfeprojet/screen/AdminScreens/annonce/cubit/annonce_cubit.dart';
+import 'package:pfeprojet/screen/joueurScreens/annonce/addannonce.dart';
 
 class EditAnnoncePage extends StatefulWidget {
   final AnnonceAdminData
@@ -22,6 +23,7 @@ class _EditAnnoncePageState extends State<EditAnnoncePage> {
   late TextEditingController _descriptionController;
   late TextEditingController _wilayaController;
   late TextEditingController _dairaController;
+  String? _selectedType;
   @override
   void initState() {
     super.initState();
@@ -30,6 +32,7 @@ class _EditAnnoncePageState extends State<EditAnnoncePage> {
         TextEditingController(text: widget.annonceModel.description);
     _wilayaController = TextEditingController(text: widget.annonceModel.wilaya);
     _dairaController = TextEditingController(text: widget.annonceModel.commune);
+    this._selectedType = widget.annonceModel.type;
   }
 
   @override
@@ -74,21 +77,21 @@ class _EditAnnoncePageState extends State<EditAnnoncePage> {
                       return const SizedBox(height: 30);
                     },
                   ),
-                  defaultForm3(
+                  buildDropdownField(
                     context: context,
-                    controller: _titleController,
-                    type: TextInputType.text,
-                    valid: (String value) {
-                      if (value.isEmpty) {
-                        return 'Type Must Not Be Empty';
-                      }
+                    label: 'Type', // Localized string
+                    value: _selectedType,
+                    items: [
+                      'Concernant le timing',
+                      'Perte de propriété',
+                      'other'
+                    ],
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedType = value;
+                      });
                     },
-                    prefixIcon: const Icon(
-                      Icons.keyboard_arrow_right_sharp,
-                      color: Colors.grey,
-                    ),
-                    labelText: "TYPE DE L'ANNONCE",
-                    textInputAction: TextInputAction.next,
+                    icon: Icons.category,
                   ),
                   const SizedBox(height: 20),
                   defaultForm3(

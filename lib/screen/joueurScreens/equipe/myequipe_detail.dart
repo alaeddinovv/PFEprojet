@@ -86,7 +86,6 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                   listener: (context, state) async {
                     // go profile for separate when i search joueur or i want to go to profile
                     if (state is CheckUserByUsernameStateGood && goProfile) {
-                      print('ddddddddddddddddddddd');
                       goProfile = false;
                       navigatAndReturn(
                           context: context,
@@ -673,19 +672,28 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                   ),
                 ),
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        username,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                  child: InkWell(
+                    onTap: () {
+                      EquipeCubit.get(context)
+                          .checkUserByUsername(username: username)
+                          .then((value) {
+                        goProfile = true;
+                      });
+                    },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          username,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      Text(post!.isEmpty ? "accepter" : post),
-                    ],
+                        Text(post!.isEmpty ? "accepter" : post),
+                      ],
+                    ),
                   ),
                 ),
                 Row(

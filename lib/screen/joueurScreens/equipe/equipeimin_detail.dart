@@ -6,6 +6,7 @@ import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/screen/JoueurScreens/home/home.dart';
 import 'package:pfeprojet/screen/joueurScreens/equipe/cubit/equipe_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/home/cubit/home_joueur_cubit.dart';
+import 'package:pfeprojet/screen/joueurScreens/profile/profile_other.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class EquipeImInDetailsScreen extends StatefulWidget {
@@ -97,14 +98,24 @@ class _EquipeImInDetailsScreenState extends State<EquipeImInDetailsScreen> {
                   ),
                 ),
               ),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: widget.equipeImInData.joueurs.length,
-                  itemBuilder: (context, index) {
-                    Joueurs joueur = widget.equipeImInData.joueurs[index];
-                    return _buildJoueurItem(
-                        index, joueur.username, joueur.telephone, joueur.photo);
-                  },
+              BlocListener<EquipeCubit, EquipeState>(
+                listener: (context, state) {
+                  if (state is CheckUserByUsernameStateGood) {
+                    navigatAndReturn(
+                        context: context,
+                        page: OtherJoueurDetails(
+                            joueurModel: state.dataJoueurModel));
+                  }
+                },
+                child: Expanded(
+                  child: ListView.builder(
+                    itemCount: widget.equipeImInData.joueurs.length,
+                    itemBuilder: (context, index) {
+                      Joueurs joueur = widget.equipeImInData.joueurs[index];
+                      return _buildJoueurItem(index, joueur.username,
+                          joueur.telephone, joueur.photo);
+                    },
+                  ),
                 ),
               ),
               const SizedBox(height: 20),
@@ -197,19 +208,25 @@ class _EquipeImInDetailsScreenState extends State<EquipeImInDetailsScreen> {
                   ),
                 ),
                 Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        username,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                  child: InkWell(
+                    onTap: () {
+                      EquipeCubit.get(context)
+                          .checkUserByUsername(username: username);
+                    },
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          username,
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      const Text('Joueur'),
-                    ],
+                        const Text('Joueur'),
+                      ],
+                    ),
                   ),
                 ),
               ],

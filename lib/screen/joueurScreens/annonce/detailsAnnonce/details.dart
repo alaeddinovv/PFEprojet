@@ -12,7 +12,10 @@ class DetailsAnnonceChoose extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (path == 'other' || path == 'search join equipe') {
+    if (path == 'other' ||
+        path == 'search join equipe' ||
+        path == 'Concernant le timing' ||
+        path == 'Perte de propriété') {
       return AnnouncementPage(
         id: id,
         isMy: isMy,
