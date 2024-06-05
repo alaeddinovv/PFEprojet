@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pfeprojet/Api/color.dart';
 
 class ToggleButtonsWidget extends StatefulWidget {
   final bool showList;
@@ -33,29 +34,42 @@ class _ToggleButtonsWidgetState extends State<ToggleButtonsWidget> {
         });
       },
       borderRadius: BorderRadius.circular(8),
-      selectedColor: Colors.black,
-      fillColor: Colors.grey[200],
+      selectedColor: Colors.white,
+      fillColor: greenConst,
+      color: greenConst, // Set the unselected text color to green
       constraints: BoxConstraints(
-          minWidth: MediaQuery.of(context).size.width / 2 - 10, minHeight: 40),
+        minWidth: MediaQuery.of(context).size.width / 2 - 10,
+        minHeight: 42, // Increase the height
+      ),
       children: <Widget>[
         Row(
           children: [
             Icon(
               widget.icon1,
-              color: Colors.grey[500],
+              color: widget.showList ? Colors.white : greenConst,
             ),
             SizedBox(width: 5),
-            Text(widget.text1),
+            Text(
+              widget.text1,
+              style: TextStyle(
+                color: widget.showList ? Colors.white : greenConst,
+              ),
+            ),
           ],
         ),
         Row(
           children: [
             Icon(
               widget.icon2,
-              color: Colors.grey[500],
+              color: !widget.showList ? Colors.white : greenConst,
             ),
             SizedBox(width: 5),
-            Text(widget.text2),
+            Text(
+              widget.text2,
+              style: TextStyle(
+                color: !widget.showList ? Colors.white : greenConst,
+              ),
+            ),
           ],
         ),
       ],

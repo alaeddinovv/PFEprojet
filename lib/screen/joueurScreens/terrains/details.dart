@@ -497,20 +497,28 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
         terrainCubit.showStadiumDetails,
       ],
       borderRadius: BorderRadius.circular(8),
-      selectedColor: Colors.black,
-      fillColor: Colors.grey[200],
+      fillColor: greenConst,
+      color: greenConst,
       constraints: BoxConstraints(
-          minWidth: MediaQuery.of(context).size.width / 2 - 10, minHeight: 40),
+        minWidth: MediaQuery.of(context).size.width / 2 - 10,
+        minHeight: 42, // Increase the height
+      ),
       children: [
         Row(
           children: [
             Icon(
               Icons.sports_soccer_rounded,
-              color: Colors.grey[500],
+              color:
+                  !terrainCubit.showStadiumDetails ? Colors.white : greenConst,
             ),
             SizedBox(width: 5),
             Text(
               'Reservation',
+              style: TextStyle(
+                color: !terrainCubit.showStadiumDetails
+                    ? Colors.white
+                    : greenConst,
+              ),
             ),
           ],
         ),
@@ -518,11 +526,16 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
           children: [
             Icon(
               Icons.description,
-              color: Colors.grey[500],
+              color:
+                  terrainCubit.showStadiumDetails ? Colors.white : greenConst,
             ),
             SizedBox(width: 5),
             Text(
               'Description',
+              style: TextStyle(
+                color:
+                    terrainCubit.showStadiumDetails ? Colors.white : greenConst,
+              ),
             ),
           ],
         ),
@@ -638,7 +651,7 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
       child: Text(
         timeSlots[index],
         style: const TextStyle(
-          color: Colors.black,
+          color: Colors.white,
           fontWeight: FontWeight.bold,
         ),
       ),
