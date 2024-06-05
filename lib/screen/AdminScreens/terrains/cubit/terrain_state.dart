@@ -136,3 +136,13 @@ class GetSearchJoueurLoading extends TerrainState {}
 class GetSearchJoueurStateGood extends TerrainState {}
 
 class GetSearchJoueurStateBad extends TerrainState {}
+
+class GetJouerByUsernameLoading extends TerrainState {}
+
+class GetJouerByUsernameStateGood extends TerrainState {
+  final DataJoueurModel dataJoueurModel;
+
+  GetJouerByUsernameStateGood({required this.dataJoueurModel});
+}
+
+class GetJouerByUsernameStateBad extends TerrainState {}

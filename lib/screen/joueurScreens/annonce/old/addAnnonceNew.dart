@@ -158,7 +158,7 @@
 //                                 'Selected Equipe: ${selectedEquipe!.nom}',
 //                                 // ignore: prefer_const_constructors
 //                                 style: TextStyle(
-//                                   color: Colors.green,
+//                                   color: greenConst,
 //                                   fontWeight: FontWeight.bold,
 //                                 ),
 //                                 textAlign: TextAlign.center,

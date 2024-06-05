@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pfeprojet/Api/color.dart';
 import 'package:pfeprojet/component/components.dart';
+import 'package:pfeprojet/screen/AdminScreens/annonce/detailsAnnonce/annonce_other.dart';
 import 'package:pfeprojet/screen/AdminScreens/annonce/update_annonce.dart';
 import '../../../Model/annonce/annonce_admin_model.dart';
 
@@ -129,6 +130,13 @@ class _AnnonceState extends State<Annonce> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ListTile(
+            onTap: () {
+              navigatAndReturn(
+                  context: context,
+                  page: AnnouncementPage(
+                    id: model.id!,
+                  ));
+            },
             title: Text(
               model.type ?? '',
               style: const TextStyle(
@@ -142,7 +150,7 @@ class _AnnonceState extends State<Annonce> {
                   .min, // Ensures the Row only takes as much width as it needs
               children: [
                 IconButton(
-                  icon: const Icon(Icons.edit, color: Colors.green),
+                  icon: Icon(Icons.edit, color: greenConst),
                   onPressed: () {
                     navigatAndReturn(
                         context: context,

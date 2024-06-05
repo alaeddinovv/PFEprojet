@@ -59,7 +59,9 @@ class _EditAnnoncePageState extends State<EditAnnoncePage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Edit Annonce'),
+          title: const Text(
+            'Edit Annonce',
+          ),
         ),
         body: SingleChildScrollView(
           child: Form(

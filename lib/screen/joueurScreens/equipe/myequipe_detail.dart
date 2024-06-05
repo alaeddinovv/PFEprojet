@@ -462,7 +462,7 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                             );
                           }
                         },
-                        child: const Icon(Icons.call, color: Colors.green),
+                        child: Icon(Icons.call, color: greenConst),
                       ),
                     ),
                     const SizedBox(width: 8),
@@ -712,7 +712,7 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                             );
                           }
                         },
-                        child: Icon(Icons.call, color: Colors.green)),
+                        child: Icon(Icons.call, color: greenConst)),
                     SizedBox(width: 8),
                     InkWell(
                         onTap: () {
@@ -722,7 +722,7 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                             equipename: equipename,
                           );
                         },
-                        child: Icon(Icons.check, color: Colors.green)),
+                        child: Icon(Icons.check, color: greenConst)),
                     SizedBox(width: 8),
                     InkWell(
                         onTap: () {

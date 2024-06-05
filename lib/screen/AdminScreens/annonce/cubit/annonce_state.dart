@@ -36,3 +36,13 @@ final class GetMyAnnonceLoading extends AnnonceState {}
 class GetMyAnnonceStateGood extends AnnonceState {}
 
 final class GetMyAnnonceStateBad extends AnnonceState {}
+
+final class GetAnnonceByIDLoading extends AnnonceState {}
+
+final class GetAnnonceByIDStateGood extends AnnonceState {
+  final AnnounceOter annonceModel;
+
+  GetAnnonceByIDStateGood({required this.annonceModel});
+}
+
+final class GetAnnonceByIDStateBad extends AnnonceState {}

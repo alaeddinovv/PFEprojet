@@ -109,46 +109,54 @@ class _ReservationState extends State<Reservation> {
                   ],
                 ),
               ),
-              Container(
-                padding: EdgeInsets.symmetric(horizontal: 16),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                  border: Border.all(color: Color(0XFF76A26C), width: 2),
-                ),
-                child: DropdownButton<String>(
-                  value: widget.dropdownValue,
-                  icon: const Icon(Icons.arrow_downward),
-                  iconSize: 24,
-                  elevation: 16,
-                  style: const TextStyle(color: Color(0XFF76A26C)),
-                  underline: Container(
-                    height: 0,
-                  ),
-                  onChanged: (String? newValue) {
-                    setState(() {
-                      widget.dropdownValue = newValue!;
-                      cubit.fetchReservations(
-                        date: formatDate(widget.selectedDate),
-                        heureDebutTemps: formatTimeOfDay(widget.selectedTime),
-                        terrainId: widget.dropdownValue,
-                      );
-                    });
-                  },
-                  items: TerrainCubit.TerrainCubit.get(context)
-                      .terrains
-                      .map<DropdownMenuItem<String>>((TerrainModel terrain) {
-                    return DropdownMenuItem<String>(
-                      value: terrain.id,
-                      child: Text(terrain.nom!),
-                      onTap: () {
+              Column(
+                children: [
+                  Text('Name of Stadium:'),
+                  SizedBox(height: 8),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(color: Color(0XFF76A26C), width: 2),
+                    ),
+                    child: DropdownButton<String>(
+                      value: widget.dropdownValue,
+                      icon: const Icon(Icons.arrow_downward),
+                      iconSize: 24,
+                      elevation: 16,
+                      style: const TextStyle(color: Color(0XFF76A26C)),
+                      underline: Container(
+                        height: 0,
+                      ),
+                      onChanged: (String? newValue) {
                         setState(() {
-                          widget.nameOfTerrain = terrain.nom;
+                          widget.dropdownValue = newValue!;
+                          cubit.fetchReservations(
+                            date: formatDate(widget.selectedDate),
+                            heureDebutTemps:
+                                formatTimeOfDay(widget.selectedTime),
+                            terrainId: widget.dropdownValue,
+                          );
                         });
                       },
-                    );
-                  }).toList(),
-                ),
+                      items: TerrainCubit.TerrainCubit.get(context)
+                          .terrains
+                          .map<DropdownMenuItem<String>>(
+                              (TerrainModel terrain) {
+                        return DropdownMenuItem<String>(
+                          value: terrain.id,
+                          child: Text(terrain.nom!),
+                          onTap: () {
+                            setState(() {
+                              widget.nameOfTerrain = terrain.nom;
+                            });
+                          },
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                ],
               ),
               Container(
                 color: Colors.white,

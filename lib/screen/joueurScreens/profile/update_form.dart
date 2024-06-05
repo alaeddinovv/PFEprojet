@@ -237,52 +237,49 @@ class _UpdateJoueurFormState extends State<UpdateJoueurForm> {
                       }
                     }),
                 const SizedBox(
-                  height: 50,
+                  height: 30,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: BlocConsumer<ProfileJoueurCubit, ProfileJoueurState>(
-                    listener: (context, state) {
-                      if (state is UpdateJoueurLoadingState) {
-                        canPop = false;
-                      } else {
-                        canPop = true;
-                      }
+                BlocConsumer<ProfileJoueurCubit, ProfileJoueurState>(
+                  listener: (context, state) {
+                    if (state is UpdateJoueurLoadingState) {
+                      canPop = false;
+                    } else {
+                      canPop = true;
+                    }
 
-                      if (state is UpdateJoueurStateGood) {
-                        showToast(
-                            msg: S.of(context).success,
-                            state: ToastStates.success); // Localized string
-                        HomeJoueurCubit.get(context).getMyInfo().then((value) {
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const ProfileJoueur()),
-                            (route) => false,
-                          );
+                    if (state is UpdateJoueurStateGood) {
+                      showToast(
+                          msg: S.of(context).success,
+                          state: ToastStates.success); // Localized string
+                      HomeJoueurCubit.get(context).getMyInfo().then((value) {
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ProfileJoueur()),
+                          (route) => false,
+                        );
+                      });
+                    }
+                  },
+                  builder: (context, state) {
+                    return defaultSubmit2(
+                        text: S.of(context).update, // Localized string
+                        background: Colors.blueAccent,
+                        onPressed: () {
+                          if (formkey.currentState!.validate()) {
+                            ProfileJoueurCubit.get(context).updateJoueur(
+                                username: _usernameController.text,
+                                nom: _nomController.text,
+                                prenom: _prenomController.text,
+                                telephone: _telephoneController.text,
+                                wilaya: _wilayaController.text,
+                                commune: _dairaController.text,
+                                poste: _posteController.text,
+                                age: _ageController.text,
+                                deleteOldImage: homeJoueurCubit.photo);
+                          }
                         });
-                      }
-                    },
-                    builder: (context, state) {
-                      return defaultSubmit2(
-                          text: S.of(context).update, // Localized string
-                          background: Colors.blueAccent,
-                          onPressed: () {
-                            if (formkey.currentState!.validate()) {
-                              ProfileJoueurCubit.get(context).updateJoueur(
-                                  username: _usernameController.text,
-                                  nom: _nomController.text,
-                                  prenom: _prenomController.text,
-                                  telephone: _telephoneController.text,
-                                  wilaya: _wilayaController.text,
-                                  commune: _dairaController.text,
-                                  poste: _posteController.text,
-                                  age: _ageController.text,
-                                  deleteOldImage: homeJoueurCubit.photo);
-                            }
-                          });
-                    },
-                  ),
+                  },
                 ),
               ]),
             ),

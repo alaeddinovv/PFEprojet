@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pfeprojet/Api/color.dart';
 import 'package:pfeprojet/Model/terrain_pagination_model.dart';
 import 'package:pfeprojet/screen/joueurScreens/annonce/cubit/annonce_joueur_cubit.dart';
 
@@ -145,9 +146,9 @@ class _SearchTerrainState extends State<SearchTerrain> {
                                       ),
                                       const SizedBox(width: 8),
                                       if (terrain.etat == 'disponible')
-                                        const Icon(
+                                        Icon(
                                           Icons.check_circle,
-                                          color: Colors.green,
+                                          color: greenConst,
                                           size: 18,
                                         ),
                                     ],

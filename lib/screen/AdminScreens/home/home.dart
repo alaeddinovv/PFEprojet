@@ -28,8 +28,11 @@ class _HomeAdminState extends State<HomeAdmin> {
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
-            title: Text(HomeAdminCubit.get(context)
-                .title[HomeAdminCubit.get(context).selectedIndex]),
+            title: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: Text(HomeAdminCubit.get(context)
+                  .title[HomeAdminCubit.get(context).selectedIndex]),
+            ),
             actions: [
               state is GetMyInformationLoading
                   ? const Center(child: CircularProgressIndicator())
@@ -66,21 +69,52 @@ class _HomeAdminState extends State<HomeAdmin> {
   NavigationBarTheme navigationBar(BuildContext context) {
     return NavigationBarTheme(
         data: NavigationBarThemeData(
+          iconTheme: MaterialStateProperty.resolveWith((states) {
+            if (states.contains(MaterialState.selected)) {
+              return const IconThemeData(size: 28, color: Colors.white);
+            }
+            return const IconThemeData(size: 24, color: Colors.white60);
+          }),
           indicatorColor: greenConst,
-          labelTextStyle: MaterialStateProperty.all(
-            const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
-          ),
+          labelTextStyle: MaterialStateProperty.resolveWith((states) {
+            if (states.contains(MaterialState.selected)) {
+              return const TextStyle(
+                fontSize: 14.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              );
+            }
+            return const TextStyle(
+              fontSize: 14.0,
+              color: Colors.white60,
+            );
+          }),
         ),
         child: NavigationBar(
+          backgroundColor: greenConst,
           height: 70,
           selectedIndex: HomeAdminCubit.get(context).selectedIndex,
           onDestinationSelected: (index) =>
               {HomeAdminCubit.get(context).changeIndexNavBar(index)},
           destinations: const [
-            NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
             NavigationDestination(
-                icon: Icon(Icons.more_time_rounded), label: 'Reservation'),
-            NavigationDestination(icon: Icon(Icons.add), label: 'Annonce'),
+                icon: Icon(
+                  Icons.home,
+                  color: Colors.white,
+                ),
+                label: 'Home'),
+            NavigationDestination(
+                icon: Icon(
+                  Icons.more_time_rounded,
+                  color: Colors.white,
+                ),
+                label: 'Reservation'),
+            NavigationDestination(
+                icon: Icon(
+                  Icons.campaign,
+                  color: Colors.white,
+                ),
+                label: 'Annonce'),
           ],
         ));
   }

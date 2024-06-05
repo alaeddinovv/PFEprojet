@@ -194,49 +194,45 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
                       }
                     }),
                 const SizedBox(
-                  height: 50,
+                  height: 30,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: BlocConsumer<ProfileAdminCubit, ProfileAdminState>(
-                    listener: (context, state) {
-                      if (state is UpdateAdminLoadingState) {
-                        canPop = false;
-                      } else {
-                        canPop = true;
-                      }
+                BlocConsumer<ProfileAdminCubit, ProfileAdminState>(
+                  listener: (context, state) {
+                    if (state is UpdateAdminLoadingState) {
+                      canPop = false;
+                    } else {
+                      canPop = true;
+                    }
 
-                      if (state is UpdateAdminStateGood) {
-                        showToast(msg: "Succes", state: ToastStates.success);
-                        HomeAdminCubit.get(context).getMyInfo().then((value) {
-                          Navigator.pushAndRemoveUntil(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const ProfileAdmin()),
-                            (route) => false,
-                          );
+                    if (state is UpdateAdminStateGood) {
+                      showToast(msg: "Succes", state: ToastStates.success);
+                      HomeAdminCubit.get(context).getMyInfo().then((value) {
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ProfileAdmin()),
+                          (route) => false,
+                        );
+                      });
+                    }
+                  },
+                  builder: (context, state) {
+                    return defaultSubmit2(
+                        text: 'Update',
+                        onPressed: () {
+                          if (formkey.currentState!.validate()) {
+                            // if (state is LodinUpdateResponsableState) {
+                            //   return null;
+                            // }
+                            ProfileAdminCubit.get(context).updateAdmin(
+                                nom: _nomController.text,
+                                prenom: _prenomController.text,
+                                telephone: _telephoneController.text,
+                                wilaya: selectedWilaya,
+                                deleteOldImage: homeAdminCubit.photo);
+                          }
                         });
-                      }
-                    },
-                    builder: (context, state) {
-                      return defaultSubmit2(
-                          text: 'Update',
-                          background: Colors.blueAccent,
-                          onPressed: () {
-                            if (formkey.currentState!.validate()) {
-                              // if (state is LodinUpdateResponsableState) {
-                              //   return null;
-                              // }
-                              ProfileAdminCubit.get(context).updateAdmin(
-                                  nom: _nomController.text,
-                                  prenom: _prenomController.text,
-                                  telephone: _telephoneController.text,
-                                  wilaya: selectedWilaya,
-                                  deleteOldImage: homeAdminCubit.photo);
-                            }
-                          });
-                    },
-                  ),
+                  },
                 ),
               ]),
             ),

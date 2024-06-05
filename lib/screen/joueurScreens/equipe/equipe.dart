@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pfeprojet/Api/color.dart';
 import 'package:pfeprojet/Model/equipe_model.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/const.dart';
@@ -112,8 +113,8 @@ class _EquipeState extends State<Equipe> {
                 },
                 borderRadius: BorderRadius.circular(8),
                 selectedColor: Colors.white,
-                fillColor: Colors.green,
-                color: Colors.green, // Set the unselected text color to green
+                fillColor: greenConst,
+                color: greenConst, // Set the unselected text color to green
                 constraints: const BoxConstraints(minHeight: 40.0),
                 children: <Widget>[
                   Padding(
@@ -123,15 +124,14 @@ class _EquipeState extends State<Equipe> {
                         Icon(
                           Icons.group,
                           color:
-                              cubit.isSelected[0] ? Colors.white : Colors.green,
+                              cubit.isSelected[0] ? Colors.white : greenConst,
                         ),
                         SizedBox(width: 8),
                         Text(
                           'My equipes',
                           style: TextStyle(
-                            color: cubit.isSelected[0]
-                                ? Colors.white
-                                : Colors.green,
+                            color:
+                                cubit.isSelected[0] ? Colors.white : greenConst,
                           ),
                         ),
                       ],
@@ -144,15 +144,14 @@ class _EquipeState extends State<Equipe> {
                         Icon(
                           Icons.group,
                           color:
-                              cubit.isSelected[1] ? Colors.white : Colors.green,
+                              cubit.isSelected[1] ? Colors.white : greenConst,
                         ),
                         SizedBox(width: 8),
                         Text(
                           'All Equipes',
                           style: TextStyle(
-                            color: cubit.isSelected[1]
-                                ? Colors.white
-                                : Colors.green,
+                            color:
+                                cubit.isSelected[1] ? Colors.white : greenConst,
                           ),
                         ),
                       ],
@@ -165,15 +164,14 @@ class _EquipeState extends State<Equipe> {
                         Icon(
                           Icons.group,
                           color:
-                              cubit.isSelected[2] ? Colors.white : Colors.green,
+                              cubit.isSelected[2] ? Colors.white : greenConst,
                         ),
                         SizedBox(width: 8),
                         Text(
                           'Equipe im in',
                           style: TextStyle(
-                            color: cubit.isSelected[2]
-                                ? Colors.white
-                                : Colors.green,
+                            color:
+                                cubit.isSelected[2] ? Colors.white : greenConst,
                           ),
                         ),
                       ],
@@ -186,15 +184,14 @@ class _EquipeState extends State<Equipe> {
                         Icon(
                           Icons.mail,
                           color:
-                              cubit.isSelected[3] ? Colors.white : Colors.green,
+                              cubit.isSelected[3] ? Colors.white : greenConst,
                         ),
                         SizedBox(width: 8),
                         Text(
-                          'Les demandes',
+                          'Les invitations',
                           style: TextStyle(
-                            color: cubit.isSelected[3]
-                                ? Colors.white
-                                : Colors.green,
+                            color:
+                                cubit.isSelected[3] ? Colors.white : greenConst,
                           ),
                         ),
                       ],
@@ -246,12 +243,12 @@ class _EquipeState extends State<Equipe> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    const Text(
+                                    Text(
                                       'Les équipes virtuelles :',
                                       style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.green,
+                                        color: greenConst,
                                       ),
                                     ),
                                     Transform.scale(
@@ -265,13 +262,12 @@ class _EquipeState extends State<Equipe> {
                                                 .getMyEquipe(vertial: vertial);
                                           });
                                         },
-                                        activeColor: Colors.green,
+                                        activeColor: greenConst,
                                         shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(4),
                                         ),
-                                        side: const BorderSide(
-                                            color: Colors.green),
+                                        side: BorderSide(color: greenConst),
                                       ),
                                     ),
                                   ],
@@ -339,12 +335,12 @@ class _EquipeState extends State<Equipe> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        const Text(
+                                        Text(
                                           'Les équipes virtuelles :',
                                           style: TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold,
-                                            color: Colors.green,
+                                            color: greenConst,
                                           ),
                                         ),
                                         Transform.scale(
@@ -364,13 +360,12 @@ class _EquipeState extends State<Equipe> {
                                                         vertial: vertial);
                                               });
                                             },
-                                            activeColor: Colors.green,
+                                            activeColor: greenConst,
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(4),
                                             ),
-                                            side: const BorderSide(
-                                                color: Colors.green),
+                                            side: BorderSide(color: greenConst),
                                           ),
                                         ),
                                       ],
@@ -442,12 +437,12 @@ class _EquipeState extends State<Equipe> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            const Text(
+                                            Text(
                                               'Les équipes virtuelles :',
                                               style: TextStyle(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.bold,
-                                                color: Colors.green,
+                                                color: greenConst,
                                               ),
                                             ),
                                             Transform.scale(
@@ -462,13 +457,13 @@ class _EquipeState extends State<Equipe> {
                                                             vertial: vertial);
                                                   });
                                                 },
-                                                activeColor: Colors.green,
+                                                activeColor: greenConst,
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius:
                                                       BorderRadius.circular(4),
                                                 ),
-                                                side: const BorderSide(
-                                                    color: Colors.green),
+                                                side: BorderSide(
+                                                    color: greenConst),
                                               ),
                                             ),
                                           ],
@@ -579,7 +574,7 @@ class _EquipeState extends State<Equipe> {
         // margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
         decoration: BoxDecoration(
           color: Colors.white,
-          border: Border.all(color: Colors.blueAccent, width: 1),
+          border: Border.all(color: greenConst, width: 1),
           borderRadius: BorderRadius.circular(10.0),
           boxShadow: [
             BoxShadow(
@@ -649,7 +644,7 @@ class _EquipeState extends State<Equipe> {
         // margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
         decoration: BoxDecoration(
           color: Colors.white,
-          border: Border.all(color: Colors.blueAccent, width: 1),
+          border: Border.all(color: greenConst, width: 1),
           borderRadius: BorderRadius.circular(10.0),
           boxShadow: [
             BoxShadow(
@@ -679,7 +674,7 @@ class _EquipeState extends State<Equipe> {
                     ),
                   ),
                   IconButton(
-                    icon: Icon(Icons.phone_in_talk, color: Colors.green),
+                    icon: Icon(Icons.phone_in_talk, color: greenConst),
                     onPressed: () {
                       int? phoneNumber = model.capitaineId.telephone;
                       _makePhoneCall(phoneNumber.toString());
@@ -736,7 +731,7 @@ class _EquipeState extends State<Equipe> {
         // margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
         decoration: BoxDecoration(
           color: Colors.white,
-          border: Border.all(color: Colors.blueAccent, width: 1),
+          border: Border.all(color: greenConst, width: 1),
           borderRadius: BorderRadius.circular(10.0),
           boxShadow: [
             BoxShadow(
@@ -766,7 +761,7 @@ class _EquipeState extends State<Equipe> {
                     ),
                   ),
                   IconButton(
-                    icon: Icon(Icons.phone_in_talk, color: Colors.green),
+                    icon: Icon(Icons.phone_in_talk, color: greenConst),
                     onPressed: () {
                       int? phoneNumber = model.capitaineId.telephone;
                       _makePhoneCall(phoneNumber.toString());
@@ -818,7 +813,7 @@ class _EquipeState extends State<Equipe> {
         // margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
         decoration: BoxDecoration(
           color: Colors.white,
-          border: Border.all(color: Colors.blueAccent, width: 1),
+          border: Border.all(color: greenConst, width: 1),
           borderRadius: BorderRadius.circular(10.0),
           boxShadow: [
             BoxShadow(
@@ -872,7 +867,7 @@ class _EquipeState extends State<Equipe> {
                       child: Text('Accepter', style: TextStyle(fontSize: 14)),
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,
-                        backgroundColor: Colors.green, // foreground
+                        backgroundColor: greenConst, // foreground
                         padding:
                             EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                         elevation: 2,
@@ -920,7 +915,7 @@ class _EquipeState extends State<Equipe> {
                     ),
                   ),
                   IconButton(
-                    icon: Icon(Icons.phone_in_talk, color: Colors.green),
+                    icon: Icon(Icons.phone_in_talk, color: greenConst),
                     onPressed: () {
                       int? phoneNumber = model.capitaineId.telephone;
                       _makePhoneCall(phoneNumber.toString());

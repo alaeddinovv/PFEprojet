@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:pfeprojet/Api/color.dart';
@@ -357,138 +358,60 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
 
   Padding descriptionInfo(double screenHeight, BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Material(
-        elevation: 2.0,
-        borderRadius: BorderRadius.circular(10.0),
-        child: Container(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Card(
+        elevation: 5,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        child: Padding(
           padding: const EdgeInsets.all(16.0),
-          decoration: BoxDecoration(
-            // color: Colors.grey[50],
-            border: Border.all(color: Colors.grey.shade300),
-            borderRadius: BorderRadius.circular(10.0),
-          ),
           child: Column(
             mainAxisSize: MainAxisSize.max,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(height: screenHeight * 0.02),
-              Row(
-                children: [
-                  const Icon(
-                    Icons.sports_soccer_rounded,
-                    size: 20,
-                  ),
-                  const SizedBox(width: 5),
-                  Text(
-                    'Nom:  ',
-                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 19),
-                  ),
-                  Expanded(
-                    child: Text(
-                      widget.terrainModel.nom!,
-                      style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey[800]!,
-                      ),
+              _buildListTile(
+                context,
+                icon: Icons.sports_soccer_rounded,
+                title: 'Nom:',
+                subtitle: widget.terrainModel.nom!,
+              ),
+              _buildListTile(
+                context,
+                icon: Icons.location_on,
+                title: 'Adresse:',
+                subtitle: widget.terrainModel.adresse!,
+              ),
+              _buildListTile(
+                context,
+                icon: Icons.phone,
+                title: 'Téléphone:',
+                subtitle: widget.terrainModel.admin!.telephone.toString(),
+              ),
+              _buildListTile(
+                context,
+                icon: Icons.groups_2_rounded,
+                title: 'Nombre de joueurs:',
+                subtitle: "${widget.terrainModel.capacite} joueurs",
+              ),
+              _buildListTile(
+                context,
+                icon: Icons.stadium,
+                title: 'État du terrain:',
+                subtitle: widget.terrainModel.etat!,
+              ),
+              RichText(
+                text: TextSpan(
+                  style: GoogleFonts.poppins(color: Colors.black),
+                  children: [
+                    const TextSpan(
+                      text: "Description: ",
+                      style:
+                          TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
                     ),
-                  ),
-                ],
+                    TextSpan(text: widget.terrainModel.description!),
+                  ],
+                ),
               ),
-              SizedBox(height: 16),
-              Row(
-                children: [
-                  const Icon(
-                    Icons.location_on,
-                    size: 20,
-                  ),
-                  const SizedBox(width: 5),
-                  Text(
-                    'Adresse:  ',
-                    style: TextStyle(
-                      fontWeight: FontWeight.w600,
-                      fontSize: 19,
-                    ),
-                  ),
-                  Expanded(
-                    child: Text(
-                      widget.terrainModel.adresse!,
-                      style: TextStyle(fontSize: 16, color: Colors.grey[800]!),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 16),
-              Row(
-                children: [
-                  const Icon(
-                    Icons.phone,
-                    size: 20,
-                  ),
-                  const SizedBox(width: 5),
-                  Text(
-                    'Téléphone:  ',
-                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 19),
-                  ),
-                  Expanded(
-                    child: Text(
-                      widget.terrainModel.admin!.telephone.toString(),
-                      style: TextStyle(fontSize: 16, color: Colors.grey[800]!),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 16),
-              Row(
-                children: [
-                  const Icon(
-                    Icons.groups_2_rounded,
-                    size: 20,
-                  ),
-                  const SizedBox(width: 5),
-                  Text(
-                    'Nombre de joueurs:  ',
-                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 19),
-                  ),
-                  Expanded(
-                    child: Text(
-                      "${widget.terrainModel.capacite} joueurs",
-                      style: TextStyle(fontSize: 16, color: Colors.grey[800]!),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 16),
-              Row(
-                children: [
-                  const Icon(
-                    Icons.stadium,
-                    size: 20,
-                  ),
-                  const SizedBox(width: 5),
-                  Text(
-                    'État du terrain:  ',
-                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 19),
-                  ),
-                  Expanded(
-                    child: Text(
-                      widget.terrainModel.etat!,
-                      style: TextStyle(fontSize: 16, color: Colors.grey[800]!),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(height: 16),
-              Text(
-                "Description:",
-                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 19),
-              ),
-              SizedBox(height: 8),
-              Text(
-                widget.terrainModel.description!,
-                style: TextStyle(fontSize: 16, color: Colors.grey[800]!),
-              ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Align(
                 alignment: Alignment.bottomRight,
                 child: TextButton.icon(
@@ -511,7 +434,10 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                     style: TextStyle(color: Colors.white),
                   ),
                   style: TextButton.styleFrom(
-                    padding: EdgeInsets.symmetric(vertical: 12, horizontal: 20),
+                    minimumSize:
+                        Size(0, 40), // Set the minimum width and height
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 16), // Adjust the horizontal padding
                     backgroundColor: greenConst,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8.0),
@@ -522,6 +448,40 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  _buildListTile(BuildContext context,
+      {required IconData icon,
+      required String title,
+      required String subtitle,
+      Widget? trailing}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  subtitle,
+                  style: GoogleFonts.poppins(),
+                ),
+              ],
+            ),
+          ),
+          if (trailing != null) trailing,
+        ],
       ),
     );
   }
@@ -537,45 +497,33 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
         terrainCubit.showStadiumDetails,
       ],
       borderRadius: BorderRadius.circular(8),
-      selectedColor: Colors.white,
-      fillColor: Colors.green,
-      color: Colors.green, // Set the unselected text color to green
+      selectedColor: Colors.black,
+      fillColor: Colors.grey[200],
       constraints: BoxConstraints(
-        minWidth: MediaQuery.of(context).size.width / 2 - 10,
-        minHeight: 50, // Increase the height
-      ),
+          minWidth: MediaQuery.of(context).size.width / 2 - 10, minHeight: 40),
       children: [
         Row(
           children: [
             Icon(
               Icons.sports_soccer_rounded,
-              color: !terrainCubit.showStadiumDetails
-                  ? Colors.white
-                  : Colors.green,
+              color: Colors.grey[500],
             ),
             SizedBox(width: 5),
-            Text('Reservation',
-                style: TextStyle(
-                  color: !terrainCubit.showStadiumDetails
-                      ? Colors.white
-                      : Colors.green,
-                )),
+            Text(
+              'Reservation',
+            ),
           ],
         ),
         Row(
           children: [
             Icon(
               Icons.description,
-              color:
-                  terrainCubit.showStadiumDetails ? Colors.white : Colors.green,
+              color: Colors.grey[500],
             ),
             SizedBox(width: 5),
-            Text('Description',
-                style: TextStyle(
-                  color: terrainCubit.showStadiumDetails
-                      ? Colors.white
-                      : Colors.green,
-                )),
+            Text(
+              'Description',
+            ),
           ],
         ),
       ],

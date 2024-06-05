@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pfeprojet/Api/color.dart';
 import 'package:pfeprojet/component/components.dart';
 
 import 'package:pfeprojet/screen/JoueurScreens/profile/profile.dart';
@@ -30,7 +31,10 @@ class _HomeJoueurState extends State<HomeJoueur> {
       builder: (context, state) {
         return Scaffold(
           appBar: AppBar(
-            title: const Text('Home'),
+            title: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: const Text('Home'),
+            ),
             actions: [
               state is GetMyInformationLoading
                   ? const Center(child: CircularProgressIndicator())
@@ -67,23 +71,49 @@ class _HomeJoueurState extends State<HomeJoueur> {
   NavigationBarTheme navigationBar(BuildContext context) {
     return NavigationBarTheme(
         data: NavigationBarThemeData(
-          indicatorColor: const Color(0xFF00FFCC),
-          labelTextStyle: MaterialStateProperty.all(
-            const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
-          ),
+          iconTheme: MaterialStateProperty.resolveWith((states) {
+            if (states.contains(MaterialState.selected)) {
+              return const IconThemeData(size: 28, color: Colors.white);
+            }
+            return const IconThemeData(size: 24, color: Colors.white60);
+          }),
+          indicatorColor: greenConst,
+          labelTextStyle: MaterialStateProperty.resolveWith((states) {
+            if (states.contains(MaterialState.selected)) {
+              return const TextStyle(
+                fontSize: 14.0,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              );
+            }
+            return const TextStyle(
+              fontSize: 14.0,
+              color: Colors.white60,
+            );
+          }),
         ),
         child: NavigationBar(
-          // backgroundColor: Colors.white,
+          backgroundColor: greenConst,
           height: 70,
           selectedIndex: HomeJoueurCubit.get(context).selectedIndex,
           onDestinationSelected: (index) =>
               {HomeJoueurCubit.get(context).changeIndexNavBar(index)},
           destinations: const [
-            NavigationDestination(icon: Icon(Icons.home), label: 'terrain'),
             NavigationDestination(
-                icon: Icon(Icons.more_time_rounded), label: 'Reservation'),
-            NavigationDestination(icon: Icon(Icons.campaign), label: 'annonce'),
-            NavigationDestination(icon: Icon(Icons.groups_2), label: 'equipe'),
+                icon: Icon(
+                  Icons.home,
+                  color: Colors.white,
+                ),
+                label: 'Terrains'),
+            NavigationDestination(
+                icon: Icon(Icons.more_time_rounded, color: Colors.white),
+                label: 'Demands'),
+            NavigationDestination(
+                icon: Icon(Icons.campaign, color: Colors.white),
+                label: 'Annonces'),
+            NavigationDestination(
+                icon: Icon(Icons.groups_2, color: Colors.white),
+                label: 'Equipes'),
           ],
         ));
   }

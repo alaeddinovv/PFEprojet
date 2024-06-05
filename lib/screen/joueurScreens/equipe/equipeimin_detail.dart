@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:pfeprojet/Api/color.dart';
 import 'package:pfeprojet/Model/equipe_model.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/screen/JoueurScreens/home/home.dart';
@@ -53,7 +54,7 @@ class _EquipeImInDetailsScreenState extends State<EquipeImInDetailsScreen> {
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
-                    color: Colors.green,
+                    color: greenConst,
                   ),
                 ),
               ),
@@ -77,7 +78,7 @@ class _EquipeImInDetailsScreenState extends State<EquipeImInDetailsScreen> {
                     ),
                     const Spacer(),
                     IconButton(
-                      icon: const Icon(Icons.call, color: Colors.green),
+                      icon: Icon(Icons.call, color: greenConst),
                       onPressed: () {
                         _makePhoneCall(widget
                             .equipeImInData.capitaineId.telephone

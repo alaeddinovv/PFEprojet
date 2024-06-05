@@ -137,80 +137,83 @@ class _TerrainState extends State<Terrain> {
               terrainModel: terrainModel,
             ));
       },
-      child: Card(
-        elevation: 5,
-        margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Image(
-              image: terrainModel.photos!.isNotEmpty
-                  ? NetworkImage(terrainModel.photos![0])
-                  : const AssetImage('assets/images/terr.jpg')
-                      as ImageProvider<Object>,
-              height: 180,
-              width: double.infinity,
-              fit: BoxFit.fill,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(10.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      const Icon(
-                        Icons.location_on_outlined,
-                        // color: Colors.blue
-                      ),
-                      const SizedBox(width: 5),
-                      Expanded(
-                        child: Text(
-                          terrainModel.adresse!,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16),
+        child: Card(
+          elevation: 5,
+          margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Image(
+                image: terrainModel.photos!.isNotEmpty
+                    ? NetworkImage(terrainModel.photos![0])
+                    : const AssetImage('assets/images/terr.jpg')
+                        as ImageProvider<Object>,
+                height: 180,
+                width: double.infinity,
+                fit: BoxFit.fill,
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.location_on_outlined,
+                          // color: Colors.blue
+                        ),
+                        const SizedBox(width: 5),
+                        Expanded(
+                          child: Text(
+                            terrainModel.adresse!,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                              color: Colors.black87,
+                            ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        const Spacer(),
+                        Icon(Icons.groups, color: greenConst),
+                        const SizedBox(width: 5),
+                        Text(
+                          terrainModel.capacite.toString(),
                           style: const TextStyle(
-                            fontWeight: FontWeight.w600,
+                            fontWeight: FontWeight.bold,
                             fontSize: 16,
                             color: Colors.black87,
                           ),
-                          overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                      const Spacer(),
-                      Icon(Icons.groups, color: greenConst),
-                      const SizedBox(width: 5),
-                      Text(
-                        terrainModel.capacite.toString(),
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                          color: Colors.black87,
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      children: [
+                        Icon(Icons.price_check, color: greenConst),
+                        const SizedBox(width: 5),
+                        Text(
+                          '${terrainModel.prix} Da/H',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                            color: Colors.black87,
+                          ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      const Icon(Icons.price_check, color: Colors.green),
-                      const SizedBox(width: 5),
-                      Text(
-                        '${terrainModel.prix} Da/H',
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                          color: Colors.black87,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            )
-          ],
+                      ],
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

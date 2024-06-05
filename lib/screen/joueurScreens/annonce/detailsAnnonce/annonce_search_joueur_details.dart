@@ -466,7 +466,7 @@ class _AnnonceSearchJoueurDetailsState
                 return ListTile(
                   leading: Icon(
                     item.find ? Icons.done : Icons.hourglass_empty,
-                    color: item.find ? Colors.green : Colors.orange,
+                    color: item.find ? greenConst : Colors.orange,
                   ),
                   title: Text(
                     item.post,

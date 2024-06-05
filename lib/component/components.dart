@@ -260,7 +260,7 @@ Color choseToastColor(ToastStates state) {
   Color color;
   switch (state) {
     case ToastStates.success:
-      color = Colors.green;
+      color = greenConst;
       break;
 
     case ToastStates.error:

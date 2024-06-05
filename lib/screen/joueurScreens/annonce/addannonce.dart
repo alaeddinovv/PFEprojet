@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:pfeprojet/Api/color.dart';
 import 'package:pfeprojet/Model/houssem/equipe_model.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/drop_down_wilaya.dart';
@@ -103,8 +104,8 @@ class _AddAnnonceState extends State<AddAnnonce> {
                         ),
                         if (idTerrainController.text.isNotEmpty)
                           Text('${S.of(context).terrain_name}: $terrainName',
-                              style: const TextStyle(
-                                color: Colors.green,
+                              style: TextStyle(
+                                color: greenConst,
                                 fontWeight: FontWeight.bold,
                               )),
                         const SizedBox(height: 16),
@@ -152,8 +153,8 @@ class _AddAnnonceState extends State<AddAnnonce> {
                             children: [
                               Text(
                                 '${S.of(context).selected_equipe}: ${selectedEquipe!.nom}',
-                                style: const TextStyle(
-                                  color: Colors.green,
+                                style: TextStyle(
+                                  color: greenConst,
                                   fontWeight: FontWeight.bold,
                                 ),
                                 textAlign: TextAlign.center,

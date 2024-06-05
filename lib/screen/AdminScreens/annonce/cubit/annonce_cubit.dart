@@ -5,6 +5,7 @@ import 'dart:convert' as convert;
 
 import 'package:pfeprojet/Api/constApi.dart';
 import 'package:pfeprojet/Api/httplaravel.dart';
+import 'package:pfeprojet/Model/annonce/pulier/annonce_other_model.dart';
 
 import '../../../../Model/annonce/annonce_admin_model.dart';
 import '../../../../Model/error_model.dart';
@@ -127,6 +128,29 @@ class AnnonceCubit extends Cubit<AnnonceState> {
     }).catchError((e) {
       print(e.toString());
       emit(UpdateAnnonceStateBad());
+    });
+  }
+
+  Future<void> getAnnonceByID({
+    required String id,
+  }) async {
+    emit(GetAnnonceByIDLoading());
+    await Httplar.httpget(path: GETANNONCEBYID + id).then((value) {
+      if (value.statusCode == 200) {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+
+        print(jsonResponse);
+        AnnounceOter annonce2 = AnnounceOter.fromJson(jsonResponse);
+        emit(GetAnnonceByIDStateGood(annonceModel: annonce2));
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(GetAnnonceByIDStateBad());
     });
   }
 }

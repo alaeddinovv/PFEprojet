@@ -35,7 +35,7 @@ class ProfileAdmin extends StatelessWidget {
         ),
         title: Text('Profile',
             style:
-            GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.bold)),
+                GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.bold)),
       ),
       drawer: _buildDrawer(context, adminModel),
       body: BlocConsumer<ProfileAdminCubit, ProfileAdminState>(
@@ -58,7 +58,7 @@ class ProfileAdmin extends StatelessWidget {
                     backgroundImage: adminModel.photo != null
                         ? NetworkImage(adminModel.photo!)
                         : const AssetImage('assets/images/football.png')
-                    as ImageProvider<Object>,
+                            as ImageProvider<Object>,
                   ),
                   const SizedBox(height: 10),
                   Text(
@@ -88,9 +88,7 @@ class ProfileAdmin extends StatelessWidget {
         child: Column(
           children: [
             _buildListTile(context,
-                icon: Icons.person,
-                title: 'Nom',
-                subtitle: adminModel.nom!),
+                icon: Icons.person, title: 'Nom', subtitle: adminModel.nom!),
             _buildListTile(context,
                 icon: Icons.person,
                 title: 'Prenom',
@@ -100,9 +98,7 @@ class ProfileAdmin extends StatelessWidget {
                 title: 'Wilaya',
                 subtitle: adminModel.wilaya!),
             _buildListTile(context,
-                icon: Icons.email,
-                title: 'Email',
-                subtitle: adminModel.email!),
+                icon: Icons.email, title: 'Email', subtitle: adminModel.email!),
             _buildListTile(context,
                 icon: Icons.phone,
                 title: 'Phone',
@@ -115,12 +111,12 @@ class ProfileAdmin extends StatelessWidget {
 
   ListTile _buildListTile(BuildContext context,
       {required IconData icon,
-        required String title,
-        required String subtitle}) {
+      required String title,
+      required String subtitle}) {
     return ListTile(
       leading: Icon(icon),
       title:
-      Text(title, style: GoogleFonts.poppins(fontWeight: FontWeight.bold)),
+          Text(title, style: GoogleFonts.poppins(fontWeight: FontWeight.bold)),
       subtitle: Text(subtitle, style: GoogleFonts.poppins()),
       onTap: () {},
     );
@@ -141,7 +137,7 @@ class ProfileAdmin extends StatelessWidget {
                   backgroundImage: adminModel.photo != null
                       ? NetworkImage(adminModel.photo!)
                       : const AssetImage('assets/images/football.png')
-                  as ImageProvider<Object>,
+                          as ImageProvider<Object>,
                 ),
               ],
             ),
@@ -212,7 +208,7 @@ class ProfileAdmin extends StatelessWidget {
             title: Text('Disconnect', style: GoogleFonts.poppins()),
             onTap: () async {
               removeFCMTokenAdmin(
-                  device: await CachHelper.getData(key: 'deviceInfo'))
+                      device: await CachHelper.getData(key: 'deviceInfo'))
                   .then((value) {
                 navigatAndFinish(context: context, page: Login());
                 CachHelper.removdata(key: "TOKEN");

@@ -33,42 +33,29 @@ class _ToggleButtonsWidgetState extends State<ToggleButtonsWidget> {
         });
       },
       borderRadius: BorderRadius.circular(8),
-      selectedColor: Colors.white,
-      fillColor: Colors.green,
-      color: Colors.green,  // Set the unselected text color to green
+      selectedColor: Colors.black,
+      fillColor: Colors.grey[200],
       constraints: BoxConstraints(
-        minWidth: MediaQuery.of(context).size.width / 2 - 10,
-        minHeight: 50,  // Increase the height
-      ),
+          minWidth: MediaQuery.of(context).size.width / 2 - 10, minHeight: 40),
       children: <Widget>[
         Row(
           children: [
             Icon(
               widget.icon1,
-              color: widget.showList ? Colors.white : Colors.green,
+              color: Colors.grey[500],
             ),
             SizedBox(width: 5),
-            Text(
-              widget.text1,
-              style: TextStyle(
-                color: widget.showList ? Colors.white : Colors.green,
-              ),
-            ),
+            Text(widget.text1),
           ],
         ),
         Row(
           children: [
             Icon(
               widget.icon2,
-              color: !widget.showList ? Colors.white : Colors.green,
+              color: Colors.grey[500],
             ),
             SizedBox(width: 5),
-            Text(
-              widget.text2,
-              style: TextStyle(
-                color: !widget.showList ? Colors.white : Colors.green,
-              ),
-            ),
+            Text(widget.text2),
           ],
         ),
       ],

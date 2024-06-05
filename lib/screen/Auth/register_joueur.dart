@@ -231,8 +231,8 @@ class RegisterJoueur extends StatelessWidget {
                           if (state is RegisterLodinState) {
                             return const CircularProgressIndicator();
                           }
-                          return defaultSubmit(
-                              valid: () {
+                          return defaultSubmit2(
+                              onPressed: () {
                                 // print('test');
                                 // print(wilayaController.text);
                                 if (formKey.currentState!.validate()) {

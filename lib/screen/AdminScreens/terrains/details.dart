@@ -466,16 +466,15 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
           children: [
             Icon(
               Icons.sports_soccer_rounded,
-              color: !terrainCubit.showStadiumDetails
-                  ? Colors.white
-                  : Colors.green,
+              color:
+                  !terrainCubit.showStadiumDetails ? Colors.white : greenConst,
             ),
             SizedBox(width: 5),
             Text('Reservation',
                 style: TextStyle(
                   color: !terrainCubit.showStadiumDetails
                       ? Colors.white
-                      : Colors.green,
+                      : greenConst,
                 )),
           ],
         ),
@@ -484,14 +483,14 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
             Icon(
               Icons.description,
               color:
-                  terrainCubit.showStadiumDetails ? Colors.white : Colors.green,
+                  terrainCubit.showStadiumDetails ? Colors.white : greenConst,
             ),
             SizedBox(width: 5),
             Text('Description',
                 style: TextStyle(
                   color: terrainCubit.showStadiumDetails
                       ? Colors.white
-                      : Colors.green,
+                      : greenConst,
                 )),
           ],
         ),

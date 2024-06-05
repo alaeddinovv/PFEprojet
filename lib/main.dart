@@ -140,6 +140,7 @@ class MyApp extends StatelessWidget {
 
                 onbordingmain ? startwidget : const Onbording(),
             theme: ThemeData(
+              useMaterial3: true,
               // primaryColor: Colors.red,
               colorScheme: ColorScheme.light(
                 primary: greenConst,
@@ -149,8 +150,15 @@ class MyApp extends StatelessWidget {
               cardColor: Colors.white,
               // scaffoldBackgroundColor: Colors.grey,
               scaffoldBackgroundColor: Colors.white,
-              appBarTheme: const AppBarTheme(
-                backgroundColor: Colors.white,
+              appBarTheme: AppBarTheme(
+                titleSpacing: 10,
+                iconTheme: const IconThemeData(color: Colors.white),
+                backgroundColor: greenConst,
+                titleTextStyle: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               bottomNavigationBarTheme: const BottomNavigationBarThemeData(
                 backgroundColor: Colors.white,

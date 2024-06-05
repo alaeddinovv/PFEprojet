@@ -189,8 +189,8 @@ class Login extends StatelessWidget {
                         if (state is LoginLoadingState) {
                           return const CircularProgressIndicator();
                         }
-                        return defaultSubmit(
-                            valid: () {
+                        return defaultSubmit2(
+                            onPressed: () {
                               if (formKey.currentState!.validate()) {
                                 Map<String, dynamic> sendinfologin = {
                                   "email": emailController.text,

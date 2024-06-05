@@ -497,4 +497,23 @@ class TerrainCubit extends Cubit<TerrainState> {
       emit(GetSearchJoueurStateBad());
     });
   }
+
+  Future<void> getJouerbyName({required String username}) async {
+    emit(GetJouerByUsernameLoading());
+    await Httplar.httpget(path: getJouerByUsername + username).then((value) {
+      if (value.statusCode == 200) {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        DataJoueurModel model = DataJoueurModel.fromJson(jsonResponse);
+        emit(GetJouerByUsernameStateGood(dataJoueurModel: model));
+      } else {
+        var jsonResponse =
+            convert.jsonDecode(value.body) as Map<String, dynamic>;
+        emit(ErrorState(errorModel: ErrorModel.fromJson(jsonResponse)));
+      }
+    }).catchError((e) {
+      print(e.toString());
+      emit(GetJouerByUsernameStateBad());
+    });
+  }
 }

@@ -114,7 +114,7 @@ class _AllEquipeDetailsScreenState extends State<AllEquipeDetailsScreen> {
               //       ),
               //       subtitle: const Text('Capitaine'),
               //       trailing: IconButton(
-              //         icon: const Icon(Icons.call, color: Colors.green),
+              //         icon: const Icon(Icons.call, color: greenConst),
               //         onPressed: () {
               //           if (widget.equipes.capitaineId.telephone != null) {
               //             _makePhoneCall(

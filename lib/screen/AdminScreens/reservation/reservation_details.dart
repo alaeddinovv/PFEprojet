@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pfeprojet/Api/color.dart';
 import 'package:pfeprojet/Model/reservation_pagination_model.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/screen/AdminScreens/reservation/cubit/reservation_cubit.dart';
@@ -40,7 +41,7 @@ class ReservationDetailsScreen extends StatelessWidget {
                     const SizedBox(height: 8),
                     Row(
                       children: [
-                        const Icon(Icons.check_circle, color: Colors.green),
+                        Icon(Icons.check_circle, color: greenConst),
                         const SizedBox(width: 8),
                         Text(
                           'Status: ${reservation.etat}',
@@ -118,8 +119,11 @@ class ReservationDetailsScreen extends StatelessWidget {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
-                          backgroundColor:
-                              Colors.green, // foreground (text) color
+                          backgroundColor: greenConst,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                                8.0), // Adjust the border radius as needed
+                          ),
                         ),
                         child: const Text('Accept'),
                         onPressed: () {
@@ -131,7 +135,9 @@ class ReservationDetailsScreen extends StatelessWidget {
                             "duree": reservation.duree,
                           };
                           ReservationCubit.get(context).addReservation(
-                              model: _model, idReservation: reservation.id);
+                            model: _model,
+                            idReservation: reservation.id,
+                          );
                         },
                       ),
                     );
@@ -157,8 +163,11 @@ class ReservationDetailsScreen extends StatelessWidget {
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
-                          backgroundColor:
-                              Colors.red, // foreground (text) color
+                          backgroundColor: Colors.red,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(
+                                8.0), // Adjust the border radius as needed
+                          ),
                         ),
                         child: const Text('Refuse'),
                         onPressed: () {
