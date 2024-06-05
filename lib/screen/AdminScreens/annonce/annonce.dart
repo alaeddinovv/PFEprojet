@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pfeprojet/Api/color.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/screen/AdminScreens/annonce/update_annonce.dart';
 import '../../../Model/annonce/annonce_admin_model.dart';
@@ -120,7 +121,7 @@ class _AnnonceState extends State<Annonce> {
       decoration: BoxDecoration(
         color: Colors.white, // Maintains a clean background
         border: Border.all(
-            color: Colors.blueAccent,
+            color: greenConst,
             width: 2), // Slightly thicker border for emphasis
         borderRadius: BorderRadius.circular(8.0), // Rounded corners
       ),

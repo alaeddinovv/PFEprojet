@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:pfeprojet/Api/constApi.dart';
 import 'package:pfeprojet/Api/httplaravel.dart';
-import 'package:pfeprojet/Model/user_model.dart';
 import 'package:pfeprojet/helper/cachhelper.dart';
 import 'package:collection/collection.dart';
 
