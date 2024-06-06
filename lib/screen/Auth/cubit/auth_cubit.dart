@@ -87,7 +87,8 @@ class AuthCubit extends Cubit<AuthState> {
 
   RecoverPasswordModel? recoverPasswordModel;
 
-  Future<void> recoverPassword({required String email}) async {
+  Future<void> recoverPassword(
+      {required String email, required bool isresend}) async {
     emit(PasswordRecoveryLoading());
     Map<String, dynamic> _model = {
       "email": email,
@@ -98,7 +99,7 @@ class AuthCubit extends Cubit<AuthState> {
         // var jsonResponse =
         // convert.jsonDecode(value.body) as Map<String, dynamic>;
         // recoverPasswordModel = RecoverPasswordModel.fromJson(jsonResponse);
-        emit(PasswordRecoverySuccess());
+        emit(PasswordRecoverySuccess(isresnd: isresend));
       } else {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;

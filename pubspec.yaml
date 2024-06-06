@@ -60,6 +60,7 @@ dependencies:
   flutter_localizations:
         sdk: flutter
   google_fonts: ^6.2.1
+  pin_code_fields: ^8.0.1
 
 dev_dependencies:
   flutter_test:

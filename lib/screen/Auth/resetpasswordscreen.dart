@@ -8,7 +8,8 @@ class PasswordResetScreen extends StatelessWidget {
   final String email;
   final String codeentered;
 
-  PasswordResetScreen({super.key, required this.email, required this.codeentered});
+  PasswordResetScreen(
+      {super.key, required this.email, required this.codeentered});
   final TextEditingController _password1Controller = TextEditingController();
   final TextEditingController _password2Controller = TextEditingController();
 
@@ -22,7 +23,8 @@ class PasswordResetScreen extends StatelessWidget {
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is PasswordResetSuccess) {
-          showToast(msg: "Password updated successfully", state: ToastStates.success);
+          showToast(
+              msg: "Password updated successfully", state: ToastStates.success);
           navigatAndFinish(context: context, page: Login());
         } else if (state is PasswordResetFailure) {
           showToast(msg: "Email doesn't exist", state: ToastStates.error);
@@ -34,47 +36,41 @@ class PasswordResetScreen extends StatelessWidget {
       builder: (context, state) {
         return Scaffold(
           body: SingleChildScrollView(
-            child: Container(
-              height: screenHeight,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Colors.white, Color(0xFFB0EFE9)],
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: screenHeight * 0.12),
+                Text(
+                  'Password Reset',
+                  style: TextStyle(
+                    fontFamily: 'Poppins',
+                    fontSize: 30,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  SizedBox(height: screenHeight * 0.14),
-                  Text(
-                    'Password Reset',
+                Image.asset(
+                  'assets/images/lock.jpg',
+                  width: screenWidth * 0.66,
+                  height: screenHeight * 0.25,
+                  alignment: Alignment.center,
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(vertical: screenHeight * 0.04),
+                  child: Text(
+                    'Now you can enter your new password',
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                       fontFamily: 'Poppins',
-                      fontSize: 30,
+                      fontSize: 16,
                       color: Colors.black,
-                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                  Image.asset(
-                    'assets/images/lock.jpg',
-                    width: screenWidth * 0.66,
-                    height: screenHeight * 0.25,
-                    alignment: Alignment.center,
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(vertical: screenHeight * 0.04),
-                    child: Text(
-                      'Now you can enter your new password',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontSize: 16,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                  Form(
+                ),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
+                  child: Form(
                     key: formKey,
                     child: Column(
                       children: [
@@ -93,10 +89,12 @@ class PasswordResetScreen extends StatelessWidget {
                             return null; // Ensure validation logic is correct
                           },
                           labelText: 'New password',
-                          prefixIcon: const Icon(Icons.lock_outline, color: Colors.grey),
+                          prefixIcon: const Icon(Icons.lock_outline,
+                              color: Colors.grey),
                           sufixIcon: IconButton(
                             onPressed: () {
-                              AuthCubit.get(context).togglePasswordVisibility('pass');
+                              AuthCubit.get(context)
+                                  .togglePasswordVisibility('pass');
                             },
                             icon: Icon(
                               AuthCubit.get(context).isHidden['pass']!
@@ -111,7 +109,8 @@ class PasswordResetScreen extends StatelessWidget {
                           context: context,
                           controller: _password2Controller,
                           type: TextInputType.visiblePassword,
-                          obscureText: AuthCubit.get(context).isHidden['pass1']!,
+                          obscureText:
+                              AuthCubit.get(context).isHidden['pass1']!,
                           valid: (value) {
                             if (value.isEmpty) {
                               return 'Password must not be empty';
@@ -122,10 +121,12 @@ class PasswordResetScreen extends StatelessWidget {
                             return null; // Ensure validation logic is correct
                           },
                           labelText: 'Confirm new password',
-                          prefixIcon: const Icon(Icons.lock_outline, color: Colors.grey),
+                          prefixIcon: const Icon(Icons.lock_outline,
+                              color: Colors.grey),
                           sufixIcon: IconButton(
                             onPressed: () {
-                              AuthCubit.get(context).togglePasswordVisibility('pass1');
+                              AuthCubit.get(context)
+                                  .togglePasswordVisibility('pass1');
                             },
                             icon: Icon(
                               AuthCubit.get(context).isHidden['pass1']!
@@ -138,25 +139,25 @@ class PasswordResetScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(height: screenHeight * 0.04),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
-                    child: defaultSubmit2(
-                      text: 'Reset Password',
-                      background: Color(0xFF199A8E),
-                      onPressed: () {
-                        if (formKey.currentState!.validate()) {
-                          AuthCubit.get(context).resetPassword(
-                            email: email,
-                            mdp: _password1Controller.text,
-                            codeVerification: codeentered,
-                          );
-                        }
-                      },
-                    ),
+                ),
+                SizedBox(height: screenHeight * 0.04),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
+                  child: defaultSubmit2(
+                    text: 'Reset Password',
+                    background: Color(0xFF199A8E),
+                    onPressed: () {
+                      if (formKey.currentState!.validate()) {
+                        AuthCubit.get(context).resetPassword(
+                          email: email,
+                          mdp: _password1Controller.text,
+                          codeVerification: codeentered,
+                        );
+                      }
+                    },
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         );
