@@ -68,9 +68,12 @@ class AuthCubit extends Cubit<AuthState> {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
         if (path == Loginadmin) {
-          emit(LoginStateGood(model: AdminModel.fromJson(jsonResponse)));
+          AdminModel model = AdminModel.fromJson(jsonResponse);
+          emit(LoginStateGood(model: model, suggestionId: []));
         } else if (path == Loginjoueur) {
-          emit(LoginStateGood(model: UserModel.fromJson(jsonResponse)));
+          print(UserModel.fromJson(jsonResponse).pythonOutput);
+          UserModel model = UserModel.fromJson(jsonResponse);
+          emit(LoginStateGood(model: model, suggestionId: model.pythonOutput!));
         }
       } else if (value.statusCode == 400 ||
           value.statusCode == 401 ||

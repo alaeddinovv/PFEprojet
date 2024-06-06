@@ -33,8 +33,9 @@ final class LoginLoadingState extends AuthState {}
 
 final class LoginStateGood extends AuthState {
   final dynamic model;
+  final List<String>? suggestionId;
 
-  LoginStateGood({required this.model});
+  LoginStateGood({required this.model, required this.suggestionId});
 }
 
 final class LoginStateBad extends AuthState {}

@@ -174,6 +174,8 @@ class Login extends StatelessWidget {
                                 context: context, page: const HomeAdmin());
                           });
                         } else if (PATH == Loginjoueur) {
+                          CachHelper.putcache(
+                              key: "suggestionId", value: state.suggestionId);
                           addOrUpdateFCMTokenJoueur(
                                   fcmToken: fCMToken,
                                   device: await CachHelper.getData(

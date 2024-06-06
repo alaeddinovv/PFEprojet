@@ -15,6 +15,8 @@ class CachHelper {
       return cache.setString(key, value);
     } else if (value is int) {
       return await cache.setInt(key, value);
+    } else if (value is List<String>) {
+      await cache.setStringList(key, value);
     }
     return await cache.setDouble(key, value);
   }

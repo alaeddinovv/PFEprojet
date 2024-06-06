@@ -3,12 +3,14 @@ class UserModel {
   String? success;
   String? token;
   DataJoueurModel? data;
+  List<String>? pythonOutput;
 
   UserModel.fromJson(Map<String, dynamic> json) {
     status = json['status'];
     success = json['success'];
     token = json['token'];
     data = DataJoueurModel.fromJson(json['data']);
+    pythonOutput = List<String>.from(json['pythonOutput']);
   }
 
   Map<String, dynamic> toJson() {
@@ -17,6 +19,7 @@ class UserModel {
     _data['success'] = success;
     _data['token'] = token;
     _data['data'] = data?.toJson();
+    _data['pythonOutput'] = pythonOutput ?? [];
     return _data;
   }
 }

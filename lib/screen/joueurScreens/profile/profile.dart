@@ -238,6 +238,7 @@ class ProfileJoueur extends StatelessWidget {
               await removeFCMTokenJoueur(
                   device: await CachHelper.getData(key: 'deviceInfo'));
               await CachHelper.removdata(key: "TOKEN");
+              await CachHelper.removdata(key: "suggestionId");
               showToast(
                   msg: S.of(context).disconnect, state: ToastStates.error);
               Navigator.pushReplacement(

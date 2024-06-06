@@ -45,7 +45,7 @@ void main() async {
   Widget startWidget = Login();
   // CachHelper.removdata(key: "onbording");
   // CachHelper.removdata(key: "TOKEN");
-
+  print(CachHelper.getData(key: 'suggestionId'));
   bool onbordingmain = await CachHelper.getData(key: 'onbording') ?? false;
   TOKEN = await CachHelper.getData(key: 'TOKEN') ?? '';
 
