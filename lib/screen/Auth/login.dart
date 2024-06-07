@@ -6,6 +6,7 @@ import 'package:pfeprojet/component/const.dart';
 import 'package:pfeprojet/helper/cachhelper.dart';
 import 'package:pfeprojet/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
 import 'package:pfeprojet/screen/AdminScreens/home/home.dart';
+import 'package:pfeprojet/screen/Auth/about_us.dart';
 import 'package:pfeprojet/screen/Auth/cubit/auth_cubit.dart';
 import 'package:pfeprojet/screen/Auth/recoverypasswordscreen.dart';
 import 'package:pfeprojet/screen/Auth/register_joueur.dart';
@@ -238,34 +239,62 @@ class Login extends StatelessWidget {
                 ],
               ),
             ),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: [
-            //     const Flexible(
-            //       child: Divider(
-            //         color: Colors.grey,
-            //         thickness: 0.5,
-            //         indent: 60,
-            //         endIndent: 5,
-            //       ),
+            SizedBox(height: 50),
+            // SizedBox(
+            //   width: double.infinity,
+            //   child: OutlinedButton(
+            //     style: ElevatedButton.styleFrom(
+            //       shape: const RoundedRectangleBorder(
+            //           borderRadius: BorderRadius.all(Radius.circular(5))),
+            //       padding:
+            //           const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
             //     ),
-            //     //   Text(
-            //     //     "Or Sign In with",
-            //     //     style: Theme.of(context).textTheme.labelMedium,
-            //     //   ),
-            //     //   const Flexible(
-            //     //     child: Divider(
-            //     //       color: Colors.grey,
-            //     //       height: 3,
-            //     //       thickness: 0.5,
-            //     //       indent: 5,
-            //     //       endIndent: 60,
-            //     //     ),
-            //     //   )
-            //     //
-            //   ],
+            //     onPressed: () {
+            //       // Navigate to the About Us page
+            //       // Navigator.push(
+            //       //   context,
+            //       //   MaterialPageRoute(builder: (context) => AboutUsPage()),
+            //       // );
+            //     },
+            //     child: const Text(
+            //       "About Us",
+            //       style: TextStyle(color: Colors.black, fontSize: 16),
+            //     ),
+            //   ),
             // ),
-            // // SizedBox(height: screenHeight * 0.015),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Flexible(
+                  child: Divider(
+                    color: Colors.grey,
+                    thickness: 0.5,
+                    indent: 60,
+                    endIndent: 5,
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    navigatAndReturn(context: context, page: AboutUsPage());
+                  },
+                  child: Text(
+                    "About Us",
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                ),
+                const Flexible(
+                  child: Divider(
+                    color: Colors.grey,
+                    height: 3,
+                    thickness: 0.5,
+                    indent: 5,
+                    endIndent: 60,
+                  ),
+                )
+              ],
+            ),
+            SizedBox(height: screenHeight * 0.015),
             // Row(
             //   mainAxisAlignment: MainAxisAlignment.center,
             //   children: [

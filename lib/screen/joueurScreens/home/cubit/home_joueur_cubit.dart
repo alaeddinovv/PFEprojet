@@ -26,6 +26,13 @@ class HomeJoueurCubit extends Cubit<HomeJoueurState> {
     emit(ResetHomeState());
   }
 
+  final List<String> title = [
+    "Les Terrains",
+    "Mes Denmandes",
+    "Les Annonces",
+    "Les Equipes"
+  ];
+
   final List<Widget> body = [
     const Terrain(),
     const Reservation(),

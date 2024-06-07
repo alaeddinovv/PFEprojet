@@ -102,19 +102,19 @@ class _HomeAdminState extends State<HomeAdmin> {
                   Icons.home,
                   color: Colors.white,
                 ),
-                label: 'Home'),
+                label: 'terrains'),
             NavigationDestination(
                 icon: Icon(
                   Icons.more_time_rounded,
                   color: Colors.white,
                 ),
-                label: 'Reservation'),
+                label: 'Reservations'),
             NavigationDestination(
                 icon: Icon(
                   Icons.campaign,
                   color: Colors.white,
                 ),
-                label: 'Annonce'),
+                label: 'Annonces'),
           ],
         ));
   }

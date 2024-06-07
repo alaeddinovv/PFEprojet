@@ -22,9 +22,9 @@ class HomeAdminCubit extends Cubit<HomeAdminState> {
     const Annonce(),
   ];
   final List<String> title = [
-    "Terrains",
-    "Reservation",
-    "Annonce",
+    "Mes Terrains",
+    "Les Reservations",
+    "Mes Annonces",
   ];
 
   void resetValue() {

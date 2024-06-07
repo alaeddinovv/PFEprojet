@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:pfeprojet/Api/color.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/const.dart';
+import 'package:pfeprojet/component/contact_us.dart';
 import 'package:pfeprojet/cubit/main_cubit.dart';
 import 'package:pfeprojet/generated/l10n.dart';
 import 'package:pfeprojet/helper/cachhelper.dart';
@@ -159,6 +161,7 @@ class ProfileJoueur extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: [
           DrawerHeader(
+            decoration: BoxDecoration(color: greenConst),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -251,6 +254,18 @@ class ProfileJoueur extends StatelessWidget {
               ProfileJoueurCubit.get(context).resetValue();
               EquipeCubit.get(context).resetValue();
               ReservationJoueurCubit.get(context).resetValue();
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.contact_support),
+            title: Text('Contact Us', style: GoogleFonts.poppins()),
+            onTap: () {
+              // Navigate to the Contact Us screen or perform any desired action
+              // For example:
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ContactUsPage()),
+              );
             },
           ),
         ],

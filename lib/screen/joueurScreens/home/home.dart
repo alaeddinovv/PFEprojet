@@ -33,7 +33,8 @@ class _HomeJoueurState extends State<HomeJoueur> {
           appBar: AppBar(
             title: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: const Text('Home'),
+              child: Text(HomeJoueurCubit.get(context)
+                  .title[HomeJoueurCubit.get(context).selectedIndex]),
             ),
             actions: [
               state is GetMyInformationLoading
@@ -107,7 +108,7 @@ class _HomeJoueurState extends State<HomeJoueur> {
                 label: 'Terrains'),
             NavigationDestination(
                 icon: Icon(Icons.more_time_rounded, color: Colors.white),
-                label: 'Demands'),
+                label: 'Demandes'),
             NavigationDestination(
                 icon: Icon(Icons.campaign, color: Colors.white),
                 label: 'Annonces'),

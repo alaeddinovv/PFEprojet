@@ -116,7 +116,7 @@ class _AnnonceState extends State<Annonce> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Createur : propriétaire',
+                      'propriétaire de Terrain',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,

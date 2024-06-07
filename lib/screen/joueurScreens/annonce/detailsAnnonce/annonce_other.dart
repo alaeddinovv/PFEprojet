@@ -127,7 +127,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Horodatage de l\'annonce',
+                            'Date de l\'annonce',
                             style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
