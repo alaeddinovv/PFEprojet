@@ -41,7 +41,7 @@ class _EquipeState extends State<Equipe> {
     // }
     cubit = EquipeCubit.get(context);
     cubit.getMyEquipe();
-    _controller = ScrollController();
+    // _controller = ScrollController();
     _controller = ScrollController()
       ..addListener(() {
         if (_controller.offset >= _controller.position.maxScrollExtent &&
@@ -51,25 +51,26 @@ class _EquipeState extends State<Equipe> {
               EquipeCubit.get(context).getMyEquipe(
                   cursor: EquipeCubit.get(context).cursorId, vertial: vertial);
             }
+            print('dddddddddd');
           } else if (cubit.isSelected[1]) {
             if (EquipeCubit.get(context).cursorid != "") {
               EquipeCubit.get(context).getAllEquipe(
                   cursor: EquipeCubit.get(context).cursorid,
                   capitanId: HomeJoueurCubit.get(context).joueurModel!.id!,
                   vertial: vertial);
-              print('ggggg');
+              print('ggfffggg');
             }
           } else if (cubit.isSelected[2]) {
             if (EquipeCubit.get(context).cursorId1 != "") {
               EquipeCubit.get(context).getEquipeImIn(
                   cursor: EquipeCubit.get(context).cursorId1, vertial: vertial);
-              print('ggggg');
+              print('gggaaaagg');
             }
           } else if (cubit.isSelected[3]) {
             if (EquipeCubit.get(context).cursorId2 != "") {
               EquipeCubit.get(context)
                   .getEquipeInvite(cursor: EquipeCubit.get(context).cursorId2);
-              print('ggggg');
+              print('ggcccggg');
             }
           }
         }

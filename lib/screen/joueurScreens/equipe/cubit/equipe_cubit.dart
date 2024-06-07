@@ -203,7 +203,7 @@ class EquipeCubit extends Cubit<EquipeState> {
         });
         // equipes.addAll(model.data);
         cursorid = model.nextCursor;
-
+        print('gggggggggggg $cursorid');
         emit(GetAllEquipeStateGood());
       } else {
         var jsonResponse =

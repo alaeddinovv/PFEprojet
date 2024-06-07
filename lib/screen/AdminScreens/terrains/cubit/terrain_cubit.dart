@@ -38,6 +38,8 @@ class TerrainCubit extends Cubit<TerrainState> {
     images = [];
     joueursSearch = [];
     // cursorId = "";
+    currentPage = 1;
+    moreDataAvailable = true;
     emit(ResetValueTerrainState());
   }
 
@@ -474,9 +476,7 @@ class TerrainCubit extends Cubit<TerrainState> {
       return;
     }
     await Httplar.httpPost(
-        data: {
-          // "idList": CachHelper.getData(key: 'suggestionId')
-        },
+        data: {"idList": CachHelper.getData(key: 'suggestionId')},
         path: SEARCHJOUEURPAGINATION,
         query: {'page': page.toString(), 'username': username}).then((value) {
       if (value.statusCode == 200) {
