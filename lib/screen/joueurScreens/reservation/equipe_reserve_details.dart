@@ -15,7 +15,7 @@ class EquipeReserveDetials extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Equipe Details'),
+        title: const Text('Détails de l\'équipe'),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(15.0),
@@ -24,7 +24,7 @@ class EquipeReserveDetials extends StatelessWidget {
           children: <Widget>[
             const SizedBox(height: 20.0),
             Text(
-              'Equipe Name: ${equipe.nom ?? 'Unknown Team'}',
+              'Nom de l\'équipe : ${equipe.nom ?? 'Équipe inconnue'}',
               style: const TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.bold,
@@ -34,13 +34,13 @@ class EquipeReserveDetials extends StatelessWidget {
             Card(
               child: ListTile(
                 leading: Icon(Icons.people, color: greenConst),
-                title: Text('Number of players: ${equipe.numeroJoueurs}'),
-                subtitle: const Text('Team Size'),
+                title: Text('Nombre de joueurs : ${equipe.numeroJoueurs}'),
+                subtitle: const Text('Taille de l\'équipe'),
               ),
             ),
             const SizedBox(height: 20.0),
             const Text(
-              'Captain',
+              'Capitaine',
               style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10.0),
@@ -52,7 +52,7 @@ class EquipeReserveDetials extends StatelessWidget {
             ),
             const SizedBox(height: 20.0),
             const Text(
-              'Players',
+              'Joueurs',
               style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10.0),
@@ -69,7 +69,7 @@ class EquipeReserveDetials extends StatelessWidget {
             if (equipe.attenteJoueurs!.isNotEmpty) ...[
               const SizedBox(height: 20.0),
               const Text(
-                'Pending Players',
+                'Joueurs en attente',
                 style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10.0),
@@ -90,7 +90,7 @@ class EquipeReserveDetials extends StatelessWidget {
               child: ListTile(
                 leading: Icon(Icons.location_on, color: greenConst),
                 title: Text('${equipe.wilaya}, ${equipe.commune}'),
-                subtitle: const Text('Location'),
+                subtitle: const Text('Emplacement'),
               ),
             ),
             SizedBox(
@@ -113,7 +113,7 @@ class EquipeReserveDetials extends StatelessWidget {
                   );
                 }
                 return defaultSubmit2(
-                  text: 'Annuler demande',
+                  text: 'Annuler la demande',
                   onPressed: () {
                     EquipeCubit.get(context)
                         .annulerRejoindreEquipe(id: equipe.id!);

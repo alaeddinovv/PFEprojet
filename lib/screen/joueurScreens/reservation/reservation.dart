@@ -12,7 +12,6 @@ class Reservation extends StatefulWidget {
 }
 
 class _ReservationState extends State<Reservation> {
-  // bool _showList = true;
   late ReservationJoueurCubit cubit;
   late ScrollController _controller;
 
@@ -47,29 +46,6 @@ class _ReservationState extends State<Reservation> {
         body: Column(
           children: [
             const SizedBox(height: 20),
-            // Align(
-            //   alignment: Alignment.topCenter,
-            //   child:
-
-            //       ToggleButtonsWidget(
-            //     icon1: Icons.list_outlined,
-            //     icon2: Icons.list_outlined,
-            //     text1: 'Reservations Terrain',
-            //     text2: 'Demander equipe',
-            //     showList: _showList,
-            //     onToggle: (value) {
-            //       setState(() {
-            //         _showList = value;
-            //         if (!_showList) {
-            //           ReservationJoueurCubit.get(context).getEquipesDemander(
-            //               cursor: ReservationJoueurCubit.get(context).cursorid);
-            //         } else {}
-            //       });
-            //     },
-            //   ),
-
-            // ),
-            // Reservations or Demands List
             BlocConsumer<ReservationJoueurCubit, ReservationJoueurState>(
               listener: (context, state) {},
               builder: (context, state) {
@@ -98,7 +74,7 @@ class _ReservationState extends State<Reservation> {
                                 leading: const Icon(Icons.group),
                                 title: Text(equipe.nom ?? ''),
                                 subtitle: Text(
-                                    'Number of Players: ${equipe.numeroJoueurs}'),
+                                    'Nombre de joueurs : ${equipe.numeroJoueurs}'),
                                 trailing: const Icon(Icons.arrow_forward),
                                 onTap: () {
                                   Navigator.push(

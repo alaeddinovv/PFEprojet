@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
@@ -24,24 +23,39 @@ class EditTerrainPage extends StatefulWidget {
 
 class _EditTerrainPageState extends State<EditTerrainPage> {
   final ImagePicker _picker = ImagePicker();
+
   List<dynamic> displayImages = [];
+
   List<String> imagesToDelete = [];
+
   final _formKey = GlobalKey<FormState>();
+
   late final TerrainCubit cubit;
 
   final TextEditingController _adresseController = TextEditingController();
+
   final TextEditingController _descriptionController = TextEditingController();
+
   final TextEditingController _latitudeController = TextEditingController();
+
   final TextEditingController _longitudeController = TextEditingController();
 
   final TextEditingController _largeurController = TextEditingController();
+
   final TextEditingController _longueurController = TextEditingController();
+
   final TextEditingController _superficieController = TextEditingController();
+
   final TextEditingController _prixController = TextEditingController();
+
   final TextEditingController _dureeController = TextEditingController();
+
   final TextEditingController _capaciteController = TextEditingController();
+
   final TextEditingController _etatController = TextEditingController();
+
   final TextEditingController _sTempsController = TextEditingController();
+
   final TextEditingController _eTempsController = TextEditingController();
 
   @override
@@ -49,7 +63,6 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
     super.initState();
     cubit = TerrainCubit.get(context);
     displayImages.addAll(widget.terrainModel.photos!);
-
     _adresseController.text = widget.terrainModel.adresse!;
     _descriptionController.text = widget.terrainModel.description!;
     _latitudeController.text =
@@ -96,7 +109,8 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
       ),
     );
   }
-  // The latitude and longitude text fields are updated only if the user presses the check icon
+
+// The latitude and longitude text fields are updated only if the user presses the check icon
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +127,7 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Edit Terrain'),
+          title: const Text('Modifier le terrain'),
         ),
         body: SingleChildScrollView(
           child: Padding(
@@ -121,15 +135,18 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
             child: Form(
               key: _formKey,
               child: Column(
-                // padding: const EdgeInsets.all(16),
+// padding: const EdgeInsets.all(16),
+
                 children: <Widget>[
                   buildTimeRow(context, _sTempsController, _eTempsController),
                   const SizedBox(height: 10),
                   defaultForm3(
-                    // ! hta nrigl duree yrje3 form HH:MM
-                    // enabled: false,
+// ! hta nrigl duree yrje3 form HH:MM
+
+// enabled: false,
+
                     controller: _dureeController,
-                    labelText: 'Duree',
+                    labelText: 'Durée',
                     type: TextInputType.number,
                     context: context,
                     valid: (String value) {},
@@ -143,7 +160,7 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
                     context: context,
                     valid: (String value) {
                       if (value.isEmpty) {
-                        return 'Adresse Must Not Be Empty';
+                        return 'L\'adresse ne doit pas être vide';
                       }
                     },
                   ),
@@ -155,7 +172,7 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
                     context: context,
                     valid: (String value) {
                       if (value.isEmpty) {
-                        return 'Description Must Not Be Empty';
+                        return 'La description ne doit pas être vide';
                       }
                     },
                   ),
@@ -166,7 +183,7 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
                       context: context,
                       valid: (String value) {
                         if (value.isEmpty) {
-                          return 'Type Must Not Be Empty';
+                          return 'La largeur ne doit pas être vide';
                         }
                       },
                       type: TextInputType.number),
@@ -177,7 +194,7 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
                       context: context,
                       valid: (String value) {
                         if (value.isEmpty) {
-                          return 'Type Must Not Be Empty';
+                          return 'La longueur ne doit pas être vide';
                         }
                       },
                       type: TextInputType.number),
@@ -188,7 +205,7 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
                       context: context,
                       valid: (String value) {
                         if (value.isEmpty) {
-                          return 'Type Must Not Be Empty';
+                          return 'La superficie ne doit pas être vide';
                         }
                       },
                       type: TextInputType.number),
@@ -199,7 +216,7 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
                       context: context,
                       valid: (String value) {
                         if (value.isEmpty) {
-                          return 'Type Must Not Be Empty';
+                          return 'Le prix ne doit pas être vide';
                         }
                       },
                       type: TextInputType.number),
@@ -210,7 +227,7 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
                       context: context,
                       valid: (String value) {
                         if (value.isEmpty) {
-                          return 'Type Must Not Be Empty';
+                          return 'La capacité ne doit pas être vide';
                         }
                       },
                       type: TextInputType.number),
@@ -221,7 +238,7 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
                     context: context,
                     valid: (String value) {
                       if (value.isEmpty) {
-                        return 'Type Must Not Be Empty';
+                        return 'L\'état ne doit pas être vide';
                       }
                     },
                   ),
@@ -245,7 +262,7 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
                           context: context,
                           valid: (String value) {
                             if (value.isEmpty) {
-                              return 'Type Must Not Be Empty';
+                              return 'La latitude ne doit pas être vide';
                             }
                           },
                           readOnly: true,
@@ -258,7 +275,7 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
                           context: context,
                           valid: (String value) {
                             if (value.isEmpty) {
-                              return 'Type Must Not Be Empty';
+                              return 'La longitude ne doit pas être vide';
                             }
                           },
                           readOnly: true,
@@ -278,7 +295,7 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
                   ),
                   const SizedBox(height: 10),
                   defaultSubmit2(
-                      text: 'Add Time Block',
+                      text: 'bloc de temps',
                       onPressed: () {
                         _addTimeBlock(context, widget.terrainModel);
                       },
@@ -299,7 +316,7 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
                         ),
                       ),
                       Text(
-                        'Add Images',
+                        'Ajouter des images',
                         style: TextStyle(
                           color: Colors.grey[700],
                           fontSize: 18,
@@ -341,9 +358,11 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
                       } else {
                         imageWidget = const Placeholder();
                       }
+
                       return ClipRRect(
-                        borderRadius:
-                            BorderRadius.circular(12), // Rounded corners
+                        borderRadius: BorderRadius.circular(12),
+// Rounded corners
+
                         child: Stack(
                           alignment: Alignment.topRight,
                           children: [
@@ -387,9 +406,10 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
                       } else {
                         canPop = true;
                       }
+
                       if (state is UpdateTerrainStateGood) {
                         showToast(
-                            msg: 'Terrain Updated Successfully',
+                            msg: 'Terrain mis à jour avec succès',
                             state: ToastStates.success);
                         cubit.getMyTerrains().then((value) {
                           Navigator.pop(context);
@@ -406,7 +426,7 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
                           if (state is UpdateTerrainLoadingState)
                             const LinearProgressIndicator(),
                           defaultSubmit2(
-                            text: 'Update Terrain',
+                            text: 'Mise à jour du terrain',
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
                                 Map<String, dynamic> _model = {
@@ -481,7 +501,7 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
           });
         } else {
           showToast(
-              msg: "You can only add up to 3 images.",
+              msg: "Vous ne pouvez ajouter que 3 images maximum.",
               state: ToastStates.error);
           break;
         }
@@ -499,7 +519,7 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
         terrainModel.nonReservableTimeBlocks!.add(result);
       });
     } else {
-      print("No valid time block added");
+      print("Aucun bloc horaire valide ajouté");
     }
   }
 
@@ -563,9 +583,9 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
                       context: context,
                       builder: (context) {
                         return AlertDialog(
-                          title: const Text('Delete Time Block'),
+                          title: const Text('Supprimer le bloc horaire'),
                           content: const Text(
-                              'Are you sure you want to delete this time block?'),
+                              'Etes-vous sûr de vouloir supprimer ce bloc horaire ?'),
                           actions: <Widget>[
                             TextButton(
                               onPressed: () {
@@ -575,13 +595,13 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
                                 });
                                 Navigator.of(context).pop();
                               },
-                              child: const Text('Yes'),
+                              child: const Text('oui'),
                             ),
                             TextButton(
                               onPressed: () {
                                 Navigator.of(context).pop();
                               },
-                              child: const Text('No'),
+                              child: const Text('Non'),
                             ),
                           ],
                         );

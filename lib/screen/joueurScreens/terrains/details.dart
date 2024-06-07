@@ -683,18 +683,19 @@ Widget _buildColorIndex() {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Color Index:',
+            'Index des couleurs :',
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
           ),
           SizedBox(height: 8),
-          _buildColorItem(greenConst, 'Available for booking'),
-          _buildColorItem(Colors.red[300]!, 'Blocked by stadium owner'),
-          _buildColorItem(Colors.grey[300]!, 'Booked by other players'),
-          _buildColorItem(Colors.blue[300]!, 'Your approved booking'),
-          _buildColorItem(Colors.yellow[300]!, 'Your pending booking'),
+          _buildColorItem(greenConst, 'Disponible pour réservation'),
+          _buildColorItem(
+              Colors.red[300]!, 'Bloqué par le propriétaire du stade'),
+          _buildColorItem(Colors.grey[300]!, 'Réservé par d\'autres joueurs'),
+          _buildColorItem(Colors.blue[300]!, 'Votre réservation approuvée'),
+          _buildColorItem(Colors.yellow[300]!, 'Votre réservation en attente'),
         ],
       ),
     ),

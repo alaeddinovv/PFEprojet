@@ -58,7 +58,7 @@ class _AnnonceSearchJoueurDetailsState
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Annonce Details'),
+        title: const Text("Détails de l'annonce"),
       ),
       body: BlocConsumer<AnnonceJoueurCubit, AnnonceJoueurState>(
         listener: (context, state) async {
@@ -67,17 +67,20 @@ class _AnnonceSearchJoueurDetailsState
           }
           if (state is UpdateAnnonceJoueurStateGood) {
             showToast(
-                msg: 'Update Annonce Success', state: ToastStates.success);
+                msg: 'Mise à jour Annonce Succès', state: ToastStates.success);
             Navigator.pop(context);
           }
           if (state is DemandeRejoindreEquipeStateGood) {
             Navigator.pop(context);
-            showToast(msg: 'Request to join sent', state: ToastStates.success);
+            showToast(
+                msg: 'Demande pour rejoindre envoyée',
+                state: ToastStates.success);
             await sendNotificationToJoueur(
-                title: 'request to join equipe',
-                body:
-                    '${state.userName} send request to join ${state.equipeName}\n post: ${state.post} ',
-                joueurId: state.joueurId);
+              title: 'Demande pour rejoindre l\'équipe',
+              body:
+                  '${state.userName} a envoyé une demande pour rejoindre ${state.equipeName}\n poste: ${state.post}',
+              joueurId: state.joueurId,
+            );
           }
         },
         builder: (context, state) {
@@ -98,12 +101,12 @@ class _AnnonceSearchJoueurDetailsState
                       Icons.calendar_today,
                       greenConst),
                   _buildDetailCard(
-                      'Start Time',
+                      'Heure de début',
                       annonceDetails?.reservationId.heureDebutTemps ?? '',
                       Icons.access_time,
                       greenConst),
                   _buildDetailCardWithNavigation(
-                    'Terrain Name and Address',
+                    'Nom et adresse du terrain',
                     '${annonceDetails?.terrainId.nom}, ${annonceDetails?.terrainId.adresse}',
                     Icons.location_on,
                     greenConst,
@@ -120,31 +123,32 @@ class _AnnonceSearchJoueurDetailsState
                         );
                       } else {
                         showToast(
-                            msg: 'No Terrain find', state: ToastStates.warning);
+                            msg: 'Aucun terrain trouvé',
+                            state: ToastStates.warning);
                       }
                     },
                   ),
                   _buildDetailCard(
-                      'Number of Players',
+                      'Nombre de joueurs',
                       annonceDetails?.postWant.length.toString() ?? '',
                       Icons.people,
                       greenConst),
                   _buildExpansionTile('Post Wanted',
                       annonceDetails?.postWant ?? [], Icons.search, greenConst),
                   _buildDetailCard(
-                      'Duration',
-                      '${annonceDetails?.reservationId.duree} hours',
+                      'Durée',
+                      '${annonceDetails?.reservationId.duree} heures',
                       Icons.timer,
                       greenConst),
                   _buildTeamExpansionTile(
-                      'Team 1: ${annonceDetails?.reservationId.equipeId1?.nom}',
+                      'Équipe 1 : ${annonceDetails?.reservationId.equipeId1?.nom}',
                       annonceDetails?.reservationId.equipeId1 != null
                           ? annonceDetails?.reservationId.equipeId1!.joueurs ??
                               []
                           : [],
                       greenConst),
                   _buildTeamExpansionTile(
-                      'Team 2 : ${annonceDetails?.reservationId.equipeId2?.nom}',
+                      'Équipe 2 : ${annonceDetails?.reservationId.equipeId2?.nom}',
                       annonceDetails?.reservationId.equipeId2 != null
                           ? annonceDetails?.reservationId.equipeId2!.joueurs ??
                               []
@@ -161,7 +165,7 @@ class _AnnonceSearchJoueurDetailsState
                           ? state is UpdateAnnonceJoueurLoadingState
                               ? const CircularProgressIndicator()
                               : defaultSubmit2(
-                                  text: 'Update Annonce',
+                                  text: 'mettre à jour',
                                   onPressed: () {
                                     List<Map<String, dynamic>> postWantList =
                                         annonceDetails!.postWant
@@ -183,7 +187,7 @@ class _AnnonceSearchJoueurDetailsState
                                             id: annonceDetails!.id);
                                   })
                           : defaultSubmit2(
-                              text: 'request to join Match',
+                              text: 'demande de rejoindre Match',
                               onPressed: () {
                                 if (annonceDetails != null ||
                                     annonceDetails?.terrainId != null ||
@@ -214,7 +218,7 @@ class _AnnonceSearchJoueurDetailsState
       builder: (BuildContext context) {
         String? selectedPosition;
         return AlertDialog(
-          title: const Text('Select Position'),
+          title: const Text('Sélectionner une position'),
           content: DropdownButtonFormField<String>(
             items: uniquePositions.map((position) {
               return DropdownMenuItem<String>(
@@ -235,7 +239,7 @@ class _AnnonceSearchJoueurDetailsState
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: const Text('Cancel'),
+              child: const Text('Annuler'),
             ),
             ElevatedButton(
               onPressed: () {
@@ -244,7 +248,7 @@ class _AnnonceSearchJoueurDetailsState
                   Navigator.of(context).pop();
                 }
               },
-              child: const Text('Send Request'),
+              child: const Text('Envoyer une demande'),
             ),
           ],
         );
@@ -459,7 +463,7 @@ class _AnnonceSearchJoueurDetailsState
                       ));
                     });
                   },
-                  child: const Text('Add Post Want'),
+                  child: const Text('Ajouter un poste'),
                 ),
               ]
             : items.map<Widget>((item) {
@@ -492,7 +496,7 @@ class _AnnonceSearchJoueurDetailsState
         children: players.map<Widget>((player) {
           return ListTile(
             title: Text('${player.nom} ${player.prenom}'),
-            subtitle: Text('Phone: ${player.telephone.toString()}'),
+            subtitle: Text('Telephone: ${player.telephone.toString()}'),
           );
         }).toList(),
       ),
