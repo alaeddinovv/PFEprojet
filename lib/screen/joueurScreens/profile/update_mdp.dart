@@ -27,7 +27,7 @@ class UpdateMdpForm extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("modifier Mot de passe"),
+          title: const Text("Modifier le mot de passe"),
         ),
         body: Padding(
           padding: const EdgeInsets.all(10.0),
@@ -57,10 +57,10 @@ class UpdateMdpForm extends StatelessWidget {
                           ProfileJoueurCubit.get(context).isHidden['pass']!,
                       valid: (value) {
                         if (value.isEmpty) {
-                          return 'mot_de_passe Must Be Not Empty';
+                          return 'Le mot de passe ne doit pas être vide';
                         }
                       },
-                      labelText: 'encient mot de passe',
+                      labelText: 'Ancien mot de passe',
                       prefixIcon: const Icon(
                         Icons.password_outlined,
                         color: Colors.grey,
@@ -92,15 +92,15 @@ class UpdateMdpForm extends StatelessWidget {
                       type: TextInputType.visiblePassword,
                       valid: (value) {
                         if (value.isEmpty) {
-                          return 'mot_de_passe Must Be Not Empty';
+                          return 'Le mot de passe ne doit pas être vide';
                         }
                         if (value != _new2Controller.text) {
-                          return 'mot de passe pas symetrique';
+                          return 'Les mots de passe ne correspondent pas';
                         }
                       },
                       obscureText:
                           ProfileJoueurCubit.get(context).isHidden['pass1']!,
-                      labelText: 'nouveau mot de passe',
+                      labelText: 'Nouveau mot de passe',
                       prefixIcon: const Icon(
                         Icons.password_outlined,
                         color: Colors.grey,
@@ -134,13 +134,13 @@ class UpdateMdpForm extends StatelessWidget {
                           ProfileJoueurCubit.get(context).isHidden['pass2']!,
                       valid: (value) {
                         if (value.isEmpty) {
-                          return 'mot_de_passe Must Be Not Empty';
+                          return 'Le mot de passe ne doit pas être vide';
                         }
                         if (value != _new1Controller.text) {
-                          return 'mot de passe pas symetrique';
+                          return 'Les mots de passe ne correspondent pas';
                         }
                       },
-                      labelText: 'nouveau mot de passe',
+                      labelText: 'Confirmer le nouveau mot de passe',
                       prefixIcon: const Icon(
                         Icons.password_outlined,
                         color: Colors.grey,
@@ -172,7 +172,7 @@ class UpdateMdpForm extends StatelessWidget {
                     }
                     if (state is UpdateMdpJoueurStateGood) {
                       showToast(
-                          msg: "mot de passe modifier avec succes",
+                          msg: "Mot de passe modifié avec succès",
                           state: ToastStates.success);
                       Navigator.pushAndRemoveUntil(
                         context,
@@ -182,7 +182,7 @@ class UpdateMdpForm extends StatelessWidget {
                       );
                     } else if (state is UpdateMdpJoueurStateBad) {
                       showToast(
-                          msg: "server crashed", state: ToastStates.error);
+                          msg: "Erreur serveur", state: ToastStates.error);
                     } else if (state is ErrorState) {
                       String errorMessage = state.errorModel.message!;
                       showToast(msg: errorMessage, state: ToastStates.error);
@@ -190,7 +190,7 @@ class UpdateMdpForm extends StatelessWidget {
                   },
                   builder: (context, state) {
                     return defaultSubmit2(
-                        text: 'Update',
+                        text: 'Mettre à jour',
                         background: Colors.blueAccent,
                         onPressed: () {
                           if (formkey.currentState!.validate()) {

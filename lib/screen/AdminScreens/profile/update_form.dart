@@ -70,7 +70,7 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Update"),
+          title: const Text("Mettre à jour"),
         ),
         body: Padding(
           padding: const EdgeInsets.all(10.0),
@@ -136,7 +136,7 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
                     prefixIcon: const Icon(Icons.person),
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return "Name Must Be Not Empty";
+                        return "Le nom ne doit pas être vide";
                       }
                     }),
                 const SizedBox(
@@ -145,7 +145,7 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
                 defaultForm2(
                     controller: _prenomController,
                     textInputAction: TextInputAction.next,
-                    label: 'Prenom',
+                    label: 'Prénom',
                     prefixIcon: const Icon(
                       Icons.person,
                       color: Colors.transparent,
@@ -153,7 +153,7 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
                     type: TextInputType.text,
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return "Prenom Must Be Not Empty";
+                        return "Le prénom ne doit pas être vide";
                       }
                     }),
                 const SizedBox(
@@ -161,7 +161,7 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
                 ),
                 DropdownButtonFormField<String>(
                   decoration: InputDecoration(
-                    labelText: 'Select Wilaya',
+                    labelText: 'Sélectionnez une wilaya',
                     border: OutlineInputBorder(),
                   ),
                   value: selectedWilaya,
@@ -185,12 +185,12 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
                 defaultForm2(
                     controller: _telephoneController,
                     textInputAction: TextInputAction.next,
-                    label: 'Telephone',
+                    label: 'Téléphone',
                     prefixIcon: const Icon(Icons.phone),
                     type: TextInputType.phone,
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return "Phone Must Be Not Empty";
+                        return "Le téléphone ne doit pas être vide";
                       }
                     }),
                 const SizedBox(
@@ -205,7 +205,7 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
                     }
 
                     if (state is UpdateAdminStateGood) {
-                      showToast(msg: "Succes", state: ToastStates.success);
+                      showToast(msg: "Succès", state: ToastStates.success);
                       HomeAdminCubit.get(context).getMyInfo().then((value) {
                         Navigator.pushAndRemoveUntil(
                           context,
@@ -218,7 +218,7 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
                   },
                   builder: (context, state) {
                     return defaultSubmit2(
-                        text: 'Update',
+                        text: 'Mettre à jour',
                         onPressed: () {
                           if (formkey.currentState!.validate()) {
                             // if (state is LodinUpdateResponsableState) {
@@ -251,7 +251,7 @@ class SelectPhotoAlert extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text("Choose the source :"),
+      title: const Text("Choisissez la source :"),
       actions: [
         TextButton(
             onPressed: () async {
@@ -259,14 +259,14 @@ class SelectPhotoAlert extends StatelessWidget {
               await ProfileAdminCubit.get(context)
                   .imagePickerProfile(ImageSource.camera);
             },
-            child: const Text("Camera")),
+            child: const Text("Caméra")),
         TextButton(
             onPressed: () async {
               Navigator.pop(context);
               await ProfileAdminCubit.get(context)
                   .imagePickerProfile(ImageSource.gallery);
             },
-            child: const Text("Gallery"))
+            child: const Text("Galerie"))
       ],
     );
   }

@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pfeprojet/Model/admin_medel.dart';
+import 'package:pfeprojet/Api/color.dart';
+
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/const.dart';
+import 'package:pfeprojet/component/contact_us.dart';
 import 'package:pfeprojet/cubit/main_cubit.dart';
 import 'package:pfeprojet/generated/l10n.dart';
 import 'package:pfeprojet/helper/cachhelper.dart';
@@ -128,6 +131,7 @@ class ProfileAdmin extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: [
           DrawerHeader(
+            decoration: BoxDecoration(color: greenConst),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -144,14 +148,16 @@ class ProfileAdmin extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.home),
-            title: Text('Home', style: GoogleFonts.poppins()),
+            title: Text('Accueil', style: GoogleFonts.poppins()),
             onTap: () {
               navigatAndFinish(context: context, page: const HomeAdmin());
             },
           ),
           ListTile(
             leading: Icon(Icons.edit),
-            title: Text('Modifier profile', style: GoogleFonts.poppins()),
+            title: Text(
+              S.of(context).modify_profile,
+            ),
             onTap: () {
               navigatAndReturn(
                 context: context,
@@ -161,7 +167,7 @@ class ProfileAdmin extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.lock),
-            title: Text('Modifier mdp', style: GoogleFonts.poppins()),
+            title: Text(S.of(context).modify_password),
             onTap: () {
               navigatAndReturn(
                 context: context,
@@ -171,7 +177,7 @@ class ProfileAdmin extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.translate),
-            title: Text('Change Language', style: GoogleFonts.poppins()),
+            title: Text('Changer la langue', style: GoogleFonts.poppins()),
             onTap: () {
               showDialog(
                 context: context,
@@ -182,7 +188,7 @@ class ProfileAdmin extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       ListTile(
-                        title: Text('Frencais', style: GoogleFonts.poppins()),
+                        title: Text('Français', style: GoogleFonts.poppins()),
                         onTap: () {
                           MainCubit.get(context)
                               .changeLanguage(const Locale('en'));
@@ -190,7 +196,7 @@ class ProfileAdmin extends StatelessWidget {
                         },
                       ),
                       ListTile(
-                        title: Text('Arab', style: GoogleFonts.poppins()),
+                        title: Text('العربية', style: GoogleFonts.poppins()),
                         onTap: () {
                           MainCubit.get(context)
                               .changeLanguage(const Locale('ar'));
@@ -205,15 +211,27 @@ class ProfileAdmin extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.exit_to_app),
-            title: Text('Disconnect', style: GoogleFonts.poppins()),
+            title: Text('Se déconnecter', style: GoogleFonts.poppins()),
             onTap: () async {
               removeFCMTokenAdmin(
                       device: await CachHelper.getData(key: 'deviceInfo'))
                   .then((value) {
                 navigatAndFinish(context: context, page: Login());
                 CachHelper.removdata(key: "TOKEN");
-                showToast(msg: "Disconnect", state: ToastStates.error);
+                showToast(msg: "Déconnexion", state: ToastStates.error);
               });
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.contact_support),
+            title: Text('contacter Nous', style: GoogleFonts.poppins()),
+            onTap: () {
+              // Navigate to the Contact Us screen or perform any desired action
+              // For example:
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ContactUsPage()),
+              );
             },
           ),
         ],

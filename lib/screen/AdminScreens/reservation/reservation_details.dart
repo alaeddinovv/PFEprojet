@@ -14,7 +14,7 @@ class ReservationDetailsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Reservation Details'),
+        title: const Text('Détails de la réservation'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -33,7 +33,7 @@ class ReservationDetailsScreen extends StatelessWidget {
                         const Icon(Icons.timer, color: Colors.deepPurple),
                         const SizedBox(width: 8),
                         Text(
-                          'Duration: ${reservation.duree} week(s)',
+                          'Durée: ${reservation.duree} semaine(s)',
                           style: const TextStyle(fontSize: 16),
                         ),
                       ],
@@ -44,7 +44,7 @@ class ReservationDetailsScreen extends StatelessWidget {
                         Icon(Icons.check_circle, color: greenConst),
                         const SizedBox(width: 8),
                         Text(
-                          'Status: ${reservation.etat}',
+                          'État: ${reservation.etat}',
                           style: const TextStyle(fontSize: 16),
                         ),
                       ],
@@ -55,7 +55,7 @@ class ReservationDetailsScreen extends StatelessWidget {
                         const Icon(Icons.schedule, color: Colors.orange),
                         const SizedBox(width: 8),
                         Text(
-                          'Hour: ${reservation.heureDebutTemps}',
+                          'Heure: ${reservation.heureDebutTemps}',
                           style: const TextStyle(fontSize: 16),
                         ),
                       ],
@@ -77,7 +77,7 @@ class ReservationDetailsScreen extends StatelessWidget {
                         const Icon(Icons.account_circle, color: Colors.blue),
                         const SizedBox(width: 8),
                         Text(
-                          'Username: ${reservation.joueurId!.username}',
+                          'Nom d\'utilisateur: ${reservation.joueurId!.username}',
                           style: const TextStyle(fontSize: 16),
                         ),
                       ],
@@ -88,7 +88,7 @@ class ReservationDetailsScreen extends StatelessWidget {
                         const Icon(Icons.phone, color: Colors.red),
                         const SizedBox(width: 8),
                         Text(
-                          'Telephone: ${reservation.joueurId!.telephone}',
+                          'Téléphone: ${reservation.joueurId!.telephone}',
                           style: const TextStyle(fontSize: 16),
                         ),
                       ],
@@ -104,11 +104,11 @@ class ReservationDetailsScreen extends StatelessWidget {
                   listener: (context, state) {
                     if (state is AddReservationStateGood) {
                       showToast(
-                          msg: 'added successfully',
+                          msg: 'Ajouté avec succès',
                           state: ToastStates.success);
                       Navigator.pop(context);
                     } else if (state is AddReservationStateBad) {
-                      showToast(msg: 'error', state: ToastStates.error);
+                      showToast(msg: 'Erreur', state: ToastStates.error);
                     }
                   },
                   builder: (context, state) {
@@ -125,7 +125,7 @@ class ReservationDetailsScreen extends StatelessWidget {
                                 8.0), // Adjust the border radius as needed
                           ),
                         ),
-                        child: const Text('Accept'),
+                        child: const Text('Accepter'),
                         onPressed: () {
                           Map<String, dynamic>? _model = {
                             "joueur_id": reservation.joueurId!.id,
@@ -148,11 +148,11 @@ class ReservationDetailsScreen extends StatelessWidget {
                   listener: (context, state) {
                     if (state is DeleteReservationStateGood) {
                       showToast(
-                          msg: 'Deleted successfully',
+                          msg: 'Supprimé avec succès',
                           state: ToastStates.success);
                       Navigator.pop(context);
                     } else if (state is DeleteReservationStateBad) {
-                      showToast(msg: 'error', state: ToastStates.error);
+                      showToast(msg: 'Erreur', state: ToastStates.error);
                     }
                   },
                   builder: (context, state) {
@@ -169,7 +169,7 @@ class ReservationDetailsScreen extends StatelessWidget {
                                 8.0), // Adjust the border radius as needed
                           ),
                         ),
-                        child: const Text('Refuse'),
+                        child: const Text('Refuser'),
                         onPressed: () {
                           print(reservation.id);
                           ReservationCubit.get(context).removeReservation(

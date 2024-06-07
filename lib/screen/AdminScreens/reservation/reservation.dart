@@ -79,7 +79,10 @@ class _ReservationState extends State<Reservation> {
                       child: ElevatedButton.icon(
                         icon: const Icon(Icons.calendar_today,
                             color: Colors.white),
-                        label: Text(S.of(context).selectday),
+                        label: Text(
+                          'Sélectionner un jour',
+                          textAlign: TextAlign.center,
+                        ),
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
                           backgroundColor: Color(0XFF76A26C),
@@ -95,7 +98,10 @@ class _ReservationState extends State<Reservation> {
                       child: ElevatedButton.icon(
                         icon:
                             const Icon(Icons.access_time, color: Colors.white),
-                        label: const Text('Select Hour'),
+                        label: const Text(
+                          'Sélectionner une heure',
+                          textAlign: TextAlign.center,
+                        ),
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
                           backgroundColor: Color(0XFF76A26C),
@@ -111,7 +117,7 @@ class _ReservationState extends State<Reservation> {
               ),
               Column(
                 children: [
-                  Text('Name of Stadium:'),
+                  Text('Nom du stade :'),
                   SizedBox(height: 8),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 16),
@@ -168,7 +174,7 @@ class _ReservationState extends State<Reservation> {
                     if (widget.selectedDate != null)
                       Chip(
                         label: Text(
-                            'jour: ${widget.selectedDate?.day.toString().padLeft(2, "0")}/${widget.selectedDate?.month.toString().padLeft(2, "0")}/${widget.selectedDate?.year}'),
+                            'Jour: ${widget.selectedDate?.day.toString().padLeft(2, "0")}/${widget.selectedDate?.month.toString().padLeft(2, "0")}/${widget.selectedDate?.year}'),
                         deleteIcon: const Icon(
                           Icons.cancel,
                         ),
@@ -181,12 +187,12 @@ class _ReservationState extends State<Reservation> {
                           });
                         },
                         deleteIconColor: Colors.redAccent,
-                        deleteButtonTooltipMessage: 'Remove this day',
+                        deleteButtonTooltipMessage: 'Supprimer ce jour',
                       ),
                     if (widget.selectedTime != null)
                       Chip(
                         label: Text(
-                            'Hour: ${widget.selectedTime!.hour.toString().padLeft(2, '0')}:${widget.selectedTime!.minute.toString().padLeft(2, '0')}'),
+                            'Heure: ${widget.selectedTime!.hour.toString().padLeft(2, '0')}:${widget.selectedTime!.minute.toString().padLeft(2, '0')}'),
                         deleteIcon: const Icon(
                           Icons.cancel,
                         ),
@@ -198,11 +204,11 @@ class _ReservationState extends State<Reservation> {
                           });
                         },
                         deleteIconColor: Colors.redAccent,
-                        deleteButtonTooltipMessage: 'Remove this hour',
+                        deleteButtonTooltipMessage: 'Supprimer cette heure',
                       ),
                     if (widget.nameOfTerrain != null)
                       Chip(
-                        label: Text('Stadium: ${widget.nameOfTerrain}'),
+                        label: Text('Stade: ${widget.nameOfTerrain}'),
                         deleteIcon: const Icon(
                           Icons.cancel,
                         ),
@@ -218,7 +224,7 @@ class _ReservationState extends State<Reservation> {
                           });
                         },
                         deleteIconColor: Colors.redAccent,
-                        deleteButtonTooltipMessage: 'Remove this stadium',
+                        deleteButtonTooltipMessage: 'Supprimer ce stade',
                       ),
                   ],
                 ),
@@ -241,7 +247,7 @@ class _ReservationState extends State<Reservation> {
                             children: [
                               Expanded(
                                 child: Text(
-                                    '${reservation.jour!.month.toString().padLeft(2, '0')}/${reservation.jour!.day.toString().padLeft(2, '0')}  at ${reservation.heureDebutTemps}'),
+                                    '${reservation.jour!.month.toString().padLeft(2, '0')}/${reservation.jour!.day.toString().padLeft(2, '0')}  à ${reservation.heureDebutTemps}'),
                               ),
                               Text(
                                 reservation.terrainId!.nom.toString(),
@@ -252,7 +258,7 @@ class _ReservationState extends State<Reservation> {
                             ],
                           ),
                           subtitle: Text(
-                              'Duration: ${reservation.duree} semain(s), Status: ${reservation.etat}\n username: ${reservation.joueurId!.username}'),
+                              'Durée: ${reservation.duree} semaine(s), État: ${reservation.etat}\n Nom d\'utilisateur: ${reservation.joueurId!.username}'),
                           onTap: () {
                             navigatAndReturn(
                                 context: context,
@@ -283,6 +289,7 @@ class _ReservationState extends State<Reservation> {
       initialDate: widget.selectedDate ?? DateTime.now(),
       firstDate: DateTime.now(),
       lastDate: DateTime(2100),
+      locale: const Locale('fr'), // Set the locale to French
     );
     if (picked != null && picked != widget.selectedDate) {
       setState(() {
@@ -305,6 +312,7 @@ class _ReservationState extends State<Reservation> {
           child: child!,
         );
       },
+      helpText: 'Sélectionner une heure', // Set the help text in French
     );
     if (picked != null && picked != widget.selectedTime) {
       setState(() {

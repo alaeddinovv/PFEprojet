@@ -63,8 +63,8 @@ class _AnnonceState extends State<Annonce> {
           },
           builder: (context, state) {
             if (state is GetMyAnnonceStateBad) {
-              return const Text(
-                  'Failed to fetch data'); // Display a message if fetching data failed
+              return const Text('Échec de la récupération des données');
+// Display a message if fetching data failed
             }
             if (state is GetMyAnnonceLoading &&
                 AnnonceCubit.get(context).cursorId == '') {
@@ -190,21 +190,21 @@ class _AnnonceState extends State<Annonce> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: const Text('Delete Annonce'),
-            content:
-                const Text('Are you sure you want to delete this annonce?'),
+            title: const Text('Supprimer l\'annonce'),
+            content: const Text(
+                'Êtes-vous sûr de vouloir supprimer cette annonce ?'),
             actions: [
               TextButton(
                 onPressed: () {
                   AnnonceCubit.get(context).deleteAnnonce(id: model.id!);
                 },
-                child: const Text('Yes'),
+                child: const Text('Oui'),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: const Text('No'),
+                child: const Text('Non'),
               ),
             ],
           );

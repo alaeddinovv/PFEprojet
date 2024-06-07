@@ -60,7 +60,7 @@ class _EditAnnoncePageState extends State<EditAnnoncePage> {
       child: Scaffold(
         appBar: AppBar(
           title: const Text(
-            'Edit Annonce',
+            'Modifier l\'annonce',
           ),
         ),
         body: SingleChildScrollView(
@@ -102,7 +102,7 @@ class _EditAnnoncePageState extends State<EditAnnoncePage> {
                     type: TextInputType.text,
                     valid: (String value) {
                       if (value.isEmpty) {
-                        return 'Contenu Must Not Be Empty';
+                        return 'Le contenu ne doit pas être vide';
                       }
                     },
                     prefixIcon: const Icon(
@@ -110,7 +110,7 @@ class _EditAnnoncePageState extends State<EditAnnoncePage> {
                       color: Colors.grey,
                     ),
                     maxline: 3,
-                    labelText: "contenu de l'annonce",
+                    labelText: "Contenu de l'annonce",
                     textInputAction: TextInputAction.done,
                   ),
                   const SizedBox(height: 20),
@@ -128,7 +128,7 @@ class _EditAnnoncePageState extends State<EditAnnoncePage> {
                       }
                       if (state is UpdateAnnonceStateGood) {
                         // Handle success
-                        showToast(msg: "Succes", state: ToastStates.success);
+                        showToast(msg: "Succès", state: ToastStates.success);
                         AnnonceCubit.get(context)
                             .getMyAnnonce(cursor: "")
                             .then((value) {
@@ -136,7 +136,7 @@ class _EditAnnoncePageState extends State<EditAnnoncePage> {
                         });
                       } else if (state is UpdateAnnonceStateBad) {
                         // Handle failure
-                        showToast(msg: "Failed", state: ToastStates.error);
+                        showToast(msg: "Échec", state: ToastStates.error);
                       }
                     },
                     builder: (context, state) {
@@ -145,7 +145,7 @@ class _EditAnnoncePageState extends State<EditAnnoncePage> {
                         child: Column(
                           children: [
                             defaultSubmit2(
-                              text: 'Update',
+                              text: 'Mettre à jour',
                               background: Colors.blueAccent,
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {
