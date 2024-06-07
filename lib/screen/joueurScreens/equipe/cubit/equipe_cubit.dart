@@ -7,6 +7,7 @@ import 'package:pfeprojet/Api/constApi.dart';
 import 'package:pfeprojet/Api/httplaravel.dart';
 import 'package:pfeprojet/Model/equipe_model.dart';
 import 'package:pfeprojet/Model/user_model.dart';
+import 'package:pfeprojet/helper/cachhelper.dart';
 
 import '../../../../Model/error_model.dart';
 
@@ -179,7 +180,8 @@ class EquipeCubit extends Cubit<EquipeState> {
   Future<void> getAllEquipe(
       {String cursor = '', String capitanId = '', bool? vertial}) async {
     emit(GetAllEquipeLoading());
-    await Httplar.httpget(
+    await Httplar.httpPost(
+        data: {"idList": CachHelper.getData(key: 'suggestionId')},
         path: GETALLEQUIPE,
         query: {'cursor': cursor, 'vertial': vertial.toString()}).then((value) {
       if (value.statusCode == 200) {
@@ -194,6 +196,7 @@ class EquipeCubit extends Cubit<EquipeState> {
         EquipeModel model = EquipeModel.fromJson(jsonResponse);
         print(capitanId);
         model.data.forEach((element) {
+          // print('${element.capitaineId.id}  $capitanId ${element.nom}');
           if (element.capitaineId.id != capitanId) {
             equipes.add(element);
           }

@@ -32,13 +32,13 @@ class ReservationJoueurCubit extends Cubit<ReservationJoueurState> {
 
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
-        print(jsonResponse);
+        // print(jsonResponse);
         EquipeModel model = EquipeModel.fromJson(jsonResponse);
 
         equipesdemander.addAll(model.data!);
         cursorid = model.nextCursor!;
 
-        print(equipesdemander);
+        // print(equipesdemander);
 
         emit(GetAllEquipeDemanderStateGood());
       } else {

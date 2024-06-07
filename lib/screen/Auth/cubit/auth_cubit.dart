@@ -45,7 +45,9 @@ class AuthCubit extends Cubit<AuthState> {
       if (value.statusCode == 200) {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
-        emit(RegisterStateGood(model: UserModel.fromJson(jsonResponse)));
+        UserModel model = UserModel.fromJson(jsonResponse);
+        emit(
+            RegisterStateGood(model: model, suggestionId: model.pythonOutput!));
       } else if (value.statusCode == 400) {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;

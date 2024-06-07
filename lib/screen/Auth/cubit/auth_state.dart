@@ -15,8 +15,9 @@ final class RegisterLodinState extends AuthState {}
 
 final class RegisterStateGood extends AuthState {
   final dynamic model;
+  final List<String>? suggestionId;
 
-  RegisterStateGood({required this.model});
+  RegisterStateGood({required this.model, required this.suggestionId});
 }
 
 final class ErrorState extends AuthState {

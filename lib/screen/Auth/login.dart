@@ -238,34 +238,34 @@ class Login extends StatelessWidget {
                 ],
               ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const Flexible(
-                  child: Divider(
-                    color: Colors.grey,
-                    thickness: 0.5,
-                    indent: 60,
-                    endIndent: 5,
-                  ),
-                ),
-                //   Text(
-                //     "Or Sign In with",
-                //     style: Theme.of(context).textTheme.labelMedium,
-                //   ),
-                //   const Flexible(
-                //     child: Divider(
-                //       color: Colors.grey,
-                //       height: 3,
-                //       thickness: 0.5,
-                //       indent: 5,
-                //       endIndent: 60,
-                //     ),
-                //   )
-                //
-              ],
-            ),
-            // SizedBox(height: screenHeight * 0.015),
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.center,
+            //   children: [
+            //     const Flexible(
+            //       child: Divider(
+            //         color: Colors.grey,
+            //         thickness: 0.5,
+            //         indent: 60,
+            //         endIndent: 5,
+            //       ),
+            //     ),
+            //     //   Text(
+            //     //     "Or Sign In with",
+            //     //     style: Theme.of(context).textTheme.labelMedium,
+            //     //   ),
+            //     //   const Flexible(
+            //     //     child: Divider(
+            //     //       color: Colors.grey,
+            //     //       height: 3,
+            //     //       thickness: 0.5,
+            //     //       indent: 5,
+            //     //       endIndent: 60,
+            //     //     ),
+            //     //   )
+            //     //
+            //   ],
+            // ),
+            // // SizedBox(height: screenHeight * 0.015),
             // Row(
             //   mainAxisAlignment: MainAxisAlignment.center,
             //   children: [

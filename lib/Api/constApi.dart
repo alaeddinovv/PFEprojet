@@ -3,7 +3,7 @@
 
 // const URLHTTP = '192.168.1.20:3000'; //IP houssem
 
-const URLHTTP = '172.27.38.68:3000'; //IP ala
+const URLHTTP = '192.168.1.19:3000'; //IP ala
 
 // const URLHTTP = '192.168.227.142:3000'; //IP ala
 
@@ -79,7 +79,7 @@ const GETALLEQUIPEDEMEANDER = '/api/joueurs/demandes';
 const UPDATEEQUIPE = '/api/equipe/';
 const UPDATEJOUEURSEQUIPE = '/api/equipe/joueurs/';
 const DELETEEQUIPE = '/api/equipe/';
-const GETALLEQUIPE = '/api/equipe';
+const GETALLEQUIPE = '/api/equipes';
 const GETMYEQUIPE = '/api/equipes/my';
 const GETEQUIPEIMIN = '/api/equipes/imin';
 const GETEQUIPEINVITE = '/api/equipes/invite';

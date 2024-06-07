@@ -205,6 +205,9 @@ class RegisterJoueur extends StatelessWidget {
                             CachHelper.putcache(
                                     key: "TOKEN", value: state.model.token)
                                 .then((value) async {
+                              CachHelper.putcache(
+                                  key: "suggestionId",
+                                  value: state.suggestionId);
                               TOKEN = state.model.token;
                               addOrUpdateFCMTokenJoueur(
                                       fcmToken: fCMToken,
