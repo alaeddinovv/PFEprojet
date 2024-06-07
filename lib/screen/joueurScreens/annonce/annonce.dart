@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pfeprojet/Api/color.dart';
 import 'package:pfeprojet/Model/annonce/annonce_model.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/tpggleButtons.dart';
@@ -20,6 +21,9 @@ class Annonce extends StatefulWidget {
 }
 
 class _AnnonceState extends State<Annonce> {
+  bool checkBox = false;
+  String createur = 'joueur';
+
   late ScrollController _controller;
   bool _showList = true; // State to control which view to show
   late final AnnonceJoueurCubit cubit;
@@ -43,8 +47,9 @@ class _AnnonceState extends State<Annonce> {
             if (AnnonceJoueurCubit.get(context).cursorid != "") {
               AnnonceJoueurCubit.get(context).getAllAnnonce(
                   cursor: AnnonceJoueurCubit.get(context).cursorid,
-                  myId: HomeJoueurCubit.get(context).joueurModel!.id);
-              print('ggggg');
+                  myId: HomeJoueurCubit.get(context).joueurModel!.id,
+                  createur: createur);
+              print('gggffgg');
 
               print(AnnonceJoueurCubit.get(context).cursorid);
             }
@@ -78,9 +83,9 @@ class _AnnonceState extends State<Annonce> {
                   _showList = value;
                   if (!_showList) {
                     AnnonceJoueurCubit.get(context).getAllAnnonce(
-                        myId: HomeJoueurCubit.get(context)
-                            .joueurModel!
-                            .id); // Call getAllAnnonce  owner: HomeJoueurCubit.get(context).joueurModel!.idwhen "All annonces" is selected
+                        myId: HomeJoueurCubit.get(context).joueurModel!.id,
+                        createur:
+                            createur); // Call getAllAnnonce  owner: HomeJoueurCubit.get(context).joueurModel!.idwhen "All annonces" is selected
                   } else {
                     AnnonceJoueurCubit.get(context)
                         .getMyAnnonceJoueur(); // Optional: Refresh "My annonces" when switching back
@@ -89,6 +94,67 @@ class _AnnonceState extends State<Annonce> {
               },
             ),
           ),
+          if (!_showList)
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.3),
+                      spreadRadius: 2,
+                      blurRadius: 6,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Createur : propriétaire',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: greenConst,
+                      ),
+                    ),
+                    Transform.scale(
+                      scale: 1.2,
+                      child: Checkbox(
+                        value: checkBox,
+                        onChanged: (value) {
+                          setState(() {
+                            checkBox = value!;
+                            if (checkBox == true) {
+                              createur = 'admin';
+                            } else {
+                              createur = 'joueur';
+                            }
+
+                            // EquipeCubit.get(context).getMyEquipe(vertial: createur);
+                            AnnonceJoueurCubit.get(context).getAllAnnonce(
+                                myId: HomeJoueurCubit.get(context)
+                                    .joueurModel!
+                                    .id,
+                                createur: createur);
+                          });
+                        },
+                        activeColor: greenConst,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(4),
+                        ),
+                        side: BorderSide(color: greenConst),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
           Expanded(
             child: _showList
                 ? Padding(
@@ -142,7 +208,8 @@ class _AnnonceState extends State<Annonce> {
                               .getAllAnnonce(
                                   myId: HomeJoueurCubit.get(context)
                                       .joueurModel!
-                                      .id)
+                                      .id,
+                                  createur: createur)
                               .then((value) => Navigator.pop(context));
                         } else if (state is UpdateAnnonceJoueurStateGood) {
                           AnnonceJoueurCubit.get(context).getAllAnnonce(
@@ -241,11 +308,13 @@ class _AnnonceState extends State<Annonce> {
             if (state is DeleteAnnonceJoueurStateGood) {
               AnnonceJoueurCubit.get(context)
                   .getAllAnnonce(
-                      myId: HomeJoueurCubit.get(context).joueurModel!.id)
+                      myId: HomeJoueurCubit.get(context).joueurModel!.id,
+                      createur: createur)
                   .then((value) => Navigator.pop(context));
             } else if (state is UpdateAnnonceJoueurStateGood) {
               AnnonceJoueurCubit.get(context).getAllAnnonce(
-                  myId: HomeJoueurCubit.get(context).joueurModel!.id);
+                  myId: HomeJoueurCubit.get(context).joueurModel!.id,
+                  createur: createur);
             }
           },
           builder: (context, state) {

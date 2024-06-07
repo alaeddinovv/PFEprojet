@@ -9,12 +9,10 @@ import 'package:pfeprojet/screen/AdminScreens/terrains/cubit/terrain_cubit.dart'
 
 class SearchTest extends StatefulWidget {
   final TextEditingController userIdController;
-  // final Function(String) onSelectedJoueur; // Add this line
 
   const SearchTest({
     Key? key,
     required this.userIdController,
-    // required this.onSelectedJoueur, // Add this line
   }) : super(key: key);
 
   @override
@@ -38,9 +36,9 @@ class _SearchTestState extends State<SearchTest> {
       ..addListener(() {
         if (_controller.offset >= _controller.position.maxScrollExtent &&
             !_controller.position.outOfRange &&
-            TerrainCubit.get(context).cursorId != "") {
+            TerrainCubit.get(context).moreDataAvailable) {
           TerrainCubit.get(context).searchJoueur(
-              cursor: TerrainCubit.get(context).cursorId,
+              page: TerrainCubit.get(context).currentPage + 1,
               username: searchController.text);
         }
       });
@@ -50,16 +48,16 @@ class _SearchTestState extends State<SearchTest> {
     setState(() {
       selectedJoueur = joueur;
       showResults = false;
-      widget.userIdController.text =
-          joueur.id!; // Update the parent's TextEditingController
+      widget.userIdController.text = joueur.id!;
     });
   }
 
   @override
   void dispose() {
-    _debounce?.cancel(); // Cancel the timer when the widget is disposed
+    _debounce?.cancel();
     searchController.dispose();
-    cubit.cursorId = '';
+    cubit.currentPage = 1;
+    cubit.moreDataAvailable = true;
     cubit.joueursSearch = [];
 
     super.dispose();
@@ -77,7 +75,7 @@ class _SearchTestState extends State<SearchTest> {
     return Padding(
       padding: const EdgeInsets.all(20.0),
       child: SingleChildScrollView(
-        child: Column(
+        child: Stack(
           children: [
             TextFormField(
               controller: searchController,
@@ -97,7 +95,6 @@ class _SearchTestState extends State<SearchTest> {
                 ),
               ),
             ),
-            const SizedBox(height: 20),
             BlocConsumer<TerrainCubit, TerrainState>(
               listener: (context, state) {},
               builder: (context, state) {
@@ -107,73 +104,62 @@ class _SearchTestState extends State<SearchTest> {
                 bool shouldShowResults =
                     hasResults || (isLoading && !isSearchTextEmpty);
                 if (!showResults) {
-                  return Card(
-                    elevation: 4,
-                    child: ListTile(
-                      title: Text(selectedJoueur?.username ?? ''),
-                      subtitle: Text(
-                          'Age: ${selectedJoueur?.age} - Position: ${selectedJoueur?.poste}'),
-                      trailing: IconButton(
-                        icon: const Icon(Icons.close),
-                        onPressed: () => setState(() {
-                          showResults = true;
-                          selectedJoueur = null;
-                        }),
-                      ),
-                    ),
-                  );
+                  return const SizedBox();
                 } else {
-                  return Visibility(
-                    visible: shouldShowResults,
-                    child: SizedBox(
-                      height: 250,
-                      child: Column(
-                        children: [
-                          Expanded(
-                            child: ListView.separated(
-                              physics: const AlwaysScrollableScrollPhysics(),
-                              controller: _controller,
-                              itemBuilder: (context, index) {
-                                var joueur = cubit.joueursSearch[index];
-                                return Card(
-                                  margin:
-                                      const EdgeInsets.symmetric(vertical: 4),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
-                                  elevation: 4,
-                                  child: ListTile(
-                                    leading: CircleAvatar(
-                                      radius: 20,
-                                      backgroundImage: joueur.photo != null
-                                          ? NetworkImage(joueur.photo!)
-                                          : const AssetImage(
-                                                  'assets/images/football.png')
-                                              as ImageProvider,
+                  return Container(
+                    margin: const EdgeInsets.only(top: 60),
+                    child: Visibility(
+                      visible: shouldShowResults,
+                      child: SizedBox(
+                        height: 250,
+                        child: Column(
+                          children: [
+                            Expanded(
+                              child: ListView.separated(
+                                physics: const AlwaysScrollableScrollPhysics(),
+                                controller: _controller,
+                                itemBuilder: (context, index) {
+                                  var joueur = cubit.joueursSearch[index];
+                                  return Card(
+                                    margin:
+                                        const EdgeInsets.symmetric(vertical: 4),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
                                     ),
-                                    title: Text(joueur.username!),
-                                    subtitle: Text(
-                                        'Age: ${joueur.age} - Position: ${joueur.poste}'),
-                                    onTap: () {
-                                      print(joueur.id);
-                                      _selectJoueur(joueur);
-                                      widget.userIdController.text = joueur.id!;
-                                      // widget.onSelectedJoueur(joueur.id!);
-                                    },
-                                  ),
-                                );
-                              },
-                              itemCount: cubit.joueursSearch.length,
-                              separatorBuilder:
-                                  (BuildContext context, int index) =>
-                                      const Divider(),
+                                    elevation: 4,
+                                    child: ListTile(
+                                      leading: CircleAvatar(
+                                        radius: 20,
+                                        backgroundImage: joueur.photo != null
+                                            ? NetworkImage(joueur.photo!)
+                                            : const AssetImage(
+                                                    'assets/images/football.png')
+                                                as ImageProvider,
+                                      ),
+                                      title: Text(joueur.username!),
+                                      subtitle: Text(
+                                          'Age: ${joueur.age} - Position: ${joueur.poste}'),
+                                      onTap: () {
+                                        print(joueur.id);
+                                        _selectJoueur(joueur);
+                                        widget.userIdController.text =
+                                            joueur.id!;
+                                      },
+                                    ),
+                                  );
+                                },
+                                itemCount: cubit.joueursSearch.length,
+                                separatorBuilder:
+                                    (BuildContext context, int index) =>
+                                        const Divider(),
+                              ),
                             ),
-                          ),
-                          if (isLoading &&
-                              !isSearchTextEmpty &&
-                              cubit.cursorId != '')
-                            const CircularProgressIndicator(),
-                        ],
+                            if (isLoading &&
+                                !isSearchTextEmpty &&
+                                cubit.moreDataAvailable)
+                              const CircularProgressIndicator(),
+                          ],
+                        ),
                       ),
                     ),
                   );

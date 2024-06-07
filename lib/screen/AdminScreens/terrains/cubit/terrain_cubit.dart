@@ -18,6 +18,7 @@ import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:pfeprojet/Model/user_pagination_model.dart';
 
 import 'package:pfeprojet/component/components.dart';
+import 'package:pfeprojet/helper/cachhelper.dart';
 
 part 'terrain_state.dart';
 
@@ -36,7 +37,7 @@ class TerrainCubit extends Cubit<TerrainState> {
     // _picker= ImagePicker(); //! mydorch
     images = [];
     joueursSearch = [];
-    cursorId = "";
+    // cursorId = "";
     emit(ResetValueTerrainState());
   }
 
@@ -461,30 +462,35 @@ class TerrainCubit extends Cubit<TerrainState> {
 // -----------------------------------SearchTest-------------------------------------
 //  List<TerrainModel> terrains = [];
   List<DataJoueurModel> joueursSearch = [];
-  String cursorId = "";
+  int currentPage = 1;
+  bool moreDataAvailable = true;
 
-  Future<void> searchJoueur({String cursor = '', String? username}) async {
+  Future<void> searchJoueur({int page = 1, String? username}) async {
     emit(GetSearchJoueurLoading());
     if (username == '') {
       joueursSearch = [];
-      cursorId = "";
+      currentPage = 1;
+      moreDataAvailable = true;
       return;
     }
-    await Httplar.httpget(
+    await Httplar.httpPost(
+        data: {
+          // "idList": CachHelper.getData(key: 'suggestionId')
+        },
         path: SEARCHJOUEURPAGINATION,
-        query: {'cursor': cursor, 'username': username}).then((value) {
+        query: {'page': page.toString(), 'username': username}).then((value) {
       if (value.statusCode == 200) {
-        if (cursor == "") {
+        if (page == 1) {
           joueursSearch = [];
-          cursorId = "";
         }
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;
         UserPaginationModel model = UserPaginationModel.fromJson(jsonResponse);
         joueursSearch.addAll(model.data!);
         print(joueursSearch.length);
-        cursorId = model.nextCursor!;
-        print(cursorId);
+        currentPage = model.currentPage!;
+        moreDataAvailable = model.moreDataAvailable!;
+        print(moreDataAvailable);
 
         emit(GetSearchJoueurStateGood()); // Pass the list here
       } else {

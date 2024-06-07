@@ -4,6 +4,7 @@ class UserPaginationModel {
   List<DataJoueurModel>? data;
   bool? moreDataAvailable;
   String? nextCursor;
+  int? currentPage;
 
   UserPaginationModel.fromJson(Map<String, dynamic> json) {
     data = List.from(json['data'])
@@ -11,6 +12,7 @@ class UserPaginationModel {
         .toList();
     moreDataAvailable = json['moreDataAvailable'];
     nextCursor = json['nextCursor'];
+    currentPage = json['currentPage'];
   }
 
   Map<String, dynamic> toJson() {
@@ -18,6 +20,7 @@ class UserPaginationModel {
     _data['data'] = data!.map((e) => e.toJson()).toList();
     _data['moreDataAvailable'] = moreDataAvailable;
     _data['nextCursor'] = nextCursor;
+    _data['currentPage'] = currentPage;
     return _data;
   }
 }

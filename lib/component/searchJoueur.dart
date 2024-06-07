@@ -39,12 +39,23 @@ class _SearchJoueurState extends State<SearchJoueur> {
       ..addListener(() {
         if (_controller.offset >= _controller.position.maxScrollExtent &&
             !_controller.position.outOfRange &&
-            TerrainCubit.get(context).cursorId != "") {
+            TerrainCubit.get(context).moreDataAvailable) {
           TerrainCubit.get(context).searchJoueur(
-              cursor: TerrainCubit.get(context).cursorId,
+              page: TerrainCubit.get(context).currentPage + 1,
               username: searchController.text);
         }
       });
+  }
+
+  @override
+  void dispose() {
+    _debounce?.cancel(); // Cancel the timer when the widget is disposed
+    searchController.dispose();
+    cubit.currentPage = 1;
+    cubit.moreDataAvailable = true;
+    cubit.joueursSearch = [];
+
+    super.dispose();
   }
 
   void _selectJoueur(DataJoueurModel joueur) {
@@ -60,15 +71,15 @@ class _SearchJoueurState extends State<SearchJoueur> {
     Navigator.pop(context);
   }
 
-  @override
-  void dispose() {
-    _debounce?.cancel(); // Cancel the timer when the widget is disposed
-    searchController.dispose();
-    cubit.cursorId = '';
-    cubit.joueursSearch = [];
+  // @override
+  // void dispose() {
+  //   _debounce?.cancel(); // Cancel the timer when the widget is disposed
+  //   searchController.dispose();
+  //   cubit.cursorId = '';
+  //   cubit.joueursSearch = [];
 
-    super.dispose();
-  }
+  //   super.dispose();
+  // }
 
   void _onSearchChanged(String value) {
     if (_debounce?.isActive ?? false) _debounce?.cancel();
@@ -165,7 +176,7 @@ class _SearchJoueurState extends State<SearchJoueur> {
                             ),
                             if (isLoading &&
                                 !isSearchTextEmpty &&
-                                cubit.cursorId != '')
+                                cubit.moreDataAvailable)
                               const CircularProgressIndicator(),
                           ],
                         ),

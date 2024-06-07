@@ -9,6 +9,7 @@ import 'package:pfeprojet/Model/annonce/annonce_model.dart';
 import 'package:pfeprojet/Model/annonce/pulier/annonce_other_model.dart';
 import 'package:pfeprojet/Model/annonce/pulier/annonce_search_model.dart';
 import 'package:pfeprojet/Model/terrain_pagination_model.dart';
+import 'package:pfeprojet/helper/cachhelper.dart';
 
 import '../../../../Model/annonce/annonce_admin_model.dart';
 import '../../../../Model/error_model.dart';
@@ -132,11 +133,14 @@ class AnnonceJoueurCubit extends Cubit<AnnonceJoueurState> {
   List<AnnonceData> annonces = [];
   // cusrsorid mdeclari lfug
   String cursorid = "";
-  Future<void> getAllAnnonce({String cursor = '', String? myId}) async {
+  Future<void> getAllAnnonce(
+      {String cursor = '', String? myId, String? createur}) async {
     emit(GetAllAnnonceLoading());
     print('1');
-    await Httplar.httpget(path: GETALLANNONCE, query: {'cursor': cursor})
-        .then((value) {
+    await Httplar.httpPost(
+        data: {"idList": CachHelper.getData(key: 'suggestionId')},
+        path: GETALLANNONCE,
+        query: {'cursor': cursor, "createur": createur}).then((value) {
       if (value.statusCode == 200) {
         if (cursor == "") {
           annonces = [];

@@ -72,7 +72,7 @@ const RESETPASSWORD = '/api/joueur/resetpassword';
 const RESETPASSWORDADMIN = '/api/admin/resetpassword';
 const VERIFYJOUEURCODE = '/api/joueurs/verifytoken';
 const VERIFYADMINCODE = '/api/admins/verifytoken';
-const GETALLANNONCE = '/api/annonce';
+const GETALLANNONCE = '/api/annonces';
 //------------equipe
 const ADDEQUIPE = '/api/equipe';
 const GETALLEQUIPEDEMEANDER = '/api/joueurs/demandes';
