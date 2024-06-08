@@ -8,7 +8,7 @@ import 'package:pfeprojet/component/drop_down_wilaya.dart';
 import 'package:pfeprojet/screen/joueurScreens/equipe/cubit/equipe_cubit.dart';
 
 class EditEquipe extends StatefulWidget {
-  final EquipeData equipeModel; // Assuming AnnonceModel is your data model
+  final EquipeData equipeModel;
   final bool vertial;
   const EditEquipe({Key? key, required this.equipeModel, required this.vertial})
       : super(key: key);
@@ -58,7 +58,7 @@ class _EditEquipeState extends State<EditEquipe> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Edit Equipe'),
+          title: const Text('Modifier l\'équipe'),
         ),
         body: SingleChildScrollView(
           child: Form(
@@ -66,7 +66,6 @@ class _EditEquipeState extends State<EditEquipe> {
             child: Padding(
               padding: const EdgeInsets.all(10.0),
               child: Column(
-                // padding: const EdgeInsets.all(16),
                 children: <Widget>[
                   BlocBuilder<EquipeCubit, EquipeState>(
                     builder: (context, state) {
@@ -82,14 +81,14 @@ class _EditEquipeState extends State<EditEquipe> {
                     type: TextInputType.text,
                     valid: (String value) {
                       if (value.isEmpty) {
-                        return 'Type Must Not Be Empty';
+                        return 'Le nom ne doit pas être vide';
                       }
                     },
                     prefixIcon: const Icon(
                       Icons.keyboard_arrow_right_sharp,
                       color: Colors.grey,
                     ),
-                    labelText: "NOM DE L'EQUIPE",
+                    labelText: "NOM DE L'ÉQUIPE",
                     textInputAction: TextInputAction.next,
                   ),
                   const SizedBox(height: 20),
@@ -99,7 +98,7 @@ class _EditEquipeState extends State<EditEquipe> {
                     type: TextInputType.text,
                     valid: (String value) {
                       if (value.isEmpty) {
-                        return 'Contenu Must Not Be Empty';
+                        return 'Le nombre de joueurs ne doit pas être vide';
                       }
                     },
                     prefixIcon: const Icon(
@@ -107,7 +106,7 @@ class _EditEquipeState extends State<EditEquipe> {
                       color: Colors.grey,
                     ),
                     maxline: 3,
-                    labelText: "nombre de joueur",
+                    labelText: "Nombre de joueurs",
                     textInputAction: TextInputAction.done,
                   ),
                   const SizedBox(height: 20),
@@ -124,16 +123,18 @@ class _EditEquipeState extends State<EditEquipe> {
                         canPop = true;
                       }
                       if (state is UpdateEquipeStateGood) {
-                        // Handle success
-                        showToast(msg: "Succes", state: ToastStates.success);
+                        showToast(
+                            msg: "Modification effectuée avec succès",
+                            state: ToastStates.success);
                         EquipeCubit.get(context)
                             .getMyEquipe(cursor: "", vertial: widget.vertial)
                             .then((value) {
                           Navigator.pop(context);
                         });
                       } else if (state is UpdateEquipeStateBad) {
-                        // Handle failure
-                        showToast(msg: "Failed", state: ToastStates.error);
+                        showToast(
+                            msg: "Échec de la modification",
+                            state: ToastStates.error);
                       }
                     },
                     builder: (context, state) {
@@ -142,7 +143,7 @@ class _EditEquipeState extends State<EditEquipe> {
                         child: Column(
                           children: [
                             defaultSubmit2(
-                              text: 'Update',
+                              text: 'Mettre à jour',
                               background: Colors.blueAccent,
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {

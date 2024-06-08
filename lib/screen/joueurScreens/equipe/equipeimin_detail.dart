@@ -41,7 +41,7 @@ class _EquipeImInDetailsScreenState extends State<EquipeImInDetailsScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Détail de l\'équipe'),
+          title: const Text('Détails de l\'équipe'),
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -64,7 +64,7 @@ class _EquipeImInDetailsScreenState extends State<EquipeImInDetailsScreen> {
                 child: Row(
                   children: [
                     const Text(
-                      'Capitaine: ',
+                      'Capitaine : ',
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -92,7 +92,7 @@ class _EquipeImInDetailsScreenState extends State<EquipeImInDetailsScreen> {
               const Padding(
                 padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 child: Text(
-                  'Players:',
+                  'Joueurs :',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -129,7 +129,7 @@ class _EquipeImInDetailsScreenState extends State<EquipeImInDetailsScreen> {
                   }
                   if (state is QuiterEquipeStateGood) {
                     showToast(
-                      msg: "Equipe quittée avec succès",
+                      msg: "Vous avez quitté l'équipe avec succès",
                       state: ToastStates.success,
                     );
                     EquipeCubit.get(context)
@@ -146,7 +146,8 @@ class _EquipeImInDetailsScreenState extends State<EquipeImInDetailsScreen> {
                       );
                     });
                   } else if (state is QuiterEquipeStateBad) {
-                    showToast(msg: "Réessayez", state: ToastStates.error);
+                    showToast(
+                        msg: "Veuillez réessayer", state: ToastStates.error);
                   } else if (state is ErrorState) {
                     String errorMessage = state.errorModel.message!;
                     showToast(msg: errorMessage, state: ToastStates.error);
@@ -154,7 +155,7 @@ class _EquipeImInDetailsScreenState extends State<EquipeImInDetailsScreen> {
                 },
                 builder: (context, state) {
                   return defaultSubmit2(
-                    text: 'Quitter équipe',
+                    text: 'Quitter l\'équipe',
                     background: Colors.blueAccent,
                     onPressed: () {
                       if (joueurId != null) {
@@ -163,7 +164,9 @@ class _EquipeImInDetailsScreenState extends State<EquipeImInDetailsScreen> {
                           joueurId: joueurId,
                         );
                       } else {
-                        showToast(msg: "Réessayez", state: ToastStates.error);
+                        showToast(
+                            msg: "Veuillez réessayer",
+                            state: ToastStates.error);
                       }
                     },
                   );
@@ -248,7 +251,7 @@ class _EquipeImInDetailsScreenState extends State<EquipeImInDetailsScreen> {
       final Uri launchUri = Uri(scheme: 'tel', path: phoneNumber);
       await launchUrl(launchUri);
     } else {
-      print('Permission denied');
+      print('Permission refusée');
     }
   }
 }

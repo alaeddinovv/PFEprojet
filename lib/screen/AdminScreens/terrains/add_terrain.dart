@@ -79,18 +79,7 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
     TerrainCubit cubit = TerrainCubit.get(context);
 
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          List<Map<String, dynamic>> nonReservableTimeBlockstoJsonArray() {
-            return cubit.nonReservableTimeBlocks
-                .map((block) => block.toJson())
-                .toList();
-          }
-
-          print(nonReservableTimeBlockstoJsonArray());
-        },
-      ),
-      appBar: AppBar(title: const Text('Add Terrain')),
+      appBar: AppBar(title: const Text('Ajouter un terrain')),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -104,7 +93,7 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                   // ! hta nrigl duree yrje3 form HH:MM
                   // enabled: false,
                   controller: _nameController,
-                  labelText: 'nom',
+                  labelText: 'Nom',
                   type: TextInputType.text,
                   context: context,
                   valid: (String value) {},
@@ -114,7 +103,7 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                   // ! hta nrigl duree yrje3 form HH:MM
                   // enabled: false,
                   controller: _dureeController,
-                  labelText: 'Duree',
+                  labelText: 'Durée',
                   type: TextInputType.number,
                   context: context,
                   valid: (String value) {},
@@ -128,7 +117,7 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                   context: context,
                   valid: (String value) {
                     if (value.isEmpty) {
-                      return 'Adresse Must Not Be Empty';
+                      return 'L\'adresse ne doit pas être vide';
                     }
                   },
                 ),
@@ -140,7 +129,7 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                   context: context,
                   valid: (String value) {
                     if (value.isEmpty) {
-                      return 'Description Must Not Be Empty';
+                      return 'La description ne doit pas être vide';
                     }
                   },
                 ),
@@ -151,7 +140,7 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                     context: context,
                     valid: (String value) {
                       if (value.isEmpty) {
-                        return 'Type Must Not Be Empty';
+                        return 'La largeur ne doit pas être vide';
                       }
                     },
                     type: TextInputType.number),
@@ -162,7 +151,7 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                     context: context,
                     valid: (String value) {
                       if (value.isEmpty) {
-                        return 'Type Must Not Be Empty';
+                        return 'La longueur ne doit pas être vide';
                       }
                     },
                     type: TextInputType.number),
@@ -173,7 +162,7 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                     context: context,
                     valid: (String value) {
                       if (value.isEmpty) {
-                        return 'Type Must Not Be Empty';
+                        return 'La superficie ne doit pas être vide';
                       }
                     },
                     type: TextInputType.number),
@@ -184,7 +173,7 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                     context: context,
                     valid: (String value) {
                       if (value.isEmpty) {
-                        return 'Type Must Not Be Empty';
+                        return 'Le prix ne doit pas être vide';
                       }
                     },
                     type: TextInputType.number),
@@ -195,7 +184,7 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                     context: context,
                     valid: (String value) {
                       if (value.isEmpty) {
-                        return 'Type Must Not Be Empty';
+                        return 'La capacité ne doit pas être vide';
                       }
                     },
                     type: TextInputType.number),
@@ -206,7 +195,7 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                   context: context,
                   valid: (String value) {
                     if (value.isEmpty) {
-                      return 'Type Must Not Be Empty';
+                      return 'L\'état ne doit pas être vide';
                     }
                   },
                 ),
@@ -231,7 +220,7 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                         context: context,
                         valid: (String value) {
                           if (value.isEmpty) {
-                            return 'Type Must Not Be Empty';
+                            return 'La latitude ne doit pas être vide';
                           }
                         },
                         readOnly:
@@ -245,7 +234,7 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                         context: context,
                         valid: (String value) {
                           if (value.isEmpty) {
-                            return 'Type Must Not Be Empty';
+                            return 'La longitude ne doit pas être vide';
                           }
                         },
                         readOnly:
@@ -347,14 +336,14 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                   listener: (context, state) {
                     if (state is DublicatedAddNonReservableTimeBlockState) {
                       showToast(
-                          msg: "dublicated Day ", state: ToastStates.warning);
+                          msg: "Jour en double", state: ToastStates.warning);
                     }
                   },
                   child: ElevatedButton(
                       onPressed: () {
                         _addTimeBlock(context, cubit);
                       },
-                      child: const Text('Add Time Block')),
+                      child: const Text('Ajouter un créneau')),
                 ),
                 const SizedBox(height: 20),
                 Row(
@@ -369,7 +358,7 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                       ),
                     ),
                     Text(
-                      'Add Images',
+                      'Ajouter des images',
                       style: TextStyle(
                         color: Colors.grey[700],
                         fontSize: 18,
@@ -440,7 +429,7 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                   listener: (context, state) {
                     if (state is CreerTerrainStateGood) {
                       showToast(
-                          msg: 'Terrain Created Successfully',
+                          msg: 'Terrain créé avec succès',
                           state: ToastStates.success);
                       cubit.getMyTerrains().then((value) {
                         Navigator.of(context).pop();
@@ -493,7 +482,7 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                               );
                             }
                           },
-                          text: 'Create Terrain',
+                          text: 'Créer le terrain',
                           background: Colors.blueAccent,
                         ),
                       ],
@@ -528,17 +517,18 @@ void _showDeleteConfirmation(
   final result = await showDialog<bool>(
     context: context,
     builder: (context) => AlertDialog(
-      title: const Text('Confirm Deletion'),
-      content: const Text('Are you sure you want to delete this time block?'),
+      title: const Text('Confirmer la suppression'),
+      content:
+          const Text('Êtes-vous sûr de vouloir supprimer ce créneau horaire ?'),
       actions: <Widget>[
         TextButton(
           onPressed: () => Navigator.of(context).pop(false),
-          child: const Text('Cancel'),
+          child: const Text('Annuler'),
         ),
         TextButton(
           onPressed: () => Navigator.of(context).pop(true),
           style: TextButton.styleFrom(foregroundColor: Colors.red),
-          child: const Text('Delete'),
+          child: const Text('Supprimer'),
         ),
       ],
     ),

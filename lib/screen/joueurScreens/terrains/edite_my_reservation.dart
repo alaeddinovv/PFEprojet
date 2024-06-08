@@ -54,7 +54,7 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('edite Reservation'),
+        title: const Text('Modifier la réservation'),
       ),
       body: SingleChildScrollView(
         child: BlocConsumer<TerrainCubit, TerrainState>(
@@ -266,7 +266,7 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                                                   builder: (context) =>
                                                       AlertDialog(
                                                         title: const Text(
-                                                            'remove equipe'),
+                                                            'Supprimer l\'équipe'),
                                                         content: Text(S
                                                             .of(context)
                                                             .removeTeamConfirmation),
@@ -565,7 +565,7 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                                           ),
                                           ListTile(
                                             title: const Text(
-                                                'for this reservation only'),
+                                                'Pour cette réservation uniquement'),
                                             onTap: () {
                                               updateAllWeeks = false;
                                               Navigator.pop(context);
@@ -599,7 +599,8 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                                             },
                                           ),
                                           ListTile(
-                                            title: const Text('remove equipe'),
+                                            title: const Text(
+                                                "Supprimer l'équipe"),
                                             onTap: () {
                                               Navigator.pop(context);
                                               showDialog(
@@ -607,9 +608,9 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                                                   builder: (context) =>
                                                       AlertDialog(
                                                         title: const Text(
-                                                            'remove equipe'),
+                                                            "Supprimer l'équipe"),
                                                         content: const Text(
-                                                            'Are you sure you want to remove your team from this reservation?'),
+                                                            'Êtes-vous sûr de vouloir supprimer votre équipe de cette réservation ?'),
                                                         actions: [
                                                           TextButton(
                                                             onPressed: () {
@@ -617,7 +618,7 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                                                                   context);
                                                             },
                                                             child: const Text(
-                                                                'No'),
+                                                                'Non'),
                                                           ),
                                                           TextButton(
                                                             onPressed: () {
@@ -632,7 +633,7 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                                                                   context);
                                                             },
                                                             child: const Text(
-                                                                'Yes'),
+                                                                'Oui'),
                                                           ),
                                                         ],
                                                       ));
@@ -757,9 +758,9 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                                       .then((value) {
                                     addedJoueurs1.forEach((joueurId) async {
                                       String title =
-                                          'invitation to join ${reservation?.equipe1?.nom}';
+                                          'Invitation à rejoindre ${reservation?.equipe1?.nom}';
                                       String body =
-                                          'You have been added to reservation ${formatDate(reservation?.jour)} at ${reservation?.heureDebutTemps} with equipe ${reservation?.equipe1?.nom} vs ${reservation?.equipe2?.nom}';
+                                          'Vous avez été ajouté à la réservation ${formatDate(reservation?.jour)} à  ${reservation?.heureDebutTemps} avec l\'équipe ${reservation?.equipe1?.nom} contre ${reservation?.equipe2?.nom}';
                                       String id = joueurId;
                                       await sendNotificationToJoueur(
                                           title: title,

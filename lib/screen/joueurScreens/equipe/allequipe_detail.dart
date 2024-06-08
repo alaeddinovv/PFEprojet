@@ -48,7 +48,7 @@ class _AllEquipeDetailsScreenState extends State<AllEquipeDetailsScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Détail de l\'équipe'), // Display team name
+          title: const Text('Détails de l\'équipe'), // Display team name
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -71,7 +71,7 @@ class _AllEquipeDetailsScreenState extends State<AllEquipeDetailsScreen> {
                 child: Row(
                   children: [
                     Text(
-                      'Capitaine: ',
+                      'Capitaine : ',
                       style: const TextStyle(
                           fontSize: 18, fontWeight: FontWeight.bold),
                     ),
@@ -84,58 +84,11 @@ class _AllEquipeDetailsScreenState extends State<AllEquipeDetailsScreen> {
                   ],
                 ),
               ),
-
               const SizedBox(height: 15),
-              // Padding(
-              //   padding:
-              //       const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              //   child: Container(
-              //     decoration: BoxDecoration(
-              //       color: Colors.white,
-              //       borderRadius: BorderRadius.circular(12),
-              //       boxShadow: [
-              //         BoxShadow(
-              //           color: Colors.grey.withOpacity(0.3),
-              //           spreadRadius: 2,
-              //           blurRadius: 5,
-              //           offset: const Offset(0, 2),
-              //         ),
-              //       ],
-              //     ),
-              //     child: ListTile(
-              //       leading: CircleAvatar(
-              //         backgroundColor: greenConst,
-              //         child: Icon(Icons.person, color: Colors.white),
-              //       ),
-              //       title: Text(
-              //         widget.equipes.capitaineId.username,
-              //         style: const TextStyle(
-              //             fontSize: 18, fontWeight: FontWeight.bold),
-              //       ),
-              //       subtitle: const Text('Capitaine'),
-              //       trailing: IconButton(
-              //         icon: const Icon(Icons.call, color: greenConst),
-              //         onPressed: () {
-              //           if (widget.equipes.capitaineId.telephone != null) {
-              //             _makePhoneCall(
-              //                 widget.equipes.capitaineId.telephone.toString());
-              //           } else {
-              //             ScaffoldMessenger.of(context).showSnackBar(
-              //               const SnackBar(
-              //                 content: Text("No telephone number available."),
-              //               ),
-              //             );
-              //           }
-              //         },
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              // const SizedBox(height: 20),
               Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-                child: const Text('Players:',
+                child: const Text('Joueurs :',
                     style:
                         TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
               ),
@@ -187,8 +140,8 @@ class _AllEquipeDetailsScreenState extends State<AllEquipeDetailsScreen> {
 
                   return defaultSubmit2(
                     text: isRequestSent
-                        ? 'Annuler demande'
-                        : 'Demander rejoindre équipe',
+                        ? 'Annuler la demande'
+                        : 'Demander à rejoindre l\'équipe',
                     background: Colors.blueAccent,
                     onPressed: () {
                       if (alreadyExists) {
@@ -287,7 +240,7 @@ class _AllEquipeDetailsScreenState extends State<AllEquipeDetailsScreen> {
       final Uri launchUri = Uri(scheme: 'tel', path: phoneNumber);
       await launchUrl(launchUri);
     } else {
-      print('Permission denied');
+      print('Permission refusée');
     }
   }
 }

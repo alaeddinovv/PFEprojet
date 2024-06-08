@@ -89,7 +89,7 @@ class _SearchEquipeState extends State<SearchEquipe> {
             controller: searchController,
             onChanged: _onSearchChanged,
             decoration: InputDecoration(
-              hintText: 'Search Equipes...',
+              hintText: 'Rechercher des équipes...',
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(15.0),
               ),

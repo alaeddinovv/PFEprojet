@@ -303,11 +303,12 @@ Widget buildTimeRow(
     mainAxisAlignment: MainAxisAlignment.spaceBetween,
     children: <Widget>[
       Expanded(
-        child: _buildTimePickerField(context, sTempsController, 'Start Time'),
+        child:
+            _buildTimePickerField(context, sTempsController, 'Heure de début'),
       ),
       const SizedBox(width: 10), // Adds space between the time pickers
       Expanded(
-        child: _buildTimePickerField(context, eTempsController, 'End Time'),
+        child: _buildTimePickerField(context, eTempsController, 'Heure de fin'),
       ),
     ],
   );
@@ -325,7 +326,7 @@ Widget _buildTimePickerField(
     readOnly: true,
     onTap: () => _selectTime(context, controller),
     validator: (value) =>
-        value == null || value.isEmpty ? 'Please enter $labelText' : null,
+        value == null || value.isEmpty ? 'Veuillez entrer $labelText' : null,
   );
 }
 

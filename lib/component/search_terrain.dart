@@ -11,14 +11,12 @@ class SearchTerrain extends StatefulWidget {
   final TextEditingController terrainIdController;
   final Function(TarrainPaginationData)? onTerrainSelected;
   final bool isOnlyMy;
-  // final Function(String) onSelectedJoueur; // Add this line
 
   const SearchTerrain({
     Key? key,
     required this.terrainIdController,
     this.onTerrainSelected,
     required this.isOnlyMy,
-    // required this.onSelectedJoueur, // Add this line
   }) : super(key: key);
 
   @override
@@ -55,8 +53,7 @@ class _SearchTerrainState extends State<SearchTerrain> {
     setState(() {
       selectedTerrain = terrain;
       showResults = false;
-      widget.terrainIdController.text =
-          terrain.id; // Update the parent's TextEditingController
+      widget.terrainIdController.text = terrain.id;
       searchController.text = terrain.nom;
     });
     if (widget.onTerrainSelected != null) {
@@ -66,7 +63,7 @@ class _SearchTerrainState extends State<SearchTerrain> {
 
   @override
   void dispose() {
-    _debounce?.cancel(); // Cancel the timer when the widget is disposed
+    _debounce?.cancel();
     searchController.dispose();
     cubit.cursorIdTerrain = '';
     cubit.terrainSearch = [];
@@ -92,7 +89,7 @@ class _SearchTerrainState extends State<SearchTerrain> {
             controller: searchController,
             onChanged: _onSearchChanged,
             decoration: InputDecoration(
-              hintText: 'Search Terrain...',
+              hintText: 'Rechercher un terrain...',
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10.0),
               ),

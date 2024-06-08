@@ -5,7 +5,7 @@ import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/drop_down_wilaya.dart';
 import 'package:pfeprojet/screen/JoueurScreens/home/home.dart';
 import 'cubit/equipe_cubit.dart';
-import 'package:pfeprojet/Api/wilaya_list.dart'; // Import your JSON data
+import 'package:pfeprojet/Api/wilaya_list.dart';
 
 class AddEquipe extends StatefulWidget {
   AddEquipe({Key? key}) : super(key: key);
@@ -22,9 +22,7 @@ class _AddEquipeState extends State<AddEquipe> {
   final GlobalKey<FormState> formkey = GlobalKey<FormState>();
 
   String? selectedWilaya;
-  // String? selectedCommune;
   List<dynamic> wilayas = [];
-  // List<String> communes = [];
 
   @override
   void initState() {
@@ -53,7 +51,7 @@ class _AddEquipeState extends State<AddEquipe> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Creer une Equipe"),
+          title: const Text("Créer une équipe"),
         ),
         body: Padding(
           padding: const EdgeInsets.all(10.0),
@@ -76,56 +74,37 @@ class _AddEquipeState extends State<AddEquipe> {
                     type: TextInputType.text,
                     valid: (String value) {
                       if (value.isEmpty) {
-                        return 'Type Must Not Be Empty';
+                        return 'Le nom de l\'équipe ne doit pas être vide';
                       }
                     },
                     prefixIcon: const Icon(
                       Icons.keyboard_arrow_right_sharp,
                       color: Colors.grey,
                     ),
-                    labelText: "nom de l'equipe",
+                    labelText: "Nom de l'équipe",
                     textInputAction: TextInputAction.next,
                   ),
                   const SizedBox(height: 20),
                   defaultForm3(
-                      context: context,
-                      controller: _numberController,
-                      type: TextInputType.number,
-                      labelText: "nombre de joueur",
-                      valid: (String value) {
-                        if (value.isEmpty) {
-                          return 'number Must Not Be Empty';
-                        }
-                      },
-                      prefixIcon: const Icon(
-                        Icons.format_list_numbered_rounded,
-                      ),
-                      textInputAction: TextInputAction.next),
+                    context: context,
+                    controller: _numberController,
+                    type: TextInputType.number,
+                    labelText: "Nombre de joueurs",
+                    valid: (String value) {
+                      if (value.isEmpty) {
+                        return 'Le nombre de joueurs ne doit pas être vide';
+                      }
+                    },
+                    prefixIcon: const Icon(
+                      Icons.format_list_numbered_rounded,
+                    ),
+                    textInputAction: TextInputAction.next,
+                  ),
                   const SizedBox(height: 20),
-                  // DropdownButtonFormField<String>(
-                  //   decoration: InputDecoration(
-                  //     labelText: 'Select Wilaya',
-                  //     border: OutlineInputBorder(),
-                  //   ),
-                  //   value: selectedWilaya,
-                  //   onChanged: (newValue) {
-                  //     setState(() {
-                  //       selectedWilaya = newValue;
-                  //       // updateCommunes(newValue);
-                  //     });
-                  //   },
-                  //   items: wilayas.map((dynamic wilaya) {
-                  //     return DropdownMenuItem<String>(
-                  //       value: wilaya['name'],
-                  //       child: Text(wilaya['name']),
-                  //     );
-                  //   }).toList(),
-                  // ),
                   DropdownScreen(
                     selectedDaira: dairaController,
                     selectedWilaya: wilayaController,
                   ),
-
                   const SizedBox(height: 20),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -138,40 +117,45 @@ class _AddEquipeState extends State<AddEquipe> {
                         }
                         if (state is CreerEquipeStateGood) {
                           showToast(
-                              msg: "equipe creer avec succes",
-                              state: ToastStates.success);
+                            msg: "L'équipe a été créée avec succès",
+                            state: ToastStates.success,
+                          );
                           EquipeCubit.get(context)
                               .getMyEquipe(cursor: "")
                               .then((value) {
                             Navigator.pushAndRemoveUntil(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => const HomeJoueur()),
+                                builder: (context) => const HomeJoueur(),
+                              ),
                               (route) => false,
                             );
                           });
                         } else if (state is CreerEquipeStateBad) {
                           showToast(
-                              msg: "server crashed", state: ToastStates.error);
+                            msg: "Erreur du serveur",
+                            state: ToastStates.error,
+                          );
                         } else if (state is ErrorState) {
                           String errorMessage = state.errorModel.message!;
                           showToast(
-                              msg: errorMessage, state: ToastStates.error);
+                            msg: errorMessage,
+                            state: ToastStates.error,
+                          );
                         }
                       },
                       builder: (context, state) {
                         return defaultSubmit2(
-                          text: 'creer l\'equipe',
+                          text: 'Créer l\'équipe',
                           background: Colors.blueAccent,
                           onPressed: () {
                             if (formkey.currentState!.validate()) {
                               EquipeCubit.get(context).creerEquipe(
-                                  nom: _typeController.text,
-                                  numero_joueurs: _numberController.text,
-                                  wilaya: wilayaController.text,
-                                  commune: dairaController.text
-                                  // commune: selectedCommune
-                                  );
+                                nom: _typeController.text,
+                                numero_joueurs: _numberController.text,
+                                wilaya: wilayaController.text,
+                                commune: dairaController.text,
+                              );
                             }
                           },
                         );

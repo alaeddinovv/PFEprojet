@@ -533,14 +533,14 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
         return StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
             return AlertDialog(
-              title: const Text("Add username:"),
+              title: const Text("Ajouter un nom d'utilisateur:"),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   TextField(
                     controller: textEditingController,
                     decoration: InputDecoration(
-                      hintText: "Enter username",
+                      hintText: "Entrez le nom d'utilisateur",
                       suffixIcon: IconButton(
                         icon: const Icon(Icons.search),
                         onPressed: () {
@@ -567,10 +567,10 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                         joueurId =
                             state.dataJoueurModel.id; // Store the joueur ID
                         setState(() => message =
-                            "Player exists: ${state.dataJoueurModel.username}");
+                            "Le joueur existe : ${state.dataJoueurModel.username}");
                       } else if (state is CheckUserByUsernameStateBad ||
                           state is ErrorState) {
-                        setState(() => message = "Player does not exist");
+                        setState(() => message = "Le joueur n'existe pas");
                       }
                     },
                     builder: (context, state) {
@@ -604,18 +604,19 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                             } else {
                               Navigator.of(context).pop();
                               showToast(
-                                  msg: "Player already in the waiting list.",
+                                  msg:
+                                      "Le joueur est déjà dans la liste d'attente.",
                                   state: ToastStates.error);
                             }
                           }
                         },
-                        child: const Text("Invite"),
+                        child: const Text("Inviter"),
                       ),
                       ElevatedButton(
                         onPressed: () {
                           Navigator.of(context).pop(); // Close the dialog
                         },
-                        child: const Text("Cancel"),
+                        child: const Text("Annuler"),
                       ),
                     ],
                   ),
@@ -691,7 +692,7 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        Text(post!.isEmpty ? "accepter" : post),
+                        Text(post!.isEmpty ? "Accepter" : post),
                       ],
                     ),
                   ),
@@ -707,7 +708,8 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                           } else {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
-                                content: Text("No telephone number available."),
+                                content: Text(
+                                    "Aucun numéro de téléphone disponible."),
                               ),
                             );
                           }
@@ -758,7 +760,7 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
 
       await launchUrl(launchUri);
     } else {
-      print('Permission denied');
+      print('Permission refusée');
     }
   }
 

@@ -129,7 +129,7 @@ class _EquipeState extends State<Equipe> {
                         ),
                         SizedBox(width: 8),
                         Text(
-                          'My equipes',
+                          'Mes équipes',
                           style: TextStyle(
                             color:
                                 cubit.isSelected[0] ? Colors.white : greenConst,
@@ -149,7 +149,7 @@ class _EquipeState extends State<Equipe> {
                         ),
                         SizedBox(width: 8),
                         Text(
-                          'All Equipes',
+                          'Toutes les équipes',
                           style: TextStyle(
                             color:
                                 cubit.isSelected[1] ? Colors.white : greenConst,
@@ -169,7 +169,7 @@ class _EquipeState extends State<Equipe> {
                         ),
                         SizedBox(width: 8),
                         Text(
-                          'Equipe im in',
+                          'Équipes où je suis',
                           style: TextStyle(
                             color:
                                 cubit.isSelected[2] ? Colors.white : greenConst,
@@ -593,7 +593,7 @@ class _EquipeState extends State<Equipe> {
             children: [
               Expanded(
                 child: Text(
-                  'Team: ${model.nom}',
+                  'Équipe: ${model.nom}',
                   style: TextStyle(
                     color: Colors.black87,
                     fontWeight: FontWeight.bold,
@@ -666,7 +666,7 @@ class _EquipeState extends State<Equipe> {
                 children: [
                   Expanded(
                     child: Text(
-                      'Team: ${model.nom}', // Displaying the team name
+                      'Équipe: ${model.nom}', // Displaying the team name
                       style: TextStyle(
                         color: Colors.black87,
                         fontWeight: FontWeight.bold,
@@ -753,7 +753,7 @@ class _EquipeState extends State<Equipe> {
                 children: [
                   Expanded(
                     child: Text(
-                      'Team: ${model.nom}', // Displaying the team name
+                      'Équipe: ${model.nom}', // Displaying the team name
                       style: TextStyle(
                         color: Colors.black87,
                         fontWeight: FontWeight.bold,
@@ -835,7 +835,7 @@ class _EquipeState extends State<Equipe> {
                 children: [
                   Expanded(
                     child: Text(
-                      'Team: ${model.nom}', // Displaying the team name
+                      'Équipe: ${model.nom}', // Displaying the team name
                       style: TextStyle(
                         color: Colors.black87,
                         fontWeight: FontWeight.bold,
@@ -855,13 +855,13 @@ class _EquipeState extends State<Equipe> {
                                     .username!)
                             .then((_) {
                           showToast(
-                              msg: "Invitation accepted",
+                              msg: "Invitation acceptée",
                               state: ToastStates.success);
                           EquipeCubit.get(context)
                               .getEquipeInvite(); // Refresh the list after accepting
                         }).catchError((error) {
                           showToast(
-                              msg: "Failed to accept invitation",
+                              msg: "Échec de l'acceptation de l'invitation",
                               state: ToastStates.error);
                         });
                       },
@@ -880,13 +880,13 @@ class _EquipeState extends State<Equipe> {
                           .refuserInvitation(id: model.id)
                           .then((_) {
                         showToast(
-                            msg: "Invitation refused",
+                            msg: "Invitation refusée",
                             state: ToastStates.success);
                         EquipeCubit.get(context)
                             .getEquipeInvite(); // Refresh the list after refusing
                       }).catchError((error) {
                         showToast(
-                            msg: "Failed to refuse invitation",
+                            msg: "Échec du refus de l'invitation",
                             state: ToastStates.error);
                       });
                     },
@@ -940,20 +940,21 @@ class _EquipeState extends State<Equipe> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('Delete Equipe'),
-          content: const Text('Are you sure you want to delete this equipe?'),
+          title: const Text("Supprimer l'équipe"),
+          content:
+              const Text('Êtes-vous sûr de vouloir supprimer cette équipe ?'),
           actions: [
             TextButton(
               onPressed: () {
                 EquipeCubit.get(context).deleteEquipe(id: model.id);
               },
-              child: const Text('Yes'),
+              child: const Text('Oui'),
             ),
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: const Text('No'),
+              child: const Text('Non'),
             ),
           ],
         );

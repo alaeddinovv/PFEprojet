@@ -81,7 +81,7 @@ class _SearchTestState extends State<SearchTest> {
               controller: searchController,
               onChanged: _onSearchChanged,
               decoration: InputDecoration(
-                hintText: 'Search players...',
+                hintText: 'Rechercher des joueurs...',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15.0),
                 ),
@@ -138,7 +138,7 @@ class _SearchTestState extends State<SearchTest> {
                                       ),
                                       title: Text(joueur.username!),
                                       subtitle: Text(
-                                          'Age: ${joueur.age} - Position: ${joueur.poste}'),
+                                          'Âge: ${joueur.age} - Poste: ${joueur.poste}'),
                                       onTap: () {
                                         print(joueur.id);
                                         _selectJoueur(joueur);

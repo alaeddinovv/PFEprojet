@@ -100,7 +100,7 @@ class _SearchJoueurState extends State<SearchJoueur> {
               controller: searchController,
               onChanged: _onSearchChanged,
               decoration: InputDecoration(
-                hintText: 'Search players...',
+                hintText: 'Rechercher des joueurs...',
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15.0),
                 ),
