@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pfeprojet/Api/color.dart';
 import 'package:pfeprojet/screen/Auth/login.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -60,7 +60,7 @@ class _OnbordingState extends State<Onbording> {
                   style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: Colors.blueAccent),
+                      color: Colors.white),
                 ))
           ],
         ),
@@ -100,15 +100,16 @@ class _OnbordingState extends State<Onbording> {
                   SmoothPageIndicator(
                       controller: onbordingController,
                       count: models.length,
-                      effect: const ExpandingDotsEffect(
-                          dotWidth: 20,
-                          dotHeight: 15,
-                          dotColor: Color(0xFFCCCCCC),
-                          activeDotColor: Colors.blueAccent),
+                      effect: ExpandingDotsEffect(
+                        dotWidth: 20,
+                        dotHeight: 15,
+                        dotColor: Color(0xFFCCCCCC),
+                        activeDotColor: greenConst,
+                      ),
                       onDotClicked: (index) {}),
                   const Spacer(),
                   FloatingActionButton(
-                    backgroundColor: Colors.blueAccent,
+                    backgroundColor: greenConst,
                     onPressed: () {
                       onbordingController.nextPage(
                           duration: const Duration(milliseconds: 700),
@@ -139,15 +140,13 @@ class _OnbordingState extends State<Onbording> {
           const SizedBox(height: 20),
           Text(
             '${k.title}',
-            style: const TextStyle(
-                fontSize: 26,
-                fontWeight: FontWeight.bold,
-                color: Colors.blueAccent),
+            style: TextStyle(
+                fontSize: 26, fontWeight: FontWeight.bold, color: greenConst),
           ),
           const SizedBox(height: 20),
           Text(
             '${k.body}',
-            style: const TextStyle(fontSize: 18, color: Colors.blueAccent),
+            style: TextStyle(fontSize: 18, color: greenConst),
           ),
           const SizedBox(height: 40),
         ],
