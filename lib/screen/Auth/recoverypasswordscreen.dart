@@ -13,7 +13,6 @@ class PasswordRecoveryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Use MediaQuery to get screen size and set padding and spacing dynamically
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
@@ -21,14 +20,14 @@ class PasswordRecoveryScreen extends StatelessWidget {
       listener: (context, state) {
         if (state is PasswordRecoverySuccess) {
           if (state.isresnd == false) {
-            showToast(msg: "email exist", state: ToastStates.success);
+            showToast(msg: "L'email existe", state: ToastStates.success);
             navigatAndReturn(
               context: context,
               page: VerificationCodeEntryScreen(email: _emailController.text),
             );
           }
         } else if (state is PasswordRecoveryFailure) {
-          showToast(msg: "email doesn't exist", state: ToastStates.error);
+          showToast(msg: "L'email n'existe pas", state: ToastStates.error);
         } else if (state is ErrorState) {
           String errorMessage = state.errorModel.message!;
           showToast(msg: errorMessage, state: ToastStates.error);
@@ -39,27 +38,25 @@ class PasswordRecoveryScreen extends StatelessWidget {
           body: SingleChildScrollView(
             child: Column(
               children: [
-                SizedBox(
-                  height: screenHeight * 0.15,
-                ),
+                SizedBox(height: screenHeight * 0.15),
                 Image.asset(
                   'assets/images/eemail.png',
-                  // Adjust image size dynamically based on the screen width
                   width: screenWidth * 0.5,
                   height: screenHeight * 0.23,
                   alignment: Alignment.center,
                 ),
                 const Text(
-                  'Forgot password?',
+                  'Mot de passe oublié ?',
                   style: TextStyle(
-                      fontFamily: 'Poppins',
-                      fontSize: 30,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold),
+                    fontFamily: 'Poppins',
+                    fontSize: 30,
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                SizedBox(height: screenHeight * 0.02), // Dynamic spacing
+                SizedBox(height: screenHeight * 0.02),
                 const Text(
-                  'Don’t worry happens to the best of us.\nType your email to reset your password.',
+                  'Ne vous inquiétez pas, ça arrive aux meilleurs d\'entre nous.\nEntrez votre email pour réinitialiser votre mot de passe.',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: 'Poppins',
@@ -67,7 +64,7 @@ class PasswordRecoveryScreen extends StatelessWidget {
                     color: Colors.black,
                   ),
                 ),
-                SizedBox(height: screenHeight * 0.05), // Dynamic spacing
+                SizedBox(height: screenHeight * 0.05),
                 Form(
                   key: formKey,
                   child: Padding(
@@ -79,9 +76,9 @@ class PasswordRecoveryScreen extends StatelessWidget {
                       type: TextInputType.text,
                       valid: (String value) {
                         if (value.isEmpty) {
-                          return 'Type Must Not Be Empty';
+                          return 'Le champ ne doit pas être vide';
                         }
-                        return null; // Ensure validation passes correctly
+                        return null;
                       },
                       prefixIcon: const Icon(
                         Icons.keyboard_arrow_right_sharp,
@@ -92,27 +89,28 @@ class PasswordRecoveryScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: screenHeight * 0.05), // Dynamic spacing
+                SizedBox(height: screenHeight * 0.05),
                 Padding(
-                  padding: EdgeInsets.symmetric(
-                      horizontal: screenWidth * 0.04), // Dynamic padding
+                  padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
                   child: defaultSubmit2(
-                    text: 'send',
+                    text: 'Envoyer',
                     background: const Color(0xFF199A8E),
                     onPressed: () {
                       if (formKey.currentState!.validate()) {
                         AuthCubit.get(context).recoverPassword(
-                            email: _emailController.text, isresend: false);
+                          email: _emailController.text,
+                          isresend: false,
+                        );
                       }
                     },
                   ),
                 ),
-                SizedBox(height: screenHeight * 0.03), // Dynamic spacing
+                SizedBox(height: screenHeight * 0.03),
                 if (state is PasswordRecoveryLoading)
                   const LinearProgressIndicator(),
-                SizedBox(height: screenHeight * 0.01), // Dynamic spacing
+                SizedBox(height: screenHeight * 0.01),
                 const Text(
-                  'Remember your password?',
+                  'Vous vous souvenez de votre mot de passe ?',
                   textAlign: TextAlign.start,
                   style: TextStyle(
                     fontFamily: 'Poppins',
@@ -120,7 +118,7 @@ class PasswordRecoveryScreen extends StatelessWidget {
                     color: Colors.black,
                   ),
                 ),
-                SizedBox(height: screenHeight * 0.01), // Dynamic spacing
+                SizedBox(height: screenHeight * 0.01),
                 Align(
                   alignment: Alignment.center,
                   child: InkWell(
@@ -128,7 +126,7 @@ class PasswordRecoveryScreen extends StatelessWidget {
                       Navigator.pop(context);
                     },
                     child: const Text(
-                      'Log in',
+                      'Se connecter',
                       textAlign: TextAlign.start,
                       style: TextStyle(
                         fontFamily: 'Poppins',

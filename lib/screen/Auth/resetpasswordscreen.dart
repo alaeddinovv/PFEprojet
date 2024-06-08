@@ -24,10 +24,11 @@ class PasswordResetScreen extends StatelessWidget {
       listener: (context, state) {
         if (state is PasswordResetSuccess) {
           showToast(
-              msg: "Password updated successfully", state: ToastStates.success);
+              msg: "Mot de passe mis à jour avec succès",
+              state: ToastStates.success);
           navigatAndFinish(context: context, page: Login());
         } else if (state is PasswordResetFailure) {
-          showToast(msg: "Email doesn't exist", state: ToastStates.error);
+          showToast(msg: "L'email n'existe pas", state: ToastStates.error);
         } else if (state is ErrorState) {
           String errorMessage = state.errorModel.message!;
           showToast(msg: errorMessage, state: ToastStates.error);
@@ -42,7 +43,7 @@ class PasswordResetScreen extends StatelessWidget {
               children: [
                 SizedBox(height: screenHeight * 0.12),
                 Text(
-                  'Password Reset',
+                  'Réinitialisation du mot de passe',
                   style: TextStyle(
                     fontFamily: 'Poppins',
                     fontSize: 30,
@@ -59,7 +60,7 @@ class PasswordResetScreen extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: screenHeight * 0.04),
                   child: Text(
-                    'Now you can enter your new password',
+                    'Vous pouvez maintenant entrer votre nouveau mot de passe',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontFamily: 'Poppins',
@@ -81,14 +82,14 @@ class PasswordResetScreen extends StatelessWidget {
                           obscureText: AuthCubit.get(context).isHidden['pass']!,
                           valid: (value) {
                             if (value.isEmpty) {
-                              return 'Password must not be empty';
+                              return 'Le mot de passe ne doit pas être vide';
                             }
                             if (value != _password2Controller.text) {
-                              return 'Passwords do not match';
+                              return 'Les mots de passe ne correspondent pas';
                             }
-                            return null; // Ensure validation logic is correct
+                            return null;
                           },
-                          labelText: 'New password',
+                          labelText: 'Nouveau mot de passe',
                           prefixIcon: const Icon(Icons.lock_outline,
                               color: Colors.grey),
                           sufixIcon: IconButton(
@@ -113,14 +114,14 @@ class PasswordResetScreen extends StatelessWidget {
                               AuthCubit.get(context).isHidden['pass1']!,
                           valid: (value) {
                             if (value.isEmpty) {
-                              return 'Password must not be empty';
+                              return 'Le mot de passe ne doit pas être vide';
                             }
                             if (value != _password1Controller.text) {
-                              return 'Passwords do not match';
+                              return 'Les mots de passe ne correspondent pas';
                             }
-                            return null; // Ensure validation logic is correct
+                            return null;
                           },
-                          labelText: 'Confirm new password',
+                          labelText: 'Confirmer le nouveau mot de passe',
                           prefixIcon: const Icon(Icons.lock_outline,
                               color: Colors.grey),
                           sufixIcon: IconButton(
@@ -144,7 +145,7 @@ class PasswordResetScreen extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
                   child: defaultSubmit2(
-                    text: 'Reset Password',
+                    text: 'Réinitialiser le mot de passe',
                     background: Color(0xFF199A8E),
                     onPressed: () {
                       if (formKey.currentState!.validate()) {

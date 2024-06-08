@@ -27,16 +27,16 @@ class _VerificationCodeEntryScreenState
     return BlocConsumer<AuthCubit, AuthState>(
       listener: (context, state) {
         if (state is PasswordRecoverySuccess) {
-          // Handle success
           if (state.isresnd == true) {
-            showToast(msg: "resend success", state: ToastStates.success);
+            showToast(
+                msg: "Code renvoyé avec succès", state: ToastStates.success);
           }
         } else if (state is PasswordRecoveryFailure) {
           showToast(
-              msg: "Please ask for the code again", state: ToastStates.error);
+              msg: "Veuillez redemander le code", state: ToastStates.error);
         } else if (state is VerifyCodeSuccess) {
           showToast(
-              msg: "Code verified successfully", state: ToastStates.success);
+              msg: "Code vérifié avec succès", state: ToastStates.success);
           navigatAndFinish(
               context: context,
               page: PasswordResetScreen(
@@ -45,7 +45,6 @@ class _VerificationCodeEntryScreenState
           String errorMessage = state.errorModel.message!;
           showToast(msg: errorMessage, state: ToastStates.error);
         }
-        // Handle more states as per your logic
       },
       builder: (context, state) {
         return Scaffold(
@@ -56,7 +55,7 @@ class _VerificationCodeEntryScreenState
               children: [
                 SizedBox(height: screenHeight * 0.12),
                 const Text(
-                  'Verification',
+                  'Vérification',
                   style: TextStyle(
                     fontFamily: 'Poppins',
                     fontSize: 30,
@@ -73,11 +72,11 @@ class _VerificationCodeEntryScreenState
                 ),
                 SizedBox(height: screenHeight * 0.05),
                 Text(
-                  'A verification code has been sent to ${widget.email}. Please enter the code below:',
+                  'Un code de vérification a été envoyé à ${widget.email}. Veuillez entrer le code ci-dessous :',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: 'Poppins',
-                    fontSize: screenWidth * 0.04, // dynamically sized text
+                    fontSize: screenWidth * 0.04,
                     color: Colors.black,
                   ),
                 ),
@@ -105,7 +104,7 @@ class _VerificationCodeEntryScreenState
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
                   child: defaultSubmit2(
-                    text: 'send',
+                    text: 'Envoyer',
                     background: const Color(0xFF199A8E),
                     onPressed: () {
                       AuthCubit.get(context).verifycode(
@@ -115,7 +114,7 @@ class _VerificationCodeEntryScreenState
                 ),
                 SizedBox(height: screenHeight * 0.03),
                 const Text(
-                  'Did you fail to receive any code?',
+                  'Vous n\'avez pas reçu de code ?',
                   style: TextStyle(
                     fontFamily: 'Poppins',
                     color: Colors.black,
@@ -131,7 +130,7 @@ class _VerificationCodeEntryScreenState
                           .recoverPassword(email: widget.email, isresend: true);
                     },
                     child: const Text(
-                      'Resend code',
+                      'Renvoyer le code',
                       style: TextStyle(
                         fontFamily: 'Poppins',
                         fontWeight: FontWeight.bold,
