@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:pfeprojet/Api/color.dart';
 import 'package:pfeprojet/Model/reservation_model.dart';
 import 'package:pfeprojet/component/components.dart';
@@ -97,29 +98,47 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                         TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 10.0),
-                  Card(
-                    child: ListTile(
-                        leading: Icon(Icons.calendar_today, color: greenConst),
-                        title: Text(formatDate(reservation!.jour!)!,
-                            style: const TextStyle(fontSize: 20.0)),
-                        subtitle: Text(S.of(context).date)),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Card(
+                            child: ListTile(
+                          // leading:
+                          //     Icon(Icons.calendar_today, color: greenConst),
+                          title: Text(S.of(context).date),
+
+                          subtitle: Text(
+                            DateFormat('yy-MM-dd').format(reservation!.jour!),
+                            // style: const TextStyle(fontSize: 17.0),
+                          ),
+                        )),
+                      ),
+                      // const SizedBox(height: 10.0),
+                      Expanded(
+                        child: Card(
+                          child: ListTile(
+                              // leading: Icon(Icons.access_time, color: greenConst),
+                              title: Text(
+                                S.of(context).time,
+                              ),
+                              subtitle: Text(reservation!.heureDebutTemps!)),
+                        ),
+                      ),
+                      // const SizedBox(height: 10.0),
+                      Expanded(
+                        child: Card(
+                          child: ListTile(
+                            // leading: Icon(Icons.timer, color: greenConst),
+                            title: Text(S.of(context).weeks,
+                                style: const TextStyle(fontSize: 15.0)),
+
+                            subtitle: Text(reservation!.duree.toString()),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                  const SizedBox(height: 10.0),
-                  Card(
-                    child: ListTile(
-                      leading: Icon(Icons.access_time, color: greenConst),
-                      title: Text(reservation!.heureDebutTemps!),
-                      subtitle: Text(S.of(context).time),
-                    ),
-                  ),
-                  const SizedBox(height: 10.0),
-                  Card(
-                    child: ListTile(
-                      leading: Icon(Icons.timer, color: greenConst),
-                      title: Text(reservation!.duree.toString()),
-                      subtitle: Text(S.of(context).weeks),
-                    ),
-                  ),
+
                   const SizedBox(height: 20.0),
                   // Team Details
                   SingleChildScrollView(

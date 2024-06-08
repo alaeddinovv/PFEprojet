@@ -358,6 +358,11 @@ class _AnnonceState extends State<Annonce> {
           return Icons.person_search;
         case 'search join equipe':
           return Icons.group_add;
+        case 'Perte de propriété':
+          return Icons.group_add;
+        case 'Concernant le timing':
+          return Icons.group_add;
+
         default:
           return Icons.help;
       }
@@ -444,6 +449,8 @@ class _AnnonceState extends State<Annonce> {
                         const SizedBox(height: 4),
                         Text(
                           model.description ?? '',
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
                             color: Colors.black54,
                             fontSize: 14,
@@ -479,6 +486,10 @@ class _AnnonceState extends State<Annonce> {
           return Icons.person_search;
         case 'search join equipe':
           return Icons.group_add;
+        case 'Perte de propriété':
+          return Icons.search;
+        case 'Concernant le timing':
+          return Icons.timer;
         default:
           return Icons.help;
       }
@@ -492,6 +503,10 @@ class _AnnonceState extends State<Annonce> {
           return const Color(0xFF6E8898); // Light Slate Gray
         case 'search_join_equipe':
           return const Color(0xFF93385F); // Purple
+        case 'Perte de propriété':
+          return Color.fromARGB(255, 3, 57, 60); // Purple
+        case 'Concernant le timing':
+          return Color.fromARGB(255, 34, 0, 15); // Purple
         default:
           return const Color(0xFF333D79); // Navy Blue
       }

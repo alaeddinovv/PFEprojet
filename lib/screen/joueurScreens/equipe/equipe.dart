@@ -375,6 +375,7 @@ class _EquipeState extends State<Equipe> {
                                   // SizedBox(
                                   //   height: 20,
                                   // ),
+
                                   Expanded(
                                     child: ListView.separated(
                                       controller: _controller,
@@ -473,6 +474,7 @@ class _EquipeState extends State<Equipe> {
                                       // SizedBox(
                                       //   height: 20,
                                       // ),
+
                                       Expanded(
                                         child: ListView.separated(
                                           controller: _controller,
@@ -560,6 +562,8 @@ class _EquipeState extends State<Equipe> {
       EquipeData model, int index, BuildContext context, bool vertial) {
     return InkWell(
       onTap: () {
+        print(model.wilaya);
+
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -623,6 +627,7 @@ class _EquipeState extends State<Equipe> {
       ),
     );
   }
+
   //--------------------------------------alallllllllllllllllllllllllllllllllllll-----------------------
 
   Widget _buildAllEquipeItem(
