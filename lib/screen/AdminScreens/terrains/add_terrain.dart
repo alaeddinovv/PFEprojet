@@ -27,7 +27,7 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
 
   final TextEditingController _largeurController = TextEditingController();
   final TextEditingController _longueurController = TextEditingController();
-  final TextEditingController _superficieController = TextEditingController();
+  // final TextEditingController _superficieController = TextEditingController();
   final TextEditingController _prixController = TextEditingController();
   final TextEditingController _dureeController = TextEditingController();
   final TextEditingController _capaciteController = TextEditingController();
@@ -51,7 +51,7 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
     _longitudeController.dispose();
     _largeurController.dispose();
     _longueurController.dispose();
-    _superficieController.dispose();
+    // _superficieController.dispose();
     _prixController.dispose();
     _dureeController.dispose();
     _capaciteController.dispose();
@@ -156,17 +156,17 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                     },
                     type: TextInputType.number),
                 const SizedBox(height: 10),
-                defaultForm3(
-                    controller: _superficieController,
-                    labelText: 'Superficie',
-                    context: context,
-                    valid: (String value) {
-                      if (value.isEmpty) {
-                        return 'La superficie ne doit pas être vide';
-                      }
-                    },
-                    type: TextInputType.number),
-                const SizedBox(height: 10),
+                // defaultForm3(
+                //     controller: _superficieController,
+                //     labelText: 'Superficie',
+                //     context: context,
+                //     valid: (String value) {
+                //       if (value.isEmpty) {
+                //         return 'La superficie ne doit pas être vide';
+                //       }
+                //     },
+                //     type: TextInputType.number),
+                // const SizedBox(height: 10),
                 defaultForm3(
                     controller: _prixController,
                     labelText: 'Prix',
@@ -465,7 +465,7 @@ class _AddTerrainPageState extends State<AddTerrainPage> {
                                 },
                                 "largeur": _largeurController.text,
                                 "longeur": _longueurController.text,
-                                "superficie": _superficieController.text,
+                                // "superficie": _superficieController.text,
                                 "prix": _prixController.text,
                                 "capacite": _capaciteController.text,
                                 "etat": _etatController.text,

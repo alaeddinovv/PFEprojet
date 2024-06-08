@@ -40,12 +40,12 @@ class Login extends StatelessWidget {
                 ),
                 SizedBox(height: screenHeight * 0.025),
                 Text(
-                  'Welcome back,',
+                  'Bienvenue,',
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
                 SizedBox(height: screenHeight * 0.01),
                 Text(
-                  "Discover Limitess Choices and Unmatched Convenience.",
+                  "Découvrez des choix illimités et une commodité inégalée.",
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 SizedBox(
@@ -63,7 +63,7 @@ class Login extends StatelessWidget {
                     type: TextInputType.emailAddress,
                     valid: (String value) {
                       if (value.isEmpty) {
-                        return 'Email Must Not Be Empty';
+                        return 'L\'e-mail ne doit pas être vide';
                       }
                     },
                     prefixIcon: const Icon(
@@ -84,10 +84,10 @@ class Login extends StatelessWidget {
                           obscureText: AuthCubit.get(context).ishidden,
                           valid: (value) {
                             if (value.isEmpty) {
-                              return 'mot_de_passe Must Be Not Empty';
+                              return 'Le mot de passe ne doit pas être vide';
                             }
                           },
-                          labelText: 'mot_de_passe',
+                          labelText: 'Mot de passe',
                           prefixIcon: const Icon(
                             Icons.password_outlined,
                             color: Colors.grey,
@@ -150,7 +150,7 @@ class Login extends StatelessWidget {
                               page: PasswordRecoveryScreen(),
                             );
                           },
-                          child: const Text("Forget Password?"))
+                          child: const Text("Mot de passe oublié ?"))
                     ],
                   ),
                   SizedBox(height: screenHeight * 0.03),
@@ -158,7 +158,7 @@ class Login extends StatelessWidget {
                     listener: (BuildContext context, AuthState state) async {
                       if (state is LoginStateGood) {
                         showToast(
-                            msg: 'Hi ${state.model.data!.nom!}',
+                            msg: 'Bonjour ${state.model.data!.nom!}',
                             state: ToastStates.success);
                         TOKEN = state.model.token!;
                         print(TOKEN);
@@ -191,7 +191,7 @@ class Login extends StatelessWidget {
                             msg: ' ${state.errorModel.message}',
                             state: ToastStates.error);
                       } else if (state is LoginStateBad) {
-                        showToast(msg: "Error", state: ToastStates.error);
+                        showToast(msg: "Erreur", state: ToastStates.error);
                       }
                     },
                     builder: (context, state) {
@@ -211,7 +211,7 @@ class Login extends StatelessWidget {
                               );
                             }
                           },
-                          text: 'Sign In');
+                          text: 'Se connecter');
                     },
                   ),
                   SizedBox(height: screenHeight * 0.015),
@@ -231,7 +231,7 @@ class Login extends StatelessWidget {
                             context: context, page: RegisterJoueur());
                       },
                       child: const Text(
-                        "Create Account",
+                        "Créer un compte",
                         style: TextStyle(color: Colors.black, fontSize: 16),
                       ),
                     ),
@@ -240,29 +240,6 @@ class Login extends StatelessWidget {
               ),
             ),
             SizedBox(height: 50),
-            // SizedBox(
-            //   width: double.infinity,
-            //   child: OutlinedButton(
-            //     style: ElevatedButton.styleFrom(
-            //       shape: const RoundedRectangleBorder(
-            //           borderRadius: BorderRadius.all(Radius.circular(5))),
-            //       padding:
-            //           const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
-            //     ),
-            //     onPressed: () {
-            //       // Navigate to the About Us page
-            //       // Navigator.push(
-            //       //   context,
-            //       //   MaterialPageRoute(builder: (context) => AboutUsPage()),
-            //       // );
-            //     },
-            //     child: const Text(
-            //       "About Us",
-            //       style: TextStyle(color: Colors.black, fontSize: 16),
-            //     ),
-            //   ),
-            // ),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -279,7 +256,7 @@ class Login extends StatelessWidget {
                     navigatAndReturn(context: context, page: AboutUsPage());
                   },
                   child: Text(
-                    "About Us",
+                    "À propos de nous",
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                 ),
@@ -295,40 +272,6 @@ class Login extends StatelessWidget {
               ],
             ),
             SizedBox(height: screenHeight * 0.015),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: [
-            //     Container(
-            //       decoration: BoxDecoration(
-            //         border: Border.all(color: Colors.grey),
-            //         borderRadius: BorderRadius.circular(100),
-            //       ),
-            //       child: IconButton(
-            //         icon: const Image(
-            //           width: 24,
-            //           height: 24,
-            //           image: AssetImage("assets/images/google.png"),
-            //         ),
-            //         onPressed: () {},
-            //       ),
-            //     ),
-            //     SizedBox(width: screenWidth * 0.015),
-            //     Container(
-            //       decoration: BoxDecoration(
-            //         border: Border.all(color: Colors.grey),
-            //         borderRadius: BorderRadius.circular(100),
-            //       ),
-            //       child: IconButton(
-            //         icon: const Image(
-            //           width: 24,
-            //           height: 24,
-            //           image: AssetImage("assets/images/facebook.png"),
-            //         ),
-            //         onPressed: () {},
-            //       ),
-            //     )
-            //   ],
-            // )
           ],
         ),
       ),

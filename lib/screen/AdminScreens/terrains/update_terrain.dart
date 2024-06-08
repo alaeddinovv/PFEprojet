@@ -44,7 +44,7 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
 
   final TextEditingController _longueurController = TextEditingController();
 
-  final TextEditingController _superficieController = TextEditingController();
+  // final TextEditingController _superficieController = TextEditingController();
 
   final TextEditingController _prixController = TextEditingController();
 
@@ -71,7 +71,7 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
         widget.terrainModel.coordonnee!.longitude.toString();
     _largeurController.text = widget.terrainModel.largeur!.toString();
     _longueurController.text = widget.terrainModel.longeur!.toString();
-    _superficieController.text = widget.terrainModel.superficie!.toString();
+    // _superficieController.text = widget.terrainModel.superficie!.toString();
     _prixController.text = widget.terrainModel.prix!.toString();
     _dureeController.text = widget.terrainModel.dureeCreneau!.toString();
     _capaciteController.text = widget.terrainModel.capacite!.toString();
@@ -88,7 +88,7 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
     _longitudeController.dispose();
     _largeurController.dispose();
     _longueurController.dispose();
-    _superficieController.dispose();
+    // _superficieController.dispose();
     _prixController.dispose();
     _dureeController.dispose();
     _capaciteController.dispose();
@@ -195,17 +195,6 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
                       valid: (String value) {
                         if (value.isEmpty) {
                           return 'La longueur ne doit pas être vide';
-                        }
-                      },
-                      type: TextInputType.number),
-                  const SizedBox(height: 10),
-                  defaultForm3(
-                      controller: _superficieController,
-                      labelText: 'Superficie',
-                      context: context,
-                      valid: (String value) {
-                        if (value.isEmpty) {
-                          return 'La superficie ne doit pas être vide';
                         }
                       },
                       type: TextInputType.number),
@@ -438,7 +427,7 @@ class _EditTerrainPageState extends State<EditTerrainPage> {
                                   },
                                   "largeur": _largeurController.text,
                                   "longeur": _longueurController.text,
-                                  "superficie": _superficieController.text,
+                                  // "superficie": _superficieController.text,
                                   "prix": _prixController.text,
                                   "capacite": _capaciteController.text,
                                   "etat": _etatController.text,

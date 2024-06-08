@@ -235,6 +235,8 @@ class ProfileJoueur extends StatelessWidget {
             },
           ),
           ListTile(
+            textColor: Colors.red,
+            iconColor: Colors.red,
             leading: Icon(Icons.exit_to_app),
             title: Text('Se déconnecter', style: GoogleFonts.poppins()),
             onTap: () async {

@@ -4,7 +4,7 @@ class TerrainModel {
   String? nom;
   int? largeur;
   int? longeur;
-  int? superficie;
+  // int? superficie;
   String? adresse;
   String? heureDebutTemps;
   String? heureFinTemps;
@@ -28,7 +28,7 @@ class TerrainModel {
     nom = json['nom'];
     largeur = json['largeur'];
     longeur = json['longeur'];
-    superficie = json['superficie'];
+    // superficie = json['superficie'];
     adresse = json['adresse'];
     heureDebutTemps = json['heure_debut_temps'];
     heureFinTemps = json['heure_fin_temps'];
@@ -61,7 +61,7 @@ class TerrainModel {
     _data['nom'] = nom;
     _data['largeur'] = largeur;
     _data['longeur'] = longeur;
-    _data['superficie'] = superficie;
+    // _data['superficie'] = superficie;
     _data['adresse'] = adresse;
     _data['heure_debut_temps'] = heureDebutTemps;
     _data['heure_fin_temps'] = heureFinTemps;

@@ -32,7 +32,7 @@ class TarrainPaginationData {
     required this.nom,
     required this.largeur,
     required this.longeur,
-    required this.superficie,
+    // required this.superficie,
     required this.adresse,
     required this.heureDebutTemps,
     required this.heureFinTemps,
@@ -54,7 +54,7 @@ class TarrainPaginationData {
   late final String nom;
   late final int largeur;
   late final int longeur;
-  late final int superficie;
+  // late final int superficie;
   late final String adresse;
   late final String heureDebutTemps;
   late final String heureFinTemps;
@@ -77,7 +77,7 @@ class TarrainPaginationData {
     nom = json['nom'];
     largeur = json['largeur'];
     longeur = json['longeur'];
-    superficie = json['superficie'];
+    // superficie = json['superficie'];
     adresse = json['adresse'];
     heureDebutTemps = json['heure_debut_temps'];
     heureFinTemps = json['heure_fin_temps'];
@@ -104,7 +104,7 @@ class TarrainPaginationData {
     _data['nom'] = nom;
     _data['largeur'] = largeur;
     _data['longeur'] = longeur;
-    _data['superficie'] = superficie;
+    // _data['superficie'] = superficie;
     _data['adresse'] = adresse;
     _data['heure_debut_temps'] = heureDebutTemps;
     _data['heure_fin_temps'] = heureFinTemps;

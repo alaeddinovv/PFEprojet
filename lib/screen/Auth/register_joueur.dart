@@ -263,68 +263,6 @@ class RegisterJoueur extends StatelessWidget {
                   ),
                 ),
               ),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //     const Flexible(
-              //       child: Divider(
-              //         color: Colors.grey,
-              //         thickness: 0.5,
-              //         indent: 60,
-              //         endIndent: 5,
-              //       ),
-              //     ),
-              //     Text(
-              //       "Or Sign In with",
-              //       style: Theme.of(context).textTheme.labelMedium,
-              //     ),
-              //     const Flexible(
-              //       child: Divider(
-              //         color: Colors.grey,
-              //         height: 3,
-              //         thickness: 0.5,
-              //         indent: 5,
-              //         endIndent: 60,
-              //       ),
-              //     )
-              //   ],
-              // ),
-
-              // SizedBox(height: screenHeight * 0.015),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //     Container(
-              //       decoration: BoxDecoration(
-              //         border: Border.all(color: Colors.grey),
-              //         borderRadius: BorderRadius.circular(100),
-              //       ),
-              //       child: IconButton(
-              //         icon: const Image(
-              //           width: 24,
-              //           height: 24,
-              //           image: AssetImage("assets/images/google.png"),
-              //         ),
-              //         onPressed: () {},
-              //       ),
-              //     ),
-              //     SizedBox(width: screenWidth * 0.015),
-              //     Container(
-              //       decoration: BoxDecoration(
-              //         border: Border.all(color: Colors.grey),
-              //         borderRadius: BorderRadius.circular(100),
-              //       ),
-              //       child: IconButton(
-              //         icon: const Image(
-              //           width: 24,
-              //           height: 24,
-              //           image: AssetImage("assets/images/facebook.png"),
-              //         ),
-              //         onPressed: () {},
-              //       ),
-              //     )
-              //   ],
-              // )
             ],
           ),
         ),

@@ -155,10 +155,6 @@ class _SearchTerrainState extends State<SearchTerrain> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        'Superficie: ${terrain.superficie} m²',
-                                        style: const TextStyle(fontSize: 14),
-                                      ),
-                                      Text(
                                         'Adresse: ${terrain.adresse}',
                                         style: const TextStyle(fontSize: 14),
                                       ),
