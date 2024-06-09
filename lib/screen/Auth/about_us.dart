@@ -80,11 +80,11 @@ class AboutUsPage extends StatelessWidget {
                   ),
                   SizedBox(height: 8),
                   Text(
-                    'Email : info@example.com',
+                    'Email : crenoDz@gmail.com',
                     style: TextStyle(fontSize: 16),
                   ),
                   Text(
-                    'Téléphone : 123-456-7890',
+                    'Téléphone : 0776416901',
                     style: TextStyle(fontSize: 16),
                   ),
                 ],

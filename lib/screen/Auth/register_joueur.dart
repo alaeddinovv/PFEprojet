@@ -37,17 +37,25 @@ class RegisterJoueur extends StatelessWidget {
     var screenWidth = MediaQuery.of(context).size.width;
     var sizedBoxSpacing = screenHeight * 0.015;
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(
+          'Let\'s create your account',
+          style: Theme.of(context)
+              .textTheme
+              .headlineMedium
+              ?.copyWith(color: Colors.white, fontSize: 22),
+        ),
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: EdgeInsets.symmetric(
               vertical: screenHeight * 0.02, horizontal: screenWidth * 0.05),
           child: Column(
             children: [
-              Text(
-                'Let\'s create your account',
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
+              // Text(
+              //   'Let\'s create your account',
+              //   style: Theme.of(context).textTheme.headlineMedium,
+              // ),
               SizedBox(height: screenHeight * 0.02),
               Padding(
                 padding: EdgeInsets.symmetric(vertical: screenHeight * 0.01),
