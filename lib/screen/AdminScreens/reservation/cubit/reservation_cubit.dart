@@ -31,6 +31,7 @@ class ReservationCubit extends Cubit<ReservationState> {
     // String formattedDate = DateFormat('yyyy-MM-dd').format(date!);
     await Httplar.httpget(path: FILTERRESERVATIONPagination, query: {
       "payment": "false",
+      "etat": 'demander',
       "cursor": cursor,
       if (terrainId != null) "terrain_id": terrainId,
       if (date != null) "jour": date,

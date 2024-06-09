@@ -33,80 +33,86 @@ class _TerrainState extends State<Terrain> {
     // final primaryColor = Colors.blue;
     // final secondaryColor = Colors.lightBlueAccent;
 
-    return Scaffold(
-      body: Column(
-        children: [
-          Padding(
-              padding: const EdgeInsets.all(8.0),
-              child:
-                  // ToggleButtons(
-                  //   isSelected: [_showList, !_showList],
-                  //   onPressed: (int index) {
-                  //     setState(() {
-                  //       _showList = index == 0;
-                  //     });
-                  //   },
-                  //   borderRadius: BorderRadius.circular(8),
-                  //   selectedColor: Colors.black,
-                  //   fillColor: Colors.grey[200],
-                  //   constraints: BoxConstraints(
-                  //       minWidth: MediaQuery.of(context).size.width / 2 - 10,
-                  //       minHeight: 40),
-                  //   // borderRadius: BorderRadius.circular(8),
-                  //   // // borderColor: Colors.red,
-                  //   // selectedBorderColor: secondaryColor,
-                  //   // selectedColor: Colors.white,
-                  //   // fillColor: secondaryColor.withOpacity(0.5),
-                  //   // constraints: const BoxConstraints(minHeight: 40.0),
-                  //   children: const <Widget>[
-                  //     Text('List Terrain'),
-                  //     Text('Map Terrain'),
-                  //   ],
-                  // ),
-                  ToggleButtonsWidget(
-                icon1: Icons.list_outlined,
-                icon2: Icons.location_on_outlined,
-                text1: 'List Terrain',
-                text2: 'Map Terrain',
-                showList: _showList,
-                onToggle: (value) {
-                  setState(() {
-                    _showList = value;
-                  });
-                },
-              )),
-          Expanded(
-            child: _showList
-                ? BlocBuilder<TerrainCubit, TerrainState>(
-                    builder: (context, state) {
-                      if (state is ErrorTerrainsState) {
-                        return Center(
-                          child: Text(
-                            state.errorModel.message!,
-                            style: TextStyle(color: Colors.red),
+    return RefreshIndicator(
+      onRefresh: () {
+        terrainCubit.getMyTerrains();
+        return Future.delayed(const Duration(seconds: 1));
+      },
+      child: Scaffold(
+        body: Column(
+          children: [
+            Padding(
+                padding: const EdgeInsets.all(8.0),
+                child:
+                    // ToggleButtons(
+                    //   isSelected: [_showList, !_showList],
+                    //   onPressed: (int index) {
+                    //     setState(() {
+                    //       _showList = index == 0;
+                    //     });
+                    //   },
+                    //   borderRadius: BorderRadius.circular(8),
+                    //   selectedColor: Colors.black,
+                    //   fillColor: Colors.grey[200],
+                    //   constraints: BoxConstraints(
+                    //       minWidth: MediaQuery.of(context).size.width / 2 - 10,
+                    //       minHeight: 40),
+                    //   // borderRadius: BorderRadius.circular(8),
+                    //   // // borderColor: Colors.red,
+                    //   // selectedBorderColor: secondaryColor,
+                    //   // selectedColor: Colors.white,
+                    //   // fillColor: secondaryColor.withOpacity(0.5),
+                    //   // constraints: const BoxConstraints(minHeight: 40.0),
+                    //   children: const <Widget>[
+                    //     Text('List Terrain'),
+                    //     Text('Map Terrain'),
+                    //   ],
+                    // ),
+                    ToggleButtonsWidget(
+                  icon1: Icons.list_outlined,
+                  icon2: Icons.location_on_outlined,
+                  text1: 'List Terrain',
+                  text2: 'Map Terrain',
+                  showList: _showList,
+                  onToggle: (value) {
+                    setState(() {
+                      _showList = value;
+                    });
+                  },
+                )),
+            Expanded(
+              child: _showList
+                  ? BlocBuilder<TerrainCubit, TerrainState>(
+                      builder: (context, state) {
+                        if (state is ErrorTerrainsState) {
+                          return Center(
+                            child: Text(
+                              state.errorModel.message!,
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          );
+                        } else if (state is GetMyTerrainsLoading) {
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }
+                        return ListView.separated(
+                          physics: const BouncingScrollPhysics(),
+                          itemBuilder: (context, int index) => terrainItem(
+                              context: context,
+                              terrainModel: terrainCubit.terrains[index]),
+                          separatorBuilder: (context, int index) =>
+                              const SizedBox(
+                            height: 16,
                           ),
+                          itemCount: terrainCubit.terrains.length,
                         );
-                      } else if (state is GetMyTerrainsLoading) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-                      return ListView.separated(
-                        physics: const BouncingScrollPhysics(),
-                        itemBuilder: (context, int index) => terrainItem(
-                            context: context,
-                            terrainModel: terrainCubit.terrains[index]),
-                        separatorBuilder: (context, int index) =>
-                            const SizedBox(
-                          height: 16,
-                        ),
-                        itemCount: terrainCubit.terrains.length,
-                      );
-                    },
-                  )
-                : TestMap(terrains: terrainCubit.terrains),
-          ),
-        ],
+                      },
+                    )
+                  : TestMap(terrains: terrainCubit.terrains),
+            ),
+          ],
+        ),
       ),
     );
   }

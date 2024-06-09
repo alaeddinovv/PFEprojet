@@ -47,7 +47,7 @@ const DELETETERRAINPHOTO =
 const UPDATETERRAIN = '/api/terrain/';
 
 const GETMYTERRAINS = '/api/terrains/my';
-
+const TERRAINBYID = '/api/terrain/';
 const SEARCHTERRAIN = '/api/search/terrain';
 const SEARCHMYTERRAIN = '/api/search/myterrain';
 

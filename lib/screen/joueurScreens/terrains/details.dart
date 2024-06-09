@@ -660,11 +660,13 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
 
   Future<void> dateTimePicker(
       BuildContext context, TerrainCubit terrainCubit) async {
+    final DateTime now = DateTime.now();
+    final DateTime lastDate = now.add(Duration(days: 20));
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: terrainCubit.selectedDate,
       firstDate: DateTime.now(),
-      lastDate: DateTime(2101),
+      lastDate: lastDate,
     );
     if (picked != null && picked != terrainCubit.selectedDate) {
       terrainCubit.selectDate(picked);
