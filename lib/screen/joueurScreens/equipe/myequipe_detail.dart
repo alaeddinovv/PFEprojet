@@ -604,8 +604,7 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                             } else {
                               Navigator.of(context).pop();
                               showToast(
-                                  msg:
-                                      "Le joueur est déjà dans la liste d'attente.",
+                                  msg: "Le joueur est déjà dans la liste .",
                                   state: ToastStates.error);
                             }
                           }

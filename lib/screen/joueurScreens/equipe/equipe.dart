@@ -225,58 +225,58 @@ class _EquipeState extends State<Equipe> {
                           return Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // Container(
-                              //   padding: const EdgeInsets.symmetric(
-                              //       horizontal: 16, vertical: 8),
-                              //   decoration: BoxDecoration(
-                              //     color: Colors.white,
-                              //     borderRadius: BorderRadius.circular(12),
-                              //     boxShadow: [
-                              //       BoxShadow(
-                              //         color: Colors.grey.withOpacity(0.3),
-                              //         spreadRadius: 2,
-                              //         blurRadius: 6,
-                              //         offset: const Offset(0, 3),
-                              //       ),
-                              //     ],
-                              //   ),
-                              //   child: Row(
-                              //     mainAxisAlignment:
-                              //         MainAxisAlignment.spaceBetween,
-                              //     children: [
-                              //       Text(
-                              //         'Les équipes virtuelles :',
-                              //         style: TextStyle(
-                              //           fontSize: 18,
-                              //           fontWeight: FontWeight.bold,
-                              //           color: greenConst,
-                              //         ),
-                              //       ),
-                              //       Transform.scale(
-                              //         scale: 1.2,
-                              //         child: Checkbox(
-                              //           value: vertial,
-                              //           onChanged: (value) {
-                              //             setState(() {
-                              //               vertial = value!;
-                              //               EquipeCubit.get(context)
-                              //                   .getMyEquipe(vertial: vertial);
-                              //             });
-                              //           },
-                              //           activeColor: greenConst,
-                              //           shape: RoundedRectangleBorder(
-                              //             borderRadius:
-                              //                 BorderRadius.circular(4),
-                              //           ),
-                              //           side: BorderSide(color: greenConst),
-                              //         ),
-                              //       ),
-                              //     ],
-                              //   ),
-                              // ),
-                              // SizedBox(
-                              //   height: 20,
-                              // ),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16, vertical: 8),
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(12),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.grey.withOpacity(0.3),
+                                      spreadRadius: 2,
+                                      blurRadius: 6,
+                                      offset: const Offset(0, 3),
+                                    ),
+                                  ],
+                                ),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Les équipes virtuelles :',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: greenConst,
+                                      ),
+                                    ),
+                                    Transform.scale(
+                                      scale: 1.2,
+                                      child: Checkbox(
+                                        value: vertial,
+                                        onChanged: (value) {
+                                          setState(() {
+                                            vertial = value!;
+                                            EquipeCubit.get(context)
+                                                .getMyEquipe(vertial: vertial);
+                                          });
+                                        },
+                                        activeColor: greenConst,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(4),
+                                        ),
+                                        side: BorderSide(color: greenConst),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
                               Expanded(
                                 child: ListView.separated(
                                   controller: _controller,
@@ -372,10 +372,10 @@ class _EquipeState extends State<Equipe> {
                                   //     ],
                                   //   ),
                                   // ),
-                                  // SizedBox(
-                                  //   height: 20,
-                                  // ),
 
+                                  SizedBox(
+                                    height: 20,
+                                  ),
                                   Expanded(
                                     child: ListView.separated(
                                       controller: _controller,
@@ -418,63 +418,62 @@ class _EquipeState extends State<Equipe> {
 
                                   return Column(
                                     children: [
-                                      // Container(
-                                      //   padding: const EdgeInsets.symmetric(
-                                      //       horizontal: 16, vertical: 8),
-                                      //   decoration: BoxDecoration(
-                                      //     color: Colors.white,
-                                      //     borderRadius:
-                                      //         BorderRadius.circular(12),
-                                      //     boxShadow: [
-                                      //       BoxShadow(
-                                      //         color:
-                                      //             Colors.grey.withOpacity(0.3),
-                                      //         spreadRadius: 2,
-                                      //         blurRadius: 6,
-                                      //         offset: const Offset(0, 3),
-                                      //       ),
-                                      //     ],
-                                      //   ),
-                                      //   child: Row(
-                                      //     mainAxisAlignment:
-                                      //         MainAxisAlignment.spaceBetween,
-                                      //     children: [
-                                      //       Text(
-                                      //         'Les équipes virtuelles :',
-                                      //         style: TextStyle(
-                                      //           fontSize: 18,
-                                      //           fontWeight: FontWeight.bold,
-                                      //           color: greenConst,
-                                      //         ),
-                                      //       ),
-                                      //       Transform.scale(
-                                      //         scale: 1.2,
-                                      //         child: Checkbox(
-                                      //           value: vertial,
-                                      //           onChanged: (value) {
-                                      //             setState(() {
-                                      //               vertial = value!;
-                                      //               EquipeCubit.get(context)
-                                      //                   .getEquipeImIn(
-                                      //                       vertial: vertial);
-                                      //             });
-                                      //           },
-                                      //           activeColor: greenConst,
-                                      //           shape: RoundedRectangleBorder(
-                                      //             borderRadius:
-                                      //                 BorderRadius.circular(4),
-                                      //           ),
-                                      //           side: BorderSide(
-                                      //               color: greenConst),
-                                      //         ),
-                                      //       ),
-                                      //     ],
-                                      //   ),
-                                      // ),
-                                      // SizedBox(
-                                      //   height: 20,
-                                      // ),
-
+                                      Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 16, vertical: 8),
+                                        decoration: BoxDecoration(
+                                          color: Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.3),
+                                              spreadRadius: 2,
+                                              blurRadius: 6,
+                                              offset: const Offset(0, 3),
+                                            ),
+                                          ],
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            Text(
+                                              'Les équipes virtuelles :',
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                                color: greenConst,
+                                              ),
+                                            ),
+                                            Transform.scale(
+                                              scale: 1.2,
+                                              child: Checkbox(
+                                                value: vertial,
+                                                onChanged: (value) {
+                                                  setState(() {
+                                                    vertial = value!;
+                                                    EquipeCubit.get(context)
+                                                        .getEquipeImIn(
+                                                            vertial: vertial);
+                                                  });
+                                                },
+                                                activeColor: greenConst,
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(4),
+                                                ),
+                                                side: BorderSide(
+                                                    color: greenConst),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      SizedBox(
+                                        height: 20,
+                                      ),
                                       Expanded(
                                         child: ListView.separated(
                                           controller: _controller,

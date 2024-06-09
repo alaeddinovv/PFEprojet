@@ -450,13 +450,39 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
                                                                       (joueur) {
                                                                     setState(
                                                                         () {
-                                                                      reservation!
-                                                                          .equipe1!
-                                                                          .attenteJoueurs!
-                                                                          .add(
-                                                                              joueur);
-                                                                      isSomthingChanged =
-                                                                          true;
+                                                                      bool alreadyExists = (reservation!
+                                                                              .equipe1!
+                                                                              .attenteJoueurs!
+                                                                              .any(
+                                                                            (value) =>
+                                                                                value.id ==
+                                                                                joueur.id,
+                                                                          ) ||
+                                                                          reservation!
+                                                                              .equipe1!
+                                                                              .joueurs!
+                                                                              .any(
+                                                                            (value) =>
+                                                                                value.id ==
+                                                                                joueur.id,
+                                                                          ));
+                                                                      print(
+                                                                          'gggggggggg$alreadyExists');
+
+                                                                      if (!alreadyExists) {
+                                                                        reservation!
+                                                                            .equipe1!
+                                                                            .attenteJoueurs!
+                                                                            .add(joueur);
+                                                                        isSomthingChanged =
+                                                                            true;
+                                                                      } else {
+                                                                        showToast(
+                                                                            msg:
+                                                                                "Le joueur est déjà dans la liste .",
+                                                                            state:
+                                                                                ToastStates.error);
+                                                                      }
                                                                     });
                                                                   },
                                                                 ),

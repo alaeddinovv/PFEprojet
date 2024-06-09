@@ -156,6 +156,15 @@ class _TerrainState extends State<Terrain> {
                 height: 180,
                 width: double.infinity,
                 fit: BoxFit.fill,
+                errorBuilder: (BuildContext context, Object exception,
+                    StackTrace? stackTrace) {
+                  return Image.asset(
+                    'assets/images/image-load-failed.png', // Path to your error image
+                    height: 180,
+                    width: double.infinity,
+                    fit: BoxFit.fill,
+                  );
+                },
               ),
               Padding(
                 padding: const EdgeInsets.all(10.0),
