@@ -7,6 +7,7 @@ import 'package:pfeprojet/screen/AdminScreens/home/home.dart';
 import 'package:pfeprojet/screen/joueurScreens/annonce/addannonce.dart';
 import 'cubit/annonce_cubit.dart';
 import 'package:pfeprojet/Api/wilaya_list.dart'; // Import your JSON data
+import 'package:pfeprojet/generated/l10n.dart';
 
 class AddAnnonce extends StatefulWidget {
   AddAnnonce({Key? key}) : super(key: key);
@@ -16,7 +17,6 @@ class AddAnnonce extends StatefulWidget {
 }
 
 class _AddAnnonceState extends State<AddAnnonce> {
-  // final TextEditingController _typeController = TextEditingController();
   final TextEditingController _textController = TextEditingController();
   final wilayaController = TextEditingController();
   final dairaController = TextEditingController();
@@ -65,7 +65,7 @@ class _AddAnnonceState extends State<AddAnnonce> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Ajouter une annonce"),
+          title: Text(S.of(context).add_announcement),
         ),
         body: Padding(
           padding: const EdgeInsets.all(10.0),
@@ -82,25 +82,9 @@ class _AddAnnonceState extends State<AddAnnonce> {
                       return const SizedBox(height: 30);
                     },
                   ),
-                  // defaultForm3(
-                  //   context: context,
-                  //   controller: _typeController,
-                  //   type: TextInputType.text,
-                  //   valid: (String value) {
-                  //     if (value.isEmpty) {
-                  //       return 'Type Must Not Be Empty';
-                  //     }
-                  //   },
-                  //   prefixIcon: const Icon(
-                  //     Icons.keyboard_arrow_right_sharp,
-                  //     color: Colors.grey,
-                  //   ),
-                  //   labelText: "TYPE DE L'ANNONCE",
-                  //   textInputAction: TextInputAction.next,
-                  // ),
                   buildDropdownField(
                     context: context,
-                    label: 'Type', // Localized string
+                    label: S.of(context).type,
                     value: _selectedType,
                     items: [
                       'Concernant le timing',
@@ -114,7 +98,6 @@ class _AddAnnonceState extends State<AddAnnonce> {
                     },
                     icon: Icons.category,
                   ),
-
                   const SizedBox(height: 20),
                   defaultForm3(
                     context: context,
@@ -122,7 +105,7 @@ class _AddAnnonceState extends State<AddAnnonce> {
                     type: TextInputType.text,
                     valid: (String value) {
                       if (value.isEmpty) {
-                        return 'Contenu Must Not Be Empty';
+                        return S.of(context).content_cannot_be_empty;
                       }
                     },
                     prefixIcon: const Icon(
@@ -130,48 +113,10 @@ class _AddAnnonceState extends State<AddAnnonce> {
                       color: Colors.grey,
                     ),
                     maxline: 3,
-                    labelText: "contenu de l'annonce",
+                    labelText: S.of(context).announcement_content,
                     textInputAction: TextInputAction.next,
                   ),
                   const SizedBox(height: 20),
-                  // DropdownButtonFormField<String>(
-                  //   decoration: InputDecoration(
-                  //     labelText: 'Select Wilaya',
-                  //     border: OutlineInputBorder(),
-                  //   ),
-                  //   value: selectedWilaya,
-                  //   onChanged: (newValue) {
-                  //     setState(() {
-                  //       selectedWilaya = newValue;
-                  //       updateCommunes(newValue);
-                  //     });
-                  //   },
-                  //   items: wilayas.map((dynamic wilaya) {
-                  //     return DropdownMenuItem<String>(
-                  //       value: wilaya['name'],
-                  //       child: Text(wilaya['name']),
-                  //     );
-                  //   }).toList(),
-                  // ),
-                  // const SizedBox(height: 20),
-                  // DropdownButtonFormField<String>(
-                  //   decoration: InputDecoration(
-                  //     labelText: 'Select Commune',
-                  //     border: OutlineInputBorder(),
-                  //   ),
-                  //   value: selectedCommune,
-                  //   onChanged: (newValue) {
-                  //     setState(() {
-                  //       selectedCommune = newValue;
-                  //     });
-                  //   },
-                  //   items: communes.map((String commune) {
-                  //     return DropdownMenuItem<String>(
-                  //       value: commune,
-                  //       child: Text(commune),
-                  //     );
-                  //   }).toList(),
-                  // ),
                   DropdownScreen(
                     selectedDaira: dairaController,
                     selectedWilaya: wilayaController,
@@ -188,7 +133,9 @@ class _AddAnnonceState extends State<AddAnnonce> {
                         }
                         if (state is CreerAnnonceStateGood) {
                           showToast(
-                              msg: "annonce publier avec succes",
+                              msg: S
+                                  .of(context)
+                                  .announcement_published_successfully,
                               state: ToastStates.success);
                           AnnonceCubit.get(context)
                               .getMyAnnonce(cursor: "")
@@ -202,7 +149,8 @@ class _AddAnnonceState extends State<AddAnnonce> {
                           });
                         } else if (state is CreerAnnonceStateBad) {
                           showToast(
-                              msg: "server crashed", state: ToastStates.error);
+                              msg: S.of(context).server_error,
+                              state: ToastStates.error);
                         } else if (state is ErrorState) {
                           String errorMessage = state.errorModel.message!;
                           showToast(
@@ -211,7 +159,7 @@ class _AddAnnonceState extends State<AddAnnonce> {
                       },
                       builder: (context, state) {
                         return defaultSubmit2(
-                          text: 'publier l\'annonce',
+                          text: S.of(context).publish_announcement,
                           background: Colors.blueAccent,
                           onPressed: () {
                             if (formkey.currentState!.validate()) {

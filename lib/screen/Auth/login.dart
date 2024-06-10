@@ -11,6 +11,7 @@ import 'package:pfeprojet/screen/Auth/cubit/auth_cubit.dart';
 import 'package:pfeprojet/screen/Auth/recoverypasswordscreen.dart';
 import 'package:pfeprojet/screen/Auth/register_joueur.dart';
 import 'package:pfeprojet/screen/joueurScreens/home/home.dart';
+import 'package:pfeprojet/generated/l10n.dart';
 
 class Login extends StatelessWidget {
   Login({super.key});
@@ -40,12 +41,12 @@ class Login extends StatelessWidget {
                 ),
                 SizedBox(height: screenHeight * 0.025),
                 Text(
-                  'Bienvenue,',
+                  S.of(context).welcome,
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
                 SizedBox(height: screenHeight * 0.01),
                 Text(
-                  "Découvrez des choix illimités et une commodité inégalée.",
+                  S.of(context).discover_unlimited_choices,
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 SizedBox(
@@ -63,14 +64,14 @@ class Login extends StatelessWidget {
                     type: TextInputType.emailAddress,
                     valid: (String value) {
                       if (value.isEmpty) {
-                        return 'L\'e-mail ne doit pas être vide';
+                        return S.of(context).email_cannot_be_empty;
                       }
                     },
                     prefixIcon: const Icon(
                       Icons.keyboard_arrow_right_sharp,
                       color: Colors.grey,
                     ),
-                    labelText: "E-Mail",
+                    labelText: S.of(context).email,
                     textInputAction: TextInputAction.next,
                   ),
                   SizedBox(height: screenHeight * 0.015),
@@ -84,10 +85,10 @@ class Login extends StatelessWidget {
                           obscureText: AuthCubit.get(context).ishidden,
                           valid: (value) {
                             if (value.isEmpty) {
-                              return 'Le mot de passe ne doit pas être vide';
+                              return S.of(context).password_cannot_be_empty;
                             }
                           },
-                          labelText: 'Mot de passe',
+                          labelText: S.of(context).password,
                           prefixIcon: const Icon(
                             Icons.password_outlined,
                             color: Colors.grey,
@@ -127,8 +128,8 @@ class Login extends StatelessWidget {
                                         : RESETPASSWORDADMIN;
                                   }),
                               TextButton(
-                                  child: const Text(
-                                    'Responsable',
+                                  child: Text(
+                                    S.of(context).responsible,
                                     style: TextStyle(color: Colors.black),
                                   ),
                                   onPressed: () {
@@ -150,7 +151,7 @@ class Login extends StatelessWidget {
                               page: PasswordRecoveryScreen(),
                             );
                           },
-                          child: const Text("Mot de passe oublié ?"))
+                          child: Text(S.of(context).forgot_password))
                     ],
                   ),
                   SizedBox(height: screenHeight * 0.03),
@@ -158,7 +159,7 @@ class Login extends StatelessWidget {
                     listener: (BuildContext context, AuthState state) async {
                       if (state is LoginStateGood) {
                         showToast(
-                            msg: 'Bonjour ${state.model.data!.nom!}',
+                            msg: S.of(context).hello(state.model.data!.nom!),
                             state: ToastStates.success);
                         TOKEN = state.model.token!;
                         print(TOKEN);
@@ -188,10 +189,11 @@ class Login extends StatelessWidget {
                         }
                       } else if (state is ErrorState) {
                         showToast(
-                            msg: ' ${state.errorModel.message}',
+                            msg: state.errorModel.message!,
                             state: ToastStates.error);
                       } else if (state is LoginStateBad) {
-                        showToast(msg: "Erreur", state: ToastStates.error);
+                        showToast(
+                            msg: S.of(context).error, state: ToastStates.error);
                       }
                     },
                     builder: (context, state) {
@@ -211,7 +213,7 @@ class Login extends StatelessWidget {
                               );
                             }
                           },
-                          text: 'Se connecter');
+                          text: S.of(context).login);
                     },
                   ),
                   SizedBox(height: screenHeight * 0.015),
@@ -230,8 +232,8 @@ class Login extends StatelessWidget {
                         navigatAndReturn(
                             context: context, page: RegisterJoueur());
                       },
-                      child: const Text(
-                        "Créer un compte",
+                      child: Text(
+                        S.of(context).create_account,
                         style: TextStyle(color: Colors.black, fontSize: 16),
                       ),
                     ),
@@ -256,7 +258,7 @@ class Login extends StatelessWidget {
                     navigatAndReturn(context: context, page: AboutUsPage());
                   },
                   child: Text(
-                    "À propos de nous",
+                    S.of(context).about_us,
                     style: Theme.of(context).textTheme.bodyLarge,
                   ),
                 ),

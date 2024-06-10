@@ -5,10 +5,10 @@ import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/drop_down_wilaya.dart';
 import 'package:pfeprojet/screen/AdminScreens/annonce/cubit/annonce_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/annonce/addannonce.dart';
+import 'package:pfeprojet/generated/l10n.dart';
 
 class EditAnnoncePage extends StatefulWidget {
-  final AnnonceAdminData
-      annonceModel; // Assuming AnnonceModel is your data model
+  final AnnonceAdminData annonceModel;
 
   const EditAnnoncePage({Key? key, required this.annonceModel})
       : super(key: key);
@@ -24,6 +24,7 @@ class _EditAnnoncePageState extends State<EditAnnoncePage> {
   late TextEditingController _wilayaController;
   late TextEditingController _dairaController;
   String? _selectedType;
+
   @override
   void initState() {
     super.initState();
@@ -59,9 +60,7 @@ class _EditAnnoncePageState extends State<EditAnnoncePage> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text(
-            'Modifier l\'annonce',
-          ),
+          title: Text(S.of(context).edit_announcement),
         ),
         body: SingleChildScrollView(
           child: Form(
@@ -69,7 +68,6 @@ class _EditAnnoncePageState extends State<EditAnnoncePage> {
             child: Padding(
               padding: const EdgeInsets.all(10.0),
               child: Column(
-                // padding: const EdgeInsets.all(16),
                 children: <Widget>[
                   BlocBuilder<AnnonceCubit, AnnonceState>(
                     builder: (context, state) {
@@ -81,7 +79,7 @@ class _EditAnnoncePageState extends State<EditAnnoncePage> {
                   ),
                   buildDropdownField(
                     context: context,
-                    label: 'Type', // Localized string
+                    label: S.of(context).type,
                     value: _selectedType,
                     items: [
                       'Concernant le timing',
@@ -102,7 +100,7 @@ class _EditAnnoncePageState extends State<EditAnnoncePage> {
                     type: TextInputType.text,
                     valid: (String value) {
                       if (value.isEmpty) {
-                        return 'Le contenu ne doit pas être vide';
+                        return S.of(context).content_cannot_be_empty;
                       }
                     },
                     prefixIcon: const Icon(
@@ -110,7 +108,7 @@ class _EditAnnoncePageState extends State<EditAnnoncePage> {
                       color: Colors.grey,
                     ),
                     maxline: 3,
-                    labelText: "Contenu de l'annonce",
+                    labelText: S.of(context).announcement_content,
                     textInputAction: TextInputAction.done,
                   ),
                   const SizedBox(height: 20),
@@ -127,16 +125,18 @@ class _EditAnnoncePageState extends State<EditAnnoncePage> {
                         canPop = true;
                       }
                       if (state is UpdateAnnonceStateGood) {
-                        // Handle success
-                        showToast(msg: "Succès", state: ToastStates.success);
+                        showToast(
+                            msg: S.of(context).success,
+                            state: ToastStates.success);
                         AnnonceCubit.get(context)
                             .getMyAnnonce(cursor: "")
                             .then((value) {
                           Navigator.pop(context);
                         });
                       } else if (state is UpdateAnnonceStateBad) {
-                        // Handle failure
-                        showToast(msg: "Échec", state: ToastStates.error);
+                        showToast(
+                            msg: S.of(context).failure,
+                            state: ToastStates.error);
                       }
                     },
                     builder: (context, state) {
@@ -145,7 +145,7 @@ class _EditAnnoncePageState extends State<EditAnnoncePage> {
                         child: Column(
                           children: [
                             defaultSubmit2(
-                              text: 'Mettre à jour',
+                              text: S.of(context).update,
                               background: Colors.blueAccent,
                               onPressed: () {
                                 if (_formKey.currentState!.validate()) {

@@ -194,10 +194,10 @@ class S {
     );
   }
 
-  /// `other`
+  /// `Autre`
   String get other {
     return Intl.message(
-      'other',
+      'Autre',
       name: 'other',
       desc: '',
       args: [],
@@ -396,10 +396,10 @@ class S {
     );
   }
 
-  /// `Email`
+  /// `E-Mail`
   String get email {
     return Intl.message(
-      'Email',
+      'E-Mail',
       name: 'email',
       desc: '',
       args: [],
@@ -972,10 +972,10 @@ class S {
     );
   }
 
-  /// `Erreur serveur`
+  /// `Erreur du serveur`
   String get server_error {
     return Intl.message(
-      'Erreur serveur',
+      'Erreur du serveur',
       name: 'server_error',
       desc: '',
       args: [],
@@ -1427,6 +1427,196 @@ class S {
     return Intl.message(
       'Dernière mise à jour',
       name: 'last_update',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Modifier l'annonce`
+  String get edit_announcement {
+    return Intl.message(
+      'Modifier l\'annonce',
+      name: 'edit_announcement',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Concernant le timing`
+  String get timing_related {
+    return Intl.message(
+      'Concernant le timing',
+      name: 'timing_related',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Perte de propriété`
+  String get property_loss {
+    return Intl.message(
+      'Perte de propriété',
+      name: 'property_loss',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Le contenu ne doit pas être vide`
+  String get content_cannot_be_empty {
+    return Intl.message(
+      'Le contenu ne doit pas être vide',
+      name: 'content_cannot_be_empty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Contenu de l'annonce`
+  String get announcement_content {
+    return Intl.message(
+      'Contenu de l\'annonce',
+      name: 'announcement_content',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Échec`
+  String get failure {
+    return Intl.message(
+      'Échec',
+      name: 'failure',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ajouter une annonce`
+  String get add_announcement {
+    return Intl.message(
+      'Ajouter une annonce',
+      name: 'add_announcement',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Annonce publiée avec succès`
+  String get announcement_published_successfully {
+    return Intl.message(
+      'Annonce publiée avec succès',
+      name: 'announcement_published_successfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Publier l'annonce`
+  String get publish_announcement {
+    return Intl.message(
+      'Publier l\'annonce',
+      name: 'publish_announcement',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bienvenue,`
+  String get welcome {
+    return Intl.message(
+      'Bienvenue,',
+      name: 'welcome',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Découvrez des choix illimités et une commodité inégalée.`
+  String get discover_unlimited_choices {
+    return Intl.message(
+      'Découvrez des choix illimités et une commodité inégalée.',
+      name: 'discover_unlimited_choices',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `L'e-mail ne doit pas être vide`
+  String get email_cannot_be_empty {
+    return Intl.message(
+      'L\'e-mail ne doit pas être vide',
+      name: 'email_cannot_be_empty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mot de passe`
+  String get password {
+    return Intl.message(
+      'Mot de passe',
+      name: 'password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Responsable`
+  String get responsible {
+    return Intl.message(
+      'Responsable',
+      name: 'responsible',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mot de passe oublié ?`
+  String get forgot_password {
+    return Intl.message(
+      'Mot de passe oublié ?',
+      name: 'forgot_password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bonjour {name}`
+  String hello(Object name) {
+    return Intl.message(
+      'Bonjour $name',
+      name: 'hello',
+      desc: '',
+      args: [name],
+    );
+  }
+
+  /// `Se connecter`
+  String get login {
+    return Intl.message(
+      'Se connecter',
+      name: 'login',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Créer un compte`
+  String get create_account {
+    return Intl.message(
+      'Créer un compte',
+      name: 'create_account',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `À propos de nous`
+  String get about_us {
+    return Intl.message(
+      'À propos de nous',
+      name: 'about_us',
       desc: '',
       args: [],
     );
