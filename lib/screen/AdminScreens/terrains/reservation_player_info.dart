@@ -12,6 +12,7 @@ class ReservationPlayerInfo extends StatelessWidget {
   final dateController = TextEditingController();
   final hourController = TextEditingController();
   final dureeController = TextEditingController();
+  final username = TextEditingController();
   late final String groupID;
 
   @override
@@ -30,6 +31,9 @@ class ReservationPlayerInfo extends StatelessWidget {
           Navigator.pop(context);
         }
         if (state is GetReservationJoueurInfoStateGood) {
+          TerrainCubit.get(context)
+              .checkUserById(id: state.reservations.first.joueurId!);
+
           userIdController.text = state.reservations.first.joueurId.toString();
           dateController.text =
               '${state.reservations.first.jour!.year}/${state.reservations.first.jour!.month.toString().padLeft(2, '0')}/${state.reservations.first.jour!.day.toString().padLeft(2, '0')}';
@@ -37,6 +41,9 @@ class ReservationPlayerInfo extends StatelessWidget {
               state.reservations.first.heureDebutTemps.toString();
           dureeController.text = state.reservations.first.duree.toString();
           groupID = state.reservations.first.reservationGroupId!;
+        }
+        if (state is CheckUserByIdStateGood) {
+          username.text = state.dataJoueurModel.username!;
         }
       }, builder: (context, state) {
         if (state is GetReservationJoueurInfoLoadingState) {
@@ -52,7 +59,8 @@ class ReservationPlayerInfo extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    const Text('User Id: ', style: TextStyle(fontSize: 20)),
+                    const Text('nom d\'utilisateur ',
+                        style: TextStyle(fontSize: 20)),
                     const SizedBox(
                       height: 8,
                     ),
@@ -68,7 +76,7 @@ class ReservationPlayerInfo extends StatelessWidget {
                       enabled: false,
                       readOnly: true,
                       // labelText: joueurId,
-                      controller: userIdController,
+                      controller: username,
                     ),
                     const SizedBox(
                       height: 16,

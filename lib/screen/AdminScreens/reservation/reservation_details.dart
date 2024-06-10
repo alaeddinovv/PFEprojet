@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pfeprojet/Api/color.dart';
 import 'package:pfeprojet/Model/reservation_pagination_model.dart';
 import 'package:pfeprojet/component/components.dart';
+import 'package:pfeprojet/component/const.dart';
 import 'package:pfeprojet/screen/AdminScreens/reservation/cubit/reservation_cubit.dart';
 
 class ReservationDetailsScreen extends StatelessWidget {
@@ -106,6 +107,11 @@ class ReservationDetailsScreen extends StatelessWidget {
                       showToast(
                           msg: 'Ajouté avec succès',
                           state: ToastStates.success);
+                      sendNotificationToJoueur(
+                          title: 'Acceptez votre réservation',
+                          body:
+                              'Le nom du stade ${reservation.terrainId?.nom} a accepté votre réservation pour le ${formatDate(reservation.jour)} à ${reservation.heureDebutTemps}',
+                          joueurId: reservation.joueurId!.id!);
                       Navigator.pop(context);
                     } else if (state is AddReservationStateBad) {
                       showToast(msg: 'Erreur', state: ToastStates.error);

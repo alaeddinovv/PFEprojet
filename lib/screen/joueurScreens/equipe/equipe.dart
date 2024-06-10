@@ -510,7 +510,7 @@ class _EquipeState extends State<Equipe> {
                                     await sendNotificationToJoueur(
                                         joueurId: state.joueurId,
                                         body:
-                                            '${state.joueurname} a accepter votre invitation',
+                                            '${state.joueurname} a accepter votre invitation  ${state.euipeName}',
                                         title: 'invitation acceptée');
                                   }
                                 },
@@ -853,6 +853,7 @@ class _EquipeState extends State<Equipe> {
                         EquipeCubit.get(context)
                             .accepterInvitation(
                                 id: model.id,
+                                equipename: model.nom,
                                 joueurId: model.capitaineId.id,
                                 joueurname: HomeJoueurCubit.get(context)
                                     .joueurModel!

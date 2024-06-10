@@ -282,7 +282,8 @@ class EquipeCubit extends Cubit<EquipeState> {
   Future<void> accepterInvitation(
       {required String id,
       required String joueurname,
-      required String joueurId}) async {
+      required String joueurId,
+      required String equipename}) async {
     emit(AccepterInvLoadingState());
 
     Map<String, dynamic> _model = {};
@@ -290,7 +291,8 @@ class EquipeCubit extends Cubit<EquipeState> {
     await Httplar.httpPost(path: ACCEPTERINVITATION + id, data: _model)
         .then((value) {
       if (value.statusCode == 200) {
-        emit(AccepterInvStateGood(joueurname: joueurname, joueurId: joueurId));
+        emit(AccepterInvStateGood(
+            joueurname: joueurname, joueurId: joueurId, euipeName: equipename));
       } else {
         var jsonResponse =
             convert.jsonDecode(value.body) as Map<String, dynamic>;

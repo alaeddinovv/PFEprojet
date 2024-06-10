@@ -63,7 +63,15 @@ class _HomeJoueurState extends State<HomeJoueur> {
           ),
           body: HomeJoueurCubit.get(context)
               .body[HomeJoueurCubit.get(context).selectedIndex],
-          bottomNavigationBar: navigationBar(context),
+          bottomNavigationBar: BlocBuilder<HomeJoueurCubit, HomeJoueurState>(
+            builder: (context, state) {
+              if (state is GetMyInformationLoading) {
+                return Center(child: CircularProgressIndicator());
+              } else {
+                return navigationBar(context);
+              }
+            },
+          ),
         );
       },
     );

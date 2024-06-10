@@ -310,15 +310,16 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                                                 element.heureDebutTemps ==
                                                 timeSlots[index]);
                                     return AlertDialog(
-                                      title: const Text('Delete Reservation'),
+                                      title: const Text(
+                                          'Supprimer la réservation'),
                                       content: Text(
-                                          'Are you sure you want to delete this reservation?\n Duree for : ${reserve.duree} semaine(s)'),
+                                          'Etes-vous sûr de vouloir supprimer cette réservation ?\n Durée : ${reserve.duree} semaine(s)'),
                                       actions: [
                                         TextButton(
                                           onPressed: () {
                                             Navigator.pop(context);
                                           },
-                                          child: const Text('Cancel'),
+                                          child: const Text('Annuler'),
                                         ),
                                         TextButton(
                                           onPressed: () {
@@ -327,7 +328,7 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                                                     ReservationId: reserve.id!);
                                             Navigator.pop(context);
                                           },
-                                          child: const Text('Delete'),
+                                          child: const Text('Supprimer'),
                                         ),
                                       ],
                                     );

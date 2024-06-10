@@ -4,6 +4,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:pfeprojet/Api/color.dart';
 import 'package:pfeprojet/Model/equipe_model.dart';
 import 'package:pfeprojet/component/components.dart';
+import 'package:pfeprojet/component/const.dart';
 import 'package:pfeprojet/screen/joueurScreens/equipe/cubit/equipe_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/home/cubit/home_joueur_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/profile/profile_other.dart';
@@ -117,6 +118,13 @@ class _AllEquipeDetailsScreenState extends State<AllEquipeDetailsScreen> {
                 listener: (context, state) {
                   if (state is DemandeRejoindreEquipeStateGood ||
                       state is AnnulerRejoindreEquipeStateGood) {
+                    if (state is DemandeRejoindreEquipeStateGood) {
+                      sendNotificationToJoueur(
+                          title: 'Demande d\'inscription',
+                          body:
+                              'nom ${HomeJoueurCubit.get(context).joueurModel!.username} a demandé à rejoindre votre équipe',
+                          joueurId: widget.equipes.capitaineId.id);
+                    }
                     setState(() {
                       isRequestSent = !isRequestSent; // Toggle request state
                     });
