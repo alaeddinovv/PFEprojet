@@ -150,7 +150,7 @@ class TerrainCubit extends Cubit<TerrainState> {
       required DateTime date,
       String heure_debut_temps = ""}) async {
     emit(GetReservationJoueurInfoLoadingState());
-    String formattedDate = DateFormat('yyyy-MM-dd').format(date);
+    String formattedDate = DateFormat('yyyy-MM-dd', 'fr').format(date);
     await Httplar.httpget(path: FILTERRESERVATION, query: {
       "payment": payment.toString(),
       "terrain_id": terrainId,

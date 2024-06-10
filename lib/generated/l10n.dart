@@ -406,10 +406,10 @@ class S {
     );
   }
 
-  /// `Téléphone:`
+  /// `Téléphone`
   String get phone {
     return Intl.message(
-      'Téléphone:',
+      'Téléphone',
       name: 'phone',
       desc: '',
       args: [],
@@ -488,10 +488,10 @@ class S {
     );
   }
 
-  /// `Joueurs`
+  /// `joueurs`
   String get players {
     return Intl.message(
-      'Joueurs',
+      'joueurs',
       name: 'players',
       desc: '',
       args: [],
@@ -590,10 +590,10 @@ class S {
     );
   }
 
-  /// `Âge :`
+  /// `Âge`
   String get age {
     return Intl.message(
-      'Âge :',
+      'Âge',
       name: 'age',
       desc: '',
       args: [],
@@ -1722,10 +1722,10 @@ class S {
     );
   }
 
-  /// `Adresse:`
+  /// `Adresse`
   String get address {
     return Intl.message(
-      'Adresse:',
+      'Adresse',
       name: 'address',
       desc: '',
       args: [],
@@ -1822,30 +1822,30 @@ class S {
     );
   }
 
-  /// `Date de début :`
+  /// `Date de début`
   String get start_date {
     return Intl.message(
-      'Date de début :',
+      'Date de début',
       name: 'start_date',
       desc: '',
       args: [],
     );
   }
 
-  /// `Heure de début :`
+  /// `Heure de début`
   String get start_hour {
     return Intl.message(
-      'Heure de début :',
+      'Heure de début',
       name: 'start_hour',
       desc: '',
       args: [],
     );
   }
 
-  /// `Durée (en semaines) :`
+  /// `Durée (en semaines)`
   String get duration_in_weeks {
     return Intl.message(
-      'Durée (en semaines) :',
+      'Durée (en semaines)',
       name: 'duration_in_weeks',
       desc: '',
       args: [],
@@ -2027,6 +2027,206 @@ class S {
     return Intl.message(
       'Équipe',
       name: 'team',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `État du terrain`
+  String get field_condition {
+    return Intl.message(
+      'État du terrain',
+      name: 'field_condition',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `MISE À JOUR DU TERRAIN`
+  String get update_field {
+    return Intl.message(
+      'MISE À JOUR DU TERRAIN',
+      name: 'update_field',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Réservation supprimée avec succès`
+  String get delete_reservation_successfully {
+    return Intl.message(
+      'Réservation supprimée avec succès',
+      name: 'delete_reservation_successfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `L'utilisateur ne doit pas être vide`
+  String get user_must_not_be_empty {
+    return Intl.message(
+      'L\'utilisateur ne doit pas être vide',
+      name: 'user_must_not_be_empty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Supprimer la réservation`
+  String get remove_reservation {
+    return Intl.message(
+      'Supprimer la réservation',
+      name: 'remove_reservation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `La durée ne doit pas être vide`
+  String get duration_must_not_be_empty {
+    return Intl.message(
+      'La durée ne doit pas être vide',
+      name: 'duration_must_not_be_empty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Rechercher des joueurs...`
+  String get search_players {
+    return Intl.message(
+      'Rechercher des joueurs...',
+      name: 'search_players',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Poste`
+  String get position {
+    return Intl.message(
+      'Poste',
+      name: 'position',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `L'adresse ne doit pas être vide`
+  String get address_must_not_be_empty {
+    return Intl.message(
+      'L\'adresse ne doit pas être vide',
+      name: 'address_must_not_be_empty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `La description ne doit pas être vide`
+  String get description_must_not_be_empty {
+    return Intl.message(
+      'La description ne doit pas être vide',
+      name: 'description_must_not_be_empty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Largeur`
+  String get width {
+    return Intl.message(
+      'Largeur',
+      name: 'width',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `La largeur ne doit pas être vide`
+  String get width_must_not_be_empty {
+    return Intl.message(
+      'La largeur ne doit pas être vide',
+      name: 'width_must_not_be_empty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Longueur`
+  String get length {
+    return Intl.message(
+      'Longueur',
+      name: 'length',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `La longueur ne doit pas être vide`
+  String get length_must_not_be_empty {
+    return Intl.message(
+      'La longueur ne doit pas être vide',
+      name: 'length_must_not_be_empty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Prix`
+  String get price {
+    return Intl.message(
+      'Prix',
+      name: 'price',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Le prix ne doit pas être vide`
+  String get price_must_not_be_empty {
+    return Intl.message(
+      'Le prix ne doit pas être vide',
+      name: 'price_must_not_be_empty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Capacité`
+  String get capacity {
+    return Intl.message(
+      'Capacité',
+      name: 'capacity',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `La capacité ne doit pas être vide`
+  String get capacity_must_not_be_empty {
+    return Intl.message(
+      'La capacité ne doit pas être vide',
+      name: 'capacity_must_not_be_empty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `État`
+  String get state {
+    return Intl.message(
+      'État',
+      name: 'state',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `L'état ne doit pas être vide`
+  String get state_must_not_be_empty {
+    return Intl.message(
+      'L\'état ne doit pas être vide',
+      name: 'state_must_not_be_empty',
       desc: '',
       args: [],
     );

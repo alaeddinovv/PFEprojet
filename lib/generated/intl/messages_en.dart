@@ -32,8 +32,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Ajouter une annonce"),
         "added_successfully":
             MessageLookupByLibrary.simpleMessage("Ajouté avec succès"),
-        "address": MessageLookupByLibrary.simpleMessage("Adresse:"),
-        "age": MessageLookupByLibrary.simpleMessage("Âge :"),
+        "address": MessageLookupByLibrary.simpleMessage("Adresse"),
+        "address_must_not_be_empty": MessageLookupByLibrary.simpleMessage(
+            "L\'adresse ne doit pas être vide"),
+        "age": MessageLookupByLibrary.simpleMessage("Âge"),
         "ageMustNotBeEmpty": MessageLookupByLibrary.simpleMessage(
             "L\'âge ne doit pas être vide"),
         "all_annonces":
@@ -64,6 +66,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "cancel": MessageLookupByLibrary.simpleMessage("Annuler"),
         "cancel_request":
             MessageLookupByLibrary.simpleMessage("Annuler la demande"),
+        "capacity": MessageLookupByLibrary.simpleMessage("Capacité"),
+        "capacity_must_not_be_empty": MessageLookupByLibrary.simpleMessage(
+            "La capacité ne doit pas être vide"),
         "captain": MessageLookupByLibrary.simpleMessage("Capitaine"),
         "changeTeam": MessageLookupByLibrary.simpleMessage("changer l\'équipe"),
         "change_language":
@@ -111,6 +116,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "delete_reservation_request_success":
             MessageLookupByLibrary.simpleMessage(
                 "Demande de réservation supprimée avec succès"),
+        "delete_reservation_successfully": MessageLookupByLibrary.simpleMessage(
+            "Réservation supprimée avec succès"),
         "delete_terrain":
             MessageLookupByLibrary.simpleMessage("Supprimer le terrain"),
         "delete_terrain_confirmation": MessageLookupByLibrary.simpleMessage(
@@ -124,13 +131,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "deleted_successfully":
             MessageLookupByLibrary.simpleMessage("Supprimé avec succès"),
         "description": MessageLookupByLibrary.simpleMessage("Description"),
+        "description_must_not_be_empty": MessageLookupByLibrary.simpleMessage(
+            "La description ne doit pas être vide"),
         "disconnect": MessageLookupByLibrary.simpleMessage("Déconnecté"),
         "discover_unlimited_choices": MessageLookupByLibrary.simpleMessage(
             "Découvrez des choix illimités et une commodité inégalée."),
         "done": MessageLookupByLibrary.simpleMessage("Terminé"),
         "duration": MessageLookupByLibrary.simpleMessage("Durée"),
         "duration_in_weeks":
-            MessageLookupByLibrary.simpleMessage("Durée (en semaines) :"),
+            MessageLookupByLibrary.simpleMessage("Durée (en semaines)"),
+        "duration_must_not_be_empty": MessageLookupByLibrary.simpleMessage(
+            "La durée ne doit pas être vide"),
         "edit_announcement":
             MessageLookupByLibrary.simpleMessage("Modifier l\'annonce"),
         "email": MessageLookupByLibrary.simpleMessage("E-Mail"),
@@ -148,6 +159,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Échec de la récupération des réservations"),
         "failure": MessageLookupByLibrary.simpleMessage("Échec"),
         "field": MessageLookupByLibrary.simpleMessage("Terrain"),
+        "field_condition":
+            MessageLookupByLibrary.simpleMessage("État du terrain"),
         "field_state": MessageLookupByLibrary.simpleMessage("État du terrain:"),
         "fields": MessageLookupByLibrary.simpleMessage("Terrains"),
         "fill_all_fields": MessageLookupByLibrary.simpleMessage(
@@ -167,6 +180,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Détails du joueur"),
         "last_update":
             MessageLookupByLibrary.simpleMessage("Dernière mise à jour"),
+        "length": MessageLookupByLibrary.simpleMessage("Longueur"),
+        "length_must_not_be_empty": MessageLookupByLibrary.simpleMessage(
+            "La longueur ne doit pas être vide"),
         "list_terrain":
             MessageLookupByLibrary.simpleMessage("Liste des terrains"),
         "location": MessageLookupByLibrary.simpleMessage("Emplacement"),
@@ -218,14 +234,15 @@ class MessageLookup extends MessageLookupByLibrary {
             "Les mots de passe ne correspondent pas"),
         "pending_players":
             MessageLookupByLibrary.simpleMessage("Joueurs en attente"),
-        "phone": MessageLookupByLibrary.simpleMessage("Téléphone:"),
+        "phone": MessageLookupByLibrary.simpleMessage("Téléphone"),
         "phoneMustNotBeEmpty": MessageLookupByLibrary.simpleMessage(
             "Le téléphone ne doit pas être vide"),
         "phone_cannot_be_empty": MessageLookupByLibrary.simpleMessage(
             "Le téléphone ne doit pas être vide"),
         "player_count":
             MessageLookupByLibrary.simpleMessage("Nombre de joueurs"),
-        "players": MessageLookupByLibrary.simpleMessage("Joueurs"),
+        "players": MessageLookupByLibrary.simpleMessage("joueurs"),
+        "position": MessageLookupByLibrary.simpleMessage("Poste"),
         "position_for_player":
             MessageLookupByLibrary.simpleMessage("Poste pour le joueur"),
         "poste": MessageLookupByLibrary.simpleMessage("Poste"),
@@ -234,6 +251,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "prenom": MessageLookupByLibrary.simpleMessage("Prénom"),
         "prenomMustNotBeEmpty": MessageLookupByLibrary.simpleMessage(
             "Le prénom ne doit pas être vide"),
+        "price": MessageLookupByLibrary.simpleMessage("Prix"),
+        "price_must_not_be_empty": MessageLookupByLibrary.simpleMessage(
+            "Le prix ne doit pas être vide"),
         "profile": MessageLookupByLibrary.simpleMessage("Profil"),
         "property_loss":
             MessageLookupByLibrary.simpleMessage("Perte de propriété"),
@@ -242,6 +262,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "removeTeam": MessageLookupByLibrary.simpleMessage("retirer l\'équipe"),
         "removeTeamConfirmation": MessageLookupByLibrary.simpleMessage(
             "Êtes-vous sûr de vouloir retirer votre équipe de cette réservation ?"),
+        "remove_reservation":
+            MessageLookupByLibrary.simpleMessage("Supprimer la réservation"),
         "requests": MessageLookupByLibrary.simpleMessage("Demandes"),
         "reservation": MessageLookupByLibrary.simpleMessage("Réservation"),
         "reservationDetails":
@@ -266,6 +288,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "search_join_equipe":
             MessageLookupByLibrary.simpleMessage("search join equipe"),
         "search_joueur": MessageLookupByLibrary.simpleMessage("search joueur"),
+        "search_players":
+            MessageLookupByLibrary.simpleMessage("Rechercher des joueurs..."),
         "select": MessageLookupByLibrary.simpleMessage("Veuillez sélectionner"),
         "select_a_day":
             MessageLookupByLibrary.simpleMessage("Sélectionner un jour"),
@@ -285,9 +309,12 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Erreur du serveur"),
         "stadium": MessageLookupByLibrary.simpleMessage("Stade"),
         "stadium_name": MessageLookupByLibrary.simpleMessage("Le nom du stade"),
-        "start_date": MessageLookupByLibrary.simpleMessage("Date de début :"),
-        "start_hour": MessageLookupByLibrary.simpleMessage("Heure de début :"),
+        "start_date": MessageLookupByLibrary.simpleMessage("Date de début"),
+        "start_hour": MessageLookupByLibrary.simpleMessage("Heure de début"),
         "start_time": MessageLookupByLibrary.simpleMessage("Heure de début"),
+        "state": MessageLookupByLibrary.simpleMessage("État"),
+        "state_must_not_be_empty": MessageLookupByLibrary.simpleMessage(
+            "L\'état ne doit pas être vide"),
         "status": MessageLookupByLibrary.simpleMessage("État"),
         "success": MessageLookupByLibrary.simpleMessage("Succès"),
         "surname": MessageLookupByLibrary.simpleMessage("Prénom :"),
@@ -314,6 +341,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "type": MessageLookupByLibrary.simpleMessage("Type"),
         "unknown_team": MessageLookupByLibrary.simpleMessage("Équipe inconnue"),
         "update": MessageLookupByLibrary.simpleMessage("Mettre à jour"),
+        "update_field":
+            MessageLookupByLibrary.simpleMessage("MISE À JOUR DU TERRAIN"),
+        "user_must_not_be_empty": MessageLookupByLibrary.simpleMessage(
+            "L\'utilisateur ne doit pas être vide"),
         "username": MessageLookupByLibrary.simpleMessage("Nom d\'utilisateur"),
         "usernameMustNotBeEmpty": MessageLookupByLibrary.simpleMessage(
             "Le nom d\'utilisateur ne doit pas être vide"),
@@ -323,6 +354,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Les équipes virtuelles :"),
         "weeks": MessageLookupByLibrary.simpleMessage("semaine(s)"),
         "welcome": MessageLookupByLibrary.simpleMessage("Bienvenue,"),
+        "width": MessageLookupByLibrary.simpleMessage("Largeur"),
+        "width_must_not_be_empty": MessageLookupByLibrary.simpleMessage(
+            "La largeur ne doit pas être vide"),
         "wilaya": MessageLookupByLibrary.simpleMessage("Wilaya"),
         "yes": MessageLookupByLibrary.simpleMessage("Oui"),
         "youDontHaveTeamYet": MessageLookupByLibrary.simpleMessage(

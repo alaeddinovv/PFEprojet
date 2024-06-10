@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 import 'package:pfeprojet/Api/color.dart';
 import 'package:pfeprojet/Model/terrain_model.dart';
 import 'package:pfeprojet/component/components.dart';
+import 'package:pfeprojet/generated/l10n.dart';
 import 'package:pfeprojet/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/cubit/terrain_cubit.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/location/terrain_location.dart';
@@ -64,7 +65,7 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Terrain Details'),
+          title: Text(S.of(context).terrain_details),
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -269,7 +270,7 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                       },
                     ),
                     SizedBox(height: 16),
-                    _buildColorIndex(),
+                    _buildColorIndex(context),
                   ],
                 );
               }
@@ -305,7 +306,7 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                   ),
                   const SizedBox(width: 5),
                   Text(
-                    'Adresse:  ',
+                    '${S.of(context).address}:  ',
                     style: TextStyle(
                       fontWeight: FontWeight.w600,
                       fontSize: 19,
@@ -328,7 +329,7 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                   ),
                   const SizedBox(width: 5),
                   Text(
-                    'Téléphone:  ',
+                    '${S.of(context).phone}:  ',
                     style: TextStyle(fontWeight: FontWeight.w600, fontSize: 19),
                   ),
                   Expanded(
@@ -351,12 +352,12 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                   ),
                   const SizedBox(width: 5),
                   Text(
-                    'Nombre de joueurs:  ',
+                    '${S.of(context).number_of_players}:  ',
                     style: TextStyle(fontWeight: FontWeight.w600, fontSize: 19),
                   ),
                   Expanded(
                     child: Text(
-                      "${widget.terrainModel.capacite} joueurs",
+                      "${widget.terrainModel.capacite} ${S.of(context).players}",
                       style: TextStyle(fontSize: 16, color: Colors.grey[800]!),
                     ),
                   ),
@@ -371,7 +372,7 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                   ),
                   const SizedBox(width: 5),
                   Text(
-                    'État du terrain:  ',
+                    '${S.of(context).field_condition}:  ',
                     style: TextStyle(fontWeight: FontWeight.w600, fontSize: 19),
                   ),
                   Expanded(
@@ -384,7 +385,7 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
               ),
               SizedBox(height: 16),
               Text(
-                "Description:",
+                S.of(context).description,
                 style: TextStyle(fontWeight: FontWeight.w600, fontSize: 19),
               ),
               SizedBox(height: 8),
@@ -410,8 +411,8 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                   },
                   icon: const Icon(Icons.location_on_outlined,
                       color: Colors.white),
-                  label: const Text(
-                    'Voir sur la carte',
+                  label: Text(
+                    S.of(context).view_on_map,
                     style: TextStyle(color: Colors.white),
                   ),
                   style: TextButton.styleFrom(
@@ -427,7 +428,7 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
               Align(
                 alignment: Alignment.bottomRight,
                 child: defaultSubmit2(
-                  text: "MISE À JOUR DU TERRAIN",
+                  text: S.of(context).update_field,
                   onPressed: () {
                     navigatAndReturn(
                       context: context,
@@ -456,10 +457,10 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
       borderRadius: BorderRadius.circular(8),
       selectedColor: Colors.white,
       fillColor: greenConst,
-      color: greenConst, // Set the unselected text color to green
+      color: greenConst,
       constraints: BoxConstraints(
         minWidth: MediaQuery.of(context).size.width / 2 - 10,
-        minHeight: 50, // Increase the height
+        minHeight: 50,
       ),
       children: [
         Row(
@@ -470,7 +471,7 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                   !terrainCubit.showStadiumDetails ? Colors.white : greenConst,
             ),
             SizedBox(width: 5),
-            Text('Reservation',
+            Text(S.of(context).reservation,
                 style: TextStyle(
                   color: !terrainCubit.showStadiumDetails
                       ? Colors.white
@@ -486,7 +487,7 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                   terrainCubit.showStadiumDetails ? Colors.white : greenConst,
             ),
             SizedBox(width: 5),
-            Text('Description',
+            Text(S.of(context).description,
                 style: TextStyle(
                   color: terrainCubit.showStadiumDetails
                       ? Colors.white
@@ -619,7 +620,7 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
   }
 }
 
-Widget _buildColorIndex() {
+Widget _buildColorIndex(BuildContext context) {
   return Card(
     elevation: 2,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -629,26 +630,28 @@ Widget _buildColorIndex() {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Index des couleurs :',
+            S.of(context).color_index,
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
           ),
           SizedBox(height: 8),
-          _buildColorItem(greenConst, 'Disponible pour réservation'),
           _buildColorItem(
-              Colors.red[300]!, 'Bloqué par le propriétaire du stade'),
-          _buildColorItem(Colors.grey[300]!, 'Réservé par d\'autres joueurs'),
-          // _buildColorItem(Colors.blue[300]!, 'Votre réservation approuvée'),
-          // _buildColorItem(Colors.yellow[300]!, 'Votre réservation en attente'),
+              context, greenConst, S.of(context).available_for_reservation),
+          _buildColorItem(context, Colors.red[300]!,
+              S.of(context).blocked_by_stadium_owner),
+          _buildColorItem(context, Colors.grey[300]!,
+              S.of(context).reserved_by_other_players),
+          // _buildColorItem(context, Colors.blue[300]!, S.of(context).your_approved_reservation),
+          // _buildColorItem(context, Colors.yellow[300]!, S.of(context).your_pending_reservation),
         ],
       ),
     ),
   );
 }
 
-Widget _buildColorItem(Color color, String label) {
+Widget _buildColorItem(BuildContext context, Color color, String label) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 4.0),
     child: Row(

@@ -1,11 +1,9 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pfeprojet/Model/user_model.dart';
-
 import 'package:pfeprojet/screen/AdminScreens/terrains/cubit/terrain_cubit.dart';
+import 'package:pfeprojet/generated/l10n.dart';
 
 class SearchTest extends StatefulWidget {
   final TextEditingController userIdController;
@@ -81,7 +79,7 @@ class _SearchTestState extends State<SearchTest> {
               controller: searchController,
               onChanged: _onSearchChanged,
               decoration: InputDecoration(
-                hintText: 'Rechercher des joueurs...',
+                hintText: S.of(context).search_players,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(15.0),
                 ),
@@ -138,7 +136,7 @@ class _SearchTestState extends State<SearchTest> {
                                       ),
                                       title: Text(joueur.username!),
                                       subtitle: Text(
-                                          'Âge: ${joueur.age} - Poste: ${joueur.poste}'),
+                                          '${S.of(context).age}: ${joueur.age} - ${S.of(context).position}: ${joueur.poste}'),
                                       onTap: () {
                                         print(joueur.id);
                                         _selectJoueur(joueur);

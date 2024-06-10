@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/cubit/terrain_cubit.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/searchJoueur.dart';
+import 'package:pfeprojet/generated/l10n.dart';
 
 class Reserve extends StatelessWidget {
-  Reserve(
-      {super.key,
-      required this.idTerrain,
-      required this.hour,
-      required this.date});
+  Reserve({
+    super.key,
+    required this.idTerrain,
+    required this.hour,
+    required this.date,
+  });
+
   final String idTerrain;
   final String hour;
   final DateTime date;
@@ -24,7 +26,7 @@ class Reserve extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Reserve'),
+        title: Text(S.of(context).reserve),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -34,15 +36,12 @@ class Reserve extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                const Text('UserName: ', style: TextStyle(fontSize: 20)),
+                Text(S.of(context).username, style: TextStyle(fontSize: 20)),
                 SearchTest(
                   userIdController: userIdController,
-                  // onSelectedJoueur: updateUserId,
                 ),
-                const Text("Date de debut:", style: TextStyle(fontSize: 20)),
-                const SizedBox(
-                  height: 8,
-                ),
+                Text(S.of(context).start_date, style: TextStyle(fontSize: 20)),
+                const SizedBox(height: 8),
                 SizedBox(
                   width: 250,
                   child: defaultForm3(
@@ -57,13 +56,9 @@ class Reserve extends StatelessWidget {
                     controller: dateController,
                   ),
                 ),
-                const SizedBox(
-                  height: 16,
-                ),
-                const Text("Hour de debut:", style: TextStyle(fontSize: 20)),
-                const SizedBox(
-                  height: 8,
-                ),
+                const SizedBox(height: 16),
+                Text(S.of(context).start_hour, style: TextStyle(fontSize: 20)),
+                const SizedBox(height: 8),
                 SizedBox(
                   width: 250,
                   child: defaultForm3(
@@ -77,10 +72,8 @@ class Reserve extends StatelessWidget {
                     controller: hourController,
                   ),
                 ),
-                const SizedBox(
-                  height: 16,
-                ),
-                const Text('Duree (en Semaine): ',
+                const SizedBox(height: 16),
+                Text(S.of(context).duration_in_weeks,
                     style: TextStyle(fontSize: 20)),
                 const SizedBox(height: 8),
                 defaultForm3(
@@ -89,27 +82,25 @@ class Reserve extends StatelessWidget {
                   type: TextInputType.number,
                   valid: (String value) {
                     if (value.isEmpty) {
-                      return 'Duree Must Not Be Empty';
+                      return S.of(context).duration_must_not_be_empty;
                     }
                   },
-                  labelText: 'Duree',
+                  labelText: S.of(context).duration,
                   controller: dureeController,
                 ),
-                const SizedBox(
-                  height: 46,
-                ),
+                const SizedBox(height: 46),
                 BlocConsumer<TerrainCubit, TerrainState>(
                   listener: (context, state) {
                     if (state is AddReservationStateGood) {
                       showToast(
-                        msg: "Reservation Added Successfully",
+                        msg: S.of(context).reservation_added_successfully,
                         state: ToastStates.success,
                       );
                       Navigator.pop(context);
                     } else if (state is AddReservationStateBad ||
                         state is ErrorState) {
                       showToast(
-                        msg: "Error Adding Reservation",
+                        msg: S.of(context).error_adding_reservation,
                         state: ToastStates.error,
                       );
                     }
@@ -127,10 +118,12 @@ class Reserve extends StatelessWidget {
                           };
 
                           TerrainCubit.get(context).addReservation(
-                              idTerrain: idTerrain, model: _model);
+                            idTerrain: idTerrain,
+                            model: _model,
+                          );
                         }
                       },
-                      text: 'Reserve',
+                      text: S.of(context).reserve,
                       background: Colors.blueAccent,
                     );
                   },
