@@ -30,7 +30,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "add_announcement": MessageLookupByLibrary.simpleMessage("إضافة إعلان"),
         "added_successfully":
             MessageLookupByLibrary.simpleMessage("تمت الإضافة بنجاح"),
-        "age": MessageLookupByLibrary.simpleMessage("العمر"),
+        "address": MessageLookupByLibrary.simpleMessage("العنوان:"),
+        "age": MessageLookupByLibrary.simpleMessage("العمر:"),
         "ageMustNotBeEmpty":
             MessageLookupByLibrary.simpleMessage("يجب ألا يكون العمر فارغًا"),
         "all_annonces": MessageLookupByLibrary.simpleMessage("جميع الإعلانات"),
@@ -50,6 +51,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "هل أنت متأكد من أنك تريد حذف هذا الإعلان؟"),
         "at": MessageLookupByLibrary.simpleMessage("في"),
+        "available_for_reservation":
+            MessageLookupByLibrary.simpleMessage("متاح للحجز"),
+        "blocked_by_stadium_owner":
+            MessageLookupByLibrary.simpleMessage("محجوب من قبل مالك الملعب"),
         "camera": MessageLookupByLibrary.simpleMessage("الكاميرا"),
         "cancel": MessageLookupByLibrary.simpleMessage("إلغاء"),
         "changeTeam": MessageLookupByLibrary.simpleMessage("تغيير الفريق"),
@@ -57,6 +62,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "choose": MessageLookupByLibrary.simpleMessage("اختر:"),
         "chooseSource": MessageLookupByLibrary.simpleMessage("اختر المصدر:"),
         "choose_source": MessageLookupByLibrary.simpleMessage("اختر المصدر:"),
+        "color_index": MessageLookupByLibrary.simpleMessage("فهرس الألوان:"),
         "commune": MessageLookupByLibrary.simpleMessage("البلدية"),
         "confirmConnection":
             MessageLookupByLibrary.simpleMessage("تأكيد الاتصال"),
@@ -70,6 +76,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "create_account": MessageLookupByLibrary.simpleMessage("إنشاء حساب"),
         "created_at": MessageLookupByLibrary.simpleMessage("تم الإنشاء في"),
         "currency_da_per_hour": MessageLookupByLibrary.simpleMessage("دج/ساعة"),
+        "da_h": MessageLookupByLibrary.simpleMessage("دج/س"),
         "date": MessageLookupByLibrary.simpleMessage("التاريخ"),
         "day": MessageLookupByLibrary.simpleMessage("اليوم"),
         "decline": MessageLookupByLibrary.simpleMessage("رفض"),
@@ -80,6 +87,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "delete_announcement_confirmation":
             MessageLookupByLibrary.simpleMessage(
                 "هل أنت متأكد أنك تريد حذف هذا الإعلان؟"),
+        "delete_reservation": MessageLookupByLibrary.simpleMessage("حذف الحجز"),
+        "delete_reservation_confirmation": MessageLookupByLibrary.simpleMessage(
+            "هل أنت متأكد أنك تريد حذف هذا الحجز؟"),
+        "delete_reservation_request_failed":
+            MessageLookupByLibrary.simpleMessage("فشل حذف طلب الحجز"),
+        "delete_reservation_request_success":
+            MessageLookupByLibrary.simpleMessage("تم حذف طلب الحجز بنجاح"),
         "delete_terrain": MessageLookupByLibrary.simpleMessage("حذف الملعب"),
         "delete_terrain_confirmation": MessageLookupByLibrary.simpleMessage(
             "هل أنت متأكد أنك تريد حذف هذا الملعب؟"),
@@ -95,7 +109,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "disconnect": MessageLookupByLibrary.simpleMessage("غير متصل"),
         "discover_unlimited_choices": MessageLookupByLibrary.simpleMessage(
             "اكتشف خيارات لا حدود لها وراحة لا مثيل لها."),
+        "done": MessageLookupByLibrary.simpleMessage("تم"),
         "duration": MessageLookupByLibrary.simpleMessage("المدة"),
+        "duration_in_weeks":
+            MessageLookupByLibrary.simpleMessage("المدة (بالأسابيع):"),
         "edit_announcement":
             MessageLookupByLibrary.simpleMessage("تعديل الإعلان"),
         "email": MessageLookupByLibrary.simpleMessage("البريد الإلكتروني"),
@@ -103,12 +120,17 @@ class MessageLookup extends MessageLookupByLibrary {
             "لا يمكن ترك البريد الإلكتروني فارغًا"),
         "enter": MessageLookupByLibrary.simpleMessage("يرجى إدخال"),
         "error": MessageLookupByLibrary.simpleMessage("خطأ"),
+        "error_adding_reservation":
+            MessageLookupByLibrary.simpleMessage("خطأ في إضافة الحجز"),
         "error_deleting":
             MessageLookupByLibrary.simpleMessage("خطأ أثناء الحذف"),
         "failed_to_fetch_data":
             MessageLookupByLibrary.simpleMessage("فشل في جلب البيانات"),
+        "failed_to_fetch_reservations":
+            MessageLookupByLibrary.simpleMessage("فشل في جلب الحجوزات"),
         "failure": MessageLookupByLibrary.simpleMessage("فشل"),
         "field": MessageLookupByLibrary.simpleMessage("الملعب"),
+        "field_state": MessageLookupByLibrary.simpleMessage("حالة الملعب:"),
         "fields": MessageLookupByLibrary.simpleMessage("الملاعب"),
         "fill_all_fields": MessageLookupByLibrary.simpleMessage(
             "يرجى ملء جميع الحقول المطلوبة"),
@@ -124,15 +146,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "home": MessageLookupByLibrary.simpleMessage("الصفحة الرئيسية"),
         "joueurDetails": MessageLookupByLibrary.simpleMessage("تفاصيل اللاعب"),
         "last_update": MessageLookupByLibrary.simpleMessage("آخر تحديث"),
+        "list_terrain": MessageLookupByLibrary.simpleMessage("قائمة الملاعب"),
         "login": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
         "logout": MessageLookupByLibrary.simpleMessage("تسجيل الخروج"),
+        "map_terrain": MessageLookupByLibrary.simpleMessage("خريطة الملاعب"),
         "modify_password":
             MessageLookupByLibrary.simpleMessage("تغيير كلمة المرور"),
         "modify_profile":
             MessageLookupByLibrary.simpleMessage("تعديل الملف الشخصي"),
         "more": MessageLookupByLibrary.simpleMessage("المزيد"),
         "my_annonces": MessageLookupByLibrary.simpleMessage("إعلاناتي"),
-        "name": MessageLookupByLibrary.simpleMessage("الاسم"),
+        "name": MessageLookupByLibrary.simpleMessage("الاسم:"),
         "nameMustNotBeEmpty":
             MessageLookupByLibrary.simpleMessage("يجب ألا يكون الاسم فارغًا"),
         "name_cannot_be_empty":
@@ -151,7 +175,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "notAssignedYet":
             MessageLookupByLibrary.simpleMessage("لم يتم التعيين بعد"),
         "number_of_players":
-            MessageLookupByLibrary.simpleMessage("عدد اللاعبين"),
+            MessageLookupByLibrary.simpleMessage("عدد اللاعبين:"),
         "number_of_players_error": MessageLookupByLibrary.simpleMessage(
             "عدد اللاعبين لا يمكن أن يتجاوز 5"),
         "old_password":
@@ -166,7 +190,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("تم تحديث كلمة المرور بنجاح"),
         "passwords_do_not_match":
             MessageLookupByLibrary.simpleMessage("كلمات المرور غير متطابقة"),
-        "phone": MessageLookupByLibrary.simpleMessage("الهاتف"),
+        "phone": MessageLookupByLibrary.simpleMessage("الهاتف:"),
         "phoneMustNotBeEmpty":
             MessageLookupByLibrary.simpleMessage("يجب ألا يكون الهاتف فارغًا"),
         "phone_cannot_be_empty":
@@ -188,6 +212,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "removeTeam": MessageLookupByLibrary.simpleMessage("إزالة الفريق"),
         "removeTeamConfirmation": MessageLookupByLibrary.simpleMessage(
             "هل أنت متأكد أنك تريد إزالة فريقك من هذا الحجز؟"),
+        "requests": MessageLookupByLibrary.simpleMessage("الطلبات"),
         "reservation": MessageLookupByLibrary.simpleMessage("الحجز"),
         "reservationDetails":
             MessageLookupByLibrary.simpleMessage("تفاصيل الحجز"),
@@ -195,6 +220,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("قبول حجزك"),
         "reservation_accepted_for":
             MessageLookupByLibrary.simpleMessage("قبل حجزك ليوم"),
+        "reservation_added_successfully":
+            MessageLookupByLibrary.simpleMessage("تمت إضافة الحجز بنجاح"),
         "reservation_declined":
             MessageLookupByLibrary.simpleMessage("رفض حجزك"),
         "reservation_declined_for":
@@ -202,6 +229,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "reservation_details":
             MessageLookupByLibrary.simpleMessage("تفاصيل الحجز"),
         "reservations": MessageLookupByLibrary.simpleMessage("الحجوزات"),
+        "reserve": MessageLookupByLibrary.simpleMessage("حجز"),
+        "reserved_by_other_players":
+            MessageLookupByLibrary.simpleMessage("محجوز من قبل لاعبين آخرين"),
         "responsible": MessageLookupByLibrary.simpleMessage("المسؤول"),
         "search_join_equipe":
             MessageLookupByLibrary.simpleMessage("search join equipe"),
@@ -220,13 +250,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "server_error": MessageLookupByLibrary.simpleMessage("خطأ في الخادم"),
         "stadium": MessageLookupByLibrary.simpleMessage("الملعب"),
         "stadium_name": MessageLookupByLibrary.simpleMessage("اسم الملعب"),
+        "start_date": MessageLookupByLibrary.simpleMessage("تاريخ البدء:"),
+        "start_hour": MessageLookupByLibrary.simpleMessage("ساعة البدء:"),
         "start_time": MessageLookupByLibrary.simpleMessage("وقت البدء"),
         "status": MessageLookupByLibrary.simpleMessage("الحالة"),
         "success": MessageLookupByLibrary.simpleMessage("نجاح"),
-        "surname": MessageLookupByLibrary.simpleMessage("اللقب"),
+        "surname": MessageLookupByLibrary.simpleMessage("اللقب:"),
         "surname_cannot_be_empty":
             MessageLookupByLibrary.simpleMessage("لا يمكن ترك اللقب فارغًا"),
+        "teams": MessageLookupByLibrary.simpleMessage("الفرق"),
         "telephone": MessageLookupByLibrary.simpleMessage("الهاتف"),
+        "terrain_details":
+            MessageLookupByLibrary.simpleMessage("تفاصيل الملعب"),
         "terrain_name": MessageLookupByLibrary.simpleMessage("اسم الملعب"),
         "terrain_state": MessageLookupByLibrary.simpleMessage("حالة الملعب"),
         "time": MessageLookupByLibrary.simpleMessage("الوقت"),
@@ -237,12 +272,17 @@ class MessageLookup extends MessageLookupByLibrary {
         "username": MessageLookupByLibrary.simpleMessage("اسم المستخدم"),
         "usernameMustNotBeEmpty": MessageLookupByLibrary.simpleMessage(
             "يجب ألا يكون اسم المستخدم فارغًا"),
+        "view_on_map": MessageLookupByLibrary.simpleMessage("عرض على الخريطة"),
         "weeks": MessageLookupByLibrary.simpleMessage("أسابيع"),
         "welcome": MessageLookupByLibrary.simpleMessage("مرحبًا،"),
         "wilaya": MessageLookupByLibrary.simpleMessage("الولاية"),
         "yes": MessageLookupByLibrary.simpleMessage("نعم"),
         "youDontHaveTeamYet":
             MessageLookupByLibrary.simpleMessage("ليس لديك فريق بعد"),
-        "yourTeam": MessageLookupByLibrary.simpleMessage("فريقك")
+        "yourTeam": MessageLookupByLibrary.simpleMessage("فريقك"),
+        "your_approved_reservation":
+            MessageLookupByLibrary.simpleMessage("حجزك المعتمد"),
+        "your_pending_reservation":
+            MessageLookupByLibrary.simpleMessage("حجزك المعلق")
       };
 }

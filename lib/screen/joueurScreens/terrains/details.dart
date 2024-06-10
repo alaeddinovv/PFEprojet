@@ -11,6 +11,7 @@ import 'package:pfeprojet/Model/reservation_model.dart';
 import 'package:pfeprojet/Model/terrain_model.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/const.dart';
+import 'package:pfeprojet/generated/l10n.dart';
 import 'package:pfeprojet/screen/joueurScreens/home/cubit/home_joueur_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/cubit/terrain_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/edite_my_reservation.dart';
@@ -64,7 +65,7 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Terrain Details'),
+          title: Text(S.of(context).terrain_details),
         ),
         body: SingleChildScrollView(
           child: Column(
@@ -193,11 +194,11 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                     terrainId: widget.terrainModel.id!,
                     date: TerrainCubit.get(context).selectedDate);
                 showToast(
-                    msg: 'delete demande reservation success',
+                    msg: S.of(context).delete_reservation_request_success,
                     state: ToastStates.success);
               } else if (state is DeleteDemandeReservationStateBad) {
                 showToast(
-                    msg: 'delete demande reservation failed',
+                    msg: S.of(context).delete_reservation_request_failed,
                     state: ToastStates.error);
               }
               if (state is GetReservationLoadingState) {
@@ -206,8 +207,8 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                 );
               } else if (state is GetReservationStateBad ||
                   state is ErrorState) {
-                return const Center(
-                  child: Text('Failed to fetch reservations'),
+                return Center(
+                  child: Text(S.of(context).failed_to_fetch_reservations),
                 );
               } else {
                 DateTime date = terrainCubit
@@ -310,16 +311,16 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                                                 element.heureDebutTemps ==
                                                 timeSlots[index]);
                                     return AlertDialog(
-                                      title: const Text(
-                                          'Supprimer la réservation'),
+                                      title: Text(
+                                          S.of(context).delete_reservation),
                                       content: Text(
-                                          'Etes-vous sûr de vouloir supprimer cette réservation ?\n Durée : ${reserve.duree} semaine(s)'),
+                                          '${S.of(context).delete_reservation_confirmation}\n ${S.of(context).duration}: ${reserve.duree} ${S.of(context).weeks}'),
                                       actions: [
                                         TextButton(
                                           onPressed: () {
                                             Navigator.pop(context);
                                           },
-                                          child: const Text('Annuler'),
+                                          child: Text(S.of(context).cancel),
                                         ),
                                         TextButton(
                                           onPressed: () {
@@ -328,7 +329,7 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                                                     ReservationId: reserve.id!);
                                             Navigator.pop(context);
                                           },
-                                          child: const Text('Supprimer'),
+                                          child: Text(S.of(context).delete),
                                         ),
                                       ],
                                     );
@@ -346,7 +347,7 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                       },
                     ),
                     SizedBox(height: 16),
-                    _buildColorIndex(),
+                    _buildColorIndex(context),
                   ],
                 );
               }
@@ -372,39 +373,40 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
               _buildListTile(
                 context,
                 icon: Icons.sports_soccer_rounded,
-                title: 'Nom:',
+                title: S.of(context).name,
                 subtitle: widget.terrainModel.nom!,
               ),
               _buildListTile(
                 context,
                 icon: Icons.location_on,
-                title: 'Adresse:',
+                title: S.of(context).address,
                 subtitle: widget.terrainModel.adresse!,
               ),
               _buildListTile(
                 context,
                 icon: Icons.phone,
-                title: 'Téléphone:',
+                title: S.of(context).phone,
                 subtitle: widget.terrainModel.admin!.telephone.toString(),
               ),
               _buildListTile(
                 context,
                 icon: Icons.groups_2_rounded,
-                title: 'Nombre de joueurs:',
-                subtitle: "${widget.terrainModel.capacite} joueurs",
+                title: S.of(context).number_of_players,
+                subtitle:
+                    "${widget.terrainModel.capacite} ${S.of(context).players}",
               ),
               _buildListTile(
                 context,
                 icon: Icons.stadium,
-                title: 'État du terrain:',
+                title: S.of(context).field_state,
                 subtitle: widget.terrainModel.etat!,
               ),
               RichText(
                 text: TextSpan(
                   style: GoogleFonts.poppins(color: Colors.black),
                   children: [
-                    const TextSpan(
-                      text: "Description: ",
+                    TextSpan(
+                      text: "${S.of(context).description}: ",
                       style:
                           TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
                     ),
@@ -430,8 +432,8 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
                   },
                   icon: const Icon(Icons.location_on_outlined,
                       color: Colors.white),
-                  label: const Text(
-                    'Voir sur la carte',
+                  label: Text(
+                    S.of(context).view_on_map,
                     style: TextStyle(color: Colors.white),
                   ),
                   style: TextButton.styleFrom(
@@ -514,7 +516,7 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
             ),
             SizedBox(width: 5),
             Text(
-              'Reservation',
+              S.of(context).reservation,
               style: TextStyle(
                 color: !terrainCubit.showStadiumDetails
                     ? Colors.white
@@ -532,7 +534,7 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
             ),
             SizedBox(width: 5),
             Text(
-              'Description',
+              S.of(context).description,
               style: TextStyle(
                 color:
                     terrainCubit.showStadiumDetails ? Colors.white : greenConst,
@@ -665,6 +667,7 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
     final DateTime lastDate = now.add(Duration(days: 20));
     final DateTime? picked = await showDatePicker(
       context: context,
+      locale: const Locale('fr', 'FR'),
       initialDate: terrainCubit.selectedDate,
       firstDate: DateTime.now(),
       lastDate: lastDate,
@@ -675,7 +678,7 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
   }
 }
 
-Widget _buildColorIndex() {
+Widget _buildColorIndex(BuildContext context) {
   return Card(
     color: Colors.grey[50],
     elevation: 2,
@@ -686,26 +689,30 @@ Widget _buildColorIndex() {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Index des couleurs :',
+            S.of(context).color_index,
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
             ),
           ),
           SizedBox(height: 8),
-          _buildColorItem(greenConst, 'Disponible pour réservation'),
           _buildColorItem(
-              Colors.red[300]!, 'Bloqué par le propriétaire du stade'),
-          _buildColorItem(Colors.grey[300]!, 'Réservé par d\'autres joueurs'),
-          _buildColorItem(Colors.blue[300]!, 'Votre réservation approuvée'),
-          _buildColorItem(Colors.yellow[300]!, 'Votre réservation en attente'),
+              context, greenConst, S.of(context).available_for_reservation),
+          _buildColorItem(context, Colors.red[300]!,
+              S.of(context).blocked_by_stadium_owner),
+          _buildColorItem(context, Colors.grey[300]!,
+              S.of(context).reserved_by_other_players),
+          _buildColorItem(context, Colors.blue[300]!,
+              S.of(context).your_approved_reservation),
+          _buildColorItem(context, Colors.yellow[300]!,
+              S.of(context).your_pending_reservation),
         ],
       ),
     ),
   );
 }
 
-Widget _buildColorItem(Color color, String label) {
+Widget _buildColorItem(BuildContext context, Color color, String label) {
   return Padding(
     padding: const EdgeInsets.symmetric(vertical: 4.0),
     child: Row(

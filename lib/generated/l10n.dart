@@ -244,10 +244,10 @@ class S {
     );
   }
 
-  /// `Nombre de joueurs`
+  /// `Nombre de joueurs:`
   String get number_of_players {
     return Intl.message(
-      'Nombre de joueurs',
+      'Nombre de joueurs:',
       name: 'number_of_players',
       desc: '',
       args: [],
@@ -406,10 +406,10 @@ class S {
     );
   }
 
-  /// `Téléphone`
+  /// `Téléphone:`
   String get phone {
     return Intl.message(
-      'Téléphone',
+      'Téléphone:',
       name: 'phone',
       desc: '',
       args: [],
@@ -540,10 +540,10 @@ class S {
     );
   }
 
-  /// `Nom`
+  /// `Nom :`
   String get name {
     return Intl.message(
-      'Nom',
+      'Nom :',
       name: 'name',
       desc: '',
       args: [],
@@ -590,10 +590,10 @@ class S {
     );
   }
 
-  /// `Âge`
+  /// `Âge :`
   String get age {
     return Intl.message(
-      'Âge',
+      'Âge :',
       name: 'age',
       desc: '',
       args: [],
@@ -992,10 +992,10 @@ class S {
     );
   }
 
-  /// `Prénom`
+  /// `Prénom :`
   String get surname {
     return Intl.message(
-      'Prénom',
+      'Prénom :',
       name: 'surname',
       desc: '',
       args: [],
@@ -1617,6 +1617,276 @@ class S {
     return Intl.message(
       'À propos de nous',
       name: 'about_us',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Demandes`
+  String get requests {
+    return Intl.message(
+      'Demandes',
+      name: 'requests',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Équipes`
+  String get teams {
+    return Intl.message(
+      'Équipes',
+      name: 'teams',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Liste des terrains`
+  String get list_terrain {
+    return Intl.message(
+      'Liste des terrains',
+      name: 'list_terrain',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Carte des terrains`
+  String get map_terrain {
+    return Intl.message(
+      'Carte des terrains',
+      name: 'map_terrain',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Da/H`
+  String get da_h {
+    return Intl.message(
+      'Da/H',
+      name: 'da_h',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Demande de réservation supprimée avec succès`
+  String get delete_reservation_request_success {
+    return Intl.message(
+      'Demande de réservation supprimée avec succès',
+      name: 'delete_reservation_request_success',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Échec de la suppression de la demande de réservation`
+  String get delete_reservation_request_failed {
+    return Intl.message(
+      'Échec de la suppression de la demande de réservation',
+      name: 'delete_reservation_request_failed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Échec de la récupération des réservations`
+  String get failed_to_fetch_reservations {
+    return Intl.message(
+      'Échec de la récupération des réservations',
+      name: 'failed_to_fetch_reservations',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Supprimer la réservation`
+  String get delete_reservation {
+    return Intl.message(
+      'Supprimer la réservation',
+      name: 'delete_reservation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Êtes-vous sûr de vouloir supprimer cette réservation ?`
+  String get delete_reservation_confirmation {
+    return Intl.message(
+      'Êtes-vous sûr de vouloir supprimer cette réservation ?',
+      name: 'delete_reservation_confirmation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Adresse:`
+  String get address {
+    return Intl.message(
+      'Adresse:',
+      name: 'address',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `État du terrain:`
+  String get field_state {
+    return Intl.message(
+      'État du terrain:',
+      name: 'field_state',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Voir sur la carte`
+  String get view_on_map {
+    return Intl.message(
+      'Voir sur la carte',
+      name: 'view_on_map',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Index des couleurs :`
+  String get color_index {
+    return Intl.message(
+      'Index des couleurs :',
+      name: 'color_index',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Disponible pour réservation`
+  String get available_for_reservation {
+    return Intl.message(
+      'Disponible pour réservation',
+      name: 'available_for_reservation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bloqué par le propriétaire du stade`
+  String get blocked_by_stadium_owner {
+    return Intl.message(
+      'Bloqué par le propriétaire du stade',
+      name: 'blocked_by_stadium_owner',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Réservé par d'autres joueurs`
+  String get reserved_by_other_players {
+    return Intl.message(
+      'Réservé par d\'autres joueurs',
+      name: 'reserved_by_other_players',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Votre réservation approuvée`
+  String get your_approved_reservation {
+    return Intl.message(
+      'Votre réservation approuvée',
+      name: 'your_approved_reservation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Votre réservation en attente`
+  String get your_pending_reservation {
+    return Intl.message(
+      'Votre réservation en attente',
+      name: 'your_pending_reservation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Réserver`
+  String get reserve {
+    return Intl.message(
+      'Réserver',
+      name: 'reserve',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Date de début :`
+  String get start_date {
+    return Intl.message(
+      'Date de début :',
+      name: 'start_date',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Heure de début :`
+  String get start_hour {
+    return Intl.message(
+      'Heure de début :',
+      name: 'start_hour',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Durée (en semaines) :`
+  String get duration_in_weeks {
+    return Intl.message(
+      'Durée (en semaines) :',
+      name: 'duration_in_weeks',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Réservation ajoutée avec succès`
+  String get reservation_added_successfully {
+    return Intl.message(
+      'Réservation ajoutée avec succès',
+      name: 'reservation_added_successfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Erreur lors de l'ajout de la réservation`
+  String get error_adding_reservation {
+    return Intl.message(
+      'Erreur lors de l\'ajout de la réservation',
+      name: 'error_adding_reservation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Terminé`
+  String get done {
+    return Intl.message(
+      'Terminé',
+      name: 'done',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Détails du terrain`
+  String get terrain_details {
+    return Intl.message(
+      'Détails du terrain',
+      name: 'terrain_details',
       desc: '',
       args: [],
     );

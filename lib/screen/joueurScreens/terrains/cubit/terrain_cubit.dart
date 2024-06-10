@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -107,7 +108,9 @@ class TerrainCubit extends Cubit<TerrainState> {
       required DateTime date,
       String heure_debut_temps = ""}) async {
     emit(GetReservationLoadingState());
-    String formattedDate = DateFormat('yyyy-MM-dd').format(date);
+    String formattedDate = DateFormat('yyyy-MM-dd', 'fr').format(
+      date,
+    );
     await Httplar.httpget(
       path: '$MYRESERVATIONWITHOTHER$terrainId/$formattedDate',
     ).then((value) {

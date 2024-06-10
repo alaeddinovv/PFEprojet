@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/screen/joueurScreens/home/cubit/home_joueur_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/cubit/terrain_cubit.dart';
+import 'package:pfeprojet/generated/l10n.dart';
 
 class Reserve extends StatelessWidget {
   Reserve(
@@ -23,7 +24,7 @@ class Reserve extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Reserve'),
+        title: Text(S.of(context).reserve),
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -36,7 +37,7 @@ class Reserve extends StatelessWidget {
                 const SizedBox(
                   height: 16,
                 ),
-                const Text("Date de debut:", style: TextStyle(fontSize: 20)),
+                Text(S.of(context).start_date, style: TextStyle(fontSize: 20)),
                 const SizedBox(
                   height: 8,
                 ),
@@ -54,11 +55,10 @@ class Reserve extends StatelessWidget {
                     controller: dateController,
                   ),
                 ),
-
                 const SizedBox(
                   height: 16,
                 ),
-                const Text("Hour de debut:", style: TextStyle(fontSize: 20)),
+                Text(S.of(context).start_hour, style: TextStyle(fontSize: 20)),
                 const SizedBox(
                   height: 8,
                 ),
@@ -78,7 +78,7 @@ class Reserve extends StatelessWidget {
                 const SizedBox(
                   height: 16,
                 ),
-                const Text('Duree (en Semaine): ',
+                Text(S.of(context).duration_in_weeks,
                     style: TextStyle(fontSize: 20)),
                 const SizedBox(height: 8),
                 defaultForm3(
@@ -86,66 +86,24 @@ class Reserve extends StatelessWidget {
                   context: context,
                   type: TextInputType.number,
                   valid: (String value) {},
-                  labelText: 'Duree',
+                  labelText: S.of(context).duration,
                   controller: dureeController,
                 ),
                 const SizedBox(
-                  height: 16,
-                ),
-
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.start,
-                //   children: [
-                //     const Text('Payement: ', style: TextStyle(fontSize: 20)),
-                //     StatefulBuilder(
-                //       builder: (BuildContext context, StateSetter setState) {
-                //         return Row(
-                //           mainAxisAlignment: MainAxisAlignment.center,
-                //           children: [
-                //             Checkbox(
-                //               value: isOuiChecked,
-                //               onChanged: (bool? value) {
-                //                 setState(() {
-                //                   isOuiChecked = value!;
-                //                   if (isOuiChecked) isNonChecked = false;
-                //                 });
-                //               },
-                //             ),
-                //             const Text('Oui'),
-                //             const SizedBox(width: 10),
-                //             Checkbox(
-                //               value: isNonChecked,
-                //               onChanged: (bool? value) {
-                //                 setState(() {
-                //                   isNonChecked = value!;
-                //                   if (isNonChecked) isOuiChecked = false;
-                //                 });
-                //               },
-                //             ),
-                //             const Text('Non'),
-                //           ],
-                //         );
-                //       },
-                //     ),
-                //   ],
-                // ),
-
-                const SizedBox(
                   height: 30,
                 ),
-
                 BlocConsumer<TerrainCubit, TerrainState>(
                   listener: (context, state) {
                     if (state is AddReservationStateGood) {
                       showToast(
-                        msg: "Reservation Added Successfully",
+                        msg: S.of(context).reservation_added_successfully,
                         state: ToastStates.success,
                       );
                       Navigator.pop(context);
                     } else if (state is AddReservationStateBad ||
                         state is ErrorState) {
                       showToast(
-                        msg: "Error Adding Reservation",
+                        msg: S.of(context).error_adding_reservation,
                         state: ToastStates.error,
                       );
                     }
@@ -172,7 +130,7 @@ class Reserve extends StatelessWidget {
                                 idTerrain: idTerrain, model: _model);
                           }
                         },
-                        text: 'Reserve',
+                        text: S.of(context).reserve,
                         background: Colors.blueAccent,
                       );
                     }
@@ -200,26 +158,26 @@ class DialogInfoJourur extends StatelessWidget {
       title: RichText(
         text: TextSpan(
           style: const TextStyle(
-            color: Colors.black, // Set your desired text color here
-            fontSize: 16.0, // Set your desired font size here
+            color: Colors.black,
+            fontSize: 16.0,
           ),
           children: [
-            const TextSpan(
-              text: 'Nom: ',
+            TextSpan(
+              text: S.of(context).name,
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             TextSpan(
               text: '${state.dataJoueurModel.nom!}\n',
             ),
-            const TextSpan(
-              text: 'Prenom: ',
+            TextSpan(
+              text: S.of(context).surname,
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             TextSpan(
               text: '${state.dataJoueurModel.prenom!}\n',
             ),
-            const TextSpan(
-              text: 'Age: ',
+            TextSpan(
+              text: S.of(context).age,
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             TextSpan(
@@ -234,7 +192,7 @@ class DialogInfoJourur extends StatelessWidget {
               Navigator.pop(context);
               FocusScope.of(context).unfocus();
             },
-            child: const Text('Done'))
+            child: Text(S.of(context).done))
       ],
     );
   }

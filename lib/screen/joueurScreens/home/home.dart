@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pfeprojet/Api/color.dart';
 import 'package:pfeprojet/component/components.dart';
-
 import 'package:pfeprojet/screen/JoueurScreens/profile/profile.dart';
-
 import 'package:pfeprojet/screen/joueurScreens/home/cubit/home_joueur_cubit.dart';
-// import 'cubit/home_joueur_cubit.dart';
+import 'package:pfeprojet/generated/l10n.dart';
 
 class HomeJoueur extends StatefulWidget {
   const HomeJoueur({super.key});
@@ -17,6 +15,7 @@ class HomeJoueur extends StatefulWidget {
 
 class _HomeJoueurState extends State<HomeJoueur> {
   late final HomeJoueurCubit homeJoueurCubit;
+
   @override
   void initState() {
     print('ffffff');
@@ -107,22 +106,22 @@ class _HomeJoueurState extends State<HomeJoueur> {
           selectedIndex: HomeJoueurCubit.get(context).selectedIndex,
           onDestinationSelected: (index) =>
               {HomeJoueurCubit.get(context).changeIndexNavBar(index)},
-          destinations: const [
+          destinations: [
             NavigationDestination(
                 icon: Icon(
                   Icons.home,
                   color: Colors.white,
                 ),
-                label: 'Terrains'),
+                label: S.of(context).fields),
             NavigationDestination(
                 icon: Icon(Icons.more_time_rounded, color: Colors.white),
-                label: 'Demandes'),
+                label: S.of(context).requests),
             NavigationDestination(
                 icon: Icon(Icons.campaign, color: Colors.white),
-                label: 'Annonces'),
+                label: S.of(context).announcements),
             NavigationDestination(
                 icon: Icon(Icons.groups_2, color: Colors.white),
-                label: 'Equipes'),
+                label: S.of(context).teams),
           ],
         ));
   }

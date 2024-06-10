@@ -32,7 +32,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Ajouter une annonce"),
         "added_successfully":
             MessageLookupByLibrary.simpleMessage("Ajouté avec succès"),
-        "age": MessageLookupByLibrary.simpleMessage("Âge"),
+        "address": MessageLookupByLibrary.simpleMessage("Adresse:"),
+        "age": MessageLookupByLibrary.simpleMessage("Âge :"),
         "ageMustNotBeEmpty": MessageLookupByLibrary.simpleMessage(
             "L\'âge ne doit pas être vide"),
         "all_annonces":
@@ -54,6 +55,10 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage(
                 "Êtes-vous sûr de vouloir supprimer cette annonce?"),
         "at": MessageLookupByLibrary.simpleMessage("à"),
+        "available_for_reservation":
+            MessageLookupByLibrary.simpleMessage("Disponible pour réservation"),
+        "blocked_by_stadium_owner": MessageLookupByLibrary.simpleMessage(
+            "Bloqué par le propriétaire du stade"),
         "camera": MessageLookupByLibrary.simpleMessage("Caméra"),
         "cancel": MessageLookupByLibrary.simpleMessage("Annuler"),
         "changeTeam": MessageLookupByLibrary.simpleMessage("changer l\'équipe"),
@@ -64,6 +69,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Choisissez la source :"),
         "choose_source":
             MessageLookupByLibrary.simpleMessage("Choisissez la source :"),
+        "color_index":
+            MessageLookupByLibrary.simpleMessage("Index des couleurs :"),
         "commune": MessageLookupByLibrary.simpleMessage("Commune"),
         "confirmConnection":
             MessageLookupByLibrary.simpleMessage("Confirmer la connexion"),
@@ -78,6 +85,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Créer un compte"),
         "created_at": MessageLookupByLibrary.simpleMessage("Créé le"),
         "currency_da_per_hour": MessageLookupByLibrary.simpleMessage("Da/H"),
+        "da_h": MessageLookupByLibrary.simpleMessage("Da/H"),
         "date": MessageLookupByLibrary.simpleMessage("Date"),
         "day": MessageLookupByLibrary.simpleMessage("Jour"),
         "decline": MessageLookupByLibrary.simpleMessage("Refuser"),
@@ -89,6 +97,16 @@ class MessageLookup extends MessageLookupByLibrary {
         "delete_announcement_confirmation":
             MessageLookupByLibrary.simpleMessage(
                 "Êtes-vous sûr de vouloir supprimer cette annonce ?"),
+        "delete_reservation":
+            MessageLookupByLibrary.simpleMessage("Supprimer la réservation"),
+        "delete_reservation_confirmation": MessageLookupByLibrary.simpleMessage(
+            "Êtes-vous sûr de vouloir supprimer cette réservation ?"),
+        "delete_reservation_request_failed":
+            MessageLookupByLibrary.simpleMessage(
+                "Échec de la suppression de la demande de réservation"),
+        "delete_reservation_request_success":
+            MessageLookupByLibrary.simpleMessage(
+                "Demande de réservation supprimée avec succès"),
         "delete_terrain":
             MessageLookupByLibrary.simpleMessage("Supprimer le terrain"),
         "delete_terrain_confirmation": MessageLookupByLibrary.simpleMessage(
@@ -105,7 +123,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "disconnect": MessageLookupByLibrary.simpleMessage("Déconnecté"),
         "discover_unlimited_choices": MessageLookupByLibrary.simpleMessage(
             "Découvrez des choix illimités et une commodité inégalée."),
+        "done": MessageLookupByLibrary.simpleMessage("Terminé"),
         "duration": MessageLookupByLibrary.simpleMessage("Durée"),
+        "duration_in_weeks":
+            MessageLookupByLibrary.simpleMessage("Durée (en semaines) :"),
         "edit_announcement":
             MessageLookupByLibrary.simpleMessage("Modifier l\'annonce"),
         "email": MessageLookupByLibrary.simpleMessage("E-Mail"),
@@ -113,12 +134,17 @@ class MessageLookup extends MessageLookupByLibrary {
             "L\'e-mail ne doit pas être vide"),
         "enter": MessageLookupByLibrary.simpleMessage("Veuillez entrer"),
         "error": MessageLookupByLibrary.simpleMessage("Erreur"),
+        "error_adding_reservation": MessageLookupByLibrary.simpleMessage(
+            "Erreur lors de l\'ajout de la réservation"),
         "error_deleting": MessageLookupByLibrary.simpleMessage(
             "Erreur lors de la suppression"),
         "failed_to_fetch_data": MessageLookupByLibrary.simpleMessage(
             "Échec de la récupération des données"),
+        "failed_to_fetch_reservations": MessageLookupByLibrary.simpleMessage(
+            "Échec de la récupération des réservations"),
         "failure": MessageLookupByLibrary.simpleMessage("Échec"),
         "field": MessageLookupByLibrary.simpleMessage("Terrain"),
+        "field_state": MessageLookupByLibrary.simpleMessage("État du terrain:"),
         "fields": MessageLookupByLibrary.simpleMessage("Terrains"),
         "fill_all_fields": MessageLookupByLibrary.simpleMessage(
             "Veuillez remplir tous les champs requis"),
@@ -136,15 +162,19 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Détails du joueur"),
         "last_update":
             MessageLookupByLibrary.simpleMessage("Dernière mise à jour"),
+        "list_terrain":
+            MessageLookupByLibrary.simpleMessage("Liste des terrains"),
         "login": MessageLookupByLibrary.simpleMessage("Se connecter"),
         "logout": MessageLookupByLibrary.simpleMessage("Se déconnecter"),
+        "map_terrain":
+            MessageLookupByLibrary.simpleMessage("Carte des terrains"),
         "modify_password":
             MessageLookupByLibrary.simpleMessage("Modifier le mot de passe"),
         "modify_profile":
             MessageLookupByLibrary.simpleMessage("Modifier le profil"),
         "more": MessageLookupByLibrary.simpleMessage("Plus"),
         "my_annonces": MessageLookupByLibrary.simpleMessage("Mes annonces"),
-        "name": MessageLookupByLibrary.simpleMessage("Nom"),
+        "name": MessageLookupByLibrary.simpleMessage("Nom :"),
         "nameMustNotBeEmpty": MessageLookupByLibrary.simpleMessage(
             "Le nom ne doit pas être vide"),
         "name_cannot_be_empty": MessageLookupByLibrary.simpleMessage(
@@ -163,7 +193,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "notAssignedYet":
             MessageLookupByLibrary.simpleMessage("Pas encore assigné"),
         "number_of_players":
-            MessageLookupByLibrary.simpleMessage("Nombre de joueurs"),
+            MessageLookupByLibrary.simpleMessage("Nombre de joueurs:"),
         "number_of_players_error": MessageLookupByLibrary.simpleMessage(
             "Le nombre de joueurs ne peut pas dépasser 5"),
         "old_password":
@@ -179,7 +209,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Mot de passe modifié avec succès"),
         "passwords_do_not_match": MessageLookupByLibrary.simpleMessage(
             "Les mots de passe ne correspondent pas"),
-        "phone": MessageLookupByLibrary.simpleMessage("Téléphone"),
+        "phone": MessageLookupByLibrary.simpleMessage("Téléphone:"),
         "phoneMustNotBeEmpty": MessageLookupByLibrary.simpleMessage(
             "Le téléphone ne doit pas être vide"),
         "phone_cannot_be_empty": MessageLookupByLibrary.simpleMessage(
@@ -203,6 +233,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "removeTeam": MessageLookupByLibrary.simpleMessage("retirer l\'équipe"),
         "removeTeamConfirmation": MessageLookupByLibrary.simpleMessage(
             "Êtes-vous sûr de vouloir retirer votre équipe de cette réservation ?"),
+        "requests": MessageLookupByLibrary.simpleMessage("Demandes"),
         "reservation": MessageLookupByLibrary.simpleMessage("Réservation"),
         "reservationDetails":
             MessageLookupByLibrary.simpleMessage("Détails de la réservation"),
@@ -210,6 +241,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Acceptez votre réservation"),
         "reservation_accepted_for": MessageLookupByLibrary.simpleMessage(
             "a accepté votre réservation pour le"),
+        "reservation_added_successfully": MessageLookupByLibrary.simpleMessage(
+            "Réservation ajoutée avec succès"),
         "reservation_declined":
             MessageLookupByLibrary.simpleMessage("Refuser votre réservation"),
         "reservation_declined_for": MessageLookupByLibrary.simpleMessage(
@@ -217,6 +250,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "reservation_details":
             MessageLookupByLibrary.simpleMessage("Détails de la réservation"),
         "reservations": MessageLookupByLibrary.simpleMessage("Réservations"),
+        "reserve": MessageLookupByLibrary.simpleMessage("Réserver"),
+        "reserved_by_other_players": MessageLookupByLibrary.simpleMessage(
+            "Réservé par d\'autres joueurs"),
         "responsible": MessageLookupByLibrary.simpleMessage("Responsable"),
         "search_join_equipe":
             MessageLookupByLibrary.simpleMessage("search join equipe"),
@@ -240,13 +276,18 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Erreur du serveur"),
         "stadium": MessageLookupByLibrary.simpleMessage("Stade"),
         "stadium_name": MessageLookupByLibrary.simpleMessage("Le nom du stade"),
+        "start_date": MessageLookupByLibrary.simpleMessage("Date de début :"),
+        "start_hour": MessageLookupByLibrary.simpleMessage("Heure de début :"),
         "start_time": MessageLookupByLibrary.simpleMessage("Heure de début"),
         "status": MessageLookupByLibrary.simpleMessage("État"),
         "success": MessageLookupByLibrary.simpleMessage("Succès"),
-        "surname": MessageLookupByLibrary.simpleMessage("Prénom"),
+        "surname": MessageLookupByLibrary.simpleMessage("Prénom :"),
         "surname_cannot_be_empty": MessageLookupByLibrary.simpleMessage(
             "Le prénom ne doit pas être vide"),
+        "teams": MessageLookupByLibrary.simpleMessage("Équipes"),
         "telephone": MessageLookupByLibrary.simpleMessage("Téléphone"),
+        "terrain_details":
+            MessageLookupByLibrary.simpleMessage("Détails du terrain"),
         "terrain_name": MessageLookupByLibrary.simpleMessage("Nom du terrain"),
         "terrain_state":
             MessageLookupByLibrary.simpleMessage("État du terrain"),
@@ -258,12 +299,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "username": MessageLookupByLibrary.simpleMessage("Nom d\'utilisateur"),
         "usernameMustNotBeEmpty": MessageLookupByLibrary.simpleMessage(
             "Le nom d\'utilisateur ne doit pas être vide"),
+        "view_on_map":
+            MessageLookupByLibrary.simpleMessage("Voir sur la carte"),
         "weeks": MessageLookupByLibrary.simpleMessage("semaine(s)"),
         "welcome": MessageLookupByLibrary.simpleMessage("Bienvenue,"),
         "wilaya": MessageLookupByLibrary.simpleMessage("Wilaya"),
         "yes": MessageLookupByLibrary.simpleMessage("Oui"),
         "youDontHaveTeamYet": MessageLookupByLibrary.simpleMessage(
             "vous n\'avez pas encore d\'équipe"),
-        "yourTeam": MessageLookupByLibrary.simpleMessage("Votre équipe")
+        "yourTeam": MessageLookupByLibrary.simpleMessage("Votre équipe"),
+        "your_approved_reservation":
+            MessageLookupByLibrary.simpleMessage("Votre réservation approuvée"),
+        "your_pending_reservation":
+            MessageLookupByLibrary.simpleMessage("Votre réservation en attente")
       };
 }

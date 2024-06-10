@@ -8,6 +8,7 @@ import 'package:pfeprojet/component/tpggleButtons.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/cubit/terrain_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/details.dart';
 import 'package:pfeprojet/screen/joueurScreens/terrains/location/all_terrain_location.dart';
+import 'package:pfeprojet/generated/l10n.dart';
 
 class Terrain extends StatefulWidget {
   const Terrain({super.key});
@@ -30,8 +31,6 @@ class _TerrainState extends State<Terrain> {
   @override
   Widget build(BuildContext context) {
     TerrainCubit terrainCubit = TerrainCubit.get(context);
-    // final primaryColor = Colors.blue;
-    // final secondaryColor = Colors.lightBlueAccent;
 
     return RefreshIndicator(
       onRefresh: () {
@@ -42,44 +41,20 @@ class _TerrainState extends State<Terrain> {
         body: Column(
           children: [
             Padding(
-                padding: const EdgeInsets.all(8.0),
-                child:
-                    // ToggleButtons(
-                    //   isSelected: [_showList, !_showList],
-                    //   onPressed: (int index) {
-                    //     setState(() {
-                    //       _showList = index == 0;
-                    //     });
-                    //   },
-                    //   borderRadius: BorderRadius.circular(8),
-                    //   selectedColor: Colors.black,
-                    //   fillColor: Colors.grey[200],
-                    //   constraints: BoxConstraints(
-                    //       minWidth: MediaQuery.of(context).size.width / 2 - 10,
-                    //       minHeight: 40),
-                    //   // borderRadius: BorderRadius.circular(8),
-                    //   // // borderColor: Colors.red,
-                    //   // selectedBorderColor: secondaryColor,
-                    //   // selectedColor: Colors.white,
-                    //   // fillColor: secondaryColor.withOpacity(0.5),
-                    //   // constraints: const BoxConstraints(minHeight: 40.0),
-                    //   children: const <Widget>[
-                    //     Text('List Terrain'),
-                    //     Text('Map Terrain'),
-                    //   ],
-                    // ),
-                    ToggleButtonsWidget(
-                  icon1: Icons.list_outlined,
-                  icon2: Icons.location_on_outlined,
-                  text1: 'List Terrain',
-                  text2: 'Map Terrain',
-                  showList: _showList,
-                  onToggle: (value) {
-                    setState(() {
-                      _showList = value;
-                    });
-                  },
-                )),
+              padding: const EdgeInsets.all(8.0),
+              child: ToggleButtonsWidget(
+                icon1: Icons.list_outlined,
+                icon2: Icons.location_on_outlined,
+                text1: S.of(context).list_terrain,
+                text2: S.of(context).map_terrain,
+                showList: _showList,
+                onToggle: (value) {
+                  setState(() {
+                    _showList = value;
+                  });
+                },
+              ),
+            ),
             Expanded(
               child: _showList
                   ? BlocBuilder<TerrainCubit, TerrainState>(
@@ -182,7 +157,6 @@ class _TerrainState extends State<Terrain> {
                       children: [
                         const Icon(
                           Icons.location_on_outlined,
-                          // color: Colors.blue
                         ),
                         const SizedBox(width: 5),
                         Expanded(
@@ -215,7 +189,7 @@ class _TerrainState extends State<Terrain> {
                         Icon(Icons.price_check, color: greenConst),
                         const SizedBox(width: 5),
                         Text(
-                          '${terrainModel.prix} Da/H',
+                          '${terrainModel.prix} ${S.of(context).da_h}',
                           style: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 16,
