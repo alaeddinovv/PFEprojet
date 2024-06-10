@@ -702,10 +702,10 @@ class S {
     );
   }
 
-  /// `semaines`
+  /// `semaine(s)`
   String get weeks {
     return Intl.message(
-      'semaines',
+      'semaine(s)',
       name: 'weeks',
       desc: '',
       args: [],
@@ -1037,6 +1037,316 @@ class S {
     return Intl.message(
       'Choisissez la source :',
       name: 'choose_source',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Terrains`
+  String get fields {
+    return Intl.message(
+      'Terrains',
+      name: 'fields',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Réservations`
+  String get reservations {
+    return Intl.message(
+      'Réservations',
+      name: 'reservations',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Annonces`
+  String get announcements {
+    return Intl.message(
+      'Annonces',
+      name: 'announcements',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Supprimé avec succès`
+  String get deleted_successfully {
+    return Intl.message(
+      'Supprimé avec succès',
+      name: 'deleted_successfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Erreur lors de la suppression`
+  String get error_deleting {
+    return Intl.message(
+      'Erreur lors de la suppression',
+      name: 'error_deleting',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Supprimer le terrain`
+  String get delete_terrain {
+    return Intl.message(
+      'Supprimer le terrain',
+      name: 'delete_terrain',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Êtes-vous sûr de vouloir supprimer ce terrain ?`
+  String get delete_terrain_confirmation {
+    return Intl.message(
+      'Êtes-vous sûr de vouloir supprimer ce terrain ?',
+      name: 'delete_terrain_confirmation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Annuler`
+  String get cancel {
+    return Intl.message(
+      'Annuler',
+      name: 'cancel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Supprimer`
+  String get delete {
+    return Intl.message(
+      'Supprimer',
+      name: 'delete',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Da/H`
+  String get currency_da_per_hour {
+    return Intl.message(
+      'Da/H',
+      name: 'currency_da_per_hour',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sélectionner un jour`
+  String get select_a_day {
+    return Intl.message(
+      'Sélectionner un jour',
+      name: 'select_a_day',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sélectionner une heure`
+  String get select_a_time {
+    return Intl.message(
+      'Sélectionner une heure',
+      name: 'select_a_time',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Le nom du stade`
+  String get stadium_name {
+    return Intl.message(
+      'Le nom du stade',
+      name: 'stadium_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Jour`
+  String get day {
+    return Intl.message(
+      'Jour',
+      name: 'day',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Stade`
+  String get stadium {
+    return Intl.message(
+      'Stade',
+      name: 'stadium',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Supprimer ce jour`
+  String get delete_this_day {
+    return Intl.message(
+      'Supprimer ce jour',
+      name: 'delete_this_day',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Supprimer cette heure`
+  String get delete_this_time {
+    return Intl.message(
+      'Supprimer cette heure',
+      name: 'delete_this_time',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Supprimer ce stade`
+  String get delete_this_stadium {
+    return Intl.message(
+      'Supprimer ce stade',
+      name: 'delete_this_stadium',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `à`
+  String get at {
+    return Intl.message(
+      'à',
+      name: 'at',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Durée`
+  String get duration {
+    return Intl.message(
+      'Durée',
+      name: 'duration',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `État`
+  String get status {
+    return Intl.message(
+      'État',
+      name: 'status',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Détails de la réservation`
+  String get reservation_details {
+    return Intl.message(
+      'Détails de la réservation',
+      name: 'reservation_details',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Terrain`
+  String get field {
+    return Intl.message(
+      'Terrain',
+      name: 'field',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ajouté avec succès`
+  String get added_successfully {
+    return Intl.message(
+      'Ajouté avec succès',
+      name: 'added_successfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Acceptez votre réservation`
+  String get reservation_accepted {
+    return Intl.message(
+      'Acceptez votre réservation',
+      name: 'reservation_accepted',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `a accepté votre réservation pour le`
+  String get reservation_accepted_for {
+    return Intl.message(
+      'a accepté votre réservation pour le',
+      name: 'reservation_accepted_for',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Erreur`
+  String get error {
+    return Intl.message(
+      'Erreur',
+      name: 'error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Accepter`
+  String get accept {
+    return Intl.message(
+      'Accepter',
+      name: 'accept',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Refuser votre réservation`
+  String get reservation_declined {
+    return Intl.message(
+      'Refuser votre réservation',
+      name: 'reservation_declined',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `a refusé votre réservation pour le`
+  String get reservation_declined_for {
+    return Intl.message(
+      'a refusé votre réservation pour le',
+      name: 'reservation_declined_for',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Refuser`
+  String get decline {
+    return Intl.message(
+      'Refuser',
+      name: 'decline',
       desc: '',
       args: [],
     );

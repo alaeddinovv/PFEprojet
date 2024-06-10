@@ -4,6 +4,7 @@ import 'package:pfeprojet/Api/color.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
 import 'package:pfeprojet/screen/AdminScreens/profile/profile.dart';
+import 'package:pfeprojet/generated/l10n.dart';
 
 class HomeAdmin extends StatefulWidget {
   const HomeAdmin({super.key});
@@ -16,7 +17,6 @@ class _HomeAdminState extends State<HomeAdmin> {
   late final HomeAdminCubit cubit;
   @override
   void initState() {
-    // TODO: implement initState
     cubit = HomeAdminCubit.get(context);
     cubit.getMyInfo();
     super.initState();
@@ -96,25 +96,25 @@ class _HomeAdminState extends State<HomeAdmin> {
           selectedIndex: HomeAdminCubit.get(context).selectedIndex,
           onDestinationSelected: (index) =>
               {HomeAdminCubit.get(context).changeIndexNavBar(index)},
-          destinations: const [
+          destinations: [
             NavigationDestination(
-                icon: Icon(
+                icon: const Icon(
                   Icons.home,
                   color: Colors.white,
                 ),
-                label: 'terrains'),
+                label: S.of(context).fields),
             NavigationDestination(
-                icon: Icon(
+                icon: const Icon(
                   Icons.more_time_rounded,
                   color: Colors.white,
                 ),
-                label: 'Reservations'),
+                label: S.of(context).reservations),
             NavigationDestination(
-                icon: Icon(
+                icon: const Icon(
                   Icons.campaign,
                   color: Colors.white,
                 ),
-                label: 'Annonces'),
+                label: S.of(context).announcements),
           ],
         ));
   }

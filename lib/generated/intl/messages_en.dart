@@ -22,8 +22,11 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "accept": MessageLookupByLibrary.simpleMessage("Accepter"),
         "add_annonce":
             MessageLookupByLibrary.simpleMessage("Ajouter une Annonce"),
+        "added_successfully":
+            MessageLookupByLibrary.simpleMessage("Ajouté avec succès"),
         "age": MessageLookupByLibrary.simpleMessage("Âge"),
         "ageMustNotBeEmpty": MessageLookupByLibrary.simpleMessage(
             "L\'âge ne doit pas être vide"),
@@ -31,13 +34,16 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Toutes les annonces"),
         "annonce_published_success":
             MessageLookupByLibrary.simpleMessage("Annonce publiée avec succès"),
+        "announcements": MessageLookupByLibrary.simpleMessage("Annonces"),
         "appBarTitle":
             MessageLookupByLibrary.simpleMessage("Modifier la réservation"),
         "arabic": MessageLookupByLibrary.simpleMessage("العربية"),
         "are_you_sure_you_want_to_delete_this_annonce":
             MessageLookupByLibrary.simpleMessage(
                 "Êtes-vous sûr de vouloir supprimer cette annonce?"),
+        "at": MessageLookupByLibrary.simpleMessage("à"),
         "camera": MessageLookupByLibrary.simpleMessage("Caméra"),
+        "cancel": MessageLookupByLibrary.simpleMessage("Annuler"),
         "changeTeam": MessageLookupByLibrary.simpleMessage("changer l\'équipe"),
         "change_language":
             MessageLookupByLibrary.simpleMessage("Changer la langue"),
@@ -53,15 +59,37 @@ class MessageLookup extends MessageLookupByLibrary {
         "contact_us": MessageLookupByLibrary.simpleMessage("Nous contacter"),
         "copy_username_success": MessageLookupByLibrary.simpleMessage(
             "Nom d\'utilisateur copié avec succès"),
+        "currency_da_per_hour": MessageLookupByLibrary.simpleMessage("Da/H"),
         "date": MessageLookupByLibrary.simpleMessage("Date"),
+        "day": MessageLookupByLibrary.simpleMessage("Jour"),
+        "decline": MessageLookupByLibrary.simpleMessage("Refuser"),
+        "delete": MessageLookupByLibrary.simpleMessage("Supprimer"),
         "delete_annonce":
             MessageLookupByLibrary.simpleMessage("Supprimer l\'annonce"),
+        "delete_terrain":
+            MessageLookupByLibrary.simpleMessage("Supprimer le terrain"),
+        "delete_terrain_confirmation": MessageLookupByLibrary.simpleMessage(
+            "Êtes-vous sûr de vouloir supprimer ce terrain ?"),
+        "delete_this_day":
+            MessageLookupByLibrary.simpleMessage("Supprimer ce jour"),
+        "delete_this_stadium":
+            MessageLookupByLibrary.simpleMessage("Supprimer ce stade"),
+        "delete_this_time":
+            MessageLookupByLibrary.simpleMessage("Supprimer cette heure"),
+        "deleted_successfully":
+            MessageLookupByLibrary.simpleMessage("Supprimé avec succès"),
         "description": MessageLookupByLibrary.simpleMessage("Description"),
         "disconnect": MessageLookupByLibrary.simpleMessage("Déconnecté"),
+        "duration": MessageLookupByLibrary.simpleMessage("Durée"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),
         "enter": MessageLookupByLibrary.simpleMessage("Veuillez entrer"),
+        "error": MessageLookupByLibrary.simpleMessage("Erreur"),
+        "error_deleting": MessageLookupByLibrary.simpleMessage(
+            "Erreur lors de la suppression"),
         "failed_to_fetch_data": MessageLookupByLibrary.simpleMessage(
             "Échec de la récupération des données"),
+        "field": MessageLookupByLibrary.simpleMessage("Terrain"),
+        "fields": MessageLookupByLibrary.simpleMessage("Terrains"),
         "fill_all_fields": MessageLookupByLibrary.simpleMessage(
             "Veuillez remplir tous les champs requis"),
         "forAllReservations": MessageLookupByLibrary.simpleMessage(
@@ -135,10 +163,25 @@ class MessageLookup extends MessageLookupByLibrary {
         "reservation": MessageLookupByLibrary.simpleMessage("Réservation"),
         "reservationDetails":
             MessageLookupByLibrary.simpleMessage("Détails de la réservation"),
+        "reservation_accepted":
+            MessageLookupByLibrary.simpleMessage("Acceptez votre réservation"),
+        "reservation_accepted_for": MessageLookupByLibrary.simpleMessage(
+            "a accepté votre réservation pour le"),
+        "reservation_declined":
+            MessageLookupByLibrary.simpleMessage("Refuser votre réservation"),
+        "reservation_declined_for": MessageLookupByLibrary.simpleMessage(
+            "a refusé votre réservation pour le"),
+        "reservation_details":
+            MessageLookupByLibrary.simpleMessage("Détails de la réservation"),
+        "reservations": MessageLookupByLibrary.simpleMessage("Réservations"),
         "search_join_equipe":
             MessageLookupByLibrary.simpleMessage("search join equipe"),
         "search_joueur": MessageLookupByLibrary.simpleMessage("search joueur"),
         "select": MessageLookupByLibrary.simpleMessage("Veuillez sélectionner"),
+        "select_a_day":
+            MessageLookupByLibrary.simpleMessage("Sélectionner un jour"),
+        "select_a_time":
+            MessageLookupByLibrary.simpleMessage("Sélectionner une heure"),
         "select_time_error": MessageLookupByLibrary.simpleMessage(
             "Veuillez sélectionner une heure"),
         "select_wilaya":
@@ -150,7 +193,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "server_crashed":
             MessageLookupByLibrary.simpleMessage("Le serveur a planté"),
         "server_error": MessageLookupByLibrary.simpleMessage("Erreur serveur"),
+        "stadium": MessageLookupByLibrary.simpleMessage("Stade"),
+        "stadium_name": MessageLookupByLibrary.simpleMessage("Le nom du stade"),
         "start_time": MessageLookupByLibrary.simpleMessage("Heure de début"),
+        "status": MessageLookupByLibrary.simpleMessage("État"),
         "success": MessageLookupByLibrary.simpleMessage("Succès"),
         "surname": MessageLookupByLibrary.simpleMessage("Prénom"),
         "surname_cannot_be_empty": MessageLookupByLibrary.simpleMessage(
@@ -165,7 +211,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "username": MessageLookupByLibrary.simpleMessage("Nom d\'utilisateur"),
         "usernameMustNotBeEmpty": MessageLookupByLibrary.simpleMessage(
             "Le nom d\'utilisateur ne doit pas être vide"),
-        "weeks": MessageLookupByLibrary.simpleMessage("semaines"),
+        "weeks": MessageLookupByLibrary.simpleMessage("semaine(s)"),
         "wilaya": MessageLookupByLibrary.simpleMessage("Wilaya"),
         "yes": MessageLookupByLibrary.simpleMessage("Oui"),
         "youDontHaveTeamYet": MessageLookupByLibrary.simpleMessage(

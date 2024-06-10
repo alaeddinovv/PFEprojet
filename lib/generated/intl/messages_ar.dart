@@ -22,19 +22,25 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+        "accept": MessageLookupByLibrary.simpleMessage("قبول"),
         "add_annonce": MessageLookupByLibrary.simpleMessage("إضافة إعلان"),
+        "added_successfully":
+            MessageLookupByLibrary.simpleMessage("تمت الإضافة بنجاح"),
         "age": MessageLookupByLibrary.simpleMessage("العمر"),
         "ageMustNotBeEmpty":
             MessageLookupByLibrary.simpleMessage("يجب ألا يكون العمر فارغًا"),
         "all_annonces": MessageLookupByLibrary.simpleMessage("جميع الإعلانات"),
         "annonce_published_success":
             MessageLookupByLibrary.simpleMessage("تم نشر الإعلان بنجاح"),
+        "announcements": MessageLookupByLibrary.simpleMessage("الإعلانات"),
         "appBarTitle": MessageLookupByLibrary.simpleMessage("تعديل الحجز"),
         "arabic": MessageLookupByLibrary.simpleMessage("العربية"),
         "are_you_sure_you_want_to_delete_this_annonce":
             MessageLookupByLibrary.simpleMessage(
                 "هل أنت متأكد من أنك تريد حذف هذا الإعلان؟"),
+        "at": MessageLookupByLibrary.simpleMessage("في"),
         "camera": MessageLookupByLibrary.simpleMessage("الكاميرا"),
+        "cancel": MessageLookupByLibrary.simpleMessage("إلغاء"),
         "changeTeam": MessageLookupByLibrary.simpleMessage("تغيير الفريق"),
         "change_language": MessageLookupByLibrary.simpleMessage("تغيير اللغة"),
         "choose": MessageLookupByLibrary.simpleMessage("اختر:"),
@@ -47,14 +53,35 @@ class MessageLookup extends MessageLookupByLibrary {
         "contact_us": MessageLookupByLibrary.simpleMessage("اتصل بنا"),
         "copy_username_success":
             MessageLookupByLibrary.simpleMessage("تم نسخ اسم المستخدم بنجاح"),
+        "currency_da_per_hour": MessageLookupByLibrary.simpleMessage("دج/ساعة"),
         "date": MessageLookupByLibrary.simpleMessage("التاريخ"),
+        "day": MessageLookupByLibrary.simpleMessage("اليوم"),
+        "decline": MessageLookupByLibrary.simpleMessage("رفض"),
+        "delete": MessageLookupByLibrary.simpleMessage("حذف"),
         "delete_annonce": MessageLookupByLibrary.simpleMessage("حذف الإعلان"),
+        "delete_terrain": MessageLookupByLibrary.simpleMessage("حذف الملعب"),
+        "delete_terrain_confirmation": MessageLookupByLibrary.simpleMessage(
+            "هل أنت متأكد أنك تريد حذف هذا الملعب؟"),
+        "delete_this_day":
+            MessageLookupByLibrary.simpleMessage("حذف هذا اليوم"),
+        "delete_this_stadium":
+            MessageLookupByLibrary.simpleMessage("حذف هذا الملعب"),
+        "delete_this_time":
+            MessageLookupByLibrary.simpleMessage("حذف هذا الوقت"),
+        "deleted_successfully":
+            MessageLookupByLibrary.simpleMessage("تم الحذف بنجاح"),
         "description": MessageLookupByLibrary.simpleMessage("الوصف"),
         "disconnect": MessageLookupByLibrary.simpleMessage("غير متصل"),
+        "duration": MessageLookupByLibrary.simpleMessage("المدة"),
         "email": MessageLookupByLibrary.simpleMessage("البريد الإلكتروني"),
         "enter": MessageLookupByLibrary.simpleMessage("يرجى إدخال"),
+        "error": MessageLookupByLibrary.simpleMessage("خطأ"),
+        "error_deleting":
+            MessageLookupByLibrary.simpleMessage("خطأ أثناء الحذف"),
         "failed_to_fetch_data":
             MessageLookupByLibrary.simpleMessage("فشل في جلب البيانات"),
+        "field": MessageLookupByLibrary.simpleMessage("الملعب"),
+        "fields": MessageLookupByLibrary.simpleMessage("الملاعب"),
         "fill_all_fields": MessageLookupByLibrary.simpleMessage(
             "يرجى ملء جميع الحقول المطلوبة"),
         "forAllReservations":
@@ -126,10 +153,23 @@ class MessageLookup extends MessageLookupByLibrary {
         "reservation": MessageLookupByLibrary.simpleMessage("الحجز"),
         "reservationDetails":
             MessageLookupByLibrary.simpleMessage("تفاصيل الحجز"),
+        "reservation_accepted":
+            MessageLookupByLibrary.simpleMessage("قبول حجزك"),
+        "reservation_accepted_for":
+            MessageLookupByLibrary.simpleMessage("قبل حجزك ليوم"),
+        "reservation_declined":
+            MessageLookupByLibrary.simpleMessage("رفض حجزك"),
+        "reservation_declined_for":
+            MessageLookupByLibrary.simpleMessage("رفض حجزك ليوم"),
+        "reservation_details":
+            MessageLookupByLibrary.simpleMessage("تفاصيل الحجز"),
+        "reservations": MessageLookupByLibrary.simpleMessage("الحجوزات"),
         "search_join_equipe":
             MessageLookupByLibrary.simpleMessage("search join equipe"),
         "search_joueur": MessageLookupByLibrary.simpleMessage("search joueur"),
         "select": MessageLookupByLibrary.simpleMessage("يرجى اختيار"),
+        "select_a_day": MessageLookupByLibrary.simpleMessage("اختر يومًا"),
+        "select_a_time": MessageLookupByLibrary.simpleMessage("اختر وقتًا"),
         "select_time_error":
             MessageLookupByLibrary.simpleMessage("يرجى تحديد الوقت"),
         "select_wilaya": MessageLookupByLibrary.simpleMessage("اختر ولاية"),
@@ -139,7 +179,10 @@ class MessageLookup extends MessageLookupByLibrary {
         "selecthour": MessageLookupByLibrary.simpleMessage("اختر ساعة"),
         "server_crashed": MessageLookupByLibrary.simpleMessage("تعطل الخادم"),
         "server_error": MessageLookupByLibrary.simpleMessage("خطأ في الخادم"),
+        "stadium": MessageLookupByLibrary.simpleMessage("الملعب"),
+        "stadium_name": MessageLookupByLibrary.simpleMessage("اسم الملعب"),
         "start_time": MessageLookupByLibrary.simpleMessage("وقت البدء"),
+        "status": MessageLookupByLibrary.simpleMessage("الحالة"),
         "success": MessageLookupByLibrary.simpleMessage("نجاح"),
         "surname": MessageLookupByLibrary.simpleMessage("اللقب"),
         "surname_cannot_be_empty":

@@ -7,6 +7,7 @@ import 'package:pfeprojet/screen/AdminScreens/reservation/cubit/reservation_cubi
 import 'package:pfeprojet/screen/AdminScreens/reservation/reservation_details.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/cubit/terrain_cubit.dart'
     as TerrainCubit;
+import 'package:pfeprojet/generated/l10n.dart';
 
 // ignore: must_be_immutable
 class Reservation extends StatefulWidget {
@@ -79,7 +80,7 @@ class _ReservationState extends State<Reservation> {
                         icon: const Icon(Icons.calendar_today,
                             color: Colors.white),
                         label: Text(
-                          'Sélectionner un jour',
+                          S.of(context).select_a_day,
                           textAlign: TextAlign.center,
                         ),
                         style: ElevatedButton.styleFrom(
@@ -97,8 +98,8 @@ class _ReservationState extends State<Reservation> {
                       child: ElevatedButton.icon(
                         icon:
                             const Icon(Icons.access_time, color: Colors.white),
-                        label: const Text(
-                          'Sélectionner une heure',
+                        label: Text(
+                          S.of(context).select_a_time,
                           textAlign: TextAlign.center,
                         ),
                         style: ElevatedButton.styleFrom(
@@ -116,7 +117,7 @@ class _ReservationState extends State<Reservation> {
               ),
               Column(
                 children: [
-                  Text('Nom du stade :'),
+                  Text(S.of(context).stadium_name),
                   SizedBox(height: 8),
                   Container(
                     padding: EdgeInsets.symmetric(horizontal: 16),
@@ -173,7 +174,7 @@ class _ReservationState extends State<Reservation> {
                     if (widget.selectedDate != null)
                       Chip(
                         label: Text(
-                            'Jour: ${widget.selectedDate?.day.toString().padLeft(2, "0")}/${widget.selectedDate?.month.toString().padLeft(2, "0")}/${widget.selectedDate?.year}'),
+                            '${S.of(context).day}: ${widget.selectedDate?.day.toString().padLeft(2, "0")}/${widget.selectedDate?.month.toString().padLeft(2, "0")}/${widget.selectedDate?.year}'),
                         deleteIcon: const Icon(
                           Icons.cancel,
                         ),
@@ -186,12 +187,13 @@ class _ReservationState extends State<Reservation> {
                           });
                         },
                         deleteIconColor: Colors.redAccent,
-                        deleteButtonTooltipMessage: 'Supprimer ce jour',
+                        deleteButtonTooltipMessage:
+                            S.of(context).delete_this_day,
                       ),
                     if (widget.selectedTime != null)
                       Chip(
                         label: Text(
-                            'Heure: ${widget.selectedTime!.hour.toString().padLeft(2, '0')}:${widget.selectedTime!.minute.toString().padLeft(2, '0')}'),
+                            '${S.of(context).time}: ${widget.selectedTime!.hour.toString().padLeft(2, '0')}:${widget.selectedTime!.minute.toString().padLeft(2, '0')}'),
                         deleteIcon: const Icon(
                           Icons.cancel,
                         ),
@@ -203,11 +205,13 @@ class _ReservationState extends State<Reservation> {
                           });
                         },
                         deleteIconColor: Colors.redAccent,
-                        deleteButtonTooltipMessage: 'Supprimer cette heure',
+                        deleteButtonTooltipMessage:
+                            S.of(context).delete_this_time,
                       ),
                     if (widget.nameOfTerrain != null)
                       Chip(
-                        label: Text('Stade: ${widget.nameOfTerrain}'),
+                        label: Text(
+                            '${S.of(context).stadium}: ${widget.nameOfTerrain}'),
                         deleteIcon: const Icon(
                           Icons.cancel,
                         ),
@@ -223,7 +227,8 @@ class _ReservationState extends State<Reservation> {
                           });
                         },
                         deleteIconColor: Colors.redAccent,
-                        deleteButtonTooltipMessage: 'Supprimer ce stade',
+                        deleteButtonTooltipMessage:
+                            S.of(context).delete_this_stadium,
                       ),
                   ],
                 ),
@@ -246,7 +251,7 @@ class _ReservationState extends State<Reservation> {
                             children: [
                               Expanded(
                                 child: Text(
-                                    '${reservation.jour!.month.toString().padLeft(2, '0')}/${reservation.jour!.day.toString().padLeft(2, '0')}  à ${reservation.heureDebutTemps}'),
+                                    '${reservation.jour!.month.toString().padLeft(2, '0')}/${reservation.jour!.day.toString().padLeft(2, '0')}  ${S.of(context).at} ${reservation.heureDebutTemps}'),
                               ),
                               Text(
                                 reservation.terrainId!.nom.toString(),
@@ -257,7 +262,7 @@ class _ReservationState extends State<Reservation> {
                             ],
                           ),
                           subtitle: Text(
-                              'Durée: ${reservation.duree} semaine(s), État: ${reservation.etat}\n Nom d\'utilisateur: ${reservation.joueurId!.username}'),
+                              '${S.of(context).duration}: ${reservation.duree} ${S.of(context).weeks}, ${S.of(context).status}: ${reservation.etat}\n ${S.of(context).username}: ${reservation.joueurId!.username}'),
                           onTap: () {
                             navigatAndReturn(
                                 context: context,
@@ -288,7 +293,7 @@ class _ReservationState extends State<Reservation> {
       initialDate: widget.selectedDate ?? DateTime.now(),
       firstDate: DateTime.now(),
       lastDate: DateTime(2100),
-      locale: const Locale('fr'), // Set the locale to French
+      locale: Locale('fr'), // Set the locale to French
     );
     if (picked != null && picked != widget.selectedDate) {
       setState(() {
@@ -311,7 +316,7 @@ class _ReservationState extends State<Reservation> {
           child: child!,
         );
       },
-      helpText: 'Sélectionner une heure', // Set the help text in French
+      helpText: S.of(context).select_a_time,
     );
     if (picked != null && picked != widget.selectedTime) {
       setState(() {
