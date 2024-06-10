@@ -95,14 +95,14 @@ class TerrainCubit extends Cubit<TerrainState> {
     String sTemps,
     String eTemps,
   ) {
-    DateTime startTime = DateFormat("HH:mm")
+    DateTime startTime = DateFormat("HH:mm", 'fr')
         .parse(sTemps); // time format from server is HH:mm string
-    DateTime endTime = DateFormat("HH")
+    DateTime endTime = DateFormat("HH", 'fr')
         .parse(eTemps); // time format from server is HH:mm string
     List<String> timeSlots = [];
 
     while (startTime.isBefore(endTime)) {
-      String slot = DateFormat('HH:mm').format(startTime);
+      String slot = DateFormat('HH:mm', 'fr').format(startTime);
       timeSlots.add(slot);
       startTime = startTime.add(const Duration(hours: 1, minutes: 0));
     }
@@ -117,7 +117,7 @@ class TerrainCubit extends Cubit<TerrainState> {
       required DateTime date,
       String heure_debut_temps = ""}) async {
     emit(GetReservationLoadingState());
-    String formattedDate = DateFormat('yyyy-MM-dd').format(date);
+    String formattedDate = DateFormat('yyyy-MM-dd', 'fr').format(date);
     await Httplar.httpget(path: FILTERRESERVATION, query: {
       "payment": payment.toString(),
       "terrain_id": terrainId,

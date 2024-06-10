@@ -95,7 +95,7 @@ class TerrainCubit extends Cubit<TerrainState> {
     List<String> timeSlots = [];
 
     while (startTime.isBefore(endTime)) {
-      String slot = DateFormat('HH:mm').format(startTime);
+      String slot = DateFormat('HH:mm', 'fr').format(startTime);
       timeSlots.add(slot);
       startTime = startTime.add(const Duration(hours: 1, minutes: 0));
     }

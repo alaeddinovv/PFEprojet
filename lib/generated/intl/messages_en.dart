@@ -38,6 +38,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "L\'âge ne doit pas être vide"),
         "all_annonces":
             MessageLookupByLibrary.simpleMessage("Toutes les annonces"),
+        "all_teams": MessageLookupByLibrary.simpleMessage("Toutes les équipes"),
         "annonce_published_success":
             MessageLookupByLibrary.simpleMessage("Annonce publiée avec succès"),
         "announcement_content":
@@ -161,6 +162,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "gallery": MessageLookupByLibrary.simpleMessage("Galerie"),
         "hello": m0,
         "home": MessageLookupByLibrary.simpleMessage("Accueil"),
+        "invitations": MessageLookupByLibrary.simpleMessage("Les invitations"),
         "joueurDetails":
             MessageLookupByLibrary.simpleMessage("Détails du joueur"),
         "last_update":
@@ -178,6 +180,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Modifier le profil"),
         "more": MessageLookupByLibrary.simpleMessage("Plus"),
         "my_annonces": MessageLookupByLibrary.simpleMessage("Mes annonces"),
+        "my_teams": MessageLookupByLibrary.simpleMessage("Mes équipes"),
         "name": MessageLookupByLibrary.simpleMessage("Nom :"),
         "nameMustNotBeEmpty": MessageLookupByLibrary.simpleMessage(
             "Le nom ne doit pas être vide"),
@@ -290,12 +293,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "surname": MessageLookupByLibrary.simpleMessage("Prénom :"),
         "surname_cannot_be_empty": MessageLookupByLibrary.simpleMessage(
             "Le prénom ne doit pas être vide"),
+        "team": MessageLookupByLibrary.simpleMessage("Équipe"),
         "team_details":
             MessageLookupByLibrary.simpleMessage("Détails de l\'équipe"),
         "team_name": MessageLookupByLibrary.simpleMessage("Nom de l\'équipe"),
         "team_size":
             MessageLookupByLibrary.simpleMessage("Taille de l\'équipe"),
         "teams": MessageLookupByLibrary.simpleMessage("Équipes"),
+        "teams_im_in":
+            MessageLookupByLibrary.simpleMessage("Équipes où je suis"),
         "telephone": MessageLookupByLibrary.simpleMessage("Téléphone"),
         "terrain_details":
             MessageLookupByLibrary.simpleMessage("Détails du terrain"),
@@ -313,6 +319,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Le nom d\'utilisateur ne doit pas être vide"),
         "view_on_map":
             MessageLookupByLibrary.simpleMessage("Voir sur la carte"),
+        "virtual_teams":
+            MessageLookupByLibrary.simpleMessage("Les équipes virtuelles :"),
         "weeks": MessageLookupByLibrary.simpleMessage("semaine(s)"),
         "welcome": MessageLookupByLibrary.simpleMessage("Bienvenue,"),
         "wilaya": MessageLookupByLibrary.simpleMessage("Wilaya"),

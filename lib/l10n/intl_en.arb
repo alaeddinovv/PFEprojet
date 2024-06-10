@@ -265,5 +265,11 @@
     "players": "Joueurs",
     "pending_players": "Joueurs en attente",
     "location": "Emplacement",
-    "cancel_request": "Annuler la demande"
+    "cancel_request": "Annuler la demande",
+    "my_teams": "Mes équipes",
+    "all_teams": "Toutes les équipes",
+    "teams_im_in": "Équipes où je suis",
+    "invitations": "Les invitations",
+    "virtual_teams": "Les équipes virtuelles :",
+    "team": "Équipe"
 }

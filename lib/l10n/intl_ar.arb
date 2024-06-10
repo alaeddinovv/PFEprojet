@@ -265,5 +265,11 @@
     "players": "اللاعبون",
     "pending_players": "اللاعبون المعلقون",
     "location": "الموقع",
-    "cancel_request": "إلغاء الطلب"
+    "cancel_request": "إلغاء الطلب",
+    "my_teams": "فرقي",
+    "all_teams": "كل الفرق",
+    "teams_im_in": "الفرق التي أنا فيها",
+    "invitations": "الدعوات",
+    "virtual_teams": "الفرق الافتراضية:",
+    "team": "الفريق"
 }

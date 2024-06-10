@@ -610,6 +610,7 @@ class _TerrainDetailsScreenState extends State<TerrainDetailsScreen> {
       context: context,
       initialDate: terrainCubit.selectedDate,
       firstDate: DateTime.now(),
+      locale: Locale('fr', 'FR'),
       lastDate: DateTime(2101),
     );
     if (picked != null && picked != terrainCubit.selectedDate) {

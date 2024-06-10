@@ -35,6 +35,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "ageMustNotBeEmpty":
             MessageLookupByLibrary.simpleMessage("يجب ألا يكون العمر فارغًا"),
         "all_annonces": MessageLookupByLibrary.simpleMessage("جميع الإعلانات"),
+        "all_teams": MessageLookupByLibrary.simpleMessage("كل الفرق"),
         "annonce_published_success":
             MessageLookupByLibrary.simpleMessage("تم نشر الإعلان بنجاح"),
         "announcement_content":
@@ -146,6 +147,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "gallery": MessageLookupByLibrary.simpleMessage("المعرض"),
         "hello": m0,
         "home": MessageLookupByLibrary.simpleMessage("الصفحة الرئيسية"),
+        "invitations": MessageLookupByLibrary.simpleMessage("الدعوات"),
         "joueurDetails": MessageLookupByLibrary.simpleMessage("تفاصيل اللاعب"),
         "last_update": MessageLookupByLibrary.simpleMessage("آخر تحديث"),
         "list_terrain": MessageLookupByLibrary.simpleMessage("قائمة الملاعب"),
@@ -159,6 +161,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("تعديل الملف الشخصي"),
         "more": MessageLookupByLibrary.simpleMessage("المزيد"),
         "my_annonces": MessageLookupByLibrary.simpleMessage("إعلاناتي"),
+        "my_teams": MessageLookupByLibrary.simpleMessage("فرقي"),
         "name": MessageLookupByLibrary.simpleMessage("الاسم:"),
         "nameMustNotBeEmpty":
             MessageLookupByLibrary.simpleMessage("يجب ألا يكون الاسم فارغًا"),
@@ -263,10 +266,13 @@ class MessageLookup extends MessageLookupByLibrary {
         "surname": MessageLookupByLibrary.simpleMessage("اللقب:"),
         "surname_cannot_be_empty":
             MessageLookupByLibrary.simpleMessage("لا يمكن ترك اللقب فارغًا"),
+        "team": MessageLookupByLibrary.simpleMessage("الفريق"),
         "team_details": MessageLookupByLibrary.simpleMessage("تفاصيل الفريق"),
         "team_name": MessageLookupByLibrary.simpleMessage("اسم الفريق"),
         "team_size": MessageLookupByLibrary.simpleMessage("حجم الفريق"),
         "teams": MessageLookupByLibrary.simpleMessage("الفرق"),
+        "teams_im_in":
+            MessageLookupByLibrary.simpleMessage("الفرق التي أنا فيها"),
         "telephone": MessageLookupByLibrary.simpleMessage("الهاتف"),
         "terrain_details":
             MessageLookupByLibrary.simpleMessage("تفاصيل الملعب"),
@@ -282,6 +288,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "usernameMustNotBeEmpty": MessageLookupByLibrary.simpleMessage(
             "يجب ألا يكون اسم المستخدم فارغًا"),
         "view_on_map": MessageLookupByLibrary.simpleMessage("عرض على الخريطة"),
+        "virtual_teams":
+            MessageLookupByLibrary.simpleMessage("الفرق الافتراضية:"),
         "weeks": MessageLookupByLibrary.simpleMessage("أسابيع"),
         "welcome": MessageLookupByLibrary.simpleMessage("مرحبًا،"),
         "wilaya": MessageLookupByLibrary.simpleMessage("الولاية"),

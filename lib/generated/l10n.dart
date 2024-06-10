@@ -1971,6 +1971,66 @@ class S {
       args: [],
     );
   }
+
+  /// `Mes équipes`
+  String get my_teams {
+    return Intl.message(
+      'Mes équipes',
+      name: 'my_teams',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Toutes les équipes`
+  String get all_teams {
+    return Intl.message(
+      'Toutes les équipes',
+      name: 'all_teams',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Équipes où je suis`
+  String get teams_im_in {
+    return Intl.message(
+      'Équipes où je suis',
+      name: 'teams_im_in',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Les invitations`
+  String get invitations {
+    return Intl.message(
+      'Les invitations',
+      name: 'invitations',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Les équipes virtuelles :`
+  String get virtual_teams {
+    return Intl.message(
+      'Les équipes virtuelles :',
+      name: 'virtual_teams',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Équipe`
+  String get team {
+    return Intl.message(
+      'Équipe',
+      name: 'team',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

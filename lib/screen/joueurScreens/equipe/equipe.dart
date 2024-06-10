@@ -3,6 +3,8 @@ import 'package:pfeprojet/Api/color.dart';
 import 'package:pfeprojet/Model/equipe_model.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/const.dart';
+import 'package:pfeprojet/generated/l10n.dart';
+
 import 'package:pfeprojet/screen/joueurScreens/equipe/addequipe.dart';
 import 'package:pfeprojet/screen/joueurScreens/equipe/allequipe_detail.dart';
 import 'package:pfeprojet/screen/joueurScreens/equipe/cubit/equipe_cubit.dart';
@@ -115,7 +117,7 @@ class _EquipeState extends State<Equipe> {
                 borderRadius: BorderRadius.circular(8),
                 selectedColor: Colors.white,
                 fillColor: greenConst,
-                color: greenConst, // Set the unselected text color to green
+                color: greenConst,
                 constraints: const BoxConstraints(minHeight: 40.0),
                 children: <Widget>[
                   Padding(
@@ -129,7 +131,7 @@ class _EquipeState extends State<Equipe> {
                         ),
                         SizedBox(width: 8),
                         Text(
-                          'Mes équipes',
+                          S.of(context).my_teams,
                           style: TextStyle(
                             color:
                                 cubit.isSelected[0] ? Colors.white : greenConst,
@@ -149,7 +151,7 @@ class _EquipeState extends State<Equipe> {
                         ),
                         SizedBox(width: 8),
                         Text(
-                          'Toutes les équipes',
+                          S.of(context).all_teams,
                           style: TextStyle(
                             color:
                                 cubit.isSelected[1] ? Colors.white : greenConst,
@@ -169,7 +171,7 @@ class _EquipeState extends State<Equipe> {
                         ),
                         SizedBox(width: 8),
                         Text(
-                          'Équipes où je suis',
+                          S.of(context).teams_im_in,
                           style: TextStyle(
                             color:
                                 cubit.isSelected[2] ? Colors.white : greenConst,
@@ -189,7 +191,7 @@ class _EquipeState extends State<Equipe> {
                         ),
                         SizedBox(width: 8),
                         Text(
-                          'Les invitations',
+                          S.of(context).invitations,
                           style: TextStyle(
                             color:
                                 cubit.isSelected[3] ? Colors.white : greenConst,
@@ -245,7 +247,7 @@ class _EquipeState extends State<Equipe> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(
-                                      'Les équipes virtuelles :',
+                                      S.of(context).virtual_teams,
                                       style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
@@ -596,7 +598,7 @@ class _EquipeState extends State<Equipe> {
             children: [
               Expanded(
                 child: Text(
-                  'Équipe: ${model.nom}',
+                  '${S.of(context).team}: ${model.nom}',
                   style: TextStyle(
                     color: Colors.black87,
                     fontWeight: FontWeight.bold,
@@ -670,7 +672,7 @@ class _EquipeState extends State<Equipe> {
                 children: [
                   Expanded(
                     child: Text(
-                      'Équipe: ${model.nom}', // Displaying the team name
+                      '${S.of(context).team}: ${model.nom}', // Displaying the team name
                       style: TextStyle(
                         color: Colors.black87,
                         fontWeight: FontWeight.bold,
@@ -757,7 +759,7 @@ class _EquipeState extends State<Equipe> {
                 children: [
                   Expanded(
                     child: Text(
-                      'Équipe: ${model.nom}', // Displaying the team name
+                      '${S.of(context).team}: ${model.nom}', // Displaying the team name
                       style: TextStyle(
                         color: Colors.black87,
                         fontWeight: FontWeight.bold,
@@ -839,7 +841,7 @@ class _EquipeState extends State<Equipe> {
                 children: [
                   Expanded(
                     child: Text(
-                      'Équipe: ${model.nom}', // Displaying the team name
+                      '${S.of(context).team}: ${model.nom}', // Displaying the team name
                       style: TextStyle(
                         color: Colors.black87,
                         fontWeight: FontWeight.bold,
