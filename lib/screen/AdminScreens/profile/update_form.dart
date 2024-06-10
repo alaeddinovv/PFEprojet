@@ -9,6 +9,7 @@ import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
 import 'package:pfeprojet/screen/AdminScreens/profile/cubit/profile_admin_cubit.dart';
 import 'package:pfeprojet/screen/AdminScreens/profile/profile.dart';
+import 'package:pfeprojet/generated/l10n.dart';
 
 class UpdateAdminForm extends StatefulWidget {
   const UpdateAdminForm({super.key});
@@ -20,21 +21,19 @@ class UpdateAdminForm extends StatefulWidget {
 class _UpdateAdminFormState extends State<UpdateAdminForm> {
   final TextEditingController _nomController = TextEditingController();
   final TextEditingController _prenomController = TextEditingController();
-  // final TextEditingController _wilayaController = TextEditingController();
   final TextEditingController _telephoneController = TextEditingController();
   String? selectedWilaya;
   List<dynamic> wilayas = [];
   final formkey = GlobalKey<FormState>();
   late final DataAdminModel homeAdminCubit;
+
   @override
   void initState() {
-    // TODO: implement setState
     super.initState();
 
     homeAdminCubit = HomeAdminCubit.get(context).adminModel!;
     _nomController.text = homeAdminCubit.nom!;
     _prenomController.text = homeAdminCubit.prenom!;
-    // _wilayaController.text = homeAdminCubit.wilaya!;
     _telephoneController.text = homeAdminCubit.telephone!.toString();
 
     final parsed = json.decode(wilayasJson) as Map<String, dynamic>;
@@ -42,16 +41,13 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
       wilayas = parsed['Wilayas'];
       selectedWilaya = homeAdminCubit.wilaya ??
           (wilayas.isNotEmpty ? wilayas[0]['name'] : null);
-      // updateCommunes(selectedWilaya);
     });
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _nomController.dispose();
     _prenomController.dispose();
-    // _wilayaController.dispose();
     _telephoneController.dispose();
     super.dispose();
   }
@@ -70,7 +66,7 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Mettre à jour"),
+          title: Text(S.of(context).update),
         ),
         body: Padding(
           padding: const EdgeInsets.all(10.0),
@@ -78,7 +74,6 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
             key: formkey,
             child: SingleChildScrollView(
               child: Column(children: [
-                // if (state is UpdateAdminLoadingState)
                 BlocBuilder<ProfileAdminCubit, ProfileAdminState>(
                   builder: (context, state) {
                     if (state is UpdateAdminLoadingState) {
@@ -125,18 +120,17 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
                     )
                   ],
                 ),
-
                 const SizedBox(
                   height: 30,
                 ),
                 defaultForm2(
                     controller: _nomController,
                     textInputAction: TextInputAction.next,
-                    label: 'Nom',
+                    label: S.of(context).name,
                     prefixIcon: const Icon(Icons.person),
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return "Le nom ne doit pas être vide";
+                        return S.of(context).name_cannot_be_empty;
                       }
                     }),
                 const SizedBox(
@@ -145,7 +139,7 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
                 defaultForm2(
                     controller: _prenomController,
                     textInputAction: TextInputAction.next,
-                    label: 'Prénom',
+                    label: S.of(context).surname,
                     prefixIcon: const Icon(
                       Icons.person,
                       color: Colors.transparent,
@@ -153,7 +147,7 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
                     type: TextInputType.text,
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return "Le prénom ne doit pas être vide";
+                        return S.of(context).surname_cannot_be_empty;
                       }
                     }),
                 const SizedBox(
@@ -161,7 +155,7 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
                 ),
                 DropdownButtonFormField<String>(
                   decoration: InputDecoration(
-                    labelText: 'Sélectionnez une wilaya',
+                    labelText: S.of(context).select_wilaya,
                     border: OutlineInputBorder(),
                   ),
                   value: selectedWilaya,
@@ -178,19 +172,18 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
                     );
                   }).toList(),
                 ),
-
                 const SizedBox(
                   height: 20,
                 ),
                 defaultForm2(
                     controller: _telephoneController,
                     textInputAction: TextInputAction.next,
-                    label: 'Téléphone',
+                    label: S.of(context).phone,
                     prefixIcon: const Icon(Icons.phone),
                     type: TextInputType.phone,
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return "Le téléphone ne doit pas être vide";
+                        return S.of(context).phone_cannot_be_empty;
                       }
                     }),
                 const SizedBox(
@@ -205,7 +198,9 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
                     }
 
                     if (state is UpdateAdminStateGood) {
-                      showToast(msg: "Succès", state: ToastStates.success);
+                      showToast(
+                          msg: S.of(context).success,
+                          state: ToastStates.success);
                       HomeAdminCubit.get(context).getMyInfo().then((value) {
                         Navigator.pushAndRemoveUntil(
                           context,
@@ -218,12 +213,9 @@ class _UpdateAdminFormState extends State<UpdateAdminForm> {
                   },
                   builder: (context, state) {
                     return defaultSubmit2(
-                        text: 'Mettre à jour',
+                        text: S.of(context).update,
                         onPressed: () {
                           if (formkey.currentState!.validate()) {
-                            // if (state is LodinUpdateResponsableState) {
-                            //   return null;
-                            // }
                             ProfileAdminCubit.get(context).updateAdmin(
                                 nom: _nomController.text,
                                 prenom: _prenomController.text,
@@ -251,7 +243,7 @@ class SelectPhotoAlert extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: const Text("Choisissez la source :"),
+      title: Text(S.of(context).choose_source),
       actions: [
         TextButton(
             onPressed: () async {
@@ -259,14 +251,14 @@ class SelectPhotoAlert extends StatelessWidget {
               await ProfileAdminCubit.get(context)
                   .imagePickerProfile(ImageSource.camera);
             },
-            child: const Text("Caméra")),
+            child: Text(S.of(context).camera)),
         TextButton(
             onPressed: () async {
               Navigator.pop(context);
               await ProfileAdminCubit.get(context)
                   .imagePickerProfile(ImageSource.gallery);
             },
-            child: const Text("Galerie"))
+            child: Text(S.of(context).gallery))
       ],
     );
   }

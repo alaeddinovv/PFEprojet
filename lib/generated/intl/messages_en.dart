@@ -44,6 +44,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "choose": MessageLookupByLibrary.simpleMessage("choisir :"),
         "chooseSource":
             MessageLookupByLibrary.simpleMessage("Choisissez la source :"),
+        "choose_source":
+            MessageLookupByLibrary.simpleMessage("Choisissez la source :"),
         "confirmConnection":
             MessageLookupByLibrary.simpleMessage("Confirmer la connexion"),
         "confirm_new_password": MessageLookupByLibrary.simpleMessage(
@@ -81,6 +83,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "name": MessageLookupByLibrary.simpleMessage("Nom"),
         "nameMustNotBeEmpty": MessageLookupByLibrary.simpleMessage(
             "Le nom ne doit pas être vide"),
+        "name_cannot_be_empty": MessageLookupByLibrary.simpleMessage(
+            "Le nom ne doit pas être vide"),
         "new_password":
             MessageLookupByLibrary.simpleMessage("Nouveau mot de passe"),
         "no": MessageLookupByLibrary.simpleMessage("Non"),
@@ -111,6 +115,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "phone": MessageLookupByLibrary.simpleMessage("Téléphone"),
         "phoneMustNotBeEmpty": MessageLookupByLibrary.simpleMessage(
             "Le téléphone ne doit pas être vide"),
+        "phone_cannot_be_empty": MessageLookupByLibrary.simpleMessage(
+            "Le téléphone ne doit pas être vide"),
         "player_count":
             MessageLookupByLibrary.simpleMessage("Nombre de joueurs"),
         "players": MessageLookupByLibrary.simpleMessage("joueurs"),
@@ -135,6 +141,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "select": MessageLookupByLibrary.simpleMessage("Veuillez sélectionner"),
         "select_time_error": MessageLookupByLibrary.simpleMessage(
             "Veuillez sélectionner une heure"),
+        "select_wilaya":
+            MessageLookupByLibrary.simpleMessage("Sélectionnez une wilaya"),
         "selectday": MessageLookupByLibrary.simpleMessage("select Day"),
         "selected_equipe":
             MessageLookupByLibrary.simpleMessage("Équipe sélectionnée"),
@@ -144,6 +152,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "server_error": MessageLookupByLibrary.simpleMessage("Erreur serveur"),
         "start_time": MessageLookupByLibrary.simpleMessage("Heure de début"),
         "success": MessageLookupByLibrary.simpleMessage("Succès"),
+        "surname": MessageLookupByLibrary.simpleMessage("Prénom"),
+        "surname_cannot_be_empty": MessageLookupByLibrary.simpleMessage(
+            "Le prénom ne doit pas être vide"),
         "telephone": MessageLookupByLibrary.simpleMessage("Téléphone"),
         "terrain_name": MessageLookupByLibrary.simpleMessage("Nom du terrain"),
         "terrain_state":

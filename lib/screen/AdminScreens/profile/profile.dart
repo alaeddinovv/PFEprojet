@@ -148,16 +148,15 @@ class ProfileAdmin extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.home),
-            title: Text('Accueil', style: GoogleFonts.poppins()),
+            title: Text(S.of(context).home, style: GoogleFonts.poppins()),
             onTap: () {
               navigatAndFinish(context: context, page: const HomeAdmin());
             },
           ),
           ListTile(
             leading: Icon(Icons.edit),
-            title: Text(
-              S.of(context).modify_profile,
-            ),
+            title: Text(S.of(context).modify_profile,
+                style: GoogleFonts.poppins()),
             onTap: () {
               navigatAndReturn(
                 context: context,
@@ -167,7 +166,8 @@ class ProfileAdmin extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.lock),
-            title: Text(S.of(context).modify_password),
+            title: Text(S.of(context).modify_password,
+                style: GoogleFonts.poppins()),
             onTap: () {
               navigatAndReturn(
                 context: context,
@@ -177,7 +177,8 @@ class ProfileAdmin extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.translate),
-            title: Text('Changer la langue', style: GoogleFonts.poppins()),
+            title: Text(S.of(context).change_language,
+                style: GoogleFonts.poppins()),
             onTap: () {
               showDialog(
                 context: context,
@@ -188,15 +189,17 @@ class ProfileAdmin extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       ListTile(
-                        title: Text('Français', style: GoogleFonts.poppins()),
+                        title: Text(S.of(context).french,
+                            style: GoogleFonts.poppins()),
                         onTap: () {
                           MainCubit.get(context)
-                              .changeLanguage(const Locale('en'));
+                              .changeLanguage(const Locale('fr'));
                           Navigator.pop(context);
                         },
                       ),
                       ListTile(
-                        title: Text('العربية', style: GoogleFonts.poppins()),
+                        title: Text(S.of(context).arabic,
+                            style: GoogleFonts.poppins()),
                         onTap: () {
                           MainCubit.get(context)
                               .changeLanguage(const Locale('ar'));
@@ -213,23 +216,22 @@ class ProfileAdmin extends StatelessWidget {
             textColor: Colors.red,
             iconColor: Colors.red,
             leading: Icon(Icons.exit_to_app),
-            title: Text('Se déconnecter', style: GoogleFonts.poppins()),
+            title: Text(S.of(context).logout, style: GoogleFonts.poppins()),
             onTap: () async {
               removeFCMTokenAdmin(
                       device: await CachHelper.getData(key: 'deviceInfo'))
                   .then((value) {
                 navigatAndFinish(context: context, page: Login());
                 CachHelper.removdata(key: "TOKEN");
-                showToast(msg: "Déconnexion", state: ToastStates.error);
+                showToast(
+                    msg: S.of(context).disconnect, state: ToastStates.error);
               });
             },
           ),
           ListTile(
             leading: Icon(Icons.contact_support),
-            title: Text('contacter Nous', style: GoogleFonts.poppins()),
+            title: Text(S.of(context).contact_us, style: GoogleFonts.poppins()),
             onTap: () {
-              // Navigate to the Contact Us screen or perform any desired action
-              // For example:
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => ContactUsPage()),

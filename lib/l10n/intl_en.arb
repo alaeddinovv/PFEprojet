@@ -108,5 +108,17 @@
     "confirm_new_password": "Confirmer le nouveau mot de passe",
     "password_updated_successfully": "Mot de passe modifié avec succès",
     "server_error": "Erreur serveur",
-    "update": "Mettre à jour"
+    "update": "Mettre à jour",
+    "update": "Mettre à jour",
+    "name": "Nom",
+    "name_cannot_be_empty": "Le nom ne doit pas être vide",
+    "surname": "Prénom",
+    "surname_cannot_be_empty": "Le prénom ne doit pas être vide",
+    "select_wilaya": "Sélectionnez une wilaya",
+    "phone": "Téléphone",
+    "phone_cannot_be_empty": "Le téléphone ne doit pas être vide",
+    "success": "Succès",
+    "choose_source": "Choisissez la source :",
+    "camera": "Caméra",
+    "gallery": "Galerie"
 }

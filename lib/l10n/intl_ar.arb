@@ -108,5 +108,17 @@
     "confirm_new_password": "تأكيد كلمة المرور الجديدة",
     "password_updated_successfully": "تم تحديث كلمة المرور بنجاح",
     "server_error": "خطأ في الخادم",
-    "update": "تحديث"
+    "update": "تحديث",
+    "update": "تحديث",
+    "name": "الاسم",
+    "name_cannot_be_empty": "لا يمكن ترك الاسم فارغًا",
+    "surname": "اللقب",
+    "surname_cannot_be_empty": "لا يمكن ترك اللقب فارغًا",
+    "select_wilaya": "اختر ولاية",
+    "phone": "الهاتف",
+    "phone_cannot_be_empty": "لا يمكن ترك الهاتف فارغًا",
+    "success": "نجاح",
+    "choose_source": "اختر المصدر:",
+    "camera": "الكاميرا",
+    "gallery": "المعرض"
 }

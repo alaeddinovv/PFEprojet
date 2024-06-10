@@ -39,6 +39,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "change_language": MessageLookupByLibrary.simpleMessage("تغيير اللغة"),
         "choose": MessageLookupByLibrary.simpleMessage("اختر:"),
         "chooseSource": MessageLookupByLibrary.simpleMessage("اختر المصدر:"),
+        "choose_source": MessageLookupByLibrary.simpleMessage("اختر المصدر:"),
         "confirmConnection":
             MessageLookupByLibrary.simpleMessage("تأكيد الاتصال"),
         "confirm_new_password":
@@ -74,6 +75,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "name": MessageLookupByLibrary.simpleMessage("الاسم"),
         "nameMustNotBeEmpty":
             MessageLookupByLibrary.simpleMessage("يجب ألا يكون الاسم فارغًا"),
+        "name_cannot_be_empty":
+            MessageLookupByLibrary.simpleMessage("لا يمكن ترك الاسم فارغًا"),
         "new_password":
             MessageLookupByLibrary.simpleMessage("كلمة المرور الجديدة"),
         "no": MessageLookupByLibrary.simpleMessage("لا"),
@@ -104,6 +107,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "phone": MessageLookupByLibrary.simpleMessage("الهاتف"),
         "phoneMustNotBeEmpty":
             MessageLookupByLibrary.simpleMessage("يجب ألا يكون الهاتف فارغًا"),
+        "phone_cannot_be_empty":
+            MessageLookupByLibrary.simpleMessage("لا يمكن ترك الهاتف فارغًا"),
         "player_count": MessageLookupByLibrary.simpleMessage("عدد اللاعبين"),
         "players": MessageLookupByLibrary.simpleMessage("لاعبين"),
         "position_for_player":
@@ -127,6 +132,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "select": MessageLookupByLibrary.simpleMessage("يرجى اختيار"),
         "select_time_error":
             MessageLookupByLibrary.simpleMessage("يرجى تحديد الوقت"),
+        "select_wilaya": MessageLookupByLibrary.simpleMessage("اختر ولاية"),
         "selectday": MessageLookupByLibrary.simpleMessage("اختر يوم"),
         "selected_equipe":
             MessageLookupByLibrary.simpleMessage("الفريق المختار"),
@@ -135,6 +141,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "server_error": MessageLookupByLibrary.simpleMessage("خطأ في الخادم"),
         "start_time": MessageLookupByLibrary.simpleMessage("وقت البدء"),
         "success": MessageLookupByLibrary.simpleMessage("نجاح"),
+        "surname": MessageLookupByLibrary.simpleMessage("اللقب"),
+        "surname_cannot_be_empty":
+            MessageLookupByLibrary.simpleMessage("لا يمكن ترك اللقب فارغًا"),
         "telephone": MessageLookupByLibrary.simpleMessage("الهاتف"),
         "terrain_name": MessageLookupByLibrary.simpleMessage("اسم الملعب"),
         "terrain_state": MessageLookupByLibrary.simpleMessage("حالة الملعب"),

@@ -981,6 +981,66 @@ class S {
       args: [],
     );
   }
+
+  /// `Le nom ne doit pas être vide`
+  String get name_cannot_be_empty {
+    return Intl.message(
+      'Le nom ne doit pas être vide',
+      name: 'name_cannot_be_empty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Prénom`
+  String get surname {
+    return Intl.message(
+      'Prénom',
+      name: 'surname',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Le prénom ne doit pas être vide`
+  String get surname_cannot_be_empty {
+    return Intl.message(
+      'Le prénom ne doit pas être vide',
+      name: 'surname_cannot_be_empty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Sélectionnez une wilaya`
+  String get select_wilaya {
+    return Intl.message(
+      'Sélectionnez une wilaya',
+      name: 'select_wilaya',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Le téléphone ne doit pas être vide`
+  String get phone_cannot_be_empty {
+    return Intl.message(
+      'Le téléphone ne doit pas être vide',
+      name: 'phone_cannot_be_empty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choisissez la source :`
+  String get choose_source {
+    return Intl.message(
+      'Choisissez la source :',
+      name: 'choose_source',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
