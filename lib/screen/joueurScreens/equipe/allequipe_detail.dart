@@ -99,7 +99,9 @@ class _AllEquipeDetailsScreenState extends State<AllEquipeDetailsScreen> {
                     navigatAndReturn(
                         context: context,
                         page: OtherJoueurDetails(
-                            joueurModel: state.dataJoueurModel));
+                          joueurModel: state.dataJoueurModel,
+                          showTelephone: false,
+                        ));
                   }
                 },
                 child: Expanded(

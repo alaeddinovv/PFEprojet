@@ -55,7 +55,10 @@ class _DetailOtherReserveState extends State<DetailOtherReserve> {
           if (state is GetJouerByUsernameStateGood) {
             navigatAndReturn(
                 context: context,
-                page: OtherJoueurDetails(joueurModel: state.dataJoueurModel));
+                page: OtherJoueurDetails(
+                  joueurModel: state.dataJoueurModel,
+                  showTelephone: false,
+                ));
           }
         }, builder: (context, state) {
           if (state is GetOtherReserveLoading) {

@@ -5,8 +5,11 @@ import 'package:pfeprojet/generated/l10n.dart';
 
 class OtherJoueurDetails extends StatelessWidget {
   final DataJoueurModel joueurModel;
+  final bool showTelephone;
 
-  OtherJoueurDetails({Key? key, required this.joueurModel}) : super(key: key);
+  OtherJoueurDetails(
+      {Key? key, required this.joueurModel, required this.showTelephone})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -68,10 +71,12 @@ class OtherJoueurDetails extends StatelessWidget {
                 icon: Icons.email_outlined,
                 title: S.of(context).email,
                 subtitle: joueurModel.email!),
-            _buildListTile(context,
-                icon: Icons.phone,
-                title: S.of(context).phone,
-                subtitle: joueurModel.telephone!.toString()),
+            showTelephone
+                ? _buildListTile(context,
+                    icon: Icons.phone,
+                    title: S.of(context).phone,
+                    subtitle: joueurModel.telephone!.toString())
+                : SizedBox()
           ],
         ),
       ),

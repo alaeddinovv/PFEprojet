@@ -63,7 +63,10 @@ class _DetailMyReserveState extends State<DetailMyReserve> {
             if (state is GetJouerByUsernameStateGood) {
               navigatAndReturn(
                   context: context,
-                  page: OtherJoueurDetails(joueurModel: state.dataJoueurModel));
+                  page: OtherJoueurDetails(
+                    joueurModel: state.dataJoueurModel,
+                    showTelephone: false,
+                  ));
             }
             if (state is GetMyReserveStateGood) {
               reservation = state.reservations;

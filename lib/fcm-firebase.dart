@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:pfeprojet/component/const.dart';
 import 'package:pfeprojet/main.dart';
+import 'package:pfeprojet/screen/AdminScreens/home/cubit/home_admin_cubit.dart';
+import 'package:pfeprojet/screen/AdminScreens/home/home.dart';
 import 'package:pfeprojet/screen/JoueurScreens/home/home.dart';
 import 'package:pfeprojet/screen/joueurScreens/equipe/cubit/equipe_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/home/cubit/home_joueur_cubit.dart';
@@ -13,6 +15,7 @@ Future<void> handleBackgroudMessage(RemoteMessage message) async {
   print("Title: ${message.notification?.title}");
   print("Body: ${message.notification?.body}");
   print("Payload: ${message.data}");
+  // print('dsdsdsdsdsd');
 }
 
 class FirebaseApi {
@@ -32,7 +35,7 @@ class FirebaseApi {
       final screenName = data['screen'];
 
       switch (screenName) {
-        case 'test':
+        case 'getEquipeInvite':
           EquipeCubit.get(navigatorKey.currentContext)
               .getEquipeInvite()
               .then((value) {
@@ -43,6 +46,11 @@ class FirebaseApi {
                 MaterialPageRoute(builder: (context) => HomeJoueur()),
                 (route) => false);
           });
+        case 'fetchReservationsAdmin':
+          HomeAdminCubit.get(navigatorKey.currentContext).changeIndexNavBar(1);
+          navigatorKey.currentState?.pushAndRemoveUntil(
+              MaterialPageRoute(builder: (context) => HomeAdmin()),
+              (route) => false);
 
           break;
       }

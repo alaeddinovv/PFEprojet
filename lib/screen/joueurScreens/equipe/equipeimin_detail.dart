@@ -105,7 +105,9 @@ class _EquipeImInDetailsScreenState extends State<EquipeImInDetailsScreen> {
                     navigatAndReturn(
                         context: context,
                         page: OtherJoueurDetails(
-                            joueurModel: state.dataJoueurModel));
+                          joueurModel: state.dataJoueurModel,
+                          showTelephone: true,
+                        ));
                   }
                 },
                 child: Expanded(

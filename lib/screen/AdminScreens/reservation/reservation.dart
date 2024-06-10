@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pfeprojet/Model/terrain_model.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/const.dart';
-import 'package:pfeprojet/generated/l10n.dart';
 import 'package:pfeprojet/screen/AdminScreens/reservation/cubit/reservation_cubit.dart';
 import 'package:pfeprojet/screen/AdminScreens/reservation/reservation_details.dart';
 import 'package:pfeprojet/screen/AdminScreens/terrains/cubit/terrain_cubit.dart'

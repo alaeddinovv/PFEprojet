@@ -22,6 +22,8 @@ class MyEquipeDetailsScreen extends StatefulWidget {
 
 class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
   bool goProfile = false;
+  bool sowTelephone = true;
+
   @override
   Widget build(BuildContext context) {
     // Total count now uses numeroJoueurs from the equipeData
@@ -87,10 +89,22 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                     // go profile for separate when i search joueur or i want to go to profile
                     if (state is CheckUserByUsernameStateGood && goProfile) {
                       goProfile = false;
-                      navigatAndReturn(
-                          context: context,
-                          page: OtherJoueurDetails(
-                              joueurModel: state.dataJoueurModel));
+                      if (sowTelephone) {
+                        navigatAndReturn(
+                            context: context,
+                            page: OtherJoueurDetails(
+                              joueurModel: state.dataJoueurModel,
+                              showTelephone: true,
+                            ));
+                      } else {
+                        sowTelephone = true;
+                        navigatAndReturn(
+                            context: context,
+                            page: OtherJoueurDetails(
+                              joueurModel: state.dataJoueurModel,
+                              showTelephone: false,
+                            ));
+                      }
                     }
                     if (state is QuiterEquipeStateGood) {
                       showToast(
@@ -334,6 +348,8 @@ class _MyEquipeDetailsScreenState extends State<MyEquipeDetailsScreen> {
                 Expanded(
                   child: InkWell(
                     onTap: () {
+                      sowTelephone = false;
+
                       EquipeCubit.get(context)
                           .checkUserByUsername(username: username)
                           .then((value) {

@@ -156,6 +156,11 @@ class ReservationDetailsScreen extends StatelessWidget {
                       showToast(
                           msg: 'Supprimé avec succès',
                           state: ToastStates.success);
+                      sendNotificationToJoueur(
+                          title: 'refuser votre réservation',
+                          body:
+                              'Le nom du stade ${reservation.terrainId?.nom} a refuser votre réservation pour le ${formatDate(reservation.jour)} à ${reservation.heureDebutTemps}',
+                          joueurId: reservation.joueurId!.id!);
                       Navigator.pop(context);
                     } else if (state is DeleteReservationStateBad) {
                       showToast(msg: 'Erreur', state: ToastStates.error);
