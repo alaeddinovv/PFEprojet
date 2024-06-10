@@ -244,10 +244,10 @@ class S {
     );
   }
 
-  /// `Nombre de joueurs:`
+  /// `Nombre de joueurs`
   String get number_of_players {
     return Intl.message(
-      'Nombre de joueurs:',
+      'Nombre de joueurs',
       name: 'number_of_players',
       desc: '',
       args: [],
@@ -488,10 +488,10 @@ class S {
     );
   }
 
-  /// `joueurs`
+  /// `Joueurs`
   String get players {
     return Intl.message(
-      'joueurs',
+      'Joueurs',
       name: 'players',
       desc: '',
       args: [],
@@ -1887,6 +1887,86 @@ class S {
     return Intl.message(
       'Détails du terrain',
       name: 'terrain_details',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Détails de l'équipe`
+  String get team_details {
+    return Intl.message(
+      'Détails de l\'équipe',
+      name: 'team_details',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nom de l'équipe`
+  String get team_name {
+    return Intl.message(
+      'Nom de l\'équipe',
+      name: 'team_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Équipe inconnue`
+  String get unknown_team {
+    return Intl.message(
+      'Équipe inconnue',
+      name: 'unknown_team',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Taille de l'équipe`
+  String get team_size {
+    return Intl.message(
+      'Taille de l\'équipe',
+      name: 'team_size',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Capitaine`
+  String get captain {
+    return Intl.message(
+      'Capitaine',
+      name: 'captain',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Joueurs en attente`
+  String get pending_players {
+    return Intl.message(
+      'Joueurs en attente',
+      name: 'pending_players',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Emplacement`
+  String get location {
+    return Intl.message(
+      'Emplacement',
+      name: 'location',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Annuler la demande`
+  String get cancel_request {
+    return Intl.message(
+      'Annuler la demande',
+      name: 'cancel_request',
       desc: '',
       args: [],
     );

@@ -4,6 +4,7 @@ import 'package:pfeprojet/Api/color.dart';
 import 'package:pfeprojet/Model/houssem/equipe_model.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/screen/joueurScreens/equipe/cubit/equipe_cubit.dart';
+import 'package:pfeprojet/generated/l10n.dart';
 
 class EquipeReserveDetials extends StatelessWidget {
   final EquipeModelData equipe;
@@ -15,7 +16,7 @@ class EquipeReserveDetials extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Détails de l\'équipe'),
+        title: Text(S.of(context).team_details),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(15.0),
@@ -24,7 +25,7 @@ class EquipeReserveDetials extends StatelessWidget {
           children: <Widget>[
             const SizedBox(height: 20.0),
             Text(
-              'Nom de l\'équipe : ${equipe.nom ?? 'Équipe inconnue'}',
+              '${S.of(context).team_name}: ${equipe.nom ?? S.of(context).unknown_team}',
               style: const TextStyle(
                 fontSize: 20.0,
                 fontWeight: FontWeight.bold,
@@ -34,14 +35,16 @@ class EquipeReserveDetials extends StatelessWidget {
             Card(
               child: ListTile(
                 leading: Icon(Icons.people, color: greenConst),
-                title: Text('Nombre de joueurs : ${equipe.numeroJoueurs}'),
-                subtitle: const Text('Taille de l\'équipe'),
+                title: Text(
+                    '${S.of(context).number_of_players}: ${equipe.numeroJoueurs}'),
+                subtitle: Text(S.of(context).team_size),
               ),
             ),
             const SizedBox(height: 20.0),
-            const Text(
-              'Capitaine',
-              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+            Text(
+              S.of(context).captain,
+              style:
+                  const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10.0),
             Card(
@@ -51,9 +54,10 @@ class EquipeReserveDetials extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 20.0),
-            const Text(
-              'Joueurs',
-              style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+            Text(
+              S.of(context).players,
+              style:
+                  const TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 10.0),
             Card(
@@ -68,9 +72,10 @@ class EquipeReserveDetials extends StatelessWidget {
             ),
             if (equipe.attenteJoueurs!.isNotEmpty) ...[
               const SizedBox(height: 20.0),
-              const Text(
-                'Joueurs en attente',
-                style: TextStyle(fontSize: 20.0, fontWeight: FontWeight.bold),
+              Text(
+                S.of(context).pending_players,
+                style: const TextStyle(
+                    fontSize: 20.0, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 10.0),
               Card(
@@ -90,12 +95,10 @@ class EquipeReserveDetials extends StatelessWidget {
               child: ListTile(
                 leading: Icon(Icons.location_on, color: greenConst),
                 title: Text('${equipe.wilaya}, ${equipe.commune}'),
-                subtitle: const Text('Emplacement'),
+                subtitle: Text(S.of(context).location),
               ),
             ),
-            SizedBox(
-              height: 50,
-            ),
+            const SizedBox(height: 50),
             BlocConsumer<EquipeCubit, EquipeState>(
               listener: (context, state) {
                 if (state is AnnulerRejoindreEquipeStateGood) {
@@ -113,7 +116,7 @@ class EquipeReserveDetials extends StatelessWidget {
                   );
                 }
                 return defaultSubmit2(
-                  text: 'Annuler la demande',
+                  text: S.of(context).cancel_request,
                   onPressed: () {
                     EquipeCubit.get(context)
                         .annulerRejoindreEquipe(id: equipe.id!);

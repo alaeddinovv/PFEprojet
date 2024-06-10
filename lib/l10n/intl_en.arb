@@ -255,5 +255,15 @@
     "surname": "Prénom :",
     "age": "Âge :",
     "done": "Terminé",
-    "terrain_details": "Détails du terrain"
+    "terrain_details": "Détails du terrain",
+    "team_details": "Détails de l'équipe",
+    "team_name": "Nom de l'équipe",
+    "unknown_team": "Équipe inconnue",
+    "number_of_players": "Nombre de joueurs",
+    "team_size": "Taille de l'équipe",
+    "captain": "Capitaine",
+    "players": "Joueurs",
+    "pending_players": "Joueurs en attente",
+    "location": "Emplacement",
+    "cancel_request": "Annuler la demande"
 }

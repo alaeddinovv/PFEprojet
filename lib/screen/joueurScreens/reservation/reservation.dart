@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pfeprojet/screen/joueurScreens/equipe/cubit/equipe_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/reservation/cubit/reservation_cubit.dart';
 import 'package:pfeprojet/screen/joueurScreens/reservation/equipe_reserve_details.dart';
+import 'package:pfeprojet/generated/l10n.dart';
 
 class Reservation extends StatefulWidget {
   const Reservation({super.key});
@@ -74,7 +75,7 @@ class _ReservationState extends State<Reservation> {
                                 leading: const Icon(Icons.group),
                                 title: Text(equipe.nom ?? ''),
                                 subtitle: Text(
-                                    'Nombre de joueurs : ${equipe.numeroJoueurs}'),
+                                    '${S.of(context).number_of_players}: ${equipe.numeroJoueurs}'),
                                 trailing: const Icon(Icons.arrow_forward),
                                 onTap: () {
                                   Navigator.push(

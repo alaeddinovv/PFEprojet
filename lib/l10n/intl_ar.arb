@@ -255,5 +255,15 @@
     "surname": "اللقب:",
     "age": "العمر:",
     "done": "تم",
-    "terrain_details": "تفاصيل الملعب"
+    "terrain_details": "تفاصيل الملعب",
+    "team_details": "تفاصيل الفريق",
+    "team_name": "اسم الفريق",
+    "unknown_team": "فريق غير معروف",
+    "number_of_players": "عدد اللاعبين",
+    "team_size": "حجم الفريق",
+    "captain": "الكابتن",
+    "players": "اللاعبون",
+    "pending_players": "اللاعبون المعلقون",
+    "location": "الموقع",
+    "cancel_request": "إلغاء الطلب"
 }

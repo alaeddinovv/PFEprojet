@@ -61,6 +61,9 @@ class MessageLookup extends MessageLookupByLibrary {
             "Bloqué par le propriétaire du stade"),
         "camera": MessageLookupByLibrary.simpleMessage("Caméra"),
         "cancel": MessageLookupByLibrary.simpleMessage("Annuler"),
+        "cancel_request":
+            MessageLookupByLibrary.simpleMessage("Annuler la demande"),
+        "captain": MessageLookupByLibrary.simpleMessage("Capitaine"),
         "changeTeam": MessageLookupByLibrary.simpleMessage("changer l\'équipe"),
         "change_language":
             MessageLookupByLibrary.simpleMessage("Changer la langue"),
@@ -164,6 +167,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Dernière mise à jour"),
         "list_terrain":
             MessageLookupByLibrary.simpleMessage("Liste des terrains"),
+        "location": MessageLookupByLibrary.simpleMessage("Emplacement"),
         "login": MessageLookupByLibrary.simpleMessage("Se connecter"),
         "logout": MessageLookupByLibrary.simpleMessage("Se déconnecter"),
         "map_terrain":
@@ -193,7 +197,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "notAssignedYet":
             MessageLookupByLibrary.simpleMessage("Pas encore assigné"),
         "number_of_players":
-            MessageLookupByLibrary.simpleMessage("Nombre de joueurs:"),
+            MessageLookupByLibrary.simpleMessage("Nombre de joueurs"),
         "number_of_players_error": MessageLookupByLibrary.simpleMessage(
             "Le nombre de joueurs ne peut pas dépasser 5"),
         "old_password":
@@ -209,6 +213,8 @@ class MessageLookup extends MessageLookupByLibrary {
             "Mot de passe modifié avec succès"),
         "passwords_do_not_match": MessageLookupByLibrary.simpleMessage(
             "Les mots de passe ne correspondent pas"),
+        "pending_players":
+            MessageLookupByLibrary.simpleMessage("Joueurs en attente"),
         "phone": MessageLookupByLibrary.simpleMessage("Téléphone:"),
         "phoneMustNotBeEmpty": MessageLookupByLibrary.simpleMessage(
             "Le téléphone ne doit pas être vide"),
@@ -216,7 +222,7 @@ class MessageLookup extends MessageLookupByLibrary {
             "Le téléphone ne doit pas être vide"),
         "player_count":
             MessageLookupByLibrary.simpleMessage("Nombre de joueurs"),
-        "players": MessageLookupByLibrary.simpleMessage("joueurs"),
+        "players": MessageLookupByLibrary.simpleMessage("Joueurs"),
         "position_for_player":
             MessageLookupByLibrary.simpleMessage("Poste pour le joueur"),
         "poste": MessageLookupByLibrary.simpleMessage("Poste"),
@@ -284,6 +290,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "surname": MessageLookupByLibrary.simpleMessage("Prénom :"),
         "surname_cannot_be_empty": MessageLookupByLibrary.simpleMessage(
             "Le prénom ne doit pas être vide"),
+        "team_details":
+            MessageLookupByLibrary.simpleMessage("Détails de l\'équipe"),
+        "team_name": MessageLookupByLibrary.simpleMessage("Nom de l\'équipe"),
+        "team_size":
+            MessageLookupByLibrary.simpleMessage("Taille de l\'équipe"),
         "teams": MessageLookupByLibrary.simpleMessage("Équipes"),
         "telephone": MessageLookupByLibrary.simpleMessage("Téléphone"),
         "terrain_details":
@@ -295,6 +306,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "timing_related":
             MessageLookupByLibrary.simpleMessage("Concernant le timing"),
         "type": MessageLookupByLibrary.simpleMessage("Type"),
+        "unknown_team": MessageLookupByLibrary.simpleMessage("Équipe inconnue"),
         "update": MessageLookupByLibrary.simpleMessage("Mettre à jour"),
         "username": MessageLookupByLibrary.simpleMessage("Nom d\'utilisateur"),
         "usernameMustNotBeEmpty": MessageLookupByLibrary.simpleMessage(

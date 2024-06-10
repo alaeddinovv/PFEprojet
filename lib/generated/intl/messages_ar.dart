@@ -57,6 +57,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("محجوب من قبل مالك الملعب"),
         "camera": MessageLookupByLibrary.simpleMessage("الكاميرا"),
         "cancel": MessageLookupByLibrary.simpleMessage("إلغاء"),
+        "cancel_request": MessageLookupByLibrary.simpleMessage("إلغاء الطلب"),
+        "captain": MessageLookupByLibrary.simpleMessage("الكابتن"),
         "changeTeam": MessageLookupByLibrary.simpleMessage("تغيير الفريق"),
         "change_language": MessageLookupByLibrary.simpleMessage("تغيير اللغة"),
         "choose": MessageLookupByLibrary.simpleMessage("اختر:"),
@@ -147,6 +149,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "joueurDetails": MessageLookupByLibrary.simpleMessage("تفاصيل اللاعب"),
         "last_update": MessageLookupByLibrary.simpleMessage("آخر تحديث"),
         "list_terrain": MessageLookupByLibrary.simpleMessage("قائمة الملاعب"),
+        "location": MessageLookupByLibrary.simpleMessage("الموقع"),
         "login": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
         "logout": MessageLookupByLibrary.simpleMessage("تسجيل الخروج"),
         "map_terrain": MessageLookupByLibrary.simpleMessage("خريطة الملاعب"),
@@ -175,7 +178,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "notAssignedYet":
             MessageLookupByLibrary.simpleMessage("لم يتم التعيين بعد"),
         "number_of_players":
-            MessageLookupByLibrary.simpleMessage("عدد اللاعبين:"),
+            MessageLookupByLibrary.simpleMessage("عدد اللاعبين"),
         "number_of_players_error": MessageLookupByLibrary.simpleMessage(
             "عدد اللاعبين لا يمكن أن يتجاوز 5"),
         "old_password":
@@ -190,13 +193,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("تم تحديث كلمة المرور بنجاح"),
         "passwords_do_not_match":
             MessageLookupByLibrary.simpleMessage("كلمات المرور غير متطابقة"),
+        "pending_players":
+            MessageLookupByLibrary.simpleMessage("اللاعبون المعلقون"),
         "phone": MessageLookupByLibrary.simpleMessage("الهاتف:"),
         "phoneMustNotBeEmpty":
             MessageLookupByLibrary.simpleMessage("يجب ألا يكون الهاتف فارغًا"),
         "phone_cannot_be_empty":
             MessageLookupByLibrary.simpleMessage("لا يمكن ترك الهاتف فارغًا"),
         "player_count": MessageLookupByLibrary.simpleMessage("عدد اللاعبين"),
-        "players": MessageLookupByLibrary.simpleMessage("لاعبين"),
+        "players": MessageLookupByLibrary.simpleMessage("اللاعبون"),
         "position_for_player":
             MessageLookupByLibrary.simpleMessage("المركز للاعب"),
         "poste": MessageLookupByLibrary.simpleMessage("المركز"),
@@ -258,6 +263,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "surname": MessageLookupByLibrary.simpleMessage("اللقب:"),
         "surname_cannot_be_empty":
             MessageLookupByLibrary.simpleMessage("لا يمكن ترك اللقب فارغًا"),
+        "team_details": MessageLookupByLibrary.simpleMessage("تفاصيل الفريق"),
+        "team_name": MessageLookupByLibrary.simpleMessage("اسم الفريق"),
+        "team_size": MessageLookupByLibrary.simpleMessage("حجم الفريق"),
         "teams": MessageLookupByLibrary.simpleMessage("الفرق"),
         "telephone": MessageLookupByLibrary.simpleMessage("الهاتف"),
         "terrain_details":
@@ -268,6 +276,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "timing_related":
             MessageLookupByLibrary.simpleMessage("متعلق بالتوقيت"),
         "type": MessageLookupByLibrary.simpleMessage("النوع"),
+        "unknown_team": MessageLookupByLibrary.simpleMessage("فريق غير معروف"),
         "update": MessageLookupByLibrary.simpleMessage("تحديث"),
         "username": MessageLookupByLibrary.simpleMessage("اسم المستخدم"),
         "usernameMustNotBeEmpty": MessageLookupByLibrary.simpleMessage(
