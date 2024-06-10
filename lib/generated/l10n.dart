@@ -1351,6 +1351,86 @@ class S {
       args: [],
     );
   }
+
+  /// `Supprimer l'annonce`
+  String get delete_announcement {
+    return Intl.message(
+      'Supprimer l\'annonce',
+      name: 'delete_announcement',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Êtes-vous sûr de vouloir supprimer cette annonce ?`
+  String get delete_announcement_confirmation {
+    return Intl.message(
+      'Êtes-vous sûr de vouloir supprimer cette annonce ?',
+      name: 'delete_announcement_confirmation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Détails de l'annonce`
+  String get announcement_details {
+    return Intl.message(
+      'Détails de l\'annonce',
+      name: 'announcement_details',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Commune`
+  String get commune {
+    return Intl.message(
+      'Commune',
+      name: 'commune',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Détails du propriétaire`
+  String get owner_details {
+    return Intl.message(
+      'Détails du propriétaire',
+      name: 'owner_details',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `date`
+  String get announcement_timestamp {
+    return Intl.message(
+      'date',
+      name: 'announcement_timestamp',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Créé le`
+  String get created_at {
+    return Intl.message(
+      'Créé le',
+      name: 'created_at',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Dernière mise à jour`
+  String get last_update {
+    return Intl.message(
+      'Dernière mise à jour',
+      name: 'last_update',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:pfeprojet/Model/admin_medel.dart';
 import 'package:pfeprojet/Api/color.dart';
-
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/component/const.dart';
 import 'package:pfeprojet/component/contact_us.dart';
@@ -36,7 +35,7 @@ class ProfileAdmin extends StatelessWidget {
             );
           },
         ),
-        title: Text('Profile',
+        title: Text(S.of(context).profile,
             style:
                 GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.bold)),
       ),
@@ -91,20 +90,24 @@ class ProfileAdmin extends StatelessWidget {
         child: Column(
           children: [
             _buildListTile(context,
-                icon: Icons.person, title: 'Nom', subtitle: adminModel.nom!),
+                icon: Icons.person,
+                title: S.of(context).name,
+                subtitle: adminModel.nom!),
             _buildListTile(context,
                 icon: Icons.person,
-                title: 'Prenom',
+                title: S.of(context).surname,
                 subtitle: adminModel.prenom!),
             _buildListTile(context,
                 icon: Icons.location_city,
-                title: 'Wilaya',
+                title: S.of(context).wilaya,
                 subtitle: adminModel.wilaya!),
             _buildListTile(context,
-                icon: Icons.email, title: 'Email', subtitle: adminModel.email!),
+                icon: Icons.email,
+                title: S.of(context).email,
+                subtitle: adminModel.email!),
             _buildListTile(context,
                 icon: Icons.phone,
-                title: 'Phone',
+                title: S.of(context).phone,
                 subtitle: adminModel.telephone!.toString()),
           ],
         ),

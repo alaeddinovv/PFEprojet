@@ -4,11 +4,10 @@ import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/screen/AdminScreens/annonce/detailsAnnonce/annonce_other.dart';
 import 'package:pfeprojet/screen/AdminScreens/annonce/update_annonce.dart';
 import '../../../Model/annonce/annonce_admin_model.dart';
-
 import 'addannonce.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'cubit/annonce_cubit.dart';
+import 'package:pfeprojet/generated/l10n.dart';
 
 class Annonce extends StatefulWidget {
   const Annonce({Key? key}) : super(key: key);
@@ -57,14 +56,10 @@ class _AnnonceState extends State<Annonce> {
                   .getMyAnnonce()
                   .then((value) => Navigator.pop(context));
             }
-            // if (state is DeleteAnnonceStateGood) {
-            //   AnnonceCubit.get(context).getMyAnnonce();
-            // }
           },
           builder: (context, state) {
             if (state is GetMyAnnonceStateBad) {
-              return const Text('Échec de la récupération des données');
-// Display a message if fetching data failed
+              return Text(S.of(context).failed_to_fetch_data);
             }
             if (state is GetMyAnnonceLoading &&
                 AnnonceCubit.get(context).cursorId == '') {
@@ -98,7 +93,6 @@ class _AnnonceState extends State<Annonce> {
                   ),
               ],
             );
-            // Return an empty container by default
           },
         ),
       ),
@@ -117,14 +111,11 @@ class _AnnonceState extends State<Annonce> {
   Widget _buildAnnonceItem(
       AnnonceAdminData model, int index, BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(
-          horizontal: 8.0, vertical: 4.0), // Adjusted for visual balance
+      margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
       decoration: BoxDecoration(
-        color: Colors.white, // Maintains a clean background
-        border: Border.all(
-            color: greenConst,
-            width: 2), // Slightly thicker border for emphasis
-        borderRadius: BorderRadius.circular(8.0), // Rounded corners
+        color: Colors.white,
+        border: Border.all(color: greenConst, width: 2),
+        borderRadius: BorderRadius.circular(8.0),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -142,12 +133,11 @@ class _AnnonceState extends State<Annonce> {
               style: const TextStyle(
                 color: Colors.black87,
                 fontWeight: FontWeight.w600,
-                fontSize: 18, // Larger font size for prominence
+                fontSize: 18,
               ),
             ),
             trailing: Row(
-              mainAxisSize: MainAxisSize
-                  .min, // Ensures the Row only takes as much width as it needs
+              mainAxisSize: MainAxisSize.min,
               children: [
                 IconButton(
                   icon: Icon(Icons.edit, color: greenConst),
@@ -155,7 +145,6 @@ class _AnnonceState extends State<Annonce> {
                     navigatAndReturn(
                         context: context,
                         page: EditAnnoncePage(annonceModel: model));
-                    // Your code to handle edit action
                   },
                 ),
                 IconButton(
@@ -166,18 +155,13 @@ class _AnnonceState extends State<Annonce> {
                 ),
               ],
             ),
-            // contentPadding: const EdgeInsets.symmetric(
-            //     horizontal: 12.0, vertical: 8.0), // Adjusted padding for layout
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(
-                horizontal: 16.0,
-                vertical:
-                    8.0), // Padding that slightly indents the description from the border
+            padding:
+                const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
             child: Text(
-              model.description ?? '', // Display the description
-              style: const TextStyle(
-                  fontSize: 16), // Slightly larger font for readability
+              model.description ?? '',
+              style: const TextStyle(fontSize: 16),
             ),
           ),
         ],
@@ -190,21 +174,20 @@ class _AnnonceState extends State<Annonce> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: const Text('Supprimer l\'annonce'),
-            content: const Text(
-                'Êtes-vous sûr de vouloir supprimer cette annonce ?'),
+            title: Text(S.of(context).delete_announcement),
+            content: Text(S.of(context).delete_announcement_confirmation),
             actions: [
               TextButton(
                 onPressed: () {
                   AnnonceCubit.get(context).deleteAnnonce(id: model.id!);
                 },
-                child: const Text('Oui'),
+                child: Text(S.of(context).yes),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: const Text('Non'),
+                child: Text(S.of(context).no),
               ),
             ],
           );

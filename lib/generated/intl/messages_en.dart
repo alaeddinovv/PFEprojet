@@ -34,6 +34,9 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Toutes les annonces"),
         "annonce_published_success":
             MessageLookupByLibrary.simpleMessage("Annonce publiée avec succès"),
+        "announcement_details":
+            MessageLookupByLibrary.simpleMessage("Détails de l\'annonce"),
+        "announcement_timestamp": MessageLookupByLibrary.simpleMessage("date"),
         "announcements": MessageLookupByLibrary.simpleMessage("Annonces"),
         "appBarTitle":
             MessageLookupByLibrary.simpleMessage("Modifier la réservation"),
@@ -52,6 +55,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Choisissez la source :"),
         "choose_source":
             MessageLookupByLibrary.simpleMessage("Choisissez la source :"),
+        "commune": MessageLookupByLibrary.simpleMessage("Commune"),
         "confirmConnection":
             MessageLookupByLibrary.simpleMessage("Confirmer la connexion"),
         "confirm_new_password": MessageLookupByLibrary.simpleMessage(
@@ -59,6 +63,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "contact_us": MessageLookupByLibrary.simpleMessage("Nous contacter"),
         "copy_username_success": MessageLookupByLibrary.simpleMessage(
             "Nom d\'utilisateur copié avec succès"),
+        "created_at": MessageLookupByLibrary.simpleMessage("Créé le"),
         "currency_da_per_hour": MessageLookupByLibrary.simpleMessage("Da/H"),
         "date": MessageLookupByLibrary.simpleMessage("Date"),
         "day": MessageLookupByLibrary.simpleMessage("Jour"),
@@ -66,6 +71,11 @@ class MessageLookup extends MessageLookupByLibrary {
         "delete": MessageLookupByLibrary.simpleMessage("Supprimer"),
         "delete_annonce":
             MessageLookupByLibrary.simpleMessage("Supprimer l\'annonce"),
+        "delete_announcement":
+            MessageLookupByLibrary.simpleMessage("Supprimer l\'annonce"),
+        "delete_announcement_confirmation":
+            MessageLookupByLibrary.simpleMessage(
+                "Êtes-vous sûr de vouloir supprimer cette annonce ?"),
         "delete_terrain":
             MessageLookupByLibrary.simpleMessage("Supprimer le terrain"),
         "delete_terrain_confirmation": MessageLookupByLibrary.simpleMessage(
@@ -101,6 +111,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "home": MessageLookupByLibrary.simpleMessage("Accueil"),
         "joueurDetails":
             MessageLookupByLibrary.simpleMessage("Détails du joueur"),
+        "last_update":
+            MessageLookupByLibrary.simpleMessage("Dernière mise à jour"),
         "logout": MessageLookupByLibrary.simpleMessage("Se déconnecter"),
         "modify_password":
             MessageLookupByLibrary.simpleMessage("Modifier le mot de passe"),
@@ -134,6 +146,8 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Ancien mot de passe"),
         "opponentsTeam": MessageLookupByLibrary.simpleMessage("Équipe adverse"),
         "other": MessageLookupByLibrary.simpleMessage("other"),
+        "owner_details":
+            MessageLookupByLibrary.simpleMessage("Détails du propriétaire"),
         "password_cannot_be_empty": MessageLookupByLibrary.simpleMessage(
             "Le mot de passe ne doit pas être vide"),
         "password_updated_successfully": MessageLookupByLibrary.simpleMessage(

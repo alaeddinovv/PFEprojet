@@ -163,5 +163,22 @@
     "deleted_successfully": "Supprimé avec succès",
     "reservation_declined": "Refuser votre réservation",
     "reservation_declined_for": "a refusé votre réservation pour le",
-    "decline": "Refuser"
+    "decline": "Refuser",
+    "failed_to_fetch_data": "Échec de la récupération des données",
+    "delete_announcement": "Supprimer l'annonce",
+    "delete_announcement_confirmation": "Êtes-vous sûr de vouloir supprimer cette annonce ?",
+    "yes": "Oui",
+    "no": "Non",
+    "announcement_details": "Détails de l'annonce",
+    "type": "Type",
+    "description": "Description",
+    "wilaya": "Wilaya",
+    "commune": "Commune",
+    "owner_details": "Détails du propriétaire",
+    "name": "Nom",
+    "username": "Nom d'utilisateur",
+    "phone": "Téléphone",
+    "announcement_timestamp": "date",
+    "created_at": "Créé le",
+    "last_update": "Dernière mise à jour"
 }

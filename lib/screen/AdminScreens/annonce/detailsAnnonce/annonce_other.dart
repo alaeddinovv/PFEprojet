@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pfeprojet/Model/annonce/pulier/annonce_other_model.dart';
 import 'package:pfeprojet/screen/AdminScreens/annonce/cubit/annonce_cubit.dart';
+import 'package:pfeprojet/generated/l10n.dart';
 
 class AnnouncementPage extends StatefulWidget {
   final String id;
@@ -27,8 +28,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Détails de l\'annonce'),
-        // backgroundColor: const Color(0XFF76A26C),
+        title: Text(S.of(context).announcement_details),
       ),
       body: BlocConsumer<AnnonceCubit, AnnonceState>(
         listener: (context, state) {
@@ -59,7 +59,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Détails de l\'annonce',
+                            S.of(context).announcement_details,
                             style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
@@ -67,13 +67,14 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                             ),
                           ),
                           const SizedBox(height: 16),
-                          buildDetailRow('Type :', annonceDetails.type!),
-                          buildDetailRow('Description :',
+                          buildDetailRow(
+                              S.of(context).type, annonceDetails.type!),
+                          buildDetailRow(S.of(context).description,
                               annonceDetails.description ?? ""),
-                          buildDetailRow(
-                              'Wilaya :', annonceDetails.wilaya ?? ""),
-                          buildDetailRow(
-                              'Commune :', annonceDetails.commune ?? ""),
+                          buildDetailRow(S.of(context).wilaya,
+                              annonceDetails.wilaya ?? ""),
+                          buildDetailRow(S.of(context).commune,
+                              annonceDetails.commune ?? ""),
                         ],
                       ),
                     ),
@@ -92,7 +93,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Détails du propriétaire',
+                            S.of(context).owner_details,
                             style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
@@ -101,12 +102,12 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                           ),
                           const SizedBox(height: 16),
                           if (annonceDetails.user is Admin)
-                            buildDetailRow(
-                                'Nom :', annonceDetails.user?.nom ?? ""),
+                            buildDetailRow(S.of(context).name,
+                                annonceDetails.user?.nom ?? ""),
                           if (annonceDetails.user is Joueur)
-                            buildDetailRow('Nom d\'utilisateur :',
+                            buildDetailRow(S.of(context).username,
                                 annonceDetails.user?.username ?? ""),
-                          buildDetailRow('Téléphone :',
+                          buildDetailRow(S.of(context).phone,
                               annonceDetails.user?.telephone.toString() ?? ""),
                         ],
                       ),
@@ -126,7 +127,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Horodatage de l\'annonce',
+                            S.of(context).announcement_timestamp,
                             style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
@@ -134,9 +135,9 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
                             ),
                           ),
                           const SizedBox(height: 16),
-                          buildDetailRow('Créé le :',
+                          buildDetailRow(S.of(context).created_at,
                               '${annonceDetails.createdAt?.year}-${annonceDetails.createdAt?.month.toString().padLeft(2, '0')}-${annonceDetails.createdAt?.day.toString().padLeft(2, '0')}'),
-                          buildDetailRow('Dernière mise à jour :',
+                          buildDetailRow(S.of(context).last_update,
                               '${annonceDetails.updatedAt?.year}-${annonceDetails.updatedAt?.month.toString().padLeft(2, '0')}-${annonceDetails.updatedAt?.day.toString().padLeft(2, '0')}'),
                         ],
                       ),
@@ -150,7 +151,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Ajouter la fonctionnalité d'appel ici
+          // Add call functionality here
         },
         backgroundColor: const Color(0XFF76A26C),
         child: const Icon(Icons.call),
@@ -165,7 +166,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            title,
+            '$title:',
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,

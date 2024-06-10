@@ -163,5 +163,22 @@
     "deleted_successfully": "تم الحذف بنجاح",
     "reservation_declined": "رفض حجزك",
     "reservation_declined_for": "رفض حجزك ليوم",
-    "decline": "رفض"
+    "decline": "رفض",
+    "failed_to_fetch_data": "فشل في جلب البيانات",
+    "delete_announcement": "حذف الإعلان",
+    "delete_announcement_confirmation": "هل أنت متأكد أنك تريد حذف هذا الإعلان؟",
+    "yes": "نعم",
+    "no": "لا",
+    "announcement_details": "تفاصيل الإعلان",
+    "type": "النوع",
+    "description": "الوصف",
+    "wilaya": "الولاية",
+    "commune": "البلدية",
+    "owner_details": "تفاصيل المالك",
+    "name": "الاسم",
+    "username": "اسم المستخدم",
+    "phone": "الهاتف",
+    "announcement_timestamp": "الوقت",
+    "created_at": "تم الإنشاء في",
+    "last_update": "آخر تحديث"
 }

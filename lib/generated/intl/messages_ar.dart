@@ -32,6 +32,9 @@ class MessageLookup extends MessageLookupByLibrary {
         "all_annonces": MessageLookupByLibrary.simpleMessage("جميع الإعلانات"),
         "annonce_published_success":
             MessageLookupByLibrary.simpleMessage("تم نشر الإعلان بنجاح"),
+        "announcement_details":
+            MessageLookupByLibrary.simpleMessage("تفاصيل الإعلان"),
+        "announcement_timestamp": MessageLookupByLibrary.simpleMessage("الوقت"),
         "announcements": MessageLookupByLibrary.simpleMessage("الإعلانات"),
         "appBarTitle": MessageLookupByLibrary.simpleMessage("تعديل الحجز"),
         "arabic": MessageLookupByLibrary.simpleMessage("العربية"),
@@ -46,6 +49,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "choose": MessageLookupByLibrary.simpleMessage("اختر:"),
         "chooseSource": MessageLookupByLibrary.simpleMessage("اختر المصدر:"),
         "choose_source": MessageLookupByLibrary.simpleMessage("اختر المصدر:"),
+        "commune": MessageLookupByLibrary.simpleMessage("البلدية"),
         "confirmConnection":
             MessageLookupByLibrary.simpleMessage("تأكيد الاتصال"),
         "confirm_new_password":
@@ -53,12 +57,18 @@ class MessageLookup extends MessageLookupByLibrary {
         "contact_us": MessageLookupByLibrary.simpleMessage("اتصل بنا"),
         "copy_username_success":
             MessageLookupByLibrary.simpleMessage("تم نسخ اسم المستخدم بنجاح"),
+        "created_at": MessageLookupByLibrary.simpleMessage("تم الإنشاء في"),
         "currency_da_per_hour": MessageLookupByLibrary.simpleMessage("دج/ساعة"),
         "date": MessageLookupByLibrary.simpleMessage("التاريخ"),
         "day": MessageLookupByLibrary.simpleMessage("اليوم"),
         "decline": MessageLookupByLibrary.simpleMessage("رفض"),
         "delete": MessageLookupByLibrary.simpleMessage("حذف"),
         "delete_annonce": MessageLookupByLibrary.simpleMessage("حذف الإعلان"),
+        "delete_announcement":
+            MessageLookupByLibrary.simpleMessage("حذف الإعلان"),
+        "delete_announcement_confirmation":
+            MessageLookupByLibrary.simpleMessage(
+                "هل أنت متأكد أنك تريد حذف هذا الإعلان؟"),
         "delete_terrain": MessageLookupByLibrary.simpleMessage("حذف الملعب"),
         "delete_terrain_confirmation": MessageLookupByLibrary.simpleMessage(
             "هل أنت متأكد أنك تريد حذف هذا الملعب؟"),
@@ -92,6 +102,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "gallery": MessageLookupByLibrary.simpleMessage("المعرض"),
         "home": MessageLookupByLibrary.simpleMessage("الصفحة الرئيسية"),
         "joueurDetails": MessageLookupByLibrary.simpleMessage("تفاصيل اللاعب"),
+        "last_update": MessageLookupByLibrary.simpleMessage("آخر تحديث"),
         "logout": MessageLookupByLibrary.simpleMessage("تسجيل الخروج"),
         "modify_password":
             MessageLookupByLibrary.simpleMessage("تغيير كلمة المرور"),
@@ -125,6 +136,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("كلمة المرور القديمة"),
         "opponentsTeam": MessageLookupByLibrary.simpleMessage("فريق الخصم"),
         "other": MessageLookupByLibrary.simpleMessage("other"),
+        "owner_details": MessageLookupByLibrary.simpleMessage("تفاصيل المالك"),
         "password_cannot_be_empty": MessageLookupByLibrary.simpleMessage(
             "لا يمكن ترك كلمة المرور فارغة"),
         "password_updated_successfully":
