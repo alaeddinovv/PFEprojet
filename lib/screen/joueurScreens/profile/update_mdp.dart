@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pfeprojet/component/components.dart';
 import 'package:pfeprojet/screen/JoueurScreens/profile/profile.dart';
 import 'package:pfeprojet/screen/joueurScreens/profile/cubit/profile_cubit.dart';
+import 'package:pfeprojet/generated/l10n.dart';
 
 class UpdateMdpForm extends StatelessWidget {
   UpdateMdpForm({super.key});
@@ -27,7 +28,7 @@ class UpdateMdpForm extends StatelessWidget {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text("Modifier le mot de passe"),
+          title: Text(S.of(context).modify_password),
         ),
         body: Padding(
           padding: const EdgeInsets.all(10.0),
@@ -57,10 +58,10 @@ class UpdateMdpForm extends StatelessWidget {
                           ProfileJoueurCubit.get(context).isHidden['pass']!,
                       valid: (value) {
                         if (value.isEmpty) {
-                          return 'Le mot de passe ne doit pas être vide';
+                          return S.of(context).password_cannot_be_empty;
                         }
                       },
-                      labelText: 'Ancien mot de passe',
+                      labelText: S.of(context).old_password,
                       prefixIcon: const Icon(
                         Icons.password_outlined,
                         color: Colors.grey,
@@ -92,15 +93,15 @@ class UpdateMdpForm extends StatelessWidget {
                       type: TextInputType.visiblePassword,
                       valid: (value) {
                         if (value.isEmpty) {
-                          return 'Le mot de passe ne doit pas être vide';
+                          return S.of(context).password_cannot_be_empty;
                         }
                         if (value != _new2Controller.text) {
-                          return 'Les mots de passe ne correspondent pas';
+                          return S.of(context).passwords_do_not_match;
                         }
                       },
                       obscureText:
                           ProfileJoueurCubit.get(context).isHidden['pass1']!,
-                      labelText: 'Nouveau mot de passe',
+                      labelText: S.of(context).new_password,
                       prefixIcon: const Icon(
                         Icons.password_outlined,
                         color: Colors.grey,
@@ -134,13 +135,13 @@ class UpdateMdpForm extends StatelessWidget {
                           ProfileJoueurCubit.get(context).isHidden['pass2']!,
                       valid: (value) {
                         if (value.isEmpty) {
-                          return 'Le mot de passe ne doit pas être vide';
+                          return S.of(context).password_cannot_be_empty;
                         }
                         if (value != _new1Controller.text) {
-                          return 'Les mots de passe ne correspondent pas';
+                          return S.of(context).passwords_do_not_match;
                         }
                       },
-                      labelText: 'Confirmer le nouveau mot de passe',
+                      labelText: S.of(context).confirm_new_password,
                       prefixIcon: const Icon(
                         Icons.password_outlined,
                         color: Colors.grey,
@@ -172,7 +173,7 @@ class UpdateMdpForm extends StatelessWidget {
                     }
                     if (state is UpdateMdpJoueurStateGood) {
                       showToast(
-                          msg: "Mot de passe modifié avec succès",
+                          msg: S.of(context).password_updated_successfully,
                           state: ToastStates.success);
                       Navigator.pushAndRemoveUntil(
                         context,
@@ -182,7 +183,8 @@ class UpdateMdpForm extends StatelessWidget {
                       );
                     } else if (state is UpdateMdpJoueurStateBad) {
                       showToast(
-                          msg: "Erreur serveur", state: ToastStates.error);
+                          msg: S.of(context).server_error,
+                          state: ToastStates.error);
                     } else if (state is ErrorState) {
                       String errorMessage = state.errorModel.message!;
                       showToast(msg: errorMessage, state: ToastStates.error);
@@ -190,7 +192,7 @@ class UpdateMdpForm extends StatelessWidget {
                   },
                   builder: (context, state) {
                     return defaultSubmit2(
-                        text: 'Mettre à jour',
+                        text: S.of(context).update,
                         background: Colors.blueAccent,
                         onPressed: () {
                           if (formkey.currentState!.validate()) {

@@ -33,6 +33,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Annonce publiée avec succès"),
         "appBarTitle":
             MessageLookupByLibrary.simpleMessage("Modifier la réservation"),
+        "arabic": MessageLookupByLibrary.simpleMessage("العربية"),
         "are_you_sure_you_want_to_delete_this_annonce":
             MessageLookupByLibrary.simpleMessage(
                 "Êtes-vous sûr de vouloir supprimer cette annonce?"),
@@ -45,13 +46,16 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Choisissez la source :"),
         "confirmConnection":
             MessageLookupByLibrary.simpleMessage("Confirmer la connexion"),
+        "confirm_new_password": MessageLookupByLibrary.simpleMessage(
+            "Confirmer le nouveau mot de passe"),
+        "contact_us": MessageLookupByLibrary.simpleMessage("Nous contacter"),
         "copy_username_success": MessageLookupByLibrary.simpleMessage(
             "Nom d\'utilisateur copié avec succès"),
         "date": MessageLookupByLibrary.simpleMessage("Date"),
         "delete_annonce":
             MessageLookupByLibrary.simpleMessage("Supprimer l\'annonce"),
         "description": MessageLookupByLibrary.simpleMessage("Description"),
-        "disconnect": MessageLookupByLibrary.simpleMessage("Déconnexion"),
+        "disconnect": MessageLookupByLibrary.simpleMessage("Déconnecté"),
         "email": MessageLookupByLibrary.simpleMessage("Email"),
         "enter": MessageLookupByLibrary.simpleMessage("Veuillez entrer"),
         "failed_to_fetch_data": MessageLookupByLibrary.simpleMessage(
@@ -62,9 +66,12 @@ class MessageLookup extends MessageLookupByLibrary {
             "pour toutes les réservations"),
         "forThisReservationOnly": MessageLookupByLibrary.simpleMessage(
             "pour cette réservation uniquement"),
+        "french": MessageLookupByLibrary.simpleMessage("Français"),
         "gallery": MessageLookupByLibrary.simpleMessage("Galerie"),
+        "home": MessageLookupByLibrary.simpleMessage("Accueil"),
         "joueurDetails":
             MessageLookupByLibrary.simpleMessage("Détails du joueur"),
+        "logout": MessageLookupByLibrary.simpleMessage("Se déconnecter"),
         "modify_password":
             MessageLookupByLibrary.simpleMessage("Modifier le mot de passe"),
         "modify_profile":
@@ -74,6 +81,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "name": MessageLookupByLibrary.simpleMessage("Nom"),
         "nameMustNotBeEmpty": MessageLookupByLibrary.simpleMessage(
             "Le nom ne doit pas être vide"),
+        "new_password":
+            MessageLookupByLibrary.simpleMessage("Nouveau mot de passe"),
         "no": MessageLookupByLibrary.simpleMessage("Non"),
         "noChangesDetected":
             MessageLookupByLibrary.simpleMessage("aucun changement détecté"),
@@ -89,8 +98,16 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("Nombre de joueurs"),
         "number_of_players_error": MessageLookupByLibrary.simpleMessage(
             "Le nombre de joueurs ne peut pas dépasser 5"),
+        "old_password":
+            MessageLookupByLibrary.simpleMessage("Ancien mot de passe"),
         "opponentsTeam": MessageLookupByLibrary.simpleMessage("Équipe adverse"),
         "other": MessageLookupByLibrary.simpleMessage("other"),
+        "password_cannot_be_empty": MessageLookupByLibrary.simpleMessage(
+            "Le mot de passe ne doit pas être vide"),
+        "password_updated_successfully": MessageLookupByLibrary.simpleMessage(
+            "Mot de passe modifié avec succès"),
+        "passwords_do_not_match": MessageLookupByLibrary.simpleMessage(
+            "Les mots de passe ne correspondent pas"),
         "phone": MessageLookupByLibrary.simpleMessage("Téléphone"),
         "phoneMustNotBeEmpty": MessageLookupByLibrary.simpleMessage(
             "Le téléphone ne doit pas être vide"),
@@ -124,6 +141,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "selecthour": MessageLookupByLibrary.simpleMessage("select Hour"),
         "server_crashed":
             MessageLookupByLibrary.simpleMessage("Le serveur a planté"),
+        "server_error": MessageLookupByLibrary.simpleMessage("Erreur serveur"),
         "start_time": MessageLookupByLibrary.simpleMessage("Heure de début"),
         "success": MessageLookupByLibrary.simpleMessage("Succès"),
         "telephone": MessageLookupByLibrary.simpleMessage("Téléphone"),

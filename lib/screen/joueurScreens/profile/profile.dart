@@ -178,7 +178,7 @@ class ProfileJoueur extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.home),
-            title: Text('Accueil', style: GoogleFonts.poppins()),
+            title: Text(S.of(context).home, style: GoogleFonts.poppins()),
             onTap: () {
               navigatAndFinish(context: context, page: const HomeJoueur());
             },
@@ -202,7 +202,8 @@ class ProfileJoueur extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.translate),
-            title: Text('Changer la langue', style: GoogleFonts.poppins()),
+            title: Text(S.of(context).change_language,
+                style: GoogleFonts.poppins()),
             onTap: () {
               showDialog(
                 context: context,
@@ -213,7 +214,8 @@ class ProfileJoueur extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       ListTile(
-                        title: Text('Français', style: GoogleFonts.poppins()),
+                        title: Text(S.of(context).french,
+                            style: GoogleFonts.poppins()),
                         onTap: () {
                           MainCubit.get(context)
                               .changeLanguage(const Locale('fr'));
@@ -221,7 +223,8 @@ class ProfileJoueur extends StatelessWidget {
                         },
                       ),
                       ListTile(
-                        title: Text('العربية', style: GoogleFonts.poppins()),
+                        title: Text(S.of(context).arabic,
+                            style: GoogleFonts.poppins()),
                         onTap: () {
                           MainCubit.get(context)
                               .changeLanguage(const Locale('ar'));
@@ -238,7 +241,7 @@ class ProfileJoueur extends StatelessWidget {
             textColor: Colors.red,
             iconColor: Colors.red,
             leading: Icon(Icons.exit_to_app),
-            title: Text('Se déconnecter', style: GoogleFonts.poppins()),
+            title: Text(S.of(context).logout, style: GoogleFonts.poppins()),
             onTap: () async {
               await removeFCMTokenJoueur(
                   device: await CachHelper.getData(key: 'deviceInfo'));
@@ -260,10 +263,8 @@ class ProfileJoueur extends StatelessWidget {
           ),
           ListTile(
             leading: Icon(Icons.contact_support),
-            title: Text('contacter Nous', style: GoogleFonts.poppins()),
+            title: Text(S.of(context).contact_us, style: GoogleFonts.poppins()),
             onTap: () {
-              // Navigate to the Contact Us screen or perform any desired action
-              // For example:
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => ContactUsPage()),

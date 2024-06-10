@@ -30,6 +30,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "annonce_published_success":
             MessageLookupByLibrary.simpleMessage("تم نشر الإعلان بنجاح"),
         "appBarTitle": MessageLookupByLibrary.simpleMessage("تعديل الحجز"),
+        "arabic": MessageLookupByLibrary.simpleMessage("العربية"),
         "are_you_sure_you_want_to_delete_this_annonce":
             MessageLookupByLibrary.simpleMessage(
                 "هل أنت متأكد من أنك تريد حذف هذا الإعلان؟"),
@@ -40,12 +41,15 @@ class MessageLookup extends MessageLookupByLibrary {
         "chooseSource": MessageLookupByLibrary.simpleMessage("اختر المصدر:"),
         "confirmConnection":
             MessageLookupByLibrary.simpleMessage("تأكيد الاتصال"),
+        "confirm_new_password":
+            MessageLookupByLibrary.simpleMessage("تأكيد كلمة المرور الجديدة"),
+        "contact_us": MessageLookupByLibrary.simpleMessage("اتصل بنا"),
         "copy_username_success":
             MessageLookupByLibrary.simpleMessage("تم نسخ اسم المستخدم بنجاح"),
         "date": MessageLookupByLibrary.simpleMessage("التاريخ"),
         "delete_annonce": MessageLookupByLibrary.simpleMessage("حذف الإعلان"),
         "description": MessageLookupByLibrary.simpleMessage("الوصف"),
-        "disconnect": MessageLookupByLibrary.simpleMessage("الخروج"),
+        "disconnect": MessageLookupByLibrary.simpleMessage("غير متصل"),
         "email": MessageLookupByLibrary.simpleMessage("البريد الإلكتروني"),
         "enter": MessageLookupByLibrary.simpleMessage("يرجى إدخال"),
         "failed_to_fetch_data":
@@ -56,10 +60,13 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("لجميع الحجوزات"),
         "forThisReservationOnly":
             MessageLookupByLibrary.simpleMessage("لهذا الحجز فقط"),
+        "french": MessageLookupByLibrary.simpleMessage("Français"),
         "gallery": MessageLookupByLibrary.simpleMessage("المعرض"),
+        "home": MessageLookupByLibrary.simpleMessage("الصفحة الرئيسية"),
         "joueurDetails": MessageLookupByLibrary.simpleMessage("تفاصيل اللاعب"),
+        "logout": MessageLookupByLibrary.simpleMessage("تسجيل الخروج"),
         "modify_password":
-            MessageLookupByLibrary.simpleMessage("تعديل كلمة المرور"),
+            MessageLookupByLibrary.simpleMessage("تغيير كلمة المرور"),
         "modify_profile":
             MessageLookupByLibrary.simpleMessage("تعديل الملف الشخصي"),
         "more": MessageLookupByLibrary.simpleMessage("المزيد"),
@@ -67,6 +74,8 @@ class MessageLookup extends MessageLookupByLibrary {
         "name": MessageLookupByLibrary.simpleMessage("الاسم"),
         "nameMustNotBeEmpty":
             MessageLookupByLibrary.simpleMessage("يجب ألا يكون الاسم فارغًا"),
+        "new_password":
+            MessageLookupByLibrary.simpleMessage("كلمة المرور الجديدة"),
         "no": MessageLookupByLibrary.simpleMessage("لا"),
         "noChangesDetected":
             MessageLookupByLibrary.simpleMessage("لم يتم الكشف عن أي تغييرات"),
@@ -82,8 +91,16 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("عدد اللاعبين"),
         "number_of_players_error": MessageLookupByLibrary.simpleMessage(
             "عدد اللاعبين لا يمكن أن يتجاوز 5"),
+        "old_password":
+            MessageLookupByLibrary.simpleMessage("كلمة المرور القديمة"),
         "opponentsTeam": MessageLookupByLibrary.simpleMessage("فريق الخصم"),
         "other": MessageLookupByLibrary.simpleMessage("other"),
+        "password_cannot_be_empty": MessageLookupByLibrary.simpleMessage(
+            "لا يمكن ترك كلمة المرور فارغة"),
+        "password_updated_successfully":
+            MessageLookupByLibrary.simpleMessage("تم تحديث كلمة المرور بنجاح"),
+        "passwords_do_not_match":
+            MessageLookupByLibrary.simpleMessage("كلمات المرور غير متطابقة"),
         "phone": MessageLookupByLibrary.simpleMessage("الهاتف"),
         "phoneMustNotBeEmpty":
             MessageLookupByLibrary.simpleMessage("يجب ألا يكون الهاتف فارغًا"),
@@ -115,6 +132,7 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("الفريق المختار"),
         "selecthour": MessageLookupByLibrary.simpleMessage("اختر ساعة"),
         "server_crashed": MessageLookupByLibrary.simpleMessage("تعطل الخادم"),
+        "server_error": MessageLookupByLibrary.simpleMessage("خطأ في الخادم"),
         "start_time": MessageLookupByLibrary.simpleMessage("وقت البدء"),
         "success": MessageLookupByLibrary.simpleMessage("نجاح"),
         "telephone": MessageLookupByLibrary.simpleMessage("الهاتف"),

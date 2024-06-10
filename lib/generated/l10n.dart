@@ -416,10 +416,10 @@ class S {
     );
   }
 
-  /// `Déconnexion`
+  /// `Déconnecté`
   String get disconnect {
     return Intl.message(
-      'Déconnexion',
+      'Déconnecté',
       name: 'disconnect',
       desc: '',
       args: [],
@@ -857,6 +857,126 @@ class S {
     return Intl.message(
       'Détails du joueur',
       name: 'joueurDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Accueil`
+  String get home {
+    return Intl.message(
+      'Accueil',
+      name: 'home',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Français`
+  String get french {
+    return Intl.message(
+      'Français',
+      name: 'french',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `العربية`
+  String get arabic {
+    return Intl.message(
+      'العربية',
+      name: 'arabic',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Se déconnecter`
+  String get logout {
+    return Intl.message(
+      'Se déconnecter',
+      name: 'logout',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nous contacter`
+  String get contact_us {
+    return Intl.message(
+      'Nous contacter',
+      name: 'contact_us',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Ancien mot de passe`
+  String get old_password {
+    return Intl.message(
+      'Ancien mot de passe',
+      name: 'old_password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Le mot de passe ne doit pas être vide`
+  String get password_cannot_be_empty {
+    return Intl.message(
+      'Le mot de passe ne doit pas être vide',
+      name: 'password_cannot_be_empty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Nouveau mot de passe`
+  String get new_password {
+    return Intl.message(
+      'Nouveau mot de passe',
+      name: 'new_password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Les mots de passe ne correspondent pas`
+  String get passwords_do_not_match {
+    return Intl.message(
+      'Les mots de passe ne correspondent pas',
+      name: 'passwords_do_not_match',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirmer le nouveau mot de passe`
+  String get confirm_new_password {
+    return Intl.message(
+      'Confirmer le nouveau mot de passe',
+      name: 'confirm_new_password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mot de passe modifié avec succès`
+  String get password_updated_successfully {
+    return Intl.message(
+      'Mot de passe modifié avec succès',
+      name: 'password_updated_successfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Erreur serveur`
+  String get server_error {
+    return Intl.message(
+      'Erreur serveur',
+      name: 'server_error',
       desc: '',
       args: [],
     );
