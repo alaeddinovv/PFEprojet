@@ -166,7 +166,7 @@ class _AnnouncementPageState extends State<AnnouncementPage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            '$title:',
+            '$title',
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,

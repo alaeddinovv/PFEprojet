@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pfeprojet/Api/color.dart';
 import 'package:pfeprojet/component/components.dart';
+import 'package:pfeprojet/cubit/main_cubit.dart';
 import 'package:pfeprojet/screen/JoueurScreens/profile/profile.dart';
 import 'package:pfeprojet/screen/joueurScreens/home/cubit/home_joueur_cubit.dart';
 import 'package:pfeprojet/generated/l10n.dart';
@@ -32,8 +33,11 @@ class _HomeJoueurState extends State<HomeJoueur> {
           appBar: AppBar(
             title: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Text(HomeJoueurCubit.get(context)
-                  .title[HomeJoueurCubit.get(context).selectedIndex]),
+              child: MainCubit.get(context).locale == Locale('en')
+                  ? Text(HomeJoueurCubit.get(context)
+                      .title[HomeJoueurCubit.get(context).selectedIndex])
+                  : Text(HomeJoueurCubit.get(context)
+                      .titleAr[HomeJoueurCubit.get(context).selectedIndex]),
             ),
             actions: [
               state is GetMyInformationLoading

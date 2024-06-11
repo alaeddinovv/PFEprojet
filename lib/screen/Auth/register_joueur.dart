@@ -158,6 +158,9 @@ class RegisterJoueur extends StatelessWidget {
                                 if (value.isEmpty) {
                                   return 'mot_de_passe Must Be Not Empty';
                                 }
+                                if (value.length < 8) {
+                                  return 'Password must be at least 8 characters long';
+                                }
                               },
                               labelText: "Mot de passe",
                               prefixIcon: const Icon(

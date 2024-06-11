@@ -32,6 +32,7 @@ class HomeJoueurCubit extends Cubit<HomeJoueurState> {
     "Les Annonces",
     "Les Equipes"
   ];
+  final List<String> titleAr = ["الملاعب", "طلباتي", "الإعلانات", "الفرق"];
 
   final List<Widget> body = [
     const Terrain(),

@@ -35,7 +35,7 @@ class FirebaseApi {
       final screenName = data['screen'];
 
       switch (screenName) {
-        case 'getEquipeInvite':
+        case 'gg':
           EquipeCubit.get(navigatorKey.currentContext)
               .getEquipeInvite()
               .then((value) {

@@ -95,6 +95,9 @@ class UpdateMdpForm extends StatelessWidget {
                         if (value.isEmpty) {
                           return S.of(context).password_cannot_be_empty;
                         }
+                        if (value.length < 8) {
+                          return 'Password must be at least 8 characters long';
+                        }
                         if (value != _new2Controller.text) {
                           return S.of(context).passwords_do_not_match;
                         }
@@ -136,6 +139,9 @@ class UpdateMdpForm extends StatelessWidget {
                       valid: (value) {
                         if (value.isEmpty) {
                           return S.of(context).password_cannot_be_empty;
+                        }
+                        if (value.length < 8) {
+                          return 'Password must be at least 8 characters long';
                         }
                         if (value != _new1Controller.text) {
                           return S.of(context).passwords_do_not_match;
